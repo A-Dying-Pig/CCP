@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+
+    <!-- 引入BOOTSTRAP -->
+    <!-- 包含头部信息用于适应不同设备 -->
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!-- 包含 bootstrap 样式表 -->
+    <link rel="stylesheet" href="https://apps.bdimg.com/libs/bootstrap/3.2.0/css/bootstrap.min.css">
+    <link rel="stylesheet" href="./css/CCP.css">
+</head>
+<body>
+
+
+    <div class="register-username">
+        <register-input
+                v-bind:is_anonymous="true"
+                v-bind:input_status="status"
+                v-on:is_input="validate_input"
+        >
+            <template slot="title">用户名</template>
+            字母,数字,下划线组成,长度大于8
+        </register-input>
+    </div>
+
+
+
+    <script src="./js/CPP_vue_component.js"></script>
+    <script src="./js/CPP_vue.js"></script>
+</body>
+</html>
