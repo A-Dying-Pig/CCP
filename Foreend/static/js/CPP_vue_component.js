@@ -86,3 +86,28 @@ Vue.component('register-input',{
         },
 });
 
+Vue.component('navigation-bar',{
+   data:function () {
+       return {
+           navileftitems:[
+               {name:'',href:'/',tclass:{'naviicon':true}},
+               {name:'主页',href:'/',tclass:{'navilink':true}},
+               {name:'全部比赛',href:'/',tclass:{'navilink':true}},
+               {name:'个人中心',href:'/',tclass:{'navilink':true}},
+            ],
+           navirightitems:[
+               {name:'登录',href:'/',tclass:{'navilink':true}},
+               {name:'注册',href:'/',tclass:{'navilink':true}},
+           ]
+       }
+   },
+   template:`<div>
+    <ul class = "bavibar navi-left">
+    <li v-for="item in navileftitems" v-bind:class="item.tclass" v-bind:href="item.href">{{ item.name }}</li>
+    </ul>
+    <ul class = "bavibar navi-left">
+    <li v-for="item in navirightitems" v-bind:class="item.tclass" v-bind:href="item.href">{{ item.name }}</li>
+    </ul></div>
+   `
+});
+
