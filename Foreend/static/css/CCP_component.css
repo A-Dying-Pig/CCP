@@ -33,12 +33,13 @@
     color: black;
     text-decoration: none;
 }
-.naviicon{
+.naviicon {
     width: 119px;
     height: 73px;
-    float:left;
+    float: left;
     margin: 0 10px;
     background-image: url(../img/ccpicon.png);
+}
 .register-input-title{
 }
 
