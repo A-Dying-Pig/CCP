@@ -94,3 +94,27 @@ Vue.component('register-username',{
         }
     }
 });
+Vue.component('navigation-bar',{
+    data:function () {
+        return {
+            navileftitems:[
+                {name:'',href:'/index',tclass:{'naviicon':true}},
+                {name:'主页',href:'/index',tclass:{'navihref':true}},
+                {name:'全部比赛',href:'/',tclass:{'navihref':true}},
+                {name:'个人中心',href:'/',tclass:{'navihref':true}},
+            ],
+            navirightitems:[
+                {name:'登录',href:'/',tclass:{'navihref':true}},
+                {name:'注册',href:'/',tclass:{'navihref':true}},
+            ]
+        }
+    },
+    template:`<div class = "navibar">
+    <ul class = "navi-left">
+    <li v-for="item in navileftitems" class="navili" ><a v-bind:href="item.href" v-bind:class="item.tclass">{{ item.name }}</a></li>
+    </ul>
+    <ul class = "navi-right">
+    <li v-for="item in navirightitems" class="navili"><a v-bind:href="item.href" v-bind:class="item.tclass">{{ item.name }}</a></li>
+    </ul></div>
+   `
+});
