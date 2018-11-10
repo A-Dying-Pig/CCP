@@ -39,4 +39,14 @@
     float:left;
     margin: 0 10px;
     background-image: url(../img/ccpicon.png);
+.register-input-title{
+}
+
+.register-input-info{
+    color:gray;
+    font-size: 9px;
+}
+
+.register-input{
+    width:200px;
 }
