@@ -354,3 +354,18 @@ Vue.component('competition-list',{
         <td>{{com.detail}}</td>  
     </div>`
 });
+
+Vue.component('datetime-input',{
+   props:['value','title'],
+   data:function(){
+      return{
+
+      }
+    },
+   template:`
+<div class="cdatetime-input">
+    <span class="register-input-title">{{ title }}</span><br>
+    <input type="datetime-local" v-bind:value="value" v-on:input="$emit('input', $event.target.value)">
+</div>
+   `,
+});
