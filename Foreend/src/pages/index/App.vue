@@ -1,15 +1,15 @@
 <template>
   <div id="app" v-bind:mdate="mdate">
-	<CompetitionList v-bind:com='com'></CompetitionList>
+	<MdEdit v-model="msg" title="输入"></MdEdit>
   </div>
 </template>
 
 <script>
-import CompetitionList from './../../components/CompetitionList.vue'
+import MdEdit from './../../components/MdEdit.vue'
 export default {
   name: 'app',
   components: {
-	CompetitionList
+	MdEdit
   },
   props:['mdate'],
   data:function(){
@@ -22,8 +22,8 @@ export default {
   'information':'info',
   'detail':'de'
   },
-  }
-  }
+  }},
+
 }
 </script>
 
