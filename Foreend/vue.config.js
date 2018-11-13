@@ -5,5 +5,7 @@ module.exports = {
       template: 'src/pages/index/index.html',
       filename: 'index.html',
     },
-  }
+  },
+  outputDir:'static',
+  indexPath:'./../templates/index.html',
 }
