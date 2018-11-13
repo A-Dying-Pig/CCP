@@ -1,3 +1,4 @@
 Foreend/static/js/*.html
 .idea
 Foreend/node_modules/*
+Foreend/src/pages/test/*

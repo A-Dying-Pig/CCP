@@ -1,52 +1,38 @@
 <template>
-<div class="register-input-username">   
-                <span class="register-input-title">用户名(username)</span>
-                <br>
-                <input 
-                    v-model.trim="msg" 
-                    v-on:input="validate"
-                    class="register-input"
-                >
-                <span><font v-bind:color="status_color">{{signal}}</font></span>
-                <br>
-                <span class="register-input-info">数字,字母,下划线的组合</span>
-            </div>
+    <el-form :model="input_msg" status-icon :rules="m_rules" ref="input_msg" label-width="100px" class="register-input">
+        <el-form-item label="用户名" prop="username">
+            <el-input type="text" v-model="input_msg.username" placeholder="字母,_,数字的组合" autocomplete="off">
+            </el-input>
+        </el-form-item>
+    </el-form>
 </template>
 
 <script>
-export default{
-data:function(){
-return {
-            msg: '',
-            status_color:'gray',
-            status:-1,
-        }
-    },
-computed:{
-        signal:function () {
-            if (this.status === -1 || this.msg.length === 0) {
-                this.status_color = 'gray';
-                return '?';
-            }
-            if (this.status === 0) {
-                this.status_color = 'red';
-                return '✕';
-            }
-            if (this.status === 1) {
-                this.status_color = 'green';
-                return '✓';
-            }
-        }
-    },
-    methods:{
-        validate:function () {
-            if(/^[a-zA-Z0-9_]+$/.test(this.msg) === false) {
-                this.status = 0;
-                return;
-            }
-            this.status = 1;
-        }
-    }}
+    export default {
+        name:'RegisterUsername',
+        data() {
+            var validateUser = (rule, value, callback) => {
+                if (value === '') {
+                    callback(new Error('请输入用户名'));
+                } else {
+                    if (/^[a-zA-Z0-9_]+$/.test(value) === false){
+                        callback(new Error("请输入合法的用户名"));
+                    }
+                    callback();
+                }
+            };
+            return {
+                input_msg: {
+                    username: '',
+                },
+                m_rules: {
+                    username: [
+                        { validator: validateUser, trigger: 'blur' }
+                    ],
+                }
+            };
+        },
+    }
 </script>
 
 <style src="./commonCSS/input.css"></style>
