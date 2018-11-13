@@ -12,11 +12,15 @@
         name:'RegisterPassword',
         data() {
             var validateEmail = (rule, value, callback) => {
+                this.$emit('new_email','');
                 if (value === '') {
                     callback(new Error('请输入邮箱地址'));
                 } else {
-                    if (/^[a-zA-Z0-9_]+@[a-zA-Z0-9_]+\.[a-zA-Z0-9_]+/.test(value) === false){
+                    if (/^[a-zA-Z0-9_]+@[a-zA-Z0-9_]+\.[a-zA-Z0-9_]+/.test(value) === false) {
                         callback(new Error("请输入合法的邮箱地址"));
+                    }
+                    else{
+                        this.$emit('new_email',value)
                     }
                     callback();
                 }
@@ -34,5 +38,3 @@
         },
     }
 </script>
-
-<style src="./commonCSS/input.css"></style>

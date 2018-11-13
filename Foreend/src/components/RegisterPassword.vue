@@ -15,6 +15,7 @@
         name:'RegisterPassword',
         data() {
             var validatePass = (rule, value, callback) => {
+                this.$emit('new_password','');
                 if (value === '') {
                     callback(new Error('请输入密码'));
                 } else {
@@ -25,17 +26,24 @@
                         callback(new Error("密码必须是字母,_,数字的组合!"));
                     }
                     else if (this.input_msg.checkPass !== '') {
-                        this.$refs.input_msg.validateField('checkPass');
-                    }
+                            this.$refs.input_msg.validateField('checkPass');
+                        }
                     callback();
                 }
             };
             var validatePass2 = (rule, value, callback) => {
+                this.$emit('new_password','');
                 if (value === '') {
                     callback(new Error('请再次输入密码'));
-                } else if (value !== this.input_msg.pass) {
+                }
+                else if (value !== this.input_msg.pass) {
                     callback(new Error('两次输入密码不一致!'));
-                } else {
+                }
+                else if(/^[a-zA-Z0-9_]+$/.test(value) === false) {
+                    callback(new Error("密码必须是字母,_,数字的组合!"));
+                }
+                else {
+                    this.$emit('new_password',value);
                     callback();
                 }
             };
@@ -56,5 +64,3 @@
         },
     }
 </script>
-
-<style src="./commonCSS/input.css"></style>
