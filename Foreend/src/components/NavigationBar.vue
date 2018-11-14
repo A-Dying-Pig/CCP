@@ -1,13 +1,4 @@
 <template>
-<<<<<<< HEAD
-<div class = "navibar">
-    <ul class = "navi-left">
-    <li v-for="item in navileftitems" class="navili" :key="item.key"><a v-bind:href="item.href" v-bind:class="item.tclass">{{ item.name }}</a></li>
-    </ul>
-    <ul class = "navi-right">
-    <li v-for="item in navirightitems" class="navili" :key="item.key"><a v-bind:href="item.href" v-bind:class="item.tclass">{{ item.name }}</a></li>
-    </ul></div>
-=======
     <div>
         <img src="../assets/ccpicon.png" class="naviicon">
         <div class = "navi_left">
@@ -18,7 +9,6 @@
         </div>
         <hr class="line">
     </div>
->>>>>>> 309adba9d070a4b562627b8657b41b7be5ef2ac3
 </template>
 
 <script>
