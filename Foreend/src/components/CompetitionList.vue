@@ -1,18 +1,66 @@
 <template>
-<div class="competition-list">
-        <td>{{com.number}}</td>
-        <td>{{com.name}}</td>
-        <td>{{com.organizer}}</td>
-        <td>{{com.information}}</td>
-        <td>{{com.detail}}</td>  
-    </div>
+<div class="competitionList"><h3>{{ title }}</h3>
+<el-table
+	:data="comps"
+	stripe>
+	<el-table-column
+		prop="number"
+	    label="序号"
+	    width="80">
+	</el-table-column>
+	<el-table-column
+		prop="name"
+		label="名称"
+		width="180">
+	</el-table-column>
+	<el-table-column
+		prop="organizer"
+		label="组织者"
+		width="180">
+	</el-table-column>
+	<el-table-column
+		prop="information"
+		label="信息"
+		width="180">
+	</el-table-column>
+	<el-table-column
+		prop="detail"
+		label="详情">
+	</el-table-column>
+</el-table> 
+</div>
 </template>
 
 <script>
+import Vue from 'vue'
+import 'element-ui/lib/theme-chalk/index.css'
+import ElementUI from 'element-ui'
+Vue.use(ElementUI);
+
 export default{
-props:['com'],
+	props:['title'],
+	data(){
+		return{
+			comps:[{'number':111,
+				'name':'wzw',
+				'organizer':'df',		  'information':'info',
+				'detail':'de'
+				},
+				{
+				'number':122,
+				'name':'wzw',
+				'organizer':'df',
+				'information':'info',
+				'detail':'de'
+				}]
+			}
+		}	
 }
 </script>
 
 <style>
+.title_class{
+	color:"green";
+	fontSize:"30px";
+}
 </style>
