@@ -64,6 +64,7 @@
 
 <script>
     import NavigationBar from '../../components/NavigationBar'
+    import axios from 'axios'
 
     export default {
         name: 'app',
@@ -79,7 +80,6 @@
             };
 
             var validateUser = (rule, value, callback) => {
-                this.$emit('new_username','');
                 if (value === '') {
                     callback(new Error('请输入用户名'));
                 }
@@ -148,7 +148,7 @@
             submitForm(formName) {
                 this.$refs[formName].validate((valid) => {
                     if (valid) {
-                        this.$http.post('/register', {'username':this.input_msg.username,'password':this.input_msg.pass,'email':this.input_msg.email})
+                        axios.post('/register', {username:this.input_msg.username,password:this.input_msg.pass,email:this.input_msg.email})
                     } else {
                         console.log('error submit!!');
                         return false;

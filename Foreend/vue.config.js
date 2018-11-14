@@ -14,11 +14,17 @@ module.exports = {
           entry: 'src/pages/CompetitonCreate/main.js',
           template: 'src/pages/CompetitonCreate/index.html',
           filename: 'CompetitonCreate.html',
+      },
+      login:{
+          entry: 'src/pages/login/main.js',
+          template: 'src/pages/login/login.html',
+          filename: 'login.html',
       }
   },
     devServer:{
       index:'static/CompetitonCreate.html'
     },
-  outputDir:'static',
+    outputDir:'static',
+    baseUrl:'',
   //indexPath:'./../templates/index.html',
 }
