@@ -1,18 +1,24 @@
 module.exports = {
   pages: {
-	  index: {
-          entry: 'src/pages/index/main.js',
-          template: 'src/pages/index/index.html',
-          filename: 'indexm.html',
+      register:{
+          entry: 'src/pages/register/main.js',
+          template: 'src/pages/register/register.html',
+          filename: 'register.html',
       },
       CompetitionCreate:{
           entry: 'src/pages/CompetitonCreate/main.js',
           template: 'src/pages/CompetitonCreate/index.html',
-          //filename: 'CompetitonCreate.html',
-          filename: 'index.html',
+          filename: 'CompetitonCreate.html',
+      },
+      login:{
+          entry: 'src/pages/login/main.js',
+          template: 'src/pages/login/login.html',
+          filename: 'login.html',
       }
   },
+    devServer:{
+      index:'static/CompetitonCreate.html'
+    },
+    outputDir:'static',
     baseUrl:'',
-  outputDir:'static',
-  //indexPath:'./../templates/index.html',
 }

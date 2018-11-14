@@ -78,7 +78,6 @@ data:function () {
 }
 
 .navi_btn_right{
-    -moz-appearance: button;
     padding-left:20px;
     padding-right:20px;
     text-decoration: none;

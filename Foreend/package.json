@@ -3,11 +3,14 @@
   "version": "0.1.0",
   "private": true,
   "scripts": {
-    "serve": "vue-cli-service serve --mode multi-page",
+    "serve": "vue-cli-service serve",
     "build": "vue-cli-service build --mode multi-page",
     "lint": "vue-cli-service lint"
   },
   "dependencies": {
+    "ajv": "^6.5.5",
+    "ajv-keywords": "^3.2.0",
+    "axios": "^0.18.0",
     "vue": "^2.5.17",
     "vue-resource": "^1.5.1",
     "vue-router": "^3.0.1"
