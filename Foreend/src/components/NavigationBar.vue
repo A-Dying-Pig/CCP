@@ -1,4 +1,5 @@
 <template>
+<<<<<<< HEAD
 <div class = "navibar">
     <ul class = "navi-left">
     <li v-for="item in navileftitems" class="navili" :key="item.key"><a v-bind:href="item.href" v-bind:class="item.tclass">{{ item.name }}</a></li>
@@ -6,69 +7,106 @@
     <ul class = "navi-right">
     <li v-for="item in navirightitems" class="navili" :key="item.key"><a v-bind:href="item.href" v-bind:class="item.tclass">{{ item.name }}</a></li>
     </ul></div>
+=======
+    <div>
+        <img src="../assets/ccpicon.png" class="naviicon">
+        <div class = "navi_left">
+        <a v-for="(item,index) in navi_left_items" :key="index" :href="item.href" class="navi_btn_left">{{item.name}}</a>
+        </div>
+        <div class = "navi_right">
+        <a v-for="(item,index) in navi_right_items" :key="index" :href="item.href" class="navi_btn_right">{{item.name}}</a>
+        </div>
+        <hr class="line">
+    </div>
+>>>>>>> 309adba9d070a4b562627b8657b41b7be5ef2ac3
 </template>
 
 <script>
 export default{
 data:function () {
         return {
-            navileftitems:[
-                {name:'',href:'/index',tclass:{'naviicon':true}},
-                {name:'主页',href:'/index',tclass:{'navihref':true}},
-                {name:'全部比赛',href:'/CompetitionCreate',tclass:{'navihref':true}},
-                {name:'个人中心',href:'/',tclass:{'navihref':true}},
+            activeIndex: '1',
+            navi_left_items:[
+                {name:'主页',href:'/index'},
+                {name:'全部比赛',href:'/competition'},
+                {name:'个人中心',href:'/info'},
             ],
-            navirightitems:[
-                {name:'登录',href:'/',tclass:{'navihref':true}},
-                {name:'注册',href:'/',tclass:{'navihref':true}},
+            navi_right_items:[
+                {name:'登录',href:'/signin'},
+                {name:'注册',href:'/signup'},
             ]
         }
     },
+    methods: {
+    handleSelect(key, keyPath) {
+        console.log(key, keyPath);
+    }
+}
 
 }
+
 </script>
 
 <style>
-.navibar{
-    width: 100%;
-    z-index: 60;
-    padding: 20px 0;
-    background: #fff;
-    box-shadow: 0 2px 6px rgba(0,0,0,.1);
-    position: fixed;
-    left: 0;
-    top: 0;
-    font-size: 40px;
+
+.navi_left{
+    font-size: 16px;
+    float:left;
+    left: 20px;
+    margin-top: 22px;
 }
-.navi-left .navi-right{
-    padding: 0;
-    margin: 0;
-    word-break: break-all;
-    word-wrap: break-word;
-    list-style: none;
-    font-size: inherit;
+
+.navi_right{
+    font-size: 16px;
+    float:right;
+    left: 20px;
+    margin-top:22px;
 }
-.navi-left{
-    float: left;
+
+.navi_btn_left{
+     -moz-appearance: button;
+     text-decoration: none;
+     padding-left:20px;
+     padding-right:20px;
+     left:10px;
+     color: initial;
+
 }
-.navi-right{
-    float: right;
+
+.navi_btn_left:hover{
+    color: dodgerblue;
+    left:10px;
+    padding-left:20px;
+    padding-right:20px;
 }
-.navili{
-    float:left ;
-    list-style:none;
-    margin: 0 10px;
-    font-size: inherit;
+
+.navi_btn_right:hover{
+    color: dodgerblue;
+    left:10px;
+    padding-left:20px;
+    padding-right:20px;
 }
-.navihref:link{
-    color: black;
+
+.navi_btn_right{
+    -moz-appearance: button;
+    padding-left:20px;
+    padding-right:20px;
     text-decoration: none;
+    color: initial;
 }
+
 .naviicon {
-    width: 119px;
-    height: 73px;
+    width:120px;
+    height:70px;
     float: left;
+<<<<<<< HEAD
     margin: 0 10px;
     background-image: url(./../assets/img/ccpicon.png);
+=======
+>>>>>>> 309adba9d070a4b562627b8657b41b7be5ef2ac3
 }
+
+    .line{
+        width:100%;
+    }
 </style>

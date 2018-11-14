@@ -12,11 +12,15 @@
         name:'RegisterUsername',
         data() {
             var validateUser = (rule, value, callback) => {
+                this.$emit('new_username','');
                 if (value === '') {
                     callback(new Error('请输入用户名'));
                 } else {
                     if (/^[a-zA-Z0-9_]+$/.test(value) === false){
                         callback(new Error("请输入合法的用户名"));
+                    }
+                    else{
+                        this.$emit('new_username',value)
                     }
                     callback();
                 }
@@ -34,5 +38,3 @@
         },
     }
 </script>
-
-<style src="./commonCSS/input.css"></style>
