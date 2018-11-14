@@ -1,6 +1,6 @@
 <template>
     <div>
-        <img src="../assets/ccpicon.png" class="naviicon">
+        <img src="./../assets/img/ccpicon.png" class="naviicon">
         <div class = "navi_left">
         <a v-for="(item,index) in navi_left_items" :key="index" :href="item.href" class="navi_btn_left">{{item.name}}</a>
         </div>
@@ -29,7 +29,7 @@ data:function () {
     },
     methods: {
     handleSelect(key, keyPath) {
-        console.log(key, keyPath);
+        //console.log(key, keyPath);
     }
 }
 
@@ -89,11 +89,6 @@ data:function () {
     width:120px;
     height:70px;
     float: left;
-<<<<<<< HEAD
-    margin: 0 10px;
-    background-image: url(./../assets/img/ccpicon.png);
-=======
->>>>>>> 309adba9d070a4b562627b8657b41b7be5ef2ac3
 }
 
     .line{

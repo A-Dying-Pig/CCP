@@ -1,5 +1,5 @@
 <template>
-    <div class="MdEdit">{{ title }}<Simditor v-bind:content="conten" v-on:change="$emit('input', $event)"></Simditor></div>
+    <div class="MdEdit"><slot></slot><Simditor v-bind:content="conten" v-on:change="$emit('input', $event)"></Simditor></div>
 </template>
 
 <script>
@@ -8,7 +8,7 @@
         components: {
             Simditor
         },
-        props:['title','value'],
+        props:['value'],
         data() {
             return {
                 conten:this.value,
