@@ -8,7 +8,8 @@ module.exports = {
       CompetitionCreate:{
           entry: 'src/pages/CompetitonCreate/main.js',
           template: 'src/pages/CompetitonCreate/index.html',
-          filename: 'CompetitonCreate.html',
+          //filename: 'CompetitonCreate.html',
+          filename: 'index.html',
       },
       login:{
           entry: 'src/pages/login/main.js',
@@ -16,9 +17,6 @@ module.exports = {
           filename: 'login.html',
       }
   },
-    devServer:{
-      index:'static/CompetitonCreate.html'
-    },
     outputDir:'static',
     baseUrl:'',
 }
