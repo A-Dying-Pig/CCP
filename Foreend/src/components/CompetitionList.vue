@@ -1,5 +1,5 @@
 <template>
-<div>
+<div class="competitionList"><h3>{{ title }}</h3>
 <el-table
 	:data="comps"
 	stripe>
@@ -28,7 +28,7 @@
 		label="详情">
 	</el-table-column>
 </el-table> 
-</div>  
+</div>
 </template>
 
 <script>
@@ -38,6 +38,7 @@ import ElementUI from 'element-ui'
 Vue.use(ElementUI);
 
 export default{
+	props:['title'],
 	data(){
 		return{
 			comps:[{'number':111,
@@ -58,4 +59,8 @@ export default{
 </script>
 
 <style>
+.title_class{
+	color:"green";
+	fontSize:"30px";
+}
 </style>
