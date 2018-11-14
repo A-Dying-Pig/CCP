@@ -89,11 +89,6 @@ data:function () {
     width:120px;
     height:70px;
     float: left;
-<<<<<<< HEAD
-    margin: 0 10px;
-    background-image: url(./../assets/img/ccpicon.png);
-=======
->>>>>>> 309adba9d070a4b562627b8657b41b7be5ef2ac3
 }
 
     .line{
