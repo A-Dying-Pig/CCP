@@ -13,6 +13,8 @@ class Contest(models.Model):
     title = models.CharField(max_length=32)  # 比赛名称
     category = models.CharField(max_length=32)  # 比赛类别
     grouped = models.BooleanField(default=False)  # 是否需要组队参赛
+    group_min_number = models.IntegerField(blank=True, null=True)  # 组队最小人数
+    group_max_number = models.IntegerField(blank=True, null=True)  # 组队最大人数
     start_time = models.DateTimeField()  # 比赛开始时间
     end_time = models.DateTimeField()  # 比赛结束时间
     enroll_start = models.DateTimeField()  # 报名开始时间
@@ -20,11 +22,11 @@ class Contest(models.Model):
     information = models.TextField()  # 比赛详情
     brief_introduction = models.CharField(max_length=128)  # 比赛简介
     phase = models.CharField(max_length=512, blank=True)  # 比赛阶段
-    phase_start_time = models.CharField(max_length=512, blank=True)  # 各阶段开始时间
-    phase_end_time = models.CharField(max_length=512, blank=True)  # 各阶段结束时间
+    phase_start_time = models.CharField(max_length=512, blank=True, null=True)  # 各阶段开始时间
+    phase_end_time = models.CharField(max_length=512, blank=True, null=True)  # 各阶段结束时间
     phase_information = models.TextField(blank=True)  # 比赛阶段详情
     admin_id = models.IntegerField()  # 比赛管理员User表里的id
-    host = models.CharField(max_length=32)  # 主办方
+    host = models.CharField(max_length=255)  # 主办方
     organizers = models.CharField(max_length=255)  # 承办方
     extra_title = models.CharField(max_length=255, blank=True, null=True)  # 每个比赛特需的选手数据的标题
 
@@ -45,6 +47,7 @@ class ContestGroup(models.Model):
     member3_id = models.IntegerField(db_index=True, null=True)
     member4_id = models.IntegerField(db_index=True, null=True)
     contest_id = models.IntegerField(db_index=True)  # 比赛id
+    group_name = models.CharField(max_length=32)
 
 
 # 记录比赛和评委的对应关系

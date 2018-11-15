@@ -2,6 +2,7 @@ from django.shortcuts import render
 from django.contrib.auth.decorators import login_required
 from Backend import api
 
+
 def index(request):
     return render(request, 'index.html')
 
