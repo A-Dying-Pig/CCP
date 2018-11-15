@@ -4,7 +4,6 @@ from django.contrib.auth.models import AbstractUser
 
 # 用户信息总表
 class CCPUser(AbstractUser):
-    gender = models.BooleanField()  # 性别
     birthday = models.DateTimeField(blank=True, null=True)  # 生日
     introduction = models.CharField(max_length=64, blank=True, null=True)  # 个人简介
 
@@ -19,6 +18,7 @@ class Contest(models.Model):
     enroll_start = models.DateTimeField()  # 报名开始时间
     enroll_end = models.DateTimeField()  # 报名结束时间
     information = models.TextField()  # 比赛详情
+    brief_introduction = models.CharField(max_length=128)  # 比赛简介
     phase = models.CharField(max_length=512, blank=True)  # 比赛阶段
     phase_start_time = models.CharField(max_length=512, blank=True)  # 各阶段开始时间
     phase_end_time = models.CharField(max_length=512, blank=True)  # 各阶段结束时间
@@ -37,6 +37,7 @@ class ContestPlayer(models.Model):
 
 
 # 记录比赛和小组的对应关系，目前小组成员上限为5名，设组长1名
+# 现在使用Group来控制？
 class ContestGroup(models.Model):
     leader_id = models.IntegerField(db_index=True)  # 组长id
     member1_id = models.IntegerField(db_index=True, null=True)
@@ -47,6 +48,7 @@ class ContestGroup(models.Model):
 
 
 # 记录比赛和评委的对应关系
+# 现在可能使用Group来控制，每个比赛有一个评委组？
 class ContestJudge(models.Model):
     judge_id = models.IntegerField(db_index=True)  # 评委id
     contest_id = models.IntegerField(db_index=True)  # 比赛id
@@ -58,7 +60,3 @@ class ContestGrade(models.Model):
     contest_id = models.IntegerField(db_index=True)  # 比赛id
     judge_id = models.IntegerField(default=-1, db_index=True)  # 评委id
     grade = models.IntegerField(default=-1)  # 选手(小组)由当前评委打出的成绩
-
-
-
-
