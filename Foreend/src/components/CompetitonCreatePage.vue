@@ -1,7 +1,7 @@
 <template><div class="CompetitionCreatePage">
-    <cinfo ref="basic" typeid=1 v-bind:finfo="allinfo.basicinfo">比赛基本信息</cinfo>
-    <cinfo ref="signup" typeid=2 v-bind:finfo="allinfo.signupinfo">比赛报名设置</cinfo>
-    <cinfo ref="stage" typeid=3 v-bind:finfo="allinfo.stageinfo">比赛阶段设置</cinfo>
+    <CompetitionInfo ref="basic" typeid=1 v-bind:finfo="allinfo.basicinfo">比赛基本信息</CompetitionInfo>
+    <CompetitionInfo ref="signup" typeid=2 v-bind:finfo="allinfo.signupinfo">比赛报名设置</CompetitionInfo>
+    <CompetitionInfo ref="stage" typeid=3 v-bind:finfo="allinfo.stageinfo">比赛阶段设置</CompetitionInfo>
     <el-row :gutter="20">
         <el-col :space="10" :offset="5">
             <el-button type="primary" @click="summitForm">提交</el-button>
@@ -10,9 +10,11 @@
 </div></template>
 <script>
     import CompetitionInfo from './CompetitionInfo'
+    import axios from 'axios'
     export default {
         components:{
-            'cinfo':CompetitionInfo,
+            CompetitionInfo,
+            axios
         },
         data:function () {
             return {
@@ -49,8 +51,19 @@
                         flag=false;
                     }
                 }
+                //TODO put check here
+
+
+                //
                 if(flag){
                     alert('submit');
+                    axios.post('/api/competiton/create',this.data)
+                        .then(function (response) {
+                            console.log(response);
+                        })
+                        .catch(function (error) {
+                            console.log(error);
+                        });
                 }
                 else {
                     alert('submit error');

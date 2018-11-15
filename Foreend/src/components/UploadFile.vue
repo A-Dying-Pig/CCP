@@ -1,7 +1,7 @@
 <template>
     <el-upload
             class="upload-file"
-            action="https://jsonplaceholder.typicode.com/posts/"
+            action="https://www.baidu.com"
             :on-preview="handlePreview"
             :on-remove="handleRemove"
             :before-remove="beforeRemove"

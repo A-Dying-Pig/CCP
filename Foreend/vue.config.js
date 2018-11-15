@@ -8,13 +8,17 @@ module.exports = {
       CompetitionCreate:{
           entry: 'src/pages/CompetitonCreate/main.js',
           template: 'src/pages/CompetitonCreate/index.html',
-          //filename: 'CompetitonCreate.html',
-          filename: 'index.html',
+          filename: 'CompetitonCreate.html',
       },
       login:{
           entry: 'src/pages/login/main.js',
           template: 'src/pages/login/login.html',
           filename: 'login.html',
+      },
+      CompetitionDetail:{
+          entry: 'src/pages/CompetitonDetail/main.js',
+          template: 'src/pages/CompetitonDetail/index.html',
+          filename: 'CompetitonDetail.html',
       }
   },
     outputDir:'static',
