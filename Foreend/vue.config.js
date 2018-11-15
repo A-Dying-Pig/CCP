@@ -19,6 +19,11 @@ module.exports = {
           entry: 'src/pages/login/main.js',
           template: 'src/pages/login/login.html',
           filename: 'login.html',
+      },
+      enroll:{
+          entry: 'src/pages/enroll/main.js',
+          template: 'src/pages/enroll/enroll.html',
+          filename: 'enroll.html',
       }
   },
     devServer:{

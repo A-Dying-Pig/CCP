@@ -1,50 +1,51 @@
 <template>
-<div class="competition-profile-unit"
-                 :style="{width:w +'px'}"
-                 style="white-space:normal;word-break:break-all;text-overflow: ellipsis"
-            >
-                <img
-                    v-bind:src=img_url
-                    :style="{width:w+'px',height:w+'px'}"
-                >
-                <br>
-                <span><center>{{title}}</center></span>
-                <p>{{intro}}</p>
-            </div>
+    <el-card :body-style="{ padding: '0px' }" shadow="hover">
+        <a :href="competition_profile.url"><img :src="competition_profile.img" class="card_image"></a>
+        <div style="padding: 14px;" class="card_text">
+            <div class="card_title">{{competition_profile.title}}</div>
+            <div class="card_intro"> {{competition_profile.intro}}</div>
+        </div>
+    </el-card>
 </template>
 
 <script>
-export default{
-props:{
-        w:{
-            type:Number,
-            default:200,
+    export default {
+        props:{
+            competition_profile:{
+                type:Object,
+                default:function () {
+                    return {url:'',img:'',title:'',intro:''}
+                }
+            }
         },
-        h:{
-            type:Number,
-            default:400,
-        },
-        img_url: {
-            type: String,
-            default: ''
-        },
-        title:{
-            type:String,
-            default:''
-        },
-        intro:{
-            type:String,
-            default:''
-        },
-        comp_url:{
-            type:String,
-            default:''
+        data() {
+            return {
+                currentDate: new Date()
+            };
         }
-    },
-
-}
+    }
 </script>
 
 <style>
+    .card_image {
+        width: 100%;
+        height:200px;
+        display: block;
+    }
 
+    .card_title{
+        overflow: hidden;
+        white-space: nowrap;
+        word-break: break-all;
+        text-overflow:ellipsis;
+    }
+    .card_intro{
+        height: 60px;
+        color:gray;
+        font-size: 14px;
+        overflow: hidden;
+        white-space:normal;
+        word-break: break-all;
+        text-overflow:ellipsis;
+    }
 </style>

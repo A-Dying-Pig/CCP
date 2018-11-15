@@ -1,6 +1,7 @@
 <template>
     <div class = "region-picker">
-        <v-distpicker  only-province @selected="onSelected"></v-distpicker>
+        <span class='region-picker-label'>所在地区</span>
+        <v-distpicker  hide-area @selected="onSelected"></v-distpicker>
     </div>
 </template>
 
@@ -12,17 +13,24 @@
         name:"RegionPicker",
         data:function(){
             return{
-                province:null,
             }
         },
         components: { VDistpicker },
         methods: {
             onSelected:function(data) {
-                this.province = data.province.value;
+                this.$emit('new-region',data);
             },
           }
     }
 </script>
 
 <style>
+.distpicker-address-wrapper{
+    display:inline
+}
+
+.region-picker-label{
+    margin-right:20px;
+    font-size:16px;
+}
 </style>
