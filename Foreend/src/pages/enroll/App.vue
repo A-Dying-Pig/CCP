@@ -14,13 +14,13 @@
         </el-row>
 
         <el-row :gutter="20">
-          <el-col :span="6" :offset="9">
+          <el-col :span="7" :offset="9">
             <RegionPicker @new-region="UpdateRegion"></RegionPicker>
           </el-col>
         </el-row>
 
         <el-row :gutter="20">
-          <el-col :span="6" :offset="9">
+          <el-col :span="7" :offset="9">
             <UniversityPicker @new-university="UpdateUniversity"></UniversityPicker>
           </el-col>
         </el-row>
@@ -31,7 +31,7 @@
           </el-row>
 
           <el-row :gutter="25">
-            <el-col :span="6" :offset="9">
+            <el-col :span="7" :offset="9">
               <div>队伍名称<el-input type="text"  v-model="group_info.group_name" autocomplete="off"></el-input></div>
             </el-col>
           </el-row>
@@ -59,14 +59,14 @@
 
         <div class="extra_info">
           <el-row :gutter="25" v-for="(item,index) in enroll_table.extra" :key="index">
-            <el-col :span="6" :offset="9">
+            <el-col :span="7" :offset="9">
               <div>{{item}}<el-input type="text"  v-model="extra_info[index]" autocomplete="off"></el-input></div>
             </el-col>
           </el-row>
         </div>
 
           <el-row :gutter="20">
-            <el-col :span="4" :offset="11">
+            <el-col :span="4" :offset="12">
               <el-button type="text" @click="SubmitEnroll"> <span class="enroll-continue-btn">继 续 ></span></el-button>
             </el-col>
           </el-row>

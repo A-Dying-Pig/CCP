@@ -4,9 +4,9 @@
 	:data="comps"
 	stripe>
 	<el-table-column
-		prop="number"
-	    label="序号"
-	    width="180">
+			prop="number"
+			label="序号"
+			width="180">
 	</el-table-column>
 	<el-table-column
 		prop="name"

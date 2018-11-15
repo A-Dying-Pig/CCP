@@ -16,10 +16,11 @@ module.exports = {
           template: 'src/pages/login/login.html',
           filename: 'login.html',
       },
-      enroll:{
+      enroll: {
           entry: 'src/pages/enroll/main.js',
           template: 'src/pages/enroll/enroll.html',
           filename: 'enroll.html',
+      },
       CompetitionList:{
           entry: 'src/pages/CompetitionList/main.js',
           template: 'src/pages/CompetitionList/CompetitionList.html',
