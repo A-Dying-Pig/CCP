@@ -1,5 +1,13 @@
 <template>
-<div class="competitionList"><div class="banner">{{ title }}</div>
+<div class="competitionList">
+<div class="banner">{{ title-type }}</div>
+<el-radio-group v-model="comtypes">
+<el-radio v-for="type in comtypes">{{type.label}}
+</el-radio>
+</el-radio-group>
+
+
+<div class="banner">{{ title-list }}</div>
 <el-table
 	:data="comps"
 	stripe>
@@ -38,7 +46,7 @@ import ElementUI from 'element-ui'
 Vue.use(ElementUI);
 
 export default{
-	props:['title'],
+	props:['title-type','title-list'],
 	data:function(){
 		return{
 			comps:[{'number':111,
@@ -53,7 +61,10 @@ export default{
 				'organizer':'df',
 				'information':'info',
 				'detail':'de'
-				}]
+				}],
+				comtypes:[
+                {label:'微信小程序',name:'type',value:'weixin'},
+                {label:'web开发',name:'type',value:'web'}]
 			}
 		}	
 }

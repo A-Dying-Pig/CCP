@@ -6,9 +6,9 @@ module.exports = {
           filename: 'register.html',
       },
       CompetitionCreate:{
-          entry: 'src/pages/CompetitonCreate/main.js',
-          template: 'src/pages/CompetitonCreate/index.html',
-          filename: 'CompetitonCreate.html',
+          entry: 'src/pages/CompetitionCreate/main.js',
+          template: 'src/pages/CompetitionCreate/index.html',
+          filename: 'CompetitionCreate.html',
       },
       login:{
           entry: 'src/pages/login/main.js',
