@@ -1,12 +1,6 @@
 from .models import *
 
 
-class DatabaseError(Exception):
-    def __init__(self, msg):
-        super(DatabaseError, self).__init__(msg)
-        self.msg = msg
-
-
 def create_user(username, password, email):
     '''
     check username and email
@@ -23,4 +17,3 @@ def create_user(username, password, email):
     else:
         CCPUser.objects.create(username=username, password=password, email=email)
         return 0
-

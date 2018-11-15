@@ -2,4 +2,8 @@
 .vscode/
 *.pyc
 **/migrations
+<<<<<<< HEAD
 resources
+=======
+
+>>>>>>> backend
