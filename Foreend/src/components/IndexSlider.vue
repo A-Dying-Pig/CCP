@@ -1,6 +1,6 @@
 <template>
     <div class="index-slider" >
-        <el-carousel indicator-position="outside">
+        <el-carousel indicator-position="outside" height="450px">
                 <el-carousel-item v-for="(item,index) in sliders" :key="index">
                     <a :href="item.url"><img class="slider-image" :src="item.img_url"></a>
                 </el-carousel-item>
@@ -9,14 +9,12 @@
 </template>
 
 <script>
-    //sliders: [ {url: ,img_url: }]
     export default {
         name:'IndexSlider',
         props:{
             sliders:{
                 default:function () {
-                    return [{url:'www.baidu.com',img_url:require('../assets/1.png')},
-                        {url:'www.baidu.com',img_url:require('../assets/2.png')}]
+                    return [{url:'',img_url:''}]
                 },
                 type:Array
             }
@@ -27,12 +25,8 @@
 
 <style>
     .slider-image{
-        width: 600px;
-        height: 300px;
+        width: 100%;
+        height: 100%;
     }
 
-    .index-slider{
-        width: 600px;
-        height: 150px;
-    }
 </style>

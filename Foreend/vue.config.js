@@ -15,10 +15,25 @@ module.exports = {
           template: 'src/pages/login/login.html',
           filename: 'login.html',
       },
-      CompetitionDetail:{
+      CompetitionDetail: {
           entry: 'src/pages/CompetitonDetail/main.js',
           template: 'src/pages/CompetitonDetail/index.html',
           filename: 'CompetitonDetail.html',
+      },
+      enroll: {
+          entry: 'src/pages/enroll/main.js',
+          template: 'src/pages/enroll/enroll.html',
+          filename: 'enroll.html',
+      },
+      CompetitionList:{
+          entry: 'src/pages/CompetitionList/main.js',
+          template: 'src/pages/CompetitionList/CompetitionList.html',
+          filename: 'CompetitionList.html',
+      },
+      person:{
+          entry: 'src/pages/person/main.js',
+          template: 'src/pages/person/person.html',
+          filename: 'person.html',
       }
   },
     outputDir:'static',

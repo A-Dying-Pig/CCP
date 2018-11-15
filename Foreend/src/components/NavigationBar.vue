@@ -40,6 +40,7 @@ data:function () {
 <style>
 
 .navi_left{
+    font-family: PingFang SC;
     font-size: 16px;
     float:left;
     left: 20px;
@@ -47,6 +48,7 @@ data:function () {
 }
 
 .navi_right{
+    font-family: PingFang SC;
     font-size: 16px;
     float:right;
     left: 20px;
