@@ -15,5 +15,7 @@ def createUser(username, password, email):
     return True if successful 
     return False if not unique
     '''
-    pass
+    return 0
 
+def enroll(username, postdata):
+    return 0

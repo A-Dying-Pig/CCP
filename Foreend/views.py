@@ -1,49 +1,81 @@
 from django.shortcuts import render
+from django.http import HttpResponseRedirect
 from django.contrib.auth.decorators import login_required
+from django.contrib import auth
 from Backend import api
 
 def index(request):
-    return render(request, 'index.html')
+    if request.user.is_authenticated:
+        return render(request, 'index.html', {'isLogin': True, 'username': request.user.username})
+    else:
+        return render(request, 'index.html', {'isLogin': False})
 
 def login(request):
+    if request.user.is_authenticated:
+        return HttpResponseRedirect('/')
+
     if request.method == 'GET':
-        return render(request, 'render.html')
+        return render(request, 'login.html', {'message': ''})
     elif request.method == 'POST':
-        # use Backend api to authenticate
-        pass
+        username = request.POST.get('username')
+        password = request.POST.get('password')
+        user = auth.authenticate(request, username=username, password=password)
+        if user:
+            auth.login(request, user)
+            return HttpResponseRedirect('/')
+        else:
+            return render(request, 'login.html', {'message': 'incorrect username or password'})
 
 def register(request):
+    if request.user.is_authenticated:
+        return HttpResponseRedirect('/')
+
     if request.method == 'GET':
-        # render register html
-        pass
+        return render(request, 'register.html', {'message': ''})
     elif request.method == 'POST':
-        # use Backend api to create user
-        pass
+        username = request.POST.get('username')
+        password = request.POST.get('password')
+        email = request.POST.get('email')
+
+        val = api.createUser(username, password, email)
+        if val == 0:
+            return HttpResponseRedirect('/login')
+        else:
+            return render(request, 'register.html', {'message': val})
+
+def logout(request):
+    auth.logout(request)
+    return HttpResponseRedirect('/')
 
 def contest(request):
-    # return all contests
-    pass
+    if request.user.is_authenticated:
+        return render(request, 'contest.html', {'isLogin': True, 'username': request.user.username, 'pageNum': 1})
+    else:
+        return render(request, 'contest.html', {'isLogin': False, 'pageNum': 1})
 
 def detail(request):
-    # render contest detail
-    pass
+    contestId = request.GET.get('contestId')
+    if request.user.is_authenticated:
+        return render(request, 'detail.html', {'isLogin': True, 'username': request.user.username, 'contestId': contestId})
+    else:
+        return render(request, 'detail.html', {'isLogin': False, 'contestId': contestId})
 
 @login_required
 def enroll(request):
-    if request.method == 'GET':
-        # render signup html
-        pass
-    elif request.method == 'POST':
-        # use Backend api to post
-        pass
+
+    contestId = request.GET.get('contestId')
+    username = request.user.username
+    return render(request, 'enroll.html', {'contestId': contestId, 'username': username})
 
 @login_required
 def profile(request):
-    if request.method == 'GET':
-        # render profile html
-        pass
-    elif request.method == 'POST':
-        # use Backend api to update userinfo
-        pass
+    return render(request, 'profile.html', {'username': request.user.username})
 
-# Create your views here.
+@login_required
+def addContest(request):
+    if request.method == 'GET':
+        return render(request, 'addContest.html', {'username': request.user.username})
+    elif request.method == 'POST':
+        postdata = request.POST
+        api.addContest(postdata)
+        return render(request, 'success.html', {'message': 'Create successfully!', 'url': '/'})
