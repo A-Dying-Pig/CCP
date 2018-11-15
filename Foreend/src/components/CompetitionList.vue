@@ -7,6 +7,17 @@
 </el-radio-group>
 
 
+<el-row :gutter=20>
+<el-col :offset=5>
+<el-form-item label="比赛类型" prop="comtype">
+    <el-radio-group v-model="info.comtype">
+        <el-radio v-for="type in comtypes" v-bind:label="type.label" v-bind:value="type.value" :key="item.key"></el-radio>
+    </el-radio-group>
+</el-form-item>
+</el-col>
+</el-row>
+
+
 <div class="banner">{{ title-list }}</div>
 <el-table
 	:data="comps"
@@ -46,9 +57,10 @@ import ElementUI from 'element-ui'
 Vue.use(ElementUI);
 
 export default{
-	props:['title-type','title-list'],
+	props:['title-type','title-list','type_choose'],
 	data:function(){
 		return{
+			type:this.type_choose
 			comps:[{'number':111,
 				'name':'wzw',
 				'organizer':'df',		  
