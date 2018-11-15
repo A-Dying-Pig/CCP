@@ -6,8 +6,11 @@ def indexSlider(request):
 def indexHotCompetition(request):
     pass
 
-def CheckUser(request):
+def checkUser(request):
     pass
 
-def GetNeededInfo(request):
+def getNeededInfo(request):
+    pass
+
+def createContest(request):
     pass

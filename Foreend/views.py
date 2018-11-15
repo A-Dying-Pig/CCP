@@ -62,10 +62,8 @@ def detail(request):
 
 @login_required
 def enroll(request):
-
     contestId = request.GET.get('contestId')
-    username = request.user.username
-    return render(request, 'enroll.html', {'contestId': contestId, 'username': username})
+    return render(request, 'enroll.html', {'contestId': contestId, 'username': request.user.username})
 
 @login_required
 def profile(request):
@@ -73,9 +71,4 @@ def profile(request):
 
 @login_required
 def addContest(request):
-    if request.method == 'GET':
-        return render(request, 'addContest.html', {'username': request.user.username})
-    elif request.method == 'POST':
-        postdata = request.POST
-        api.addContest(postdata)
-        return render(request, 'success.html', {'message': 'Create successfully!', 'url': '/'})
+    return render(request, 'addContest.html', {'username': request.user.username})

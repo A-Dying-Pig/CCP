@@ -1,21 +1,10 @@
 
-def authenticate(username, password):
-    '''
-    check username and password 
-    return True if correct
-    return False if error
-    '''
-    pass
-
 
 def createUser(username, password, email):
     '''
     check username and email
     both be unique
-    return True if successful 
-    return False if not unique
+    return 0 if successful 
+    return error_message(to be displayer on the client) if unsuccessful
     '''
-    return 0
-
-def enroll(username, postdata):
     return 0
