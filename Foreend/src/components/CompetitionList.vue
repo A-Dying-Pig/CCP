@@ -59,8 +59,8 @@ export default{
 </script>
 
 <style>
-.title_class{
-	color:"green";
+.title_class{;
+	color:green;
 	fontSize:"30px";
 }
 </style>
