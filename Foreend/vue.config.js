@@ -15,6 +15,11 @@ module.exports = {
           entry: 'src/pages/login/main.js',
           template: 'src/pages/login/login.html',
           filename: 'login.html',
+      },
+      CompetitionList:{
+          entry: 'src/pages/CompetitionList/main.js',
+          template: 'src/pages/CompetitionList/CompetitionList.html',
+          filename: 'CompetitionList.html',
       }
   },
     outputDir:'static',

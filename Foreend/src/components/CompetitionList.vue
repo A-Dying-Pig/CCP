@@ -1,12 +1,12 @@
 <template>
-<div class="competitionList"><h3>{{ title }}</h3>
+<div class="competitionList"><div class="banner">{{ title }}</div>
 <el-table
 	:data="comps"
 	stripe>
 	<el-table-column
 		prop="number"
 	    label="序号"
-	    width="80">
+	    width="180">
 	</el-table-column>
 	<el-table-column
 		prop="name"
@@ -21,7 +21,7 @@
 	<el-table-column
 		prop="information"
 		label="信息"
-		width="180">
+		width="580">
 	</el-table-column>
 	<el-table-column
 		prop="detail"
@@ -39,11 +39,12 @@ Vue.use(ElementUI);
 
 export default{
 	props:['title'],
-	data(){
+	data:function(){
 		return{
 			comps:[{'number':111,
 				'name':'wzw',
-				'organizer':'df',		  'information':'info',
+				'organizer':'df',		  
+				'information':'info',
 				'detail':'de'
 				},
 				{
@@ -59,8 +60,11 @@ export default{
 </script>
 
 <style>
-.title_class{;
-	color:green;
-	fontSize:"30px";
-}
+.banner{
+    font-size:20px;
+    text-align: left;
+    font-family: "PingFang SC";
+    padding: 70px 0px 0px 0px;
+    text-weight:bold;
+  }
 </style>
