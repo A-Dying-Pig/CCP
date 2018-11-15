@@ -1,10 +1,5 @@
 module.exports = {
   pages: {
-	  index: {
-          entry: 'src/pages/index/main.js',
-          template: 'src/pages/index/index.html',
-          filename: 'index.html',
-      },
       register:{
           entry: 'src/pages/register/main.js',
           template: 'src/pages/register/register.html',
@@ -13,7 +8,8 @@ module.exports = {
       CompetitionCreate:{
           entry: 'src/pages/CompetitonCreate/main.js',
           template: 'src/pages/CompetitonCreate/index.html',
-          filename: 'CompetitonCreate.html',
+          //filename: 'CompetitonCreate.html',
+          filename: 'index.html',
       },
       login:{
           entry: 'src/pages/login/main.js',
@@ -24,12 +20,12 @@ module.exports = {
           entry: 'src/pages/enroll/main.js',
           template: 'src/pages/enroll/enroll.html',
           filename: 'enroll.html',
+      CompetitionList:{
+          entry: 'src/pages/CompetitionList/main.js',
+          template: 'src/pages/CompetitionList/CompetitionList.html',
+          filename: 'CompetitionList.html',
       }
   },
-    devServer:{
-      index:'static/CompetitonCreate.html'
-    },
     outputDir:'static',
     baseUrl:'',
-  //indexPath:'./../templates/index.html',
 }
