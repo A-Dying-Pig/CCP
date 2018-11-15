@@ -1,11 +1,11 @@
 
 from django.urls import path, include
 from django.contrib import admin
-import Foreend
+import Foreend.views
 
 urlpatterns = [
     # url(r'^admin/', admin.site.urls),
-    path(r'/', Foreend.views.index),
+    path(r'', Foreend.views.index),
     path(r'login/', Foreend.views.login),
     path(r'register/', Foreend.views.register),
     path(r'logout/', Foreend.views.logout),

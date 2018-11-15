@@ -26,14 +26,14 @@ def indexHotCompetition(request):
     return JsonResponse(context)
 
 
-def CheckUser(request):
+def checkUser(request):
     username = request.POST.get('username')
     contest_id = request.POST('competition_id')
     # do some check
     return JsonResponse({'ok': 1})
 
 
-def GetNeededInfo(request):
+def getNeededInfo(request):
     contest_id = request.POST['competition_id']
     contest = Contest.objects.filter(id=contest_id)
     if len(contest) != 0:
@@ -58,3 +58,7 @@ def GetNeededInfo(request):
         return JsonResponse(context)
     else:
         return JsonResponse({})
+
+
+def createContest():
+    pass

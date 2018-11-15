@@ -1,7 +1,7 @@
 from .models import *
 
 
-def create_user(username, password, email):
+def createUser(username, password, email):
     '''
     check username and email
     both be unique
