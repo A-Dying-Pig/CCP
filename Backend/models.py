@@ -6,7 +6,9 @@ from django.contrib.auth.models import AbstractUser
 class CCPUser(AbstractUser):
     birthday = models.DateTimeField(blank=True, null=True)  # 生日
     introduction = models.CharField(max_length=64, blank=True, null=True)  # 个人简介
-
+    university = models.CharField(max_length=64, null=True)
+    province = models.CharField(max_length=32, null=True)
+    city = models.CharField(max_length=32, null=True)
 
 # 比赛信息总表
 class Contest(models.Model):
@@ -29,6 +31,7 @@ class Contest(models.Model):
     host = models.CharField(max_length=255)  # 主办方
     organizers = models.CharField(max_length=255)  # 承办方
     extra_title = models.CharField(max_length=255, blank=True, null=True)  # 每个比赛特需的选手数据的标题
+    extra_group_title = models.CharField(max_length=255, blank=True, null=True)  # 额外组队信息
 
 
 # 记录选手和比赛的对应关系
@@ -48,7 +51,7 @@ class ContestGroup(models.Model):
     member4_id = models.IntegerField(db_index=True, null=True)
     contest_id = models.IntegerField(db_index=True)  # 比赛id
     group_name = models.CharField(max_length=32)
-
+    extra_information = models.CharField(max_length=512, blank=True, null=True)
 
 # 记录比赛和评委的对应关系
 # 现在可能使用Group来控制，每个比赛有一个评委组？
@@ -63,3 +66,16 @@ class ContestGrade(models.Model):
     contest_id = models.IntegerField(db_index=True)  # 比赛id
     judge_id = models.IntegerField(default=-1, db_index=True)  # 评委id
     grade = models.IntegerField(default=-1)  # 选手(小组)由当前评委打出的成绩
+
+
+# 消息列表
+class Notification(models.Model):
+    context = models.CharField(max_length=512)  # 消息体
+
+
+# 记录消息和接受消息的用户的对应关系
+class NotificationUser(models.Model):
+    notification_id = models.IntegerField()
+    user_id = models.IntegerField()
+    read = models.BooleanField(default=False)
+    time = models.DateTimeField()

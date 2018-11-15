@@ -1,6 +1,7 @@
 from django.shortcuts import render
 from .models import *
-from django.http import JsonResponse, Http404
+from django.http import JsonResponse, Http404, HttpResponse
+from django.contrib.auth.decorators import login_required
 
 
 def indexSlider(request):
@@ -59,6 +60,64 @@ def getNeededInfo(request):
     else:
         return JsonResponse({})
 
+def createContest(request):
+    basicinfo = request.POST.get('basicinfo')
+    name = basicinfo.get('name')
+    holders = basicinfo.get('holders')
+    sponsors = basicinfo.get('sponsors')
+    comtype = basicinfo.get('comtype')
+    details = basicinfo.get('details')
 
-def createContest():
-    pass
+    signupinfo = request.get('signupinfo')
+    time = signupinfo.get('time')
+    mode = signupinfo.get('mode')
+    person = signupinfo.getlist('person')
+    group = signupinfo.getlist('group')
+
+    stageinfo = request.getlist('stageinfo')
+    for stage in stageinfo:
+        name = stage['name']
+        details = stage['details']
+        handTimeEnd = stage['handTimeEnd']
+        evaluationTimeEnd = stage['evaluationsTimeEnd']
+        mode = stage['mode']
+
+    return HttpResponse("")
+
+def personCenter(request):
+    id = request.user.id
+    img_url = '/resources/user_images/' + id + '.jpg'
+    competition = {}
+    participated = ContestPlayer.objects.filter(player_id=id)
+    competition['participated_competition'] = []
+    for contest in participated:
+        competition['participated_competition'].append({
+            'title': Contest.objects.get(id=contest.contest_id).title,
+            'url': '/detail?contestId=' + contest.contest_id,
+        })
+    created = Contest.objects.filter(admin_id=id)
+    competition['created_competition'] = []
+    for contest in created:
+        competition['created_competition'].append({
+            'title': Contest.objects.get(id=contest.contest_id).title,
+            'url': '/detail?contestId=' + contest.contest_id,
+        })
+
+    rated = ContestJudge.objects.filter(judge_id=id)
+    competition['rated_competition'] = []
+    for contest in rated:
+        competition['rated_competition'].append({
+            'title': Contest.objects.get(id=contest.contest_id).title,
+            'url': '/detail?contestId=' + contest.contest_id,
+        })
+
+    person = {}
+    person['university'] = request.user.university
+    person['region'] = {}
+    person['region']['province'] = request.user.province
+    person['region']['city'] = request.user.city
+    data = {}
+    data['img_url'] = img_url
+    data['competition'] = competition
+    data['person'] = person
+    return JsonResponse(data)
