@@ -1,3 +1,13 @@
 from django.shortcuts import render
 
-# Create your views here.
+def indexSlider(request):
+    pass
+
+def indexHotCompetition(request):
+    pass
+
+def CheckUser(request):
+    pass
+
+def GetNeededInfo(request):
+    pass
