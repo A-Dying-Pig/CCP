@@ -84,6 +84,7 @@ def createContest(request):
         evaluationTimeEnd = stage['evaluationsTimeEnd']
         mode = stage['mode']
     #todo 在数据库里创建比赛
+
     return HttpResponse("")
 
 def personCenter(request):
@@ -137,9 +138,10 @@ def setPerson(request):
 
 def getOnePro(request):
     # todo:根据评分规则返回一个作品，现在直接用第一个
-    users = CCPUser.objects.filter()
+    contest_id = request.POST.get('contestId')
+    user_id = CCPUser.objects.filter()
     files = []
-    base_dir = '/resources/contests/works/' + str(users[0].id) + '/'
+    base_dir = '/resources/contests/works/' + str(user_id) + '/'
     for maindir, subdir, file_name_list in os.walk(base_dir):
         for filename in file_name_list:
             apath = os.path.join(maindir, filename)  # 合并成一个完整路径
