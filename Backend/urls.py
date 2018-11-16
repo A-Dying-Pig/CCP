@@ -8,4 +8,6 @@ urlpatterns = [
     path('CheckUser', views.checkUser, name='checkUser'),
     path('GetNeededInfo', views.getNeededInfo, name='getNeededInfo'),
     path('PersonCenter', views.personCenter, name='peronCenter'),
+    path('SetPerson', views.setPerson, name='setPerson'),
+    path('competition/getonepro', views.getOnePro, name='getOnePro'),
 ]

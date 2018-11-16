@@ -121,3 +121,16 @@ def personCenter(request):
     data['competition'] = competition
     data['person'] = person
     return JsonResponse(data)
+
+def setPerson(request):
+    id = request.user.id
+    person = request.POST.get('person')
+    university = person['university']
+    region = person['region']
+    province = region['province']
+    city = region['city']
+    CCPUser.objects.filter(id=id).update(university=university, province=province, city=city)
+    return HttpResponse('')
+
+def getOnePro(request):
+    pass
