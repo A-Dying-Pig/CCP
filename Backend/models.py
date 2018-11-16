@@ -68,7 +68,7 @@ class ContestGroup(models.Model):
     member3_id = models.IntegerField(db_index=True, null=True)
     member4_id = models.IntegerField(db_index=True, null=True)
     contest_id = models.IntegerField(db_index=True)  # 比赛id
-    group_name = models.CharField(max_length=32)
+    group_name = models.CharField(max_length=32)  # 组名
     extra_information1 = models.CharField(max_length=64, blank=True, null=True)  # 每个比赛特需的组队数据
     extra_information2 = models.CharField(max_length=64, blank=True, null=True)
     extra_information3 = models.CharField(max_length=64, blank=True, null=True)

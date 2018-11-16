@@ -2,7 +2,8 @@ from django.shortcuts import render
 from .models import *
 from django.http import JsonResponse, Http404, HttpResponse
 from django.contrib.auth.decorators import login_required
-
+import json
+import os
 
 def indexSlider(request):
     context = []
@@ -61,32 +62,33 @@ def getNeededInfo(request):
         return JsonResponse({})
 
 def createContest(request):
-    basicinfo = request.POST.get('basicinfo')
-    name = basicinfo.get('name')
-    holders = basicinfo.get('holders')
-    sponsors = basicinfo.get('sponsors')
-    comtype = basicinfo.get('comtype')
-    details = basicinfo.get('details')
+    data = json.loads(request.body.decode('utf-8'))
+    basicinfo = data['basicinfo']
+    name = basicinfo['name']
+    holders = basicinfo['holders']
+    sponsors = basicinfo['sponsors']
+    comtype = basicinfo['comtype']
+    details = basicinfo['details']
 
-    signupinfo = request.get('signupinfo')
-    time = signupinfo.get('time')
-    mode = signupinfo.get('mode')
-    person = signupinfo.getlist('person')
-    group = signupinfo.getlist('group')
+    signupinfo = data['signupinfo']
+    time = signupinfo['time']
+    mode = signupinfo['mode']
+    person = signupinfo['person']
+    group = signupinfo['group']
 
-    stageinfo = request.getlist('stageinfo')
+    stageinfo = data['stageinfo']
     for stage in stageinfo:
         name = stage['name']
         details = stage['details']
         handTimeEnd = stage['handTimeEnd']
         evaluationTimeEnd = stage['evaluationsTimeEnd']
         mode = stage['mode']
-
+    #todo 在数据库里创建比赛
     return HttpResponse("")
 
 def personCenter(request):
     id = request.user.id
-    img_url = '/resources/user_images/' + id + '.jpg'
+    img_url = '/resources/user_images/' + str(id) + '.jpg'
     competition = {}
     participated = ContestPlayer.objects.filter(player_id=id)
     competition['participated_competition'] = []
@@ -111,11 +113,12 @@ def personCenter(request):
             'url': '/detail?contestId=' + contest.contest_id,
         })
 
+    user = CCPUser.objects.get(id=id)
     person = {}
-    person['university'] = request.user.university
+    person['university'] = user.university
     person['region'] = {}
-    person['region']['province'] = request.user.province
-    person['region']['city'] = request.user.city
+    person['region']['province'] = user.province
+    person['region']['city'] = user.city
     data = {}
     data['img_url'] = img_url
     data['competition'] = competition
@@ -133,4 +136,12 @@ def setPerson(request):
     return HttpResponse('')
 
 def getOnePro(request):
-    pass
+    # todo:根据评分规则返回一个作品，现在直接用第一个
+    users = CCPUser.objects.filter()
+    files = []
+    base_dir = '/resources/contests/works/' + str(users[0].id) + '/'
+    for maindir, subdir, file_name_list in os.walk(base_dir):
+        for filename in file_name_list:
+            apath = os.path.join(maindir, filename)  # 合并成一个完整路径
+            files.append(apath)
+    return JsonResponse({'files': files})
