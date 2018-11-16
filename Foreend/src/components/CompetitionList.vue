@@ -35,10 +35,19 @@
 		label="信息"
 		width="580">
 	</el-table-column>
-	<el-table-column
-		prop="detail"
-		label="详情">
-	</el-table-column>
+    <el-table-column
+        prop="detail"
+        label="详情">
+        <template slot-scope="scope">
+            <a href="/api/competition/detail?contestId=contestId">
+                <el-button
+                    type="text"
+                    size="small">
+                    查看
+                </el-button>
+            </a>
+        </template>
+    </el-table-column>
 </el-table>
 
 	<div class="block banner">
@@ -69,17 +78,17 @@ export default{
 			info:this.finfo,
             page:this.fpage,
 			comps:[{'number':111,
-				'name':'wzw',
-				'organizer':'df',		  
-				'information':'info',
-				'detail':'de'
+                    'name':'wzw',
+                    'organizer':'df',
+                    'information':'info',
+                    'contestId':1
 				},
 				{
-				'number':122,
-				'name':'wzw',
-				'organizer':'df',
-				'information':'info',
-				'detail':'de'
+                    'number':122,
+                    'name':'wzw',
+                    'organizer':'df',
+                    'information':'info',
+                    'contestId':2
 				}],
 				comtypes:[
                 {label:'微信小程序',name:'type',value:'weixin'},
