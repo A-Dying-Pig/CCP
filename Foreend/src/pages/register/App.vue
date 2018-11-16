@@ -11,7 +11,7 @@
 
       <el-row :gutter="20" class = "warning_msg">
         <el-col :span="24">
-          <el-alert v-show="input_error" :title="error_msg" type="error" center></el-alert>
+          <el-alert v-show="error_msg!==''" :title="error_msg" type="error" center></el-alert>
         </el-col>
       </el-row>
 
@@ -68,6 +68,12 @@
 
     export default {
         name: 'app',
+        props:{
+            error_msg:{
+                default:'',
+                type:String
+            }
+        },
         data() {
             var validateEmail = (rule, value, callback) => {
                 if (value === '') {
@@ -117,8 +123,6 @@
             };
 
             return {
-                input_error:false,
-                error_msg:"",
                 input_msg: {
                     email: '',
                     username: '',

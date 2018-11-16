@@ -2,7 +2,7 @@
   <div id="app">
     <el-container>
     <el-header height="100px" class="header">
-      <div><NavigationBar></NavigationBar></div>
+      <div><NavigationBar :username="m_username"></NavigationBar></div>
     </el-header>
       <el-main>
         <el-row :gutter="20">
@@ -101,7 +101,8 @@
                 default:-1,
             },
             m_username:{
-                default:"leiyiran",
+                default:"",
+                type:String
             }
         },
         data() {
