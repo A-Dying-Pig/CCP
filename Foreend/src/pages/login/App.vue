@@ -70,7 +70,7 @@
         name: 'app',
         props:{
             error_msg:{
-                default:'登录失败',
+                default:'',
                 type:String
             }
         },
@@ -110,7 +110,22 @@
             submitForm(formName) {
                 this.$refs[formName].validate((valid) => {
                     if (valid) {
-                        axios.post('/login', {username:this.input_msg.username,password:this.input_msg.pass});
+                        let vm = this;
+                        axios.post('/api/user/login', {username:this.input_msg.username,password:this.input_msg.pass})
+                            .then(response=>{
+                                if (response.data==='') {
+                                    //成功
+                                    vm.$message({
+                                        message: '登录成功!',
+                                        type: 'success'
+                                    });
+                                    window.location.href = '/';
+                                }
+                                else{
+                                  //失败
+                                  vm.error_msg = response.data;
+                                }
+                            });
                     } else {
                         console.log('error submit!!');
                         return false;

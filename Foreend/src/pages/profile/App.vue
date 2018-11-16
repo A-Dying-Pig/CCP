@@ -175,7 +175,7 @@
             UniversityPicker
         },
         mounted:function () {
-            axios.post('/api/PersonCenter')
+            axios.post('/api/user/profile')
                 .then(response=>{
                   this.img_url = response.data.img_url;
                   this.competition = response.data.competition;

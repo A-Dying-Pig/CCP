@@ -68,11 +68,11 @@
         },
         mounted:function () {
             let vm = this;
-            axios.get('/api/IndexSlider')
+            axios.get('/api/competition/slider')
                 .then(response=>{
                     vm.slider_info = response.data;
                 });
-            axios.get('/api/IndexHotCompetition')
+            axios.get('/api/competition/hot')
                 .then(response=>{
                     vm.hot_info = response.data;
                 })

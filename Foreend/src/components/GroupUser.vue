@@ -118,10 +118,10 @@
                 }
 
                 let vm = this;
-                axios.post('/api/CheckUser',{username:this.ruleForm.curr_user,competition_id:this.competition_id})
+                axios.post('/api/user/check',{username:this.ruleForm.curr_user,contestId:this.competition_id})
                     .then((response)=>{
-                            if(response.data.ok === 0){
-                                vm.input_error = '该用户无法组队!';
+                            if(response.data !== ''){
+                                vm.input_error = response.data;
                             }
                             else{
                                 vm.$set(vm.group_user,vm.member_number,{name:vm.ruleForm.curr_user});

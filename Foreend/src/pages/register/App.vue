@@ -159,7 +159,23 @@
             submitForm(formName) {
                 this.$refs[formName].validate((valid) => {
                     if (valid) {
-                        axios.post('/register', {username:this.input_msg.username,password:this.input_msg.pass,email:this.input_msg.email})
+                        let vm = this;
+                        axios.post('/api/user/register', {username:this.input_msg.username,password:this.input_msg.pass,email:this.input_msg.email})
+                            .then(response=>{
+                                if (response.data==='') {
+                                    //成功
+                                    vm.$message({
+                                        message: '注册成功!',
+                                        type: 'success'
+                                    });
+                                    window.location.href = '/';
+                                }
+                                else{
+                                    //失败
+                                    vm.error_msg = response.data;
+                                }
+                            });
+
                     } else {
                         console.log('error submit!!');
                         return false;
