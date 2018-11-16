@@ -4,8 +4,11 @@
         <div class = "navi_left">
         <a v-for="(item,index) in navi_left_items" :key="index" :href="item.href" class="navi_btn_left">{{item.name}}</a>
         </div>
-        <div class = "navi_right">
-        <a v-for="(item,index) in navi_right_items" :key="index" :href="item.href" class="navi_btn_right">{{item.name}}</a>
+        <div class = "navi_right" v-if="username===''">
+            <a v-for="(item,index) in navi_right_items" :key="index" :href="item.href" class="navi_btn_right">{{item.name}}</a>
+        </div>
+        <div v-else class = "navi_right">
+            <a :href="navi_right_items_login.href" class="navi_btn_right">{{navi_right_items_login.name}}</a>
         </div>
         <hr class="line">
     </div>
@@ -13,7 +16,13 @@
 
 <script>
 export default{
-data:function () {
+    props:{
+        username:{
+            default:'',
+            type:String
+        },
+    },
+    data:function () {
         return {
             activeIndex: '1',
             navi_left_items:[
@@ -24,7 +33,8 @@ data:function () {
             navi_right_items:[
                 {name:'登录',href:'/login'},
                 {name:'注册',href:'/register'},
-            ]
+            ],
+            navi_right_items_login: {name:this.username,href:'/profile'}
         }
     },
     methods: {
