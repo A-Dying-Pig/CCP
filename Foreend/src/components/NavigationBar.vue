@@ -17,13 +17,13 @@ data:function () {
         return {
             activeIndex: '1',
             navi_left_items:[
-                {name:'主页',href:'/index'},
-                {name:'全部比赛',href:'/competition'},
-                {name:'个人中心',href:'/info'},
+                {name:'主页',href:'/'},
+                {name:'全部比赛',href:'/contest'},
+                {name:'个人中心',href:'/profile'},
             ],
             navi_right_items:[
-                {name:'登录',href:'/signin'},
-                {name:'注册',href:'/signup'},
+                {name:'登录',href:'/login'},
+                {name:'注册',href:'/register'},
             ]
         }
     },

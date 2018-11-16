@@ -5,37 +5,49 @@ module.exports = {
           template: 'src/pages/register/register.html',
           filename: 'register.html',
       },
-      CompetitionCreate:{
-          entry: 'src/pages/CompetitionCreate/main.js',
-          template: 'src/pages/CompetitionCreate/index.html',
-          filename: 'CompetitionCreate.html',
+      addContest:{
+          entry: 'src/pages/addContest/main.js',
+          template: 'src/pages/addContest/addContest.html',
+          filename: 'addContest.html',
       },
       login:{
           entry: 'src/pages/login/main.js',
           template: 'src/pages/login/login.html',
           filename: 'login.html',
       },
-      CompetitionDetail: {
-          entry: 'src/pages/CompetitonDetail/main.js',
-          template: 'src/pages/CompetitonDetail/index.html',
-          filename: 'CompetitonDetail.html',
+      detail: {
+          entry: 'src/pages/detail/main.js',
+          template: 'src/pages/detail/detail.html',
+          filename: 'detail.html',
       },
       enroll: {
           entry: 'src/pages/enroll/main.js',
           template: 'src/pages/enroll/enroll.html',
           filename: 'enroll.html',
       },
-      CompetitionList:{
-          entry: 'src/pages/CompetitionList/main.js',
-          template: 'src/pages/CompetitionList/CompetitionList.html',
-          filename: 'CompetitionList.html',
+      contest:{
+          entry: 'src/pages/contest/main.js',
+          template: 'src/pages/contest/contest.html',
+          filename: 'contest.html',
       },
-      person:{
-          entry: 'src/pages/person/main.js',
-          template: 'src/pages/person/person.html',
-          filename: 'person.html',
+      profile:{
+          entry: 'src/pages/profile/main.js',
+          template: 'src/pages/profile/profile.html',
+          filename: 'profile.html',
+      },
+      index:{
+          entry: 'src/pages/index/main.js',
+          template: 'src/pages/index/index.html',
+          filename: 'index.html',
       }
   },
     outputDir:'static',
     baseUrl:'',
+    configureWebpack:{
+        resolve: {
+            alias: {
+                'vue$': 'vue/dist/vue.esm.js' // 'vue/dist/vue.common.js' for webpack 1
+            }
+        }
+    }
 }

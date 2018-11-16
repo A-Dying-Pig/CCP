@@ -1,0 +1,35 @@
+<template><div id="app">
+    <el-container>
+        <el-header>
+            <NavigationBar></NavigationBar>
+        </el-header>
+
+        <el-main>
+            <CompetitionListPage></CompetitionListPage>     
+        </el-main>
+    </el-container>
+    </div>
+</template>
+
+<script>
+    import Vue from 'vue'
+    import 'element-ui/lib/theme-chalk/index.css'
+    import ElementUI from 'element-ui'
+    Vue.use(ElementUI);    
+
+    import NavigationBar from "../../components/NavigationBar";
+    import CompetitionListPage from '../../components/CompetitionListPage'
+    export default {
+        components: {NavigationBar,CompetitionListPage}
+    }
+</script>
+
+<style>
+.banner{
+    font-size:20px;
+    text-align: left;
+    font-family: "PingFang SC";
+    padding: 70px 0px 0px 0px;
+    text-weight:bold;
+  }
+</style>

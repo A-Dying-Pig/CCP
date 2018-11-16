@@ -31,10 +31,12 @@
 </template>
 
 <script>
+
     import NavigationBar from '../../components/NavigationBar'
     import IndexSlider from '../../components/IndexSlider'
     import CompetitionProfile from '../../components/CompetitionProfile'
     import axios from 'axios'
+
 
     export default {
         name: 'app',
