@@ -7,9 +7,9 @@ from Backend import api
 
 def index(request):
     if request.user.is_authenticated:
-        return render(request, 'index.html', {'isLogin': True, 'username': request.user.username})
+        return render(request, 'index.html', {'username': request.user.username})
     else:
-        return render(request, 'index.html', {'isLogin': False})
+        return render(request, 'index.html', {'username': ''})
 
 def login(request):
     if request.user.is_authenticated:
