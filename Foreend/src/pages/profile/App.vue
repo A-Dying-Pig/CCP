@@ -2,7 +2,7 @@
   <div id="app">
     <el-container>
       <el-header height="100px" class="header">
-        <div><NavigationBar></NavigationBar></div>
+        <div><NavigationBar :username="username"></NavigationBar></div>
       </el-header>
     </el-container>
 
@@ -129,6 +129,12 @@
 
     export default {
         name: 'app',
+        props:{
+            username:{
+                default:'',
+                type:String
+            }
+        },
         data() {
             return{
                 img_url:require('../../assets/img/logo.png'),
