@@ -1,7 +1,7 @@
 <template><div id="app">
     <el-container>
         <el-header>
-            <NavigationBar></NavigationBar>
+            <NavigationBar :username="username"></NavigationBar>
         </el-header>
         <el-main>
             <CompetitionCreatePage></CompetitionCreatePage>
@@ -13,6 +13,12 @@
     import CompetitionCreatePage from '../../components/CompetitionCreatePage';
     import NavigationBar from "../../components/NavigationBar";
     export default {
+        props:{
+            'username':{
+                type:String,
+                default:''
+            }
+        },
         components: {NavigationBar,CompetitionCreatePage}
     }
 </script>

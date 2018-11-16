@@ -1,7 +1,7 @@
 <template><div id="app">
     <el-container>
         <el-header>
-            <NavigationBar></NavigationBar>
+            <NavigationBar :username="username"></NavigationBar>
         </el-header>
         <el-main>
             <CompetitionDetailAllInfo :info="info"></CompetitionDetailAllInfo>
@@ -18,8 +18,22 @@
     import NavigationBar from "../../components/NavigationBar";
     import CompetitionDetailAllInfo from '../../components/CompetitionDetailAllInfo';
     import CompetitionDetailContents from '../../components/CompetitionDetailContents';
+    import axios from 'axios'
     export default {
         components: {NavigationBar,CompetitionDetailAllInfo,CompetitionDetailContents},
+        props:{'isLogin':{
+            type:Boolean,
+                default:false
+    },'contestId':{
+            type:Number,
+                default:NaN
+    },'canshowlist':{
+            type:Array,
+                default:[]
+    },'username':{
+            type:String,
+                default:''
+    }},
         data:function () {
             return{
                 info:{
@@ -59,9 +73,34 @@
                 }]
             }
         },
-        created:function () {
-            //TODO get data from serve
-
+        mounted:function () {
+            this.showlist=[];
+            for(let item of this.canshowlist){
+                if(item==='details'){
+                    this.showlist.append({value:'details',label:'详细信息'})
+                }
+                else if(item === 'gradework'){
+                    this.showlist.append({
+                        value:'gradework',
+                        label:'评委评分'
+                })}
+                else if(item === 'submitwork'){
+                    this.showlist.append({
+                        value:'submitwork',
+                        label:'提交作品'
+                    })}
+                else if(item === 'infochange'){
+                    this.showlist.append({
+                        value:'infochange',
+                        label:'修改信息'
+                    })}
+            }
+            //get info
+            axios.get('/api/competition/detail?contestId='+this.contestId).then(function (response) {
+                this.info = response.data;
+            }).catch(function (error) {
+                console.log('/api/competition/detail?contestId='+this.contestId+'错误！！')
+            })
         }
     }
 </script>

@@ -13,7 +13,7 @@
 
       <el-row :gutter="20" class = "warning_msg">
         <el-col :span="24">
-          <el-alert v-show="input_error" :title="error_msg" type="error" center></el-alert>
+          <el-alert v-show="error_msg!==''" :title="error_msg" type="error" center></el-alert>
         </el-col>
       </el-row>
 
@@ -62,8 +62,13 @@
 
     export default {
         name: 'app',
+        props:{
+            error_msg:{
+                default:'登录失败',
+                type:String
+            }
+        },
         data() {
-
             var validateUser = (rule, value, callback) => {
                 if (value === '') {
                     callback(new Error('用户名不能为空!'));
@@ -78,8 +83,6 @@
             };
 
             return {
-                input_error:false,
-                error_msg:"登录失败",
                 input_msg: {
                     username: '',
                     pass:'',

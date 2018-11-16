@@ -2,7 +2,7 @@
   <div id="app">
     <el-container>
     <el-header height="100px" class="header">
-      <div><NavigationBar></NavigationBar></div>
+      <div><NavigationBar :username="username"></NavigationBar></div>
     </el-header>
 
       <el-main>
@@ -39,6 +39,12 @@
 
 
     export default {
+        props:{
+            username:{
+                default:'',
+                type:String
+            }
+        },
         name: 'app',
         data() {
             return {
