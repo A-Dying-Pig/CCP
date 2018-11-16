@@ -1,11 +1,11 @@
 <template><div id="app">
     <el-container>
         <el-header>
-            <NavigationBar></NavigationBar>
+            <NavigationBar :username="username"></NavigationBar>
         </el-header>
 
         <el-main>
-            <CompetitionListPage></CompetitionListPage>     
+            <CompetitionListPage :pagetotal="pageTotal"></CompetitionListPage>
         </el-main>
     </el-container>
     </div>
@@ -20,6 +20,7 @@
     import NavigationBar from "../../components/NavigationBar";
     import CompetitionListPage from '../../components/CompetitionListPage'
     export default {
+        props:['username','pageTotal'],
         components: {NavigationBar,CompetitionListPage}
     }
 </script>

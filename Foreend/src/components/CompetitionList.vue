@@ -7,6 +7,7 @@
     :key="type.label">
     {{type.label}}
     </el-radio>
+    <el-radio label="全选">全选</el-radio>
 </el-radio-group>
 
 
@@ -89,13 +90,16 @@ export default{
 		submittype(val)
         {
            this.finfo.typename=val;
-			axios.post('/CompetitionList', {CompetitionType:val,pageNumber:'1'});
+			axios.post('/CompetitionList', { CompetitionType:val,pageNumber:'1' });
 		},
         HandlePageChange(val)
         {
-            axios.post('/CompetitionList',{CompetitionType:this.finfo.typename,pageNumber:val})
+            axios.post('/CompetitionList',{ CompetitionType:this.finfo.typename,pageNumber:val })
         }
-	}	
+	},
+    mounted:function(){
+	    this.submittype("全选");
+    }
 }
 </script>
 

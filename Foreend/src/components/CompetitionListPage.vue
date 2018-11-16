@@ -11,6 +11,7 @@
         components:{
             CompetitionList,            
         },
+        props:['pagetotal'],
         data:function () {
             return {
                 info:{
@@ -19,11 +20,11 @@
                     list:"比赛列表",
                 },
                 page:{
-                    pagetotal:100,
-                    pagenumber:1
+                    total:this.pagetotal,
+                    pagenumber:0,
                 }
             }             
-            },
+            }
         }
 </script>
 
