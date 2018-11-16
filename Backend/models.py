@@ -1,7 +1,6 @@
 from django.db import models
 from django.contrib.auth.models import AbstractUser
 
-
 # 用户信息总表
 class CCPUser(AbstractUser):
     birthday = models.DateTimeField(blank=True, null=True)  # 生日
@@ -9,6 +8,8 @@ class CCPUser(AbstractUser):
     university = models.CharField(max_length=64, null=True)
     province = models.CharField(max_length=32, null=True)
     city = models.CharField(max_length=32, null=True)
+    class Meta:
+        db_table = "CCPUser"
 
 # 比赛信息总表
 class Contest(models.Model):
@@ -25,16 +26,26 @@ class Contest(models.Model):
     brief_introduction = models.CharField(max_length=128)  # 比赛简介
     phase = models.CharField(max_length=512, blank=True)  # 比赛阶段
     # phase_start_time = models.CharField(max_length=512, blank=True, null=True)  # 各阶段开始时间
-    phase_end_time1 = models.DateTimeField(blank=True, null=True)  # 阶段一结束时间
-    phase_end_time2 = models.DateTimeField(blank=True, null=True)
-    phase_end_time3 = models.DateTimeField(blank=True, null=True)
-    phase_end_time4 = models.DateTimeField(blank=True, null=True)
-    phase_end_time5 = models.DateTimeField(blank=True, null=True)
-    phase_information1 = models.CharField(max_length=128, blank=True, null=True)  # 比赛阶段一详情
+    phase_hand_end_time1 = models.DateTimeField(blank=True, null=True)  # 每个阶段选手上交作品截止时间
+    phase_hand_end_time2 = models.DateTimeField(blank=True, null=True)
+    phase_hand_end_time3 = models.DateTimeField(blank=True, null=True)
+    phase_hand_end_time4 = models.DateTimeField(blank=True, null=True)
+    phase_hand_end_time5 = models.DateTimeField(blank=True, null=True)
+    phase_evaluate_end_time1 = models.DateTimeField(blank=True, null=True)  # 每个阶段评测截止时间
+    phase_evaluate_end_time2 = models.DateTimeField(blank=True, null=True)
+    phase_evaluate_end_time3 = models.DateTimeField(blank=True, null=True)
+    phase_evaluate_end_time4 = models.DateTimeField(blank=True, null=True)
+    phase_evaluate_end_time5 = models.DateTimeField(blank=True, null=True)
+    phase_information1 = models.CharField(max_length=128, blank=True, null=True)  # 每个比赛阶段的详情
     phase_information2 = models.CharField(max_length=128, blank=True, null=True)
     phase_information3 = models.CharField(max_length=128, blank=True, null=True)
     phase_information4 = models.CharField(max_length=128, blank=True, null=True)
     phase_information5 = models.CharField(max_length=128, blank=True, null=True)
+    phase_mode1 = models.CharField(max_length=16, blank=True, null=True)
+    phase_mode2 = models.CharField(max_length=16, blank=True, null=True)
+    phase_mode3 = models.CharField(max_length=16, blank=True, null=True)
+    phase_mode4 = models.CharField(max_length=16, blank=True, null=True)
+    phase_mode5 = models.CharField(max_length=16, blank=True, null=True)
     admin_id = models.IntegerField()  # 比赛管理员User表里的id
     host1 = models.CharField(max_length=32)  # 主办方
     host2 = models.CharField(max_length=32)
@@ -49,6 +60,8 @@ class Contest(models.Model):
     extra_group_title2 = models.CharField(max_length=32, blank=True, null=True)
     extra_group_title3 = models.CharField(max_length=32, blank=True, null=True)
     extra_group_title4 = models.CharField(max_length=32, blank=True, null=True)
+    class Meta:
+        db_table = "Contest"
 
 # 记录选手和比赛的对应关系
 class ContestPlayer(models.Model):
@@ -58,6 +71,8 @@ class ContestPlayer(models.Model):
     extra_information2 = models.CharField(max_length=64, blank=True, null=True)
     extra_information3 = models.CharField(max_length=64, blank=True, null=True)
     extra_information4 = models.CharField(max_length=64, blank=True, null=True)
+    class Meta:
+        db_table = "ContestPlayer"
 
 # 记录比赛和小组的对应关系，目前小组成员上限为5名，设组长1名
 # 现在使用Group来控制？
@@ -73,13 +88,16 @@ class ContestGroup(models.Model):
     extra_information2 = models.CharField(max_length=64, blank=True, null=True)
     extra_information3 = models.CharField(max_length=64, blank=True, null=True)
     extra_information4 = models.CharField(max_length=64, blank=True, null=True)
+    class Meta:
+        db_table = "ContestGroup"
 
 # 记录比赛和评委的对应关系
 # 现在可能使用Group来控制，每个比赛有一个评委组？
 class ContestJudge(models.Model):
     judge_id = models.IntegerField(db_index=True)  # 评委id
     contest_id = models.IntegerField(db_index=True)  # 比赛id
-
+    class Meta:
+        db_table = "ContestJudge"
 
 # 记录小组和比赛评委、评分的对应关系
 class ContestGrade(models.Model):
@@ -88,12 +106,14 @@ class ContestGrade(models.Model):
     phase = models.IntegerField(blank=True, null=True)  # 比赛阶段
     judge_id = models.IntegerField(default=-1, db_index=True)  # 评委id
     grade = models.IntegerField(default=-1)  # 选手(小组)由当前评委打出的该阶段比赛的成绩
-
+    class Meta:
+        db_table = "ContestGrade"
 
 # 消息列表
 class Notification(models.Model):
     context = models.CharField(max_length=1024)  # 消息体
-
+    class Meta:
+        db_table = "Notification"
 
 # 记录消息和接受消息的用户的对应关系
 class NotificationUser(models.Model):
@@ -101,3 +121,5 @@ class NotificationUser(models.Model):
     user_id = models.IntegerField(db_index=True)  # 接受消息的用户id
     read = models.BooleanField(default=False)  # 消息已读/未读
     time = models.DateTimeField()  # 消息发送时间
+    class Meta:
+        db_table = "NotificationUser"

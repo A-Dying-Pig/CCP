@@ -1,5 +1,0 @@
-.idea
-.vscode/
-*.pyc
-**/migrations
-resources

@@ -84,7 +84,7 @@ def createContest(request):
         evaluationTimeEnd = stage['evaluationsTimeEnd']
         mode = stage['mode']
     #todo 在数据库里创建比赛
-
+    
     return HttpResponse("")
 
 def personCenter(request):
