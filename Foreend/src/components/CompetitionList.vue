@@ -1,7 +1,7 @@
 <template>
 <div class="competitionList">
-<div class="banner">{{ this.finfo.type }}</div>
-<el-radio-group v-model="this.finfo.typename" label="比赛类型">
+<div class="banner">{{ info.type }}</div>
+<el-radio-group v-model="info.typename" label="比赛类型">
     <el-radio v-for="type in comtypes" :label="type.value"  
     :key="type.label">
     {{type.label}}
@@ -9,7 +9,7 @@
 </el-radio-group>
 
 
-<div class="banner">{{ this.finfo.list }}</div>
+<div class="banner">{{ info.list }}</div>
 <el-table
 	:data="comps"
 	stripe>
@@ -52,7 +52,8 @@ import axios from 'axios'
 export default{
 	props:['finfo'],
 	data:function(){
-		return{			
+		return{
+			info:this.finfo,			
 			comps:[{'number':111,
 				'name':'wzw',
 				'organizer':'df',		  
