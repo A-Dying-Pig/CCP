@@ -1,8 +1,9 @@
 <template>
 <div class="competitionList">
 <div class="banner">{{ info.type }}</div>
-<el-radio-group v-model="info.typename" label="比赛类型">
-    <el-radio v-for="type in comtypes" :label="type.value"  
+<el-radio-group v-model="info.typename" label="比赛类型" @change="submittype">
+    <el-radio v-for="type in comtypes" 
+    :label="type.value"  
     :key="type.label">
     {{type.label}}
     </el-radio>
@@ -37,7 +38,18 @@
 		prop="detail"
 		label="详情">
 	</el-table-column>
-</el-table> 
+</el-table>
+
+	<div class="block banner">
+		<span class="demonstration"></span>
+		<el-pagination @current-change="HandlePageChange"
+                       @prev-click="HandlePageChange"
+                       @next-click="HandlePageChange"
+                       v-model="page.pagenumber"
+                       layout="prev,pager,next"
+                       :total=page.pagetotal></el-pagination>
+	</div>
+
 </div>
 </template>
 
@@ -50,10 +62,11 @@ Vue.use(ElementUI);
 import axios from 'axios'
 
 export default{
-	props:['finfo'],
+	props:['finfo','fpage'],
 	data:function(){
 		return{
-			info:this.finfo,			
+			info:this.finfo,
+            page:this.fpage,
 			comps:[{'number':111,
 				'name':'wzw',
 				'organizer':'df',		  
@@ -73,10 +86,15 @@ export default{
 			}
 		},
 	methods:{
-		submittype(comtype)
-		{	
-			axios.post('/CompetitionList', {CompetitionType:this.comtype})
-		} 
+		submittype(val)
+        {
+           this.finfo.typename=val;
+			axios.post('/CompetitionList', {CompetitionType:val,pageNumber:'1'});
+		},
+        HandlePageChange(val)
+        {
+            axios.post('/CompetitionList',{CompetitionType:this.finfo.typename,pageNumber:val})
+        }
 	}	
 }
 </script>

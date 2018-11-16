@@ -1,6 +1,7 @@
 <template>
 <div class="CompetitionListPage">
-    <CompetitionList v-bind:finfo="info" ></CompetitionList>    
+    <CompetitionList :finfo="info"
+                     :fpage="page"></CompetitionList>
 </div>
 </template>
 
@@ -13,10 +14,14 @@
         data:function () {
             return {
                 info:{
-                typename:'',
-                type:"比赛类型",
-                list:"比赛列表",
+                    typename:'',
+                    type:"比赛类型",
+                    list:"比赛列表",
                 },
+                page:{
+                    pagetotal:100,
+                    pagenumber:1
+                }
             }             
             },
         }
