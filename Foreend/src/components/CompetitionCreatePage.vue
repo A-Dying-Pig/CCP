@@ -14,7 +14,6 @@
     export default {
         components:{
             CompetitionInfo,
-            axios
         },
         data:function () {
             return {
