@@ -1,24 +1,15 @@
 <template>
 <div class="competitionList">
-<div class="banner">{{ title-type }}</div>
-<el-radio-group v-model="comtypes">
-<el-radio v-for="type in comtypes">{{type.label}}
-</el-radio>
+<div class="banner">{{ this.finfo.type }}</div>
+<el-radio-group v-model="this.finfo.typename" label="比赛类型">
+    <el-radio v-for="type in comtypes" :label="type.value"  
+    :key="type.label">
+    {{type.label}}
+    </el-radio>
 </el-radio-group>
 
 
-<el-row :gutter=20>
-<el-col :offset=5>
-<el-form-item label="比赛类型" prop="comtype">
-    <el-radio-group v-model="info.comtype">
-        <el-radio v-for="type in comtypes" v-bind:label="type.label" v-bind:value="type.value" :key="item.key"></el-radio>
-    </el-radio-group>
-</el-form-item>
-</el-col>
-</el-row>
-
-
-<div class="banner">{{ title-list }}</div>
+<div class="banner">{{ this.finfo.list }}</div>
 <el-table
 	:data="comps"
 	stripe>
@@ -56,11 +47,12 @@ import 'element-ui/lib/theme-chalk/index.css'
 import ElementUI from 'element-ui'
 Vue.use(ElementUI);
 
+import axios from 'axios'
+
 export default{
-	props:['title-type','title-list','type_choose'],
+	props:['finfo'],
 	data:function(){
-		return{
-			type:this.type_choose
+		return{			
 			comps:[{'number':111,
 				'name':'wzw',
 				'organizer':'df',		  
@@ -78,7 +70,13 @@ export default{
                 {label:'微信小程序',name:'type',value:'weixin'},
                 {label:'web开发',name:'type',value:'web'}]
 			}
-		}	
+		},
+	methods:{
+		submittype(comtype)
+		{	
+			axios.post('/CompetitionList', {CompetitionType:this.comtype})
+		} 
+	}	
 }
 </script>
 

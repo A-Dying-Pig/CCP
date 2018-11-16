@@ -5,23 +5,22 @@
         </el-header>
 
         <el-main>
-            <el-row>
-            <el-col :span="24" class="banner">比赛分类</el-col>
-            </el-row>
-
-            <el-row>
-            <competitionList title="比赛列表"></competitionList>
-            </el-row>            
+            <CompetitionListPage></CompetitionListPage>     
         </el-main>
     </el-container>
     </div>
 </template>
 
-<script>    
+<script>
+    import Vue from 'vue'
+    import 'element-ui/lib/theme-chalk/index.css'
+    import ElementUI from 'element-ui'
+    Vue.use(ElementUI);    
+
     import NavigationBar from "../../components/NavigationBar";
-    import CompetitionList from '../../components/CompetitionList'
+    import CompetitionListPage from '../../components/CompetitionListPage'
     export default {
-        components: {NavigationBar,CompetitionList}
+        components: {NavigationBar,CompetitionListPage}
     }
 </script>
 
