@@ -13,6 +13,8 @@
     </noscript>
     <div id="app"><app m_username={{username}} competition_id={{contestId}}></app></div>
     <!-- built files will be auto injected -->
+
+    <p id="csrf-token" hidden>{% csrf_token %}</p>
   </body>
 </html>
 

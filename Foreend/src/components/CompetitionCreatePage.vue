@@ -11,6 +11,13 @@
 <script>
     import CompetitionInfo from './CompetitionInfo'
     import axios from 'axios'
+
+    axios.defaults.xsrfHeaderName = "X-CSRFToken";
+    axios.defaults.headers.common = {
+        'X-CSRFToken':document.querySelector('#csrf-token input').value,
+        'X-Requested-With': 'XMLHttpRequest'
+    };
+    
     export default {
         components:{
             CompetitionInfo,

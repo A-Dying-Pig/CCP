@@ -29,6 +29,12 @@
 <script>
     import axios from 'axios'
 
+    axios.defaults.xsrfHeaderName = "X-CSRFToken";
+    axios.defaults.headers.common = {
+        'X-CSRFToken':document.querySelector('#csrf-token input').value,
+        'X-Requested-With': 'XMLHttpRequest'
+    };
+
     export default {
         props:{
             group_min_number:{
@@ -112,7 +118,7 @@
                 }
 
                 let vm = this;
-                /*axios.post('/api/CheckUser',{username:this.ruleForm.curr_user,competition_id:this.competition_id})
+                axios.post('/api/CheckUser',{username:this.ruleForm.curr_user,competition_id:this.competition_id})
                     .then((response)=>{
                             if(response.data.ok === 0){
                                 vm.input_error = '该用户无法组队!';
@@ -127,14 +133,7 @@
                                 vm.$emit('new-group',{number:vm.member_number,value:temp});
                              }
                         }
-                    )*/
-                vm.$set(vm.group_user,vm.member_number,{name:vm.ruleForm.curr_user});
-                vm.member_number += 1;
-                let temp = [];
-                for (let i = 0 ; i < vm.group_user.length; i++){
-                    temp.push(vm.group_user[i].name);
-                }
-                vm.$emit('new-group',{number:vm.member_number,value:temp});
+                    )
             },
         }
 

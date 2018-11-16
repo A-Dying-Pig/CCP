@@ -37,6 +37,11 @@
     import CompetitionProfile from '../../components/CompetitionProfile'
     import axios from 'axios'
 
+    axios.defaults.xsrfHeaderName = "X-CSRFToken";
+    axios.defaults.headers.common = {
+        'X-CSRFToken':document.querySelector('#csrf-token input').value,
+        'X-Requested-With': 'XMLHttpRequest'
+    };
 
     export default {
         props:{
