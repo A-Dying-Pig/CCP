@@ -5,29 +5,29 @@
       <div><NavigationBar></NavigationBar></div>
     </el-header>
     <el-main>
-      <el-row :gutter="20">
+      <el-row :gutter="0">
         <el-col :span="24" class="banner">创建您的账户 </el-col>
       </el-row>
 
-      <el-row :gutter="20" class = "warning_msg">
+      <el-row :gutter="0" class = "warning_msg">
         <el-col :span="24">
           <el-alert v-show="error_msg!==''" :title="error_msg" type="error" center></el-alert>
         </el-col>
       </el-row>
 
       <el-form :model="input_msg" status-icon :rules="m_rules" ref="input_msg" label-width="100px">
-      <el-row :gutter="20">
+      <el-row :gutter="0">
         <el-col :span="9" :offset="7">
           <el-form-item label="邮箱" prop="email"><el-input type="text" v-model="input_msg.email" autocomplete="off"></el-input></el-form-item>
         </el-col>
       </el-row>
 
-      <el-row :gutter="20">
+      <el-row :gutter="0">
         <el-col :span="9" :offset="7">
           <el-form-item label="用户名" prop="username"><el-input type="text" v-model="input_msg.username" placeholder="字母,_,数字的组合" autocomplete="off"></el-input></el-form-item></el-col>
       </el-row>
 
-      <el-row :gutter="20">
+      <el-row :gutter="0">
         <el-col :span="9" :offset="7">
           <el-form-item label="密码" prop="pass">
           <el-input type="password" v-model="input_msg.pass" autocomplete="off" placeholder="字母,_,数字的组合,长度大于5"></el-input>
@@ -35,7 +35,7 @@
         </el-col>
       </el-row>
 
-        <el-row :gutter="20">
+        <el-row :gutter="0">
           <el-col :span="9" :offset="7">
             <el-form-item label="确认密码" prop="checkPass">
               <el-input type="password" v-model="input_msg.checkPass" autocomplete="off"></el-input>
@@ -43,18 +43,13 @@
           </el-col>
         </el-row>
 
-        <el-row :gutter="20">
-          <el-col :span="1" :offset="9">
-            <el-form-item>
-              <el-button type="text" @click="submitForm('input_msg')"><span class="form-btn">继续</span></el-button>
-            </el-form-item>
-          </el-col>
+        <el-row :gutter="0">
 
-          <el-col :span="1" :offset="1">
-            <el-form-item>
+          <div class="register-btn">
+              <el-button type="text" @click="submitForm('input_msg')"><span class="form-btn">继续</span></el-button>
               <el-button type='text' @click="resetForm('input_msg')"><span class="form-btn">重置</span></el-button>
-            </el-form-item>
-          </el-col>
+          </div>
+
         </el-row>
       </el-form>
     </el-main>
@@ -204,5 +199,9 @@
 
   .warning_msg{
     margin-bottom: 50px;
+  }
+
+  .register-btn{
+    text-align: center;
   }
 </style>
