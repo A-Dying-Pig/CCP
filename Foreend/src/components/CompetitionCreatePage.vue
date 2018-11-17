@@ -1,20 +1,25 @@
-<template><div class="CompetitionCreatePage">
-    <CompetitionInfo ref="basic" typeid=1 v-bind:finfo="allinfo.basicinfo">比赛基本信息</CompetitionInfo>
-    <CompetitionInfo ref="signup" typeid=2 v-bind:finfo="allinfo.signupinfo">比赛报名设置</CompetitionInfo>
-    <CompetitionInfo ref="stage" typeid=3 v-bind:finfo="allinfo.stageinfo">比赛阶段设置</CompetitionInfo>
-    <el-row :gutter="20">
-        <el-col :space="10" :offset="5">
-            <el-button type="primary" @click="summitForm">提交</el-button>
-        </el-col>
-    </el-row>
-</div></template>
+<template>
+    <div class="CompetitionCreatePage">
+            <CompetitionInfo ref="basic" typeid=1 v-bind:finfo="allinfo.basicinfo">比赛基本信息</CompetitionInfo>
+            <CompetitionInfo ref="signup" typeid=2 v-bind:finfo="allinfo.signupinfo">比赛报名设置</CompetitionInfo>
+            <CompetitionInfo ref="stage" typeid=3 v-bind:finfo="allinfo.stageinfo">比赛阶段设置</CompetitionInfo>
+            <p></p>
+            <p></p>
+        <el-row :gutter=20 class="commit_style">
+            <el-col :span=12 :offset=6>
+                <el-button type="primary" @click="summitForm">提交</el-button>
+            </el-col>
+        </el-row>
+    </div>
+</template>
+
 <script>
     import CompetitionInfo from './CompetitionInfo'
     import axios from 'axios'
 
     axios.defaults.xsrfHeaderName = "X-CSRFToken";
     axios.defaults.headers.common = {
-        'X-CSRFToken':document.querySelector('#csrf-token input').value,
+        //'X-CSRFToken':document.querySelector('#csrf-token input').value,
         'X-Requested-With': 'XMLHttpRequest'
     };
     
@@ -85,4 +90,6 @@
         }
     }
 </script>
-<style></style>
+
+<style>
+</style>

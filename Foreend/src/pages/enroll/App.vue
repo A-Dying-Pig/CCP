@@ -5,39 +5,36 @@
       <div><NavigationBar :username="m_username"></NavigationBar></div>
     </el-header>
       <el-main>
-        <el-row :gutter="20">
-          <el-col :span="24" class="banner">报名比赛 </el-col>
-        </el-row>
 
         <el-row :gutter="20" class="enroll-info-spliter">
-          <el-col :span="10" :offset="10"> -----基本信息-----</el-col>
+          <el-col :span="12" :offset="6"> -----基本信息-----</el-col>
         </el-row>
 
         <el-row :gutter="20">
-          <el-col :span="7" :offset="9">
+          <el-col :span="12" :offset="6">
             <RegionPicker @new-region="UpdateRegion"></RegionPicker>
           </el-col>
         </el-row>
 
         <el-row :gutter="20">
-          <el-col :span="7" :offset="9">
+          <el-col :span="12" :offset="6">
             <UniversityPicker @new-university="UpdateUniversity"></UniversityPicker>
           </el-col>
         </el-row>
 
         <div v-if="enroll_table.comp_type === 0" class="group_enroll">
           <el-row :gutter="20" class="enroll-info-spliter">
-            <el-col :span="10" :offset="10"> -----组队赛信息-----</el-col>
+            <el-col :span="12" :offset="6"> -----组队赛信息-----</el-col>
           </el-row>
 
           <el-row :gutter="25">
-            <el-col :span="7" :offset="9">
+            <el-col :span="12" :offset="6">
               <div>队伍名称<el-input type="text"  v-model="group_info.group_name" autocomplete="off"></el-input></div>
             </el-col>
           </el-row>
 
           <el-row :gutter="25">
-            <el-col :span="7" :offset="9">
+            <el-col :span="12" :offset="6">
               <GroupUser :competition_id="competition_id"
                          :group_min_number="enroll_table.group_min_number"
                          :group_max_number="enroll_table.group_max_number"
@@ -48,25 +45,25 @@
 
         <div v-else class="person_enroll">
           <el-row :gutter="20" class="enroll-info-spliter">
-            <el-col :span="10" :offset="10"> -----个人赛信息-----</el-col>
+            <el-col :span="12" :offset="6"> -----个人赛信息-----</el-col>
           </el-row>
 
         </div>
 
         <el-row :gutter="20" class="enroll-info-spliter">
-          <el-col :span="10" :offset="10"> -----额外信息-----</el-col>
+          <el-col :span="12" :offset="6"> -----额外信息-----</el-col>
         </el-row>
 
         <div class="extra_info">
-          <el-row :gutter="25" v-for="(item,index) in enroll_table.extra" :key="index">
-            <el-col :span="7" :offset="9">
+          <el-row :gutter="5" v-for="(item,index) in enroll_table.extra" :key="index">
+            <el-col :span="12" :offset="6">
               <div>{{item}}<el-input type="text"  v-model="extra_info[index]" autocomplete="off"></el-input></div>
             </el-col>
           </el-row>
         </div>
 
           <el-row :gutter="20">
-            <el-col :span="4" :offset="12">
+            <el-col :span="12" :offset="6">
               <el-button type="text" @click="SubmitEnroll"> <span class="enroll-continue-btn">继 续 ></span></el-button>
             </el-col>
           </el-row>
@@ -85,7 +82,7 @@
 
     axios.defaults.xsrfHeaderName = "X-CSRFToken";
     axios.defaults.headers.common = {
-        'X-CSRFToken':document.querySelector('#csrf-token input').value,
+        //'X-CSRFToken':document.querySelector('#csrf-token input').value,
         'X-Requested-With': 'XMLHttpRequest'
     };
 
@@ -279,6 +276,7 @@
     font-family: "PingFang SC";
     margin-top: 30px;
     margin-bottom: 30px;
+    text-align: center;
   }
 
 </style>

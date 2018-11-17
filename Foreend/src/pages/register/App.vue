@@ -5,9 +5,9 @@
       <div><NavigationBar></NavigationBar></div>
     </el-header>
     <el-main>
-      <el-row :gutter="20">
+      <!--<el-row :gutter="20">
         <el-col :span="24" class="banner">创建您的账户 </el-col>
-      </el-row>
+      </el-row>-->
 
       <el-row :gutter="20" class = "warning_msg">
         <el-col :span="24">
@@ -17,18 +17,18 @@
 
       <el-form :model="input_msg" status-icon :rules="m_rules" ref="input_msg" label-width="100px">
       <el-row :gutter="20">
-        <el-col :span="9" :offset="7">
+        <el-col :span="12" :offset="6">
           <el-form-item label="邮箱" prop="email"><el-input type="text" v-model="input_msg.email" autocomplete="off"></el-input></el-form-item>
         </el-col>
       </el-row>
 
       <el-row :gutter="20">
-        <el-col :span="9" :offset="7">
+        <el-col :span="12" :offset="6">
           <el-form-item label="用户名" prop="username"><el-input type="text" v-model="input_msg.username" placeholder="字母,_,数字的组合" autocomplete="off"></el-input></el-form-item></el-col>
       </el-row>
 
       <el-row :gutter="20">
-        <el-col :span="9" :offset="7">
+        <el-col :span="12" :offset="6">
           <el-form-item label="密码" prop="pass">
           <el-input type="password" v-model="input_msg.pass" autocomplete="off" placeholder="字母,_,数字的组合,长度大于5"></el-input>
           </el-form-item>
@@ -36,7 +36,7 @@
       </el-row>
 
         <el-row :gutter="20">
-          <el-col :span="9" :offset="7">
+          <el-col :span="12" :offset="6">
             <el-form-item label="确认密码" prop="checkPass">
               <el-input type="password" v-model="input_msg.checkPass" autocomplete="off"></el-input>
             </el-form-item>
@@ -44,13 +44,13 @@
         </el-row>
 
         <el-row :gutter="20">
-          <el-col :span="1" :offset="9">
+          <el-col :span="2" :offset="9">
             <el-form-item>
               <el-button type="text" @click="submitForm('input_msg')"><span class="form-btn">继续</span></el-button>
             </el-form-item>
           </el-col>
 
-          <el-col :span="1" :offset="1">
+          <el-col :span="2" :offset="2">
             <el-form-item>
               <el-button type='text' @click="resetForm('input_msg')"><span class="form-btn">重置</span></el-button>
             </el-form-item>
@@ -68,7 +68,7 @@
 
     axios.defaults.xsrfHeaderName = "X-CSRFToken";
     axios.defaults.headers.common = {
-        'X-CSRFToken':document.querySelector('#csrf-token input').value,
+        //'X-CSRFToken':document.querySelector('#csrf-token input').value,
         'X-Requested-With': 'XMLHttpRequest'
     };
 

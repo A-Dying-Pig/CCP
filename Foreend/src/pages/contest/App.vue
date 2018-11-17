@@ -26,11 +26,4 @@
 </script>
 
 <style>
-.banner{
-    font-size:20px;
-    text-align: left;
-    font-family: "PingFang SC";
-    padding: 70px 0px 0px 0px;
-    text-weight:bold;
-  }
 </style>

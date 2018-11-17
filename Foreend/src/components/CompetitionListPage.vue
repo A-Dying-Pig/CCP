@@ -20,7 +20,8 @@
                     list:"比赛列表",
                 },
                 page:{
-                    total:this.pagetotal,
+                    total:14,
+                    //this.pagetotal,
                     pagenumber:1,
                 }
             }             
