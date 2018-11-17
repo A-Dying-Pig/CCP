@@ -191,7 +191,7 @@
                 this.info_saved = false;
             },
             SaveInfo:function () {
-                axios.post('/api/SetPerson',this.new_person);
+                axios.post('/api/user/modify',this.new_person);
                 this.person = this.new_person;
                 this.info_saved = true;
             },

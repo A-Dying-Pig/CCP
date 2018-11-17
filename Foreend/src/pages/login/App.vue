@@ -7,49 +7,51 @@
 
       <el-main>
       <div class = "login_main_page">
-      <el-row :gutter="20">
+      <el-row :gutter="0">
         <el-col :span="24" class="banner">登入您的账户 </el-col>
       </el-row>
 
-      <el-row :gutter="20" class = "warning_msg">
+      <el-row :gutter="0" class = "warning_msg">
         <el-col :span="24">
           <el-alert v-show="error_msg!==''" :title="error_msg" type="error" center></el-alert>
         </el-col>
       </el-row>
 
       <el-form :model="input_msg" status-icon :rules="m_rules" ref="input_msg" label-width="100px">
-      <el-row :gutter="20">
-        <el-col :span="8" :offset="7">
+      <el-row :gutter="0">
+        <el-col :span="9" :offset="7">
           <el-form-item label="用户名" prop="username"><el-input type="text" v-model="input_msg.username" placeholder="字母,_,数字的组合" autocomplete="off"></el-input></el-form-item></el-col>
       </el-row>
 
-      <el-row :gutter="20">
-        <el-col :span="8" :offset="7">
+      <el-row :gutter="0">
+        <el-col :span="9" :offset="7">
           <el-form-item label="密码" prop="pass">
           <el-input type="password" v-model="input_msg.pass" autocomplete="off" placeholder="字母,_,数字的组合,长度大于5"></el-input>
           </el-form-item>
         </el-col>
       </el-row>
 
-        <el-row :gutter="20">
-          <el-col :span="1" :offset="9">
-            <el-form-item>
+        <el-row :gutter="0">
+          <div class="login-btn">
               <el-button type="success" @click="submitForm('input_msg')"><span class="form-btn">登录</span></el-button>
-            </el-form-item>
-          </el-col>
+          </div>
         </el-row>
       </el-form>
       </div>
 
         <el-row :gutter="20">
-          <el-col :span="15" :offset="4" class="banner2">您的账户适用于CCP的所有服务</el-col>
+          <el-col :span="24" class="banner2">您的账户适用于CCP的所有服务</el-col>
         </el-row>
         <el-row :gutter="20">
-          <el-col :span="15" :offset="9"><img src="../../assets/img/login_service_intro.png" class="login_service_intro"></el-col>
+          <div class="login-icon">
+            <img src="../../assets/img/login_service_intro.png" class="login_service_intro">
+          </div>
         </el-row>
 
         <el-row :gutter="5">
-          <el-col :span="4" :offset="10"><a href="/register" class="login_register" > 创建 您的账户> </a></el-col>
+          <div class="login-btn">
+            <a href="/register" class="login_register" > 创建您的账户> </a>
+          </div>
         </el-row>
     </el-main>
     </el-container>
@@ -168,19 +170,26 @@
     margin-bottom: 15px;
   }
   .login_service_intro{
-    width: 30%;
-    height: 30%;
+    width: 20%;
+    height: 20%;
   }
   .login_register{
     font-size: 18px;
     text-decoration: none;
     color: initial;
   }
+  .login-icon{
+    text-align: center;
+  }
 
   .login_register:hover{
     font-size: 18px;
-    padding-right:20px;
     text-decoration: none;
     color: dodgerblue;
+  }
+  .login-btn{
+    text-align: center;
+    margin-bottom: 40px;
+    margin-top: 20px;
   }
 </style>
