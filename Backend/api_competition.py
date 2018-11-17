@@ -78,8 +78,24 @@ def create(request):
         evaluationTimeEnd = stage['evaluationsTimeEnd']
         mode = stage['mode']
     #todo 在数据库里创建比赛
+    contest = Contest.objects.create()
+    contest.title = name
+    index = 0
+    while index < len(holders):
+        setattr(contest, 'host' + str(index + 1), holders[index])
+        index = index + 1
+    index = 0
+    while index < len(sponsors):
+        contest.organizers = contest.organizers + ' ' + sponsors[index]
+        index = index + 1
+    contest.category = comtype
+    contest.information = details
+    contest.enroll_start = time[0]
+    contest.enroll_end = time[1]
+    contest.grouped = 1 if mode == 0 else 0
     
-    return HttpResponse("")
+    contest.save()
+    return JsonResponse({})
 
 def getonepro(request):
     # todo:根据评分规则返回一个作品，现在直接用第一个
