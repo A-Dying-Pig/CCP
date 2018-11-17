@@ -4,10 +4,11 @@
     <el-header height="100px" class="header">
       <div><NavigationBar :username="m_username"></NavigationBar></div>
     </el-header>
+
       <el-main>
-        <el-row :gutter="0">
+         <!--<el-row :gutter="0">
           <el-col :span="24" class="banner">报名比赛 </el-col>
-        </el-row>
+        </el-row>-->
 
         <el-row :gutter="0" >
           <div class="enroll-info-spliter"> -----基本信息-----</div>
@@ -68,12 +69,11 @@
           </el-row>
         </div>
 
-
-          <el-row :gutter="0" :span="12" :offset="6">
-            <div class="enroll-btn">
-              <el-button type="text" @click="SubmitEnroll"> <span class="enroll-continue-btn">报名></span></el-button>
-            </div>
-          </el-row>
+      <el-row :gutter="0" >
+        <div class="enroll-btn" :span="12" :offset="6">
+          <el-button type="text" @click="SubmitEnroll"> <span class="enroll-continue-btn">报名></span></el-button>
+        </div>
+      </el-row>
 
       </el-main>
     </el-container>
@@ -276,7 +276,8 @@
   }
 
   .enroll-continue-btn{
-    font-size: 16px;
+      font-size: 16px;
+      text-align: center;
   }
   .enroll-info-spliter{
     font-size: 20px;
@@ -284,7 +285,7 @@
     margin-top: 30px;
     margin-bottom: 30px;
     text-align: center;
-  },
+  }
   .enroll-btn{
     text-align: center;
   }

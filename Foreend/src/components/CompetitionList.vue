@@ -58,9 +58,9 @@
             <el-pagination @current-change="HandlePageChange"
                            @prev-click="HandlePageChange"
                            @next-click="HandlePageChange"
-                           v-model="page.pagenumber"
+                           v-model="current_page_num"
                            layout="prev,pager,next"
-                           :total=page.total></el-pagination>
+                           :total="total_page_num"></el-pagination>
         </el-col>
 
 	</div>
@@ -77,11 +77,10 @@ Vue.use(ElementUI);
 import axios from 'axios'
 
 export default{
-	props:['finfo','fpage'],
+	props:['finfo','current_page_num','total_page_num','array'],
 	data:function(){
 		return{
 			info:this.finfo,
-            page:this.fpage,
 			comps:[{'number':111,
                     'name':'wzw',
                     'organizer':'df',
@@ -182,11 +181,11 @@ export default{
 		submittype(val)
         {
            this.finfo.typename=val;
-			axios.post('/CompetitionList', { CompetitionType:val,pageNumber:'1' });
+			axios.post('/CompetitionList', { type:val,pageNum:'1' });
 		},
         HandlePageChange(val)
         {
-            axios.post('/CompetitionList',{ CompetitionType:this.finfo.typename,pageNumber:val })
+            axios.post('/CompetitionList',{ type:this.finfo.typename,pageNum:val })
         }
 	},
     mounted:function(){
