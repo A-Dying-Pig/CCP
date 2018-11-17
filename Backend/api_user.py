@@ -27,7 +27,7 @@ def login(request):
     data = json.loads(request.body.decode('utf-8'))
     username = data['username']
     password = data['password']
-    print(username, password)
+    # print(username, password)
     user = auth.authenticate(username=username, password=password)
     if user:
         auth.login(request, user)
@@ -38,7 +38,7 @@ def login(request):
 def check(request):
     username = request.POST.get('username')
     contest_id = request.POST('competition_id')
-    # do some check
+    #todo: do some check
     return JsonResponse({'ok': 1})
 
 def profile(request):

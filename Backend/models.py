@@ -18,14 +18,19 @@ class Contest(models.Model):
     grouped = models.BooleanField(default=False)  # 是否需要组队参赛
     group_min_number = models.IntegerField(blank=True, null=True)  # 组队最小人数
     group_max_number = models.IntegerField(blank=True, null=True)  # 组队最大人数
-    start_time = models.DateTimeField()  # 比赛开始时间
-    end_time = models.DateTimeField()  # 比赛结束时间
+    # start_time = models.DateTimeField()  # 比赛开始时间
+    # end_time = models.DateTimeField()  # 比赛结束时间
     enroll_start = models.DateTimeField()  # 报名开始时间
     enroll_end = models.DateTimeField()  # 报名结束时间
     information = models.TextField()  # 比赛详情
     brief_introduction = models.CharField(max_length=128)  # 比赛简介
-    phase = models.CharField(max_length=512, blank=True)  # 比赛阶段
+    # phase = models.CharField(max_length=512, blank=True)  # 比赛阶段
     # phase_start_time = models.CharField(max_length=512, blank=True, null=True)  # 各阶段开始时间
+    phase_name1 = models.CharField(max_length=32, blank=True, null=True)  # 各阶段名称
+    phase_name2 = models.CharField(max_length=32, blank=True, null=True)
+    phase_name3 = models.CharField(max_length=32, blank=True, null=True)
+    phase_name4 = models.CharField(max_length=32, blank=True, null=True)
+    phase_name5 = models.CharField(max_length=32, blank=True, null=True)
     phase_hand_end_time1 = models.DateTimeField(blank=True, null=True)  # 每个阶段选手上交作品截止时间
     phase_hand_end_time2 = models.DateTimeField(blank=True, null=True)
     phase_hand_end_time3 = models.DateTimeField(blank=True, null=True)
@@ -41,7 +46,7 @@ class Contest(models.Model):
     phase_information3 = models.CharField(max_length=128, blank=True, null=True)
     phase_information4 = models.CharField(max_length=128, blank=True, null=True)
     phase_information5 = models.CharField(max_length=128, blank=True, null=True)
-    phase_mode1 = models.CharField(max_length=16, blank=True, null=True)
+    phase_mode1 = models.CharField(max_length=16, blank=True, null=True)  # 各阶段评测方式
     phase_mode2 = models.CharField(max_length=16, blank=True, null=True)
     phase_mode3 = models.CharField(max_length=16, blank=True, null=True)
     phase_mode4 = models.CharField(max_length=16, blank=True, null=True)

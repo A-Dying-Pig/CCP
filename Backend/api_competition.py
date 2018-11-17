@@ -57,6 +57,7 @@ def neededinfo(request):
 
 def create(request):
     data = json.loads(request.body.decode('utf-8'))
+
     basicinfo = data['basicinfo']
     name = basicinfo['name']
     holders = basicinfo['holders']
@@ -71,13 +72,8 @@ def create(request):
     group = signupinfo['group']
 
     stageinfo = data['stageinfo']
-    for stage in stageinfo:
-        name = stage['name']
-        details = stage['details']
-        handTimeEnd = stage['handTimeEnd']
-        evaluationTimeEnd = stage['evaluationsTimeEnd']
-        mode = stage['mode']
-    #todo 在数据库里创建比赛
+
+    # 在数据库里创建比赛
     contest = Contest.objects.create()
     contest.title = name
     index = 0
@@ -93,7 +89,22 @@ def create(request):
     contest.enroll_start = time[0]
     contest.enroll_end = time[1]
     contest.grouped = 1 if mode == 0 else 0
-    
+    index = 0
+    while index < len(person):
+        setattr(contest, 'extra_title' + str(index + 1), person[index])
+        index = index + 1
+    index = 0
+    while index < len(group):
+        setattr(contest, 'extra_group_title' + str(index + 1), group[index])
+        index = index + 1
+    index = 0
+    while index < len(stageinfo):
+        setattr(contest, 'phase_name' + str(index + 1), stageinfo[index]['name'])
+        setattr(contest, 'phase_information' + str(index + 1), stageinfo[index]['details'])
+        setattr(contest, 'phase_mode' + str(index + 1), stageinfo[index]['mode'])
+        setattr(contest, 'phase_hand_end_time' + str(index + 1), stageinfo[index]['hangTimeEnd'])
+        setattr(contest, 'phase_evaluate_end_time' + str(index + 1), stageinfo[index]['evaluationsTimeEnd'])
+        index = index + 1
     contest.save()
     return JsonResponse({})
 
