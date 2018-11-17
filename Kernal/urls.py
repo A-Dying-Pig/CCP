@@ -4,7 +4,6 @@ from django.contrib import admin
 import Foreend.views
 
 urlpatterns = [
-    # url(r'^admin/', admin.site.urls),
     path(r'', Foreend.views.index),
     path(r'index', Foreend.views.index),
     path(r'login', Foreend.views.login),
@@ -14,5 +13,6 @@ urlpatterns = [
     path(r'detail', Foreend.views.detail),
     path(r'enroll', Foreend.views.enroll),
     path(r'profile', Foreend.views.profile),
+    path(r'addContest', Foreend.views.addContest),
     path(r'api/', include('Backend.urls')),
 ]
