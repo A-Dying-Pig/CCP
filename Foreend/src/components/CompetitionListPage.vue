@@ -13,7 +13,6 @@
         components: {
             CompetitionList,
         },
-        props: ['pagetotal'],
         data: function () {
             return {
                 info: {
