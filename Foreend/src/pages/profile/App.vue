@@ -11,7 +11,7 @@
         <PersonPhoto :img_url="img_url"></PersonPhoto>
 
         <div class="person-center-aside-menu">
-        <el-menu default-active="1" @select="UpdateMenu">
+        <el-menu :default-active="which_menu" @select="UpdateMenu">
           <el-menu-item index="1">
             <i class="el-icon-document"></i>
             <span slot="title">相关比赛</span>
@@ -19,6 +19,10 @@
           <el-menu-item index="2">
             <i class="el-icon-setting"></i>
             <span slot="title">个人信息设置</span>
+          </el-menu-item>
+          <el-menu-item index="3">
+            <i class="el-icon-bell"></i>
+            <span slot="title">消息列表</span>
           </el-menu-item>
           </el-menu>
         </div>
@@ -110,10 +114,65 @@
               </div>
               <RegionPicker v-show="info_saved === false" @new-region="UpdateRegion"></RegionPicker>
             </div>
-
           </el-card>
+        </div>
+
+        <!--message list -->
+        <div v-show="which_menu === '3'">
+
+          <div v-if="message_switch === 0" class="message-list">
+            <el-table :data="message_list.array" style="width: 100%">
+          <el-table-column
+                  prop="messageId"
+                  label="序号"
+                  min-width="1"
+          >
+          </el-table-column>
+          <el-table-column
+                  prop="context"
+                  label="简介"
+                  min-width="6"
+          >
+          </el-table-column>
+
+            <el-table-column
+                    label="状态"
+                    min-width="2"
+            >
+              <template slot-scope="scope">
+                <el-button v-if="message_list.array[scope.$index].read === 0" style="padding: 5px 2px" type='danger' @click="MessageClick(scope.$index)">未读</el-button>
+                <el-button v-else-if="message_list.array[scope.$index].read === 1" style="padding: 5px 2px" type="success" @click="MessageClick(scope.$index)">已读</el-button>
+              </template>
+            </el-table-column>
+
+            </el-table>
+
+            <el-pagination
+                  layout="prev, pager, next"
+                  :current-page="message_list.current_page_num"
+                  :page-count="message_list.total_page_num"
+                  @current-change="CurrentPageChange"
+                  @prev-click="PagePrevious"
+                  @next-click="PageNext"
+                  class="profile-page">
+            </el-pagination>
+          </div>
+
+          <div v-if="message_switch === 1" class="message-detail">
+              <div>
+                <el-button type="text" icon="el-icon-back" @click="MessageBackClick">返回</el-button>
+              </div>
+              <div class="message-detail-title">
+                <h2>{{message_detail.title}}</h2>
+              </div>
+              <hr>
+              <div class="message-detail-content">
+                {{message_detail.content}}
+              </div>
+          </div>
 
         </div>
+
       </el-main>
 
     </el-container>
@@ -136,16 +195,18 @@
     export default {
         name: 'app',
         props:{
+            which_menu:{ //1 competitions; 2 settings; 3 message lists
+                default:'1',
+            },
             username:{
                 default:'',
-                type:String
+                type:String,
             }
         },
         data() {
             return{
                 img_url:require('../../assets/img/logo.png'),
                 activeName: '1',
-                which_menu:'1',    //1 competitions; 2 settings
                 competition:{
                     participated_competition:[{url:'/comp1',title:'我参加的比赛1'},{url:'/comp2',title:'我参加的比赛2'}],
                     created_competition:[{url:'/comp3',title:'我创建的比赛3'},{url:'/comp4',title:'我创建的比赛4'}],
@@ -166,6 +227,21 @@
                     }
                 },
                 info_saved:true,
+                //message list
+                message_list:{
+                    current_page_num:1,
+                    total_page_num:1,
+                    array:[
+                        {messageId:1,context:'报名成功',read:0},
+                        {messageId:2,context:'感谢您成为CCP网站用户',read:1}
+                    ],
+                },
+                message_detail:{
+                    title:'CCP网站滑水大赛报名成功',
+                    content:'带上你的泳衣在炎日的冬季一起滑水吧!',
+                },
+                message_detail_index:0,
+                message_switch:0, //0 for message list,1 for message detail
             }
         },
         components: {
@@ -182,6 +258,10 @@
                   this.person = response.data.person;
                   this.new_person = this.person
                 });
+            axios.post('/api/message/getall',{pageNum:this.message_list.current_page_num})
+                .then(response=>{
+                    this.message_list = response.data;
+                })
         },
         methods:{
             UpdateMenu:function (index) {
@@ -201,7 +281,41 @@
             },
             UpdateUniversity:function (data) {
                 this.new_person.university = data;
+            },
+            CurrentPageChange:function (cur_page) {
+                axios.post('/api/message/getall',{pageNum:cur_page})
+                    .then(response=>{
+                        this.message_list = response.data;
+                    })
+            },
+            PagePrevious:function (cur_page) {
+                axios.post('/api/message/getall',{pageNum:cur_page})
+                    .then(response=>{
+                        this.message_list = response.data;
+                    })
+            },
+            PageNext:function (cur_page) {
+                axios.post('/api/message/getall',{pageNum:cur_page})
+                    .then(response=>{
+                        this.message_list = response.data;
+                    })
+            },
+            MessageClick:function(index){
+                this.message_detail_index = index;
+                axios.post('/api/message/detail',{messageId:this.message_list.array[index].messageId})
+                    .then(response=>{
+                        this.message_detail = response.data;
+                        this.message_list.array[index].read = 1;
+                        this.message_switch = 1;
+                    });
+                //Going to delete
+                this.message_list.array[index].read = 1;
+                this.message_switch = 1;
+            },
+            MessageBackClick:function () {
+                this.message_switch = 0;
             }
+
         }
     }
 </script>
@@ -216,4 +330,8 @@
     float: right;
     color: gray;
   }
+  .profile-page{
+    margin-top: 40px;
+  }
+
 </style>
