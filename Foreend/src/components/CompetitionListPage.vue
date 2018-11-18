@@ -1,7 +1,9 @@
 <template>
 <div class="CompetitionListPage">
     <CompetitionList :finfo="info"
-                     :fpage="page"></CompetitionList>
+                     :current_page_num="current_page_num"
+                     :total_page_num="total_page_num"
+                     :array="array"></CompetitionList>
 </div>
 </template>
 

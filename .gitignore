@@ -5,3 +5,5 @@ Foreend/src/pages/test/*
 Foreend/src/pages/index/*
 Foreend/src/components/node_modules/*
 Foreend/src/pages/CompetitionCreate/node_modules/*
+Foreend/static/*
+Foreend/vue.config.js
