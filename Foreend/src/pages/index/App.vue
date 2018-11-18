@@ -27,6 +27,13 @@
 
     </el-main>
     </el-container>
+
+    <el-container>
+      <el-footer>
+        <CCPFooter></CCPFooter>
+      </el-footer>
+    </el-container>
+
   </div>
 </template>
 
@@ -35,11 +42,12 @@
     import NavigationBar from '../../components/NavigationBar'
     import IndexSlider from '../../components/IndexSlider'
     import CompetitionProfile from '../../components/CompetitionProfile'
+    import CCPFooter from '../../components/CCPFooter'
     import axios from 'axios'
 
     axios.defaults.xsrfHeaderName = "X-CSRFToken";
     axios.defaults.headers.common = {
-        'X-CSRFToken':document.querySelector('#csrf-token input').value,
+        //'X-CSRFToken':document.querySelector('#csrf-token input').value,
         'X-Requested-With': 'XMLHttpRequest'
     };
 
@@ -64,7 +72,8 @@
         components: {
             NavigationBar,
             IndexSlider,
-            CompetitionProfile
+            CompetitionProfile,
+            CCPFooter
         },
         mounted:function () {
             let vm = this;

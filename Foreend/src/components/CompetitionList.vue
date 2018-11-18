@@ -1,17 +1,18 @@
 <template>
-<div class="competitionList">
-<div class="banner">{{ info.type }}</div>
-<el-radio-group v-model="info.typename" label="比赛类型" @change="submittype">
-    <el-radio v-for="type in comtypes" 
-    :label="type.value"  
-    :key="type.label">
-    {{type.label}}
-    </el-radio>
-    <el-radio label="全选">全选</el-radio>
-</el-radio-group>
+<div class="competitionList banner">
+<div>{{ info.type }}</div>
+    <p></p>
+    <el-radio-group v-model="info.typename" label="比赛类型" @change="submittype">
+        <el-radio v-for="type in comtypes"
+        :label="type.value"
+        :key="type.label">
+        {{type.label}}
+        </el-radio>
+        <el-radio label="全选">全选</el-radio>
+    </el-radio-group>
+    <p></p>
 
-
-<div class="banner">{{ info.list }}</div>
+<div>{{ info.list }}</div>
 <el-table
 	:data="comps"
 	stripe>
@@ -49,15 +50,19 @@
         </template>
     </el-table-column>
 </el-table>
+    <p></p>
 
-	<div class="block banner">
+	<div class="block page">
 		<span class="demonstration"></span>
-		<el-pagination @current-change="HandlePageChange"
-                       @prev-click="HandlePageChange"
-                       @next-click="HandlePageChange"
-                       v-model="page.pagenumber"
-                       layout="prev,pager,next"
-                       :total=page.pagetotal></el-pagination>
+        <el-col>
+            <el-pagination @current-change="HandlePageChange"
+                           @prev-click="HandlePageChange"
+                           @next-click="HandlePageChange"
+                           v-model="current_page_num"
+                           layout="prev,pager,next"
+                           :total="total_page_num"></el-pagination>
+        </el-col>
+
 	</div>
 
 </div>
@@ -72,11 +77,10 @@ Vue.use(ElementUI);
 import axios from 'axios'
 
 export default{
-	props:['finfo','fpage'],
+	props:['finfo','current_page_num','total_page_num','array'],
 	data:function(){
 		return{
 			info:this.finfo,
-            page:this.fpage,
 			comps:[{'number':111,
                     'name':'wzw',
                     'organizer':'df',
@@ -89,7 +93,85 @@ export default{
                     'organizer':'df',
                     'information':'info',
                     'contestId':2
-				}],
+				},
+                {'number':111,
+                    'name':'wzw',
+                    'organizer':'df',
+                    'information':'info',
+                    'contestId':1
+                },
+                {
+                    'number':122,
+                    'name':'wzw',
+                    'organizer':'df',
+                    'information':'info',
+                    'contestId':2
+                },
+                {'number':111,
+                    'name':'wzw',
+                    'organizer':'df',
+                    'information':'info',
+                    'contestId':1
+                },
+                {
+                    'number':122,
+                    'name':'wzw',
+                    'organizer':'df',
+                    'information':'info',
+                    'contestId':2
+                },
+                {'number':111,
+                    'name':'wzw',
+                    'organizer':'df',
+                    'information':'info',
+                    'contestId':1
+                },
+                {
+                    'number':122,
+                    'name':'wzw',
+                    'organizer':'df',
+                    'information':'info',
+                    'contestId':2
+                },
+                {'number':111,
+                    'name':'wzw',
+                    'organizer':'df',
+                    'information':'info',
+                    'contestId':1
+                },
+                {
+                    'number':122,
+                    'name':'wzw',
+                    'organizer':'df',
+                    'information':'info',
+                    'contestId':2
+                },
+                {'number':111,
+                    'name':'wzw',
+                    'organizer':'df',
+                    'information':'info',
+                    'contestId':1
+                },
+                {
+                    'number':122,
+                    'name':'wzw',
+                    'organizer':'df',
+                    'information':'info',
+                    'contestId':2
+                },
+                {'number':111,
+                    'name':'wzw',
+                    'organizer':'df',
+                    'information':'info',
+                    'contestId':1
+                },
+                {
+                    'number':122,
+                    'name':'wzw',
+                    'organizer':'df',
+                    'information':'info',
+                    'contestId':2
+                }],
 				comtypes:[
                 {label:'微信小程序',name:'type',value:'weixin'},
                 {label:'web开发',name:'type',value:'web'}]
@@ -99,11 +181,11 @@ export default{
 		submittype(val)
         {
            this.finfo.typename=val;
-			axios.post('/CompetitionList', { CompetitionType:val,pageNumber:'1' });
+			axios.post('/CompetitionList', { type:val,pageNum:'1' });
 		},
         HandlePageChange(val)
         {
-            axios.post('/CompetitionList',{ CompetitionType:this.finfo.typename,pageNumber:val })
+            axios.post('/CompetitionList',{ type:this.finfo.typename,pageNum:val })
         }
 	},
     mounted:function(){
@@ -114,10 +196,11 @@ export default{
 
 <style>
 .banner{
-    font-size:20px;
+    font-size:large;
     text-align: left;
     font-family: "PingFang SC";
-    padding: 70px 0px 0px 0px;
-    text-weight:bold;
   }
+    .page{
+        text-align: center;
+    }
 </style>

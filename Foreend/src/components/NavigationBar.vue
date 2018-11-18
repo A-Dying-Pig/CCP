@@ -8,7 +8,7 @@
             <a v-for="(item,index) in navi_right_items" :key="index" :href="item.href" class="navi_btn_right">{{item.name}}</a>
         </div>
         <div v-else class = "navi_right">
-            <a :href="navi_right_items_login.href" class="navi_btn_right">{{navi_right_items_login.name}}</a>
+            <a v-for="(item,index) in navi_right_items_login" :key="index" :href="item.href" class="navi_btn_right">{{item.name}}</a>
         </div>
         <hr class="line">
     </div>
@@ -29,12 +29,16 @@ export default{
                 {name:'主页',href:'/'},
                 {name:'全部比赛',href:'/contest'},
                 {name:'个人中心',href:'/profile'},
+                {name:'创建比赛',href:'/addContest'}
             ],
             navi_right_items:[
                 {name:'登录',href:'/login'},
                 {name:'注册',href:'/register'},
             ],
-            navi_right_items_login: {name:this.username,href:'/profile'}
+            navi_right_items_login: [
+                {name:this.username,href:'/profile'},
+                {name:'登出',href:'/logout'}
+            ],
         }
     },
     methods: {
