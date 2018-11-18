@@ -65,7 +65,7 @@ def submit(request):
         return JsonResponse({'msg': ''})
     else:  # pass
         old_contest = NonReviewdContest.objects.get(id=contest_id)
-        new_contest = Contest.objects.create()
+        new_contest = Contest()
 
         new_contest.title = old_contest.title
         new_contest.category = old_contest.category

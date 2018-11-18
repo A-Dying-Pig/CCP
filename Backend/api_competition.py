@@ -80,7 +80,7 @@ def create(request):
             or len(stageinfo) > MAX_PHASE or len(time) != 2:
         return JsonResponse({'code': 1, 'msg': 'Too much fields.'})
 
-    contest = NonReviewdContest.objects.create()
+    contest = NonReviewdContest()
     contest.admin_id = request.user.id
     contest.title = name
     index = 0

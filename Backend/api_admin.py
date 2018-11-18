@@ -22,7 +22,7 @@ def addJudge(request):
     except:
         return JsonResponse({'msg': 'Judge dos not exist'})
 
-    contest_judge = ContestJudge.objects.create()
+    contest_judge = ContestJudge()
     contest_judge.judge_id = judge_id
     contest_judge.contest_id = contest_id
     contest_judge.save()
