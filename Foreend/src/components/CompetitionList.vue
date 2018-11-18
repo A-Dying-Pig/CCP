@@ -1,65 +1,43 @@
 <template>
 <div class="competitionList">
-<div class="banner">{{ info.type }}</div>
-<el-radio-group v-model="info.typename" label="比赛类型" @change="submittype">
-    <el-radio v-for="type in comtypes" 
-    :label="type.value"  
-    :key="type.label">
-    {{type.label}}
-    </el-radio>
-    <el-radio label="全选">全选</el-radio>
-</el-radio-group>
+    <div class="enroll-info-spliter">{{ info.type }}</div>
+    <p></p>
+    <el-radio-group v-model="info.typename" label="比赛类型" @change="submittype">
+        <el-radio v-for="type in comtypes"
+                  :label="type.value"
+                  :key="type.label">
+            {{type.label}}
+        </el-radio>
+        <el-radio label="全选">全选</el-radio>
+    </el-radio-group>
+    <p></p>
 
+    <div  class="enroll-info-spliter">{{ info.list }}</div>
+	<el-row class="list_wrapper">
+        <el-col v-for="com in array" :key="com" class="list_item">
+            <img src="com.img_url" class="item_pic">
+            <div class="item_content_wrapper">
+                <h2><span>{{com.title}}</span></h2>
+                <p class="item_desc">{{com.intro}}</p>
+                <a href="/detail?contestId=com.contestId" >
+                    <el-button type="text" size="small" class="button">详情</el-button>
+                </a>
+            </div>
+        </el-col>
+    </el-row>
+    <p></p>
 
-<div class="banner">{{ info.list }}</div>
-<el-table
-	:data="comps"
-	stripe>
-	<el-table-column
-			prop="number"
-			label="序号"
-			width="180">
-	</el-table-column>
-	<el-table-column
-		prop="name"
-		label="名称"
-		width="180">
-	</el-table-column>
-	<el-table-column
-		prop="organizer"
-		label="组织者"
-		width="180">
-	</el-table-column>
-	<el-table-column
-		prop="information"
-		label="信息"
-		width="580">
-	</el-table-column>
-    <el-table-column
-        prop="detail"
-        label="详情">
-        <template slot-scope="scope">
-            <a href="/api/competition/detail?contestId=contestId">
-                <el-button
-                    type="text"
-                    size="small">
-                    查看
-                </el-button>
-            </a>
-        </template>
-    </el-table-column>
-</el-table>
-
-	<div class="block banner">
+	<div class="block page_select">
 		<span class="demonstration"></span>
-		<el-pagination @current-change="HandlePageChange"
-                       @prev-click="HandlePageChange"
-                       @next-click="HandlePageChange"
-                       v-model="page.pagenumber"
-                       layout="prev,pager,next"
-                       :total=page.pagetotal></el-pagination>
+        <el-col>
+            <el-pagination @current-change="HandlePageChange"
+                           @prev-click="HandlePageChange"
+                           @next-click="HandlePageChange"
+                           v-model="current_page_num"
+                           layout="prev,pager,next"
+                           :total="total_page_num"></el-pagination>
+        </el-col>
 	</div>
-
 </div>
 </template>
 
@@ -72,24 +50,68 @@ Vue.use(ElementUI);
 import axios from 'axios'
 
 export default{
-	props:['finfo','fpage'],
+	props:['finfo','current_page_num','total_page_num','array'],
 	data:function(){
 		return{
 			info:this.finfo,
-            page:this.fpage,
-			comps:[{'number':111,
-                    'name':'wzw',
-                    'organizer':'df',
-                    'information':'info',
-                    'contestId':1
+			comps:[{'title':111,
+                    'intro':'wzwdshfkjdsfkdfhakfhadfalflhahflakflafad;fascddahfdsahfp;dhfdsahfkdsahfasdflsadfkhdsafashdflahdsfhdsaf;hsafhsdafkh' +
+                    'lasdfhdsahf;dsahfdhfsalhdfkjdsaflhsafkdshfjlhdsfkjhfjlsadhjfklfdskjfldsahfkjdshfjdshfdsjfkdsflhdsfhdslfhjdshfdshfiehfjhfkjdshfj' +
+                    'dsfjdshfdshfsahdfldhsfhfjknkdsjhfhdsfuehfjf',
+                    'img_url':'df',
 				},
-				{
-                    'number':122,
-                    'name':'wzw',
-                    'organizer':'df',
-                    'information':'info',
-                    'contestId':2
-				}],
+                {'title':111,
+                    'intro':'wzw',
+                    'img_url':'df',
+                },
+                {'title':111,
+                    'intro':'wzw',
+                    'img_url':'df',
+                },
+                {'title':111,
+                    'intro':'wzw',
+                    'img_url':'df',
+                },
+                {'title':111,
+                    'intro':'wzw',
+                    'img_url':'df',
+                },
+                {'title':111,
+                    'intro':'wzw',
+                    'img_url':'df',
+                },
+                {'title':111,
+                    'intro':'wzw',
+                    'img_url':'df',
+                },
+                {'title':111,
+                    'intro':'wzw',
+                    'img_url':'df',
+                },
+                {'title':111,
+                    'intro':'wzw',
+                    'img_url':'df',
+                },
+                {'title':111,
+                    'intro':'wzw',
+                    'img_url':'df',
+                },
+                {'title':111,
+                    'intro':'wzw',
+                    'img_url':'df',
+                },
+                {'title':111,
+                    'intro':'wzw',
+                    'img_url':'df',
+                },
+                {'title':111,
+                    'intro':'wzw',
+                    'img_url':'df',
+                },
+                {'title':111,
+                    'intro':'wzw',
+                    'img_url':'df',
+                }],
 				comtypes:[
                 {label:'微信小程序',name:'type',value:'weixin'},
                 {label:'web开发',name:'type',value:'web'}]
@@ -99,11 +121,11 @@ export default{
 		submittype(val)
         {
            this.finfo.typename=val;
-			axios.post('/CompetitionList', { CompetitionType:val,pageNumber:'1' });
+			axios.post('/CompetitionList', { type:val,pageNum:'1' });
 		},
         HandlePageChange(val)
         {
-            axios.post('/CompetitionList',{ CompetitionType:this.finfo.typename,pageNumber:val })
+            axios.post('/CompetitionList',{ type:this.finfo.typename,pageNum:val })
         }
 	},
     mounted:function(){
@@ -113,11 +135,53 @@ export default{
 </script>
 
 <style>
-.banner{
-    font-size:20px;
-    text-align: left;
-    font-family: "PingFang SC";
-    padding: 70px 0px 0px 0px;
-    text-weight:bold;
-  }
+    .enroll-info-spliter{
+        font-size: 20px;
+        font-family: "PingFang SC";
+        margin-top: 30px;
+        margin-bottom: 30px;
+    }
+    .list_wrapper {
+        padding: 0 24px 24px;
+        list-style: none;
+        text-decoration : none;
+    }
+    .list_item {
+        word-break: break-all;
+        color: inherit;
+        width: 100%;
+        padding: 24px 16px;
+        border-top: 1px solid #f7f7f7;
+        display: flex;
+        align-items: center;
+        text-decoration : none;
+    }
+    .item_pic {
+        align-self: flex-start;
+        display: block;
+        flex-grow: 0;
+        flex-shrink: 0;
+        width: 130px;
+        height: 130px;
+        margin-right: 36px;
+        border-radius: 4px;
+    }
+    .item_content_wrapper {
+        width: 200px;
+        flex-grow: 1;
+        flex-shrink: 1;
+    }
+    .item_desc {
+        color: #828a92;
+        font-size: 12px;
+        line-height: 20px;
+        margin-bottom: 12px;
+    }
+    .page_select{
+        text-align: center;
+    }
+    .button{
+        text-align: right;
+    }
+
 </style>

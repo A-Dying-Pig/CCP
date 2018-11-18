@@ -1,13 +1,18 @@
-<template><div class="CompetitionCreatePage">
-    <CompetitionInfo ref="basic" typeid=1 v-bind:finfo="allinfo.basicinfo">比赛基本信息</CompetitionInfo>
-    <CompetitionInfo ref="signup" typeid=2 v-bind:finfo="allinfo.signupinfo">比赛报名设置</CompetitionInfo>
-    <CompetitionInfo ref="stage" typeid=3 v-bind:finfo="allinfo.stageinfo">比赛阶段设置</CompetitionInfo>
-    <el-row :gutter="20">
-        <el-col :space="10" :offset="5">
-            <el-button type="primary" @click="summitForm">提交</el-button>
-        </el-col>
-    </el-row>
-</div></template>
+<template>
+    <div class="CompetitionCreatePage">
+            <CompetitionInfo ref="basic" typeid=1 v-bind:finfo="allinfo.basicinfo">比赛基本信息</CompetitionInfo>
+            <CompetitionInfo ref="signup" typeid=2 v-bind:finfo="allinfo.signupinfo">比赛报名设置</CompetitionInfo>
+            <CompetitionInfo ref="stage" typeid=3 v-bind:finfo="allinfo.stageinfo">比赛阶段设置</CompetitionInfo>
+            <p></p>
+            <p></p>
+        <el-row :gutter=20 class="commit_style">
+            <el-col :span=12 :offset=6>
+                <el-button type="primary" @click="summitForm">提交</el-button>
+            </el-col>
+        </el-row>
+    </div>
+</template>
+
 <script>
     import CompetitionInfo from './CompetitionInfo'
     import axios from 'axios'
@@ -47,6 +52,7 @@
         },
         methods:{
             summitForm:function () {
+                var self = this;
                 let res=[];
                 var flag=true;
                 res.push(this.$refs.basic.validate());
@@ -63,7 +69,7 @@
                 //
                 if(flag){
                     alert('submit');
-                    axios.post('/api/competiton/create',this.data)
+                    axios.post('/api/competition/create',self.allinfo)
                         .then(function (response) {
                             console.log(response);
                         })
@@ -85,4 +91,6 @@
         }
     }
 </script>
-<style></style>
+
+<style>
+</style>

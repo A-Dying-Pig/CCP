@@ -19,17 +19,17 @@
     import CompetitionDetailAllInfo from '../../components/CompetitionDetailAllInfo';
     import CompetitionDetailContents from '../../components/CompetitionDetailContents';
     import axios from 'axios'
+    axios.defaults.xsrfHeaderName = "X-CSRFToken";
+    axios.defaults.headers.common = {
+        'X-CSRFToken':document.querySelector('#csrf-token input').value,
+        'X-Requested-With': 'XMLHttpRequest'
+    };
+
     export default {
         components: {NavigationBar,CompetitionDetailAllInfo,CompetitionDetailContents},
-        props:{'isLogin':{
-            type:Boolean,
-                default:false
-    },'contestId':{
+        props:{'contestId':{
             type:Number,
                 default:NaN
-    },'canshowlist':{
-            type:Array,
-                default:[]
     },'username':{
             type:String,
                 default:''
@@ -61,45 +61,40 @@
                         mode:'在线预览'
                     }]
                 },
-                showlist:[{
-                    value:'gradework',
-                    label:'评委评分'
-                },{
-                    value:'submitwork',
-                    label:'提交作品'
-                },{
-                    value:'infochange',
-                    label:'修改信息'
-                }]
+                showlist:[]
             }
         },
-        mounted:function () {
-            this.showlist=[];
-            for(let item of this.canshowlist){
-                if(item==='details'){
-                    this.showlist.append({value:'details',label:'详细信息'})
-                }
-                else if(item === 'gradework'){
-                    this.showlist.append({
-                        value:'gradework',
-                        label:'评委评分'
-                })}
-                else if(item === 'submitwork'){
-                    this.showlist.append({
+        created:function () {
+            var self = this;
+            //get info
+
+            axios.post('/api/competition/detail',{
+                contestId:self.contestId,
+            }).then(function (response) {
+                self.info = response.data.info;
+                let type = response.data.type;
+                //
+                self.showlist=[];
+                if(type==1){
+                    self.showlist.push({
                         value:'submitwork',
                         label:'提交作品'
-                    })}
-                else if(item === 'infochange'){
-                    this.showlist.append({
+                    });
+                }
+                else if(type==2){
+                    self.showlist.push({
+                        value:'gradework',
+                        label:'评委评分'
+                    });
+                }
+                else if(type==3){
+                    self.showlist.push({
                         value:'infochange',
                         label:'修改信息'
-                    })}
-            }
-            //get info
-            axios.get('/api/competition/detail?contestId='+this.contestId).then(function (response) {
-                this.info = response.data;
+                    });
+                }
             }).catch(function (error) {
-                console.log('/api/competition/detail?contestId='+this.contestId+'错误！！')
+                console.log('/api/competition/detail'+'错误！！')
             })
         }
     }

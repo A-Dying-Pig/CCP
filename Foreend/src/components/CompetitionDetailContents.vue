@@ -8,7 +8,7 @@
             <GradeProject></GradeProject>
         </template>
         <template v-else-if="item.value == 'submitwork'">
-            <UploadFile :file_max_number="5" :file_max_size="50" accept=".pdf,.zip,.rar"></UploadFile>
+            <UploadFile :file_max_number="5" :file_max_size="50"></UploadFile>
         </template>
         <template v-else-if="item.value == 'infochange'">
 
