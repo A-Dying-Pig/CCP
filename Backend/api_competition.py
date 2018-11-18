@@ -4,6 +4,7 @@ from django.http import JsonResponse, Http404, HttpResponse
 from django.contrib.auth.decorators import login_required
 import json
 import os
+from .utils import *
 
 def enroll(request):
     pass
@@ -30,7 +31,8 @@ def hot(request):
     return JsonResponse(context)
 
 def neededinfo(request):
-    contest_id = request.POST['competition_id']
+    data = json.loads(request.body.decode('utf-8'))
+    contest_id = data['contestId']
     contest = Contest.objects.filter(id=contest_id)
     if len(contest) != 0:
         target = contest[0]
@@ -74,7 +76,12 @@ def create(request):
     stageinfo = data['stageinfo']
 
     # 在数据库里创建比赛
-    contest = Contest.objects.create()
+    if len(holders) > MAX_HOSTS or len(person) > MAX_EXTRA or len(group) > MAX_EXTRA \
+            or len(stageinfo) > MAX_PHASE or len(time) != 2:
+        return JsonResponse({'code': 1, 'msg': 'Too much fields.'})
+
+    contest = NonReviewdContest.objects.create()
+    contest.admin_id = request.user.id
     contest.title = name
     index = 0
     while index < len(holders):
@@ -82,7 +89,7 @@ def create(request):
         index = index + 1
     index = 0
     while index < len(sponsors):
-        contest.organizers = contest.organizers + ' ' + sponsors[index]
+        contest.organizers = contest.organizers + '\n' + sponsors[index]
         index = index + 1
     contest.category = comtype
     contest.information = details
@@ -106,19 +113,9 @@ def create(request):
         setattr(contest, 'phase_evaluate_end_time' + str(index + 1), stageinfo[index]['evaluationsTimeEnd'])
         index = index + 1
     contest.save()
-    return JsonResponse({})
+    return JsonResponse({'code': 0, 'msg': ''})
 
-def getonepro(request):
-    # todo:根据评分规则返回一个作品，现在直接用第一个
-    contest_id = request.POST.get('contestId')
-    user_id = CCPUser.objects.filter()
-    files = []
-    base_dir = '/resources/contests/works/' + str(user_id) + '/'
-    for maindir, subdir, file_name_list in os.walk(base_dir):
-        for filename in file_name_list:
-            apath = os.path.join(maindir, filename)  # 合并成一个完整路径
-            files.append(apath)
-    return JsonResponse({'files': files})
+
 
 
 
