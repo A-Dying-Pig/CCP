@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html lang="zh">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width,initial-scale=1.0">
+    <link rel="icon" href="ccpicon.ico">
+    <title>创建新账户</title>
+  <link href="register.js" rel="preload" as="script"></head>
+  <body>
+    <noscript>
+      <strong>We're sorry but hello-world doesn't work properly without JavaScript enabled. Please enable it to continue.</strong>
+    </noscript>
+    <div id="app"><app error_msg={{message}}></app></div>
+
+    <p id="csrf-token" hidden>{% csrf_token %}</p>
+    <!-- built files will be auto injected -->
+  <script type="text/javascript" src="register.js"></script></body>
+</html>

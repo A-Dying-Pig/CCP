@@ -63,7 +63,7 @@
                 //
                 if(flag){
                     alert('submit');
-                    axios.post('/api/competiton/create',this.data)
+                    axios.post('/api/competition/create',this.data)
                         .then(function (response) {
                             console.log(response);
                         })

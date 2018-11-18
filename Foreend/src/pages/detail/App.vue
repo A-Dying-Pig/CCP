@@ -21,15 +21,9 @@
     import axios from 'axios'
     export default {
         components: {NavigationBar,CompetitionDetailAllInfo,CompetitionDetailContents},
-        props:{'isLogin':{
-            type:Boolean,
-                default:false
-    },'contestId':{
+        props:{'contestId':{
             type:Number,
                 default:NaN
-    },'canshowlist':{
-            type:Array,
-                default:[]
     },'username':{
             type:String,
                 default:''
@@ -74,6 +68,7 @@
             }
         },
         mounted:function () {
+            var self = this;
             this.showlist=[];
             for(let item of this.canshowlist){
                 if(item==='details'){
@@ -96,8 +91,12 @@
                     })}
             }
             //get info
-            axios.get('/api/competition/detail?contestId='+this.contestId).then(function (response) {
-                this.info = response.data;
+            axios.post('/api/competition/detail',{
+                contestId:self.contestId,
+            }).then(function (response) {
+                this.info = response.data.info;
+                let type = resp.data.type;
+                //
             }).catch(function (error) {
                 console.log('/api/competition/detail?contestId='+this.contestId+'错误！！')
             })
