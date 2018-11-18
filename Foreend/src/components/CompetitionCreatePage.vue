@@ -19,7 +19,7 @@
 
     axios.defaults.xsrfHeaderName = "X-CSRFToken";
     axios.defaults.headers.common = {
-        //'X-CSRFToken':document.querySelector('#csrf-token input').value,
+        'X-CSRFToken':document.querySelector('#csrf-token input').value,
         'X-Requested-With': 'XMLHttpRequest'
     };
     
@@ -52,6 +52,7 @@
         },
         methods:{
             summitForm:function () {
+                var self = this;
                 let res=[];
                 var flag=true;
                 res.push(this.$refs.basic.validate());
@@ -68,7 +69,7 @@
                 //
                 if(flag){
                     alert('submit');
-                    axios.post('/api/competition/create',this.data)
+                    axios.post('/api/competition/create',self.allinfo)
                         .then(function (response) {
                             console.log(response);
                         })
