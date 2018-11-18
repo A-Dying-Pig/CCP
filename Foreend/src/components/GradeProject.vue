@@ -48,18 +48,19 @@
         },
         methods:{
             getfiles:function(){
-                console.log('get file')
-                this.files=[];/*
+                console.log('getting file');
+                this.files=[];
+                var self=this;
                 axios.get('/api/competiton/getonepro')
                     .then(function (response) {
                         let urllist = response.data.files;
-                        for(let turl of urllist){
-                            let filename = turl.split('/').pop();
+                        for(let url of urllist){
+                            let filename = url.split('/').pop();
                             let filetype = filename.split('.').pop();
-                            if(checkimg(filetype)){
+                            if(self.checkimg(filetype)){
                                 filetype = 'img';
                             }
-                            this.files.push({
+                            self.files.push({
                                 name:filename,
                                 type:filetype,
                                 url:url,
@@ -68,7 +69,7 @@
                     })
                     .catch(function (error) {
                         console.log(error);
-                    });*/
+                    });
             },
             submitgrade:function () {
                 let res = this.$refs.gradeinfo.validate((valid) => {
@@ -79,36 +80,18 @@
                         return false;
                     }
                 });
-            }
-        },
-        created:function () {
-            let checkimg = function(typename) {/*
+            },
+            checkimg : function(typename) {
                 if((typename==='jpg')||(typename==='png')){
                     return true;
                 }
                 return false;
-            } ;
-            axios.get('/api/competiton/getonepro')
-                .then(function (response) {
-                    let urllist = response.data.files;
-                    for(let url of urllist){
-                        let filename = url.split('/').pop();
-                        let filetype = filename.split('.').pop();
-                        if(checkimg(filetype)){
-                            filetype = 'img';
-                        }
-                        files.push({
-                            name:filename,
-                            type:filetype,
-                            url:url,
-                        })
-                    };
-                })
-                .catch(function (error) {
-                    console.log(error);
-                });*/
+            } ,
+        },
+        created:function () {
+
+            this.getfiles();
             }
-        }
     }
 </script>
 

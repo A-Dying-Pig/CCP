@@ -1,9 +1,10 @@
-Foreend/static/js/*.html
 .idea
 Foreend/node_modules/*
-Foreend/src/pages/test/*
-Foreend/src/pages/index/*
 Foreend/src/components/node_modules/*
 Foreend/src/pages/CompetitionCreate/node_modules/*
 Foreend/static/*
+<<<<<<< HEAD
 Foreend/vue.config.js
+=======
+Foreend/templates/*
+>>>>>>> 2fb1c1707495bb2433081113da20311ca126b07a
