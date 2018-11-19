@@ -1,23 +1,23 @@
 <template>
     <div>
-        <el-row type="flex" class="row-bg enroll-info-spliter" justify="center">
+        <el-row type="flex" class="row-bg enroll-info-spliter" justify="center" >
             <el-col :span=24><div class="title">-----<slot></slot>-----</div></el-col>
         </el-row>
     <template v-if="typeid == 1">
         <el-form v-bind:model="info" :rules="basicrules" ref="info" label-width="1000px" label-position="top">
-        <el-row :gutter=20>
-            <el-col :span=12 :offset=6>
+        <el-row>
+            <el-col>
         <el-form-item label="比赛名称" prop="name" label-width="100">
             <el-input v-model="info.name"></el-input>
         </el-form-item>
             </el-col>
         </el-row>
 
-        <el-row :gutter=20>
-            <el-col :span=12 :offset=6>
+        <el-row>
+            <el-col>
         <el-form-item label="主办方" required label-width="100">
             <el-row v-for="(item,index) in info.holders" :key="item.key">
-            <el-col :span=24>
+            <el-col>
             <el-form-item  prop="holders">
                 <el-input v-model="info.holders[index]"></el-input>
             </el-form-item>
@@ -26,19 +26,19 @@
         </el-form-item>
             </el-col>
         </el-row>
-        <el-row :gutter=20>
-            <el-col :span=12 :offset=6>
+        <el-row>
+            <el-col>
                 <el-button type="primary" size="mini" icon="el-icon-plus" circle v-on:click="info.holders.push('')"></el-button>
                 <el-button type="danger" size="mini" icon="el-icon-minus" circle v-on:click="info.holders.pop()"></el-button>
             </el-col>
         </el-row>
         <p></p>
 
-        <el-row :gutter=20>
-            <el-col :span=12 :offset=6>
+        <el-row>
+            <el-col>
         <el-form-item label="承办方" label-width="100">
             <el-row v-for="(item,index) in info.sponsors" :key="item.key">
-            <el-col :span=24>
+            <el-col>
                 <el-form-item   prop="sponsors">
                     <el-input v-model="info.sponsors[index]"></el-input>
                 </el-form-item>
@@ -47,16 +47,16 @@
         </el-form-item>
             </el-col>
         </el-row>
-        <el-row :gutter=20>
-            <el-col :span=12 :offset=6>
+        <el-row>
+            <el-col>
                 <el-button type="primary" size="mini" icon="el-icon-plus" circle v-on:click="info.sponsors.push('')"></el-button>
                 <el-button type="danger" size="mini" icon="el-icon-minus" circle v-on:click="info.sponsors.pop()"></el-button>
             </el-col>
         </el-row>
         <p></p>
 
-        <el-row :gutter=20>
-            <el-col :span=12 :offset=6>
+        <el-row>
+            <el-col>
         <el-form-item label="比赛类型" prop="comtype" label-width="100">
             <el-radio-group v-model="info.comtype">
                 <el-radio v-for="item in comtypes" v-bind:label="item.label" v-bind:value="item.value" :key="item.key" label-width="80"></el-radio>
@@ -65,8 +65,8 @@
             </el-col>
         </el-row>
 
-        <el-row :gutter=20>
-            <el-col :offset=6 :span=12>
+        <el-row>
+            <el-col>
                 <el-form-item label="详细信息" prop="details" label-width="100">
                     <el-input type="textarea" :rows="10" placeholder="请输入详细信息" v-model="info.details">
                     </el-input>
@@ -78,19 +78,19 @@
 
     <template v-else-if="typeid == 2">
         <el-form v-bind:model="info" :rules="signuprules" ref="info" label-width="100px" label-position="top">
-            <el-row :gutter=20>
-                <el-col :span=12 :offset=6>
+            <el-row>
+                <el-col>
                 <el-form-item label="报名起止时间" prop="time">
                     <el-date-picker v-model="info.time" type="datetimerange" start-placeholder="报名开始时间" end-placeholder="报名结束时间" :default-time="['00:00:00','23:59:59']"></el-date-picker>
                 </el-form-item>
                 </el-col>
             </el-row>
 
-            <el-row :gutter=20>
-                <el-col :span=12 :offset=6>
+            <el-row>
+                <el-col>
                     <el-form-item label="需要选手填的个人信息" label-width="100" required>
                         <el-row v-for="(item,index) in info.person" :key="item.key">
-                            <el-col :span=24>
+                            <el-col>
                                 <el-form-item   prop="person">
                                     <el-input v-model="info.person[index]"></el-input>
                                 </el-form-item>
@@ -99,16 +99,16 @@
                     </el-form-item>
                 </el-col>
             </el-row>
-            <el-row :gutter=20>
-                <el-col :span=12 :offset=6>
+            <el-row>
+                <el-col>
                     <el-button type="primary" size="mini" icon="el-icon-plus" circle v-on:click="info.person.push('')"></el-button>
                     <el-button type="danger" size="mini" icon="el-icon-minus" circle v-on:click="info.person.pop()"></el-button>
                 </el-col>
             </el-row>
             <p></p>
 
-            <el-row :gutter=20>
-                <el-col :span=12 :offset=6>
+            <el-row>
+                <el-col>
                     <el-form-item label="报名形式" prop="mode">
                         <el-radio-group v-model="info.mode">
                             <el-radio-button label="个人赛"></el-radio-button>
@@ -119,11 +119,11 @@
             </el-row>
 
             <template v-if="info.mode === '组队赛'">
-                <el-row :gutter=20>
-                    <el-col :span=12 :offset=6>
+                <el-row>
+                    <el-col>
                         <el-form-item label="需要的队伍信息" label-width="100" required>
                             <el-row v-for="(item,index) in info.group" :key="item.key">
-                                <el-col :span=24>
+                                <el-col>
                                     <el-form-item   prop="group">
                                         <el-input v-model="info.group[index]"></el-input>
                                     </el-form-item>
@@ -132,8 +132,8 @@
                         </el-form-item>
                     </el-col>
                 </el-row>
-                <el-row :gutter=20>
-                    <el-col :span=12 :offset=6>
+                <el-row>
+                    <el-col>
                         <el-button type="primary" size="mini" icon="el-icon-plus" circle v-on:click="info.group.push('')"></el-button>
                         <el-button type="danger" size="mini" icon="el-icon-minus" circle v-on:click="info.group.pop()"></el-button>
                     </el-col>
@@ -147,9 +147,9 @@
                 <CompetitonStage v-bind:tinfo="item" v-bind:index="index" ref="info"></CompetitonStage>
             </el-col>
         </el-row>
-            <el-row :gutter=20>
-                <el-col :span=12 :offset=6>
-                    <el-button type="primary"  v-on:click="info.push({})">添加阶段</el-button>
+            <el-row>
+                <el-col>
+                    <el-button type="primary"  v-on:click="addStage()">添加阶段</el-button>
                     <el-button type="primary"  v-on:click="info.pop()">删除阶段</el-button>
                 </el-col>
             </el-row>
@@ -252,6 +252,12 @@ export default {
                 }
                 return flag;
             }
+        },
+        addStage:function () {
+            this.info.push({
+               name:'',
+               details:''
+            });
         }
     },
 }
