@@ -7,7 +7,51 @@ import os
 from .utils import *
 
 def enroll(request):
-    pass
+    data = json.loads(request.body.decode('utf-8'))
+    contestId = data['contestId']
+    userId = request.user.id
+    province = data['region']['province']
+    city = data['region']['city']
+    university = data['university']
+    comp_type = data['comp_type']
+    groupuser = data['groupuser']
+    fields = data['custom_field']
+    values = data['custom_value']
+
+    contest_player = ContestPlayer()
+    contest_player.player_id = userId
+    contest_player.contest_id = contestId
+    # need to modify database, add fileds to Contestplayer
+    le = len(values)
+    contest_player.extra_information1 = '' if le < 1 else values[0] 
+    contest_player.extra_information1 = '' if le < 2 else values[1]
+    contest_player.extra_information1 = '' if le < 3 else values[2]
+    contest_player.extra_information1 = '' if le < 4 else values[3]
+    contest_player.save()
+
+    return JsonResponse("")
+
+def list(request):
+    amount = 10
+    data = json.loads(request.body.decode('utf-8'))
+    page = int(data['pageNum'])
+    type = data['type']
+    count = Contest.objects.filter().count()[(page - 1) * amount: page * amount]
+    contests = Contest.objects.all()[page * amount]
+    array = []
+    for c in contests:
+        d = {}
+        d['title'] = c.title
+        d['intro'] = c.brief_introduction
+        d['contestId'] = c.id
+        d['img_url'] = str(c.id) + '.jpg'
+        array.append(d)
+    total_page_num = (count - 1) // amount + 1
+    return JsonResponse({
+        'total_page_num': total_page_num,
+        'current_page_num': page,
+        'array': array
+    })
 
 def slider(request):
     context = []
@@ -31,8 +75,7 @@ def hot(request):
     return JsonResponse(context)
 
 def neededinfo(request):
-    data = json.loads(request.body.decode('utf-8'))
-    contest_id = data['contestId']
+    contest_id = request.POST['competition_id']
     contest = Contest.objects.filter(id=contest_id)
     if len(contest) != 0:
         target = contest[0]
@@ -59,6 +102,7 @@ def neededinfo(request):
 
 def create(request):
     data = json.loads(request.body.decode('utf-8'))
+    print(data)
 
     basicinfo = data['basicinfo']
     name = basicinfo['name']
@@ -114,7 +158,6 @@ def create(request):
         index = index + 1
     contest.save()
     return JsonResponse({'code': 0, 'msg': ''})
-
 
 def detail(request):
     data = json.loads(request.body.decode('utf-8'))
