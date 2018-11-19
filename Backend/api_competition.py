@@ -109,8 +109,8 @@ def create(request):
         setattr(contest, 'phase_name' + str(index + 1), stageinfo[index]['name'])
         setattr(contest, 'phase_information' + str(index + 1), stageinfo[index]['details'])
         setattr(contest, 'phase_mode' + str(index + 1), stageinfo[index]['mode'])
-        setattr(contest, 'phase_hand_end_time' + str(index + 1), stageinfo[index]['hangTimeEnd'])
-        setattr(contest, 'phase_evaluate_end_time' + str(index + 1), stageinfo[index]['evaluationsTimeEnd'])
+        setattr(contest, 'phase_hand_end_time' + str(index + 1), stageinfo[index]['handTimeEnd'])
+        setattr(contest, 'phase_evaluate_end_time' + str(index + 1), stageinfo[index]['evaluationTimeEnd'])
         index = index + 1
     contest.save()
     return JsonResponse({'code': 0, 'msg': ''})

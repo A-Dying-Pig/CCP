@@ -25,6 +25,7 @@ urlpatterns = [
     path('admin/detail', admin.detail),
     path('admin/modify', admin.modify),
     path('admin/addJudge', admin.addJudge),
+    path('admin/upload', admin.upload),
     path('judge/getone', judge.getone),
     path('judge/submit', judge.submit),
     path('message/getnew', message.getnew),

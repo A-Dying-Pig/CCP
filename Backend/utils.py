@@ -6,6 +6,7 @@ MAX_PHASE = 5
 MAX_EXTRA = 4
 MAX_MEMBER = 5
 MAX_CONTEST_ONE_PAGE = 10
+MAX_PARTICIPANT_ONE_PAGE = 10
 
 class ContestUtil:
     @classmethod
@@ -119,8 +120,27 @@ class ContestPlayerUtil:
 
 class ContestGroupUtil:
     @classmethod
-    def getMember(cls, cg_obj, index):
-        pass
+    def getMember(cls, leader_id, contest_id):
+        result = []
+        group = ContestGroup.objects.filter(leader_id=leader_id, contest_id=contest_id)
+        member = CCPUser.objects.get(id=leader_id)
+        result.append({
+            'userId': leader_id,
+            'username': member.username,
+            'email': member.email
+        })
+        index = 0
+        while index < MAX_MEMBER - 1:
+            member_id = getattr(group, 'member' + str(index+1) + '_id')
+            if member_id is None:
+                break
+            member = CCPUser.objects.get(id=member_id)
+            result.append({
+                'userId': member_id,
+                'username': member.username,
+                'email': member.email
+            })
+        return result
 
     @classmethod
     def setMember(cls, cg_obj, index, member):
@@ -133,3 +153,24 @@ class ContestGroupUtil:
     @classmethod
     def setInfo(cls, cg_obj, index, info):
         pass
+
+class ContestGradeUtil:
+    @classmethod
+    def getGrade(cls, leader_id, contest_id):
+        result = []
+        index = 0
+        while index < MAX_PHASE:
+            objects = ContestGrade.objects.filter(leader_id=leader_id, contest_id=contest_id, phase=index+1)
+            total_grade = 0
+            phase_judges = 0
+            if objects.count() == 0:
+                break
+            for obj in objects:
+                if obj.grade == -1:  # 还未打分
+                    break
+                total_grade = total_grade + obj.grade
+                phase_judges = phase_judges + 1
+            phase_grade = total_grade / phase_judges
+            result.append(phase_grade)
+            index = index + 1
+        return result
