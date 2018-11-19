@@ -116,6 +116,42 @@ def create(request):
     return JsonResponse({'code': 0, 'msg': ''})
 
 
+def detail(request):
+    data = json.loads(request.body.decode('utf-8'))
+    contest_id = data['contestId']
 
+    result = {}
+    user_id = request.user.id
+    try:
+        contest = Contest.objects.get(id=contest_id)
+        result['type'] = 0
+        if ContestPlayer.objects.filter(player_id=user_id, contest_id=contest_id).count() == 1:
+            result['type'] = 1
+        elif ContestJudge.objects.filter(judge_id=user_id, contest_id=contest_id).count() == 1:
+            result['type'] = 2
+        elif contest.admin_id == user_id:
+            result['type'] = 3
+        result['info'] = {}
+        info = result['info']
+        info['basicinfo'] = {}
+        basicinfo = info['basicinfo']
+        basicinfo['name'] = contest.title
+        basicinfo['holders'] = ContestUtil.getHost(contest)
+        basicinfo['sponsors'] = contest.organizers.split('\n')
+        basicinfo['comtype'] = contest.category
+        basicinfo['details'] = contest.information
+
+        info['signupinfo'] = {}
+        signupinfo = info['signupinfo']
+        signupinfo['time'] = [contest.enroll_start, contest.enroll_end]
+        signupinfo['mode'] = 1 - contest.grouped
+        signupinfo['person'] = ContestUtil.getTitle(contest)
+        signupinfo['group'] = ContestUtil.getGroupTitle(contest)
+
+        result['info']['stageinfo'] = []
+        result['info']['stageinfo'] = ContestUtil.getStage(contest)
+    except:
+        pass
+    return JsonResponse(result)
 
 

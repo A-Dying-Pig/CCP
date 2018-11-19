@@ -17,6 +17,7 @@ urlpatterns = [
     path('competition/enroll', competition.enroll),
     path('competition/slider', competition.slider),
     path('competition/hot', competition.hot),
+    path('competition/detail', competition.detail),
     path('superadmin/contests', superadmin.contests),
     path('superadmin/detail', superadmin.detail),
     path('superadmin/submit', superadmin.submit),
