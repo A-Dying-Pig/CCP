@@ -7,7 +7,51 @@ import os
 from .utils import *
 
 def enroll(request):
-    pass
+    data = json.loads(request.body.decode('utf-8'))
+    contestId = data['contestId']
+    userId = request.user.id
+    province = data['region']['province']
+    city = data['region']['city']
+    university = data['university']
+    comp_type = data['comp_type']
+    groupuser = data['groupuser']
+    fields = data['custom_field']
+    values = data['custom_value']
+
+    contest_player = ContestPlayer()
+    contest_player.player_id = userId
+    contest_player.contest_id = contestId
+    # need to modify database, add fileds to Contestplayer
+    le = len(values)
+    contest_player.extra_information1 = '' if le < 1 else values[0] 
+    contest_player.extra_information1 = '' if le < 2 else values[1]
+    contest_player.extra_information1 = '' if le < 3 else values[2]
+    contest_player.extra_information1 = '' if le < 4 else values[3]
+    contest_player.save()
+
+    return JsonResponse("")
+
+def list(request):
+    amount = 10
+    data = json.loads(request.body.decode('utf-8'))
+    page = int(data['pageNum'])
+    type = data['type']
+    count = Contest.objects.filter().count()[(page - 1) * amount: page * amount]
+    contests = Contest.objects.all()[page * amount]
+    array = []
+    for c in contests:
+        d = {}
+        d['title'] = c.title
+        d['intro'] = c.brief_introduction
+        d['contestId'] = c.id
+        d['img_url'] = str(c.id) + '.jpg'
+        array.append(d)
+    total_page_num = (count - 1) // amount + 1
+    return JsonResponse({
+        'total_page_num': total_page_num,
+        'current_page_num': page,
+        'array': array
+    })
 
 def slider(request):
     context = []
@@ -31,8 +75,7 @@ def hot(request):
     return JsonResponse(context)
 
 def neededinfo(request):
-    data = json.loads(request.body.decode('utf-8'))
-    contest_id = data['contestId']
+    contest_id = request.POST['competition_id']
     contest = Contest.objects.filter(id=contest_id)
     if len(contest) != 0:
         target = contest[0]
@@ -59,6 +102,7 @@ def neededinfo(request):
 
 def create(request):
     data = json.loads(request.body.decode('utf-8'))
+    print(data)
 
     basicinfo = data['basicinfo']
     name = basicinfo['name']
@@ -109,49 +153,21 @@ def create(request):
         setattr(contest, 'phase_name' + str(index + 1), stageinfo[index]['name'])
         setattr(contest, 'phase_information' + str(index + 1), stageinfo[index]['details'])
         setattr(contest, 'phase_mode' + str(index + 1), stageinfo[index]['mode'])
-        setattr(contest, 'phase_hand_end_time' + str(index + 1), stageinfo[index]['hangTimeEnd'])
-        setattr(contest, 'phase_evaluate_end_time' + str(index + 1), stageinfo[index]['evaluationsTimeEnd'])
+        setattr(contest, 'phase_hand_end_time' + str(index + 1), stageinfo[index]['handTimeEnd'])
+        setattr(contest, 'phase_evaluate_end_time' + str(index + 1), stageinfo[index]['evaluationTimeEnd'])
         index = index + 1
     contest.save()
     return JsonResponse({'code': 0, 'msg': ''})
 
-
-def detail(request):
-    data = json.loads(request.body.decode('utf-8'))
-    contest_id = data['contestId']
-
-    result = {}
-    user_id = request.user.id
-    try:
-        contest = Contest.objects.get(id=contest_id)
-        result['type'] = 0
-        if ContestPlayer.objects.filter(player_id=user_id, contest_id=contest_id).count() == 1:
-            result['type'] = 1
-        elif ContestJudge.objects.filter(judge_id=user_id, contest_id=contest_id).count() == 1:
-            result['type'] = 2
-        elif contest.admin_id == user_id:
-            result['type'] = 3
-        result['info'] = {}
-        info = result['info']
-        info['basicinfo'] = {}
-        basicinfo = info['basicinfo']
-        basicinfo['name'] = contest.title
-        basicinfo['holders'] = ContestUtil.getHost(contest)
-        basicinfo['sponsors'] = contest.organizers.split('\n')
-        basicinfo['comtype'] = contest.category
-        basicinfo['details'] = contest.information
-
-        info['signupinfo'] = {}
-        signupinfo = info['signupinfo']
-        signupinfo['time'] = [contest.enroll_start, contest.enroll_end]
-        signupinfo['mode'] = 1 - contest.grouped
-        signupinfo['person'] = ContestUtil.getTitle(contest)
-        signupinfo['group'] = ContestUtil.getGroupTitle(contest)
-
-        result['info']['stageinfo'] = []
-        result['info']['stageinfo'] = ContestUtil.getStage(contest)
-    except:
-        pass
-    return JsonResponse(result)
-
+def getonepro(request):
+    # todo:根据评分规则返回一个作品，现在直接用第一个
+    contest_id = request.POST.get('contestId')
+    user_id = CCPUser.objects.filter()
+    files = []
+    base_dir = '/resources/contests/works/' + str(user_id) + '/'
+    for maindir, subdir, file_name_list in os.walk(base_dir):
+        for filename in file_name_list:
+            apath = os.path.join(maindir, filename)  # 合并成一个完整路径
+            files.append(apath)
+    return JsonResponse({'files': files})
 
