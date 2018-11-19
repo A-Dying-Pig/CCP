@@ -41,8 +41,8 @@ module.exports = {
           filename: 'index.html',
       }
   },
-    outputDir:'static/js',
-    baseUrl:'/static/js',
+    outputDir:'static',
+    baseUrl:'',
     configureWebpack:{
         resolve: {
             alias: {
