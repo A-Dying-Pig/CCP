@@ -153,5 +153,3 @@ def detail(request):
     except:
         pass
     return JsonResponse(result)
-
-
