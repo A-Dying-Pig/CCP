@@ -1,6 +1,6 @@
 <template>
     <div>
-        <img src="./../assets/img/ccpicon.png" class="naviicon">
+        <img src="../assets/img/ccpicon.png" class="naviicon">
         <div class = "navi_left">
         <a v-for="(item,index) in navi_left_items" :key="index" :href="item.href" class="navi_btn_left">{{item.name}}</a>
         </div>
@@ -8,6 +8,9 @@
             <a v-for="(item,index) in navi_right_items" :key="index" :href="item.href" class="navi_btn_right">{{item.name}}</a>
         </div>
         <div v-else class = "navi_right">
+            <el-badge :value="message_number" class="profile-msg-number-icon" :max="99">
+                <a href="/message" class="profile-msg-number"><i class="el-icon-bell"></i> </a>
+            </el-badge>
             <a v-for="(item,index) in navi_right_items_login" :key="index" :href="item.href" class="navi_btn_right">{{item.name}}</a>
         </div>
         <hr class="line">
@@ -15,6 +18,8 @@
 </template>
 
 <script>
+    import axios from 'axios'
+
 export default{
     props:{
         username:{
@@ -39,13 +44,19 @@ export default{
                 {name:this.username,href:'/profile'},
                 {name:'登出',href:'/logout'}
             ],
+            message_number:13,
         }
     },
     methods: {
-    handleSelect(key, keyPath) {
-        //console.log(key, keyPath);
+    },
+    mounted:function () {
+        if (this.username != '') {
+            axios.post('/api/message/getnew')
+                .then(response => {
+                    this.message_number = response.data.num;
+                })
+        }
     }
-}
 
 }
 
@@ -106,7 +117,20 @@ export default{
     float: left;
 }
 
-    .line{
-        width:100%;
+.line{
+    width:100%;
     }
+
+.profile-msg-number{
+    text-decoration: none;
+    color:initial;
+}
+
+.profile-msg-number-icon{
+    margin-right: 20px;
+    margin-left: 20px;
+}
 </style>
+
+
+

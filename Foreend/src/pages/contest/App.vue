@@ -5,7 +5,7 @@
         </el-header>
 
         <el-main>
-            <CompetitionListPage :pagetotal="pageTotal"></CompetitionListPage>
+            <CompetitionListPage></CompetitionListPage>
         </el-main>
     </el-container>
     </div>

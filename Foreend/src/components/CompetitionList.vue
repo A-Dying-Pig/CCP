@@ -121,11 +121,11 @@ export default{
 		submittype(val)
         {
            this.finfo.typename=val;
-			axios.post('/CompetitionList', { type:val,pageNum:'1' });
+			axios.post('/api/competition/list', { type:val,pageNum:'1' });
 		},
         HandlePageChange(val)
         {
-            axios.post('/CompetitionList',{ type:this.finfo.typename,pageNum:val })
+            axios.post('/api/competition/list',{ type:this.finfo.typename,pageNum:val })
         }
 	},
     mounted:function(){
