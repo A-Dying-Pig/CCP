@@ -27,6 +27,7 @@ def contests(request):
             'img_url': '/resources/contests/images/' + str(target.id) + '.jpg',  # todo:多种格式
             'details': target.information
         })
+        index = index + 1
     return JsonResponse(response)
 
 def detail(request):
