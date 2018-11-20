@@ -21,7 +21,7 @@
     import axios from 'axios'
     axios.defaults.xsrfHeaderName = "X-CSRFToken";
     axios.defaults.headers.common = {
-        //'X-CSRFToken':document.querySelector('#csrf-token input').value,
+        'X-CSRFToken':document.querySelector('#csrf-token input').value,
         'X-Requested-With': 'XMLHttpRequest'
     };
 
@@ -41,7 +41,7 @@
                         name:'小程序开发',
                         holders:['软件学院'],
                         sponsors:['没有'],
-                        comtype:'小程序开发',
+                        comtype:'微信小程序',
                         details:"这里是比赛详情",
                     },
                     signupinfo:{
@@ -73,6 +73,7 @@
         created:function () {
             var self = this;
             //get info
+            /*
             let type = 3;
             let now = Date.now();
 
@@ -117,8 +118,8 @@
                     value:'participantstable',
                     label:'队员信息'
                 });
-            }
-            /*axios.post('/api/competition/detail',{
+            }*/
+            axios.post('/api/competition/detail',{
                 contestId:self.contestId,
             }).then(function (response) {
                 self.info=[];
@@ -170,7 +171,7 @@
                 }
             }).catch(function (error) {
                 console.log('/api/competition/detail'+'错误！！')
-            })*/
+            })
         }
     }
 </script>

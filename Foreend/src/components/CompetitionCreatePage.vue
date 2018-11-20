@@ -1,9 +1,9 @@
 <template>
     <div class="CompetitionCreatePage">
         <el-row>
-            <el-col :offset="6" :span="12"><CompetitionInfo ref="basic" typeid=1 v-bind:finfo="allinfo.basicinfo">比赛基本信息</CompetitionInfo></el-col>
-            <el-col :offset="6" :span="12"><CompetitionInfo ref="signup" typeid=2 v-bind:finfo="allinfo.signupinfo">比赛报名设置</CompetitionInfo></el-col>
-            <el-col :offset="6" :span="12"><CompetitionInfo ref="stage" typeid=3 v-bind:finfo="allinfo.stageinfo">比赛阶段设置</CompetitionInfo></el-col>
+            <el-col :offset="6" :span="12"><CompetitionInfo ref="basic" typeid=1 v-bind:finfo="allinfo.basicinfo" :change="change">比赛基本信息</CompetitionInfo></el-col>
+            <el-col :offset="6" :span="12"><CompetitionInfo ref="signup" typeid=2 v-bind:finfo="allinfo.signupinfo" :change="change">比赛报名设置</CompetitionInfo></el-col>
+            <el-col :offset="6" :span="12"><CompetitionInfo ref="stage" typeid=3 v-bind:finfo="allinfo.stageinfo" :change="change" :signend="info.signupinfo.time[1]">比赛阶段设置</CompetitionInfo></el-col>
         </el-row>
             <p></p>
             <p></p>
@@ -29,27 +29,43 @@
         components:{
             CompetitionInfo,
         },
+        props:{
+            change:{
+              type:Boolean,
+              default:false
+            },
+            contestId:{
+                type:Number,
+                default:-1
+            },
+            info:{
+                type:Object,
+                default:function () {
+                    return {
+                        basicinfo:{
+                            name:'',
+                            holders:[''],
+                            sponsors:[],
+                            comtype:'',
+                            details:"",
+                        },
+                        signupinfo:{
+                            time:[],
+                            mode:'个人赛',
+                            person:[
+                                ''
+                            ],
+                            group:[
+                            ]
+                        },
+                        stageinfo:[{}]
+                    }
+                }
+            }
+        },
         data:function () {
             return {
-                allinfo:{
-                  basicinfo:{
-                      name:'',
-                      holders:[''],
-                      sponsors:[],
-                      comtype:'',
-                      details:"",
-                  },
-                  signupinfo:{
-                      time:[],
-                      mode:'个人赛',
-                      person:[
-                          ''
-                      ],
-                      group:[
-                      ]
-                  },
-                  stageinfo:[{}]
-                },
+                allinfo:this.info,
             }
         },
         methods:{
@@ -65,6 +81,7 @@
                         flag=false;
                     }
                 }
+                if(!flag) return;
                 //TODO put check here
                 if(this.allinfo.basicinfo.holders.length==0){
                     alert('至少要有一个主办方！');
@@ -84,7 +101,23 @@
                         return;
                     }
                 }
-                console.log(this.allinfo.stageinfo[0].details);
+                if(this.allinfo.signupinfo.time[0]>=this.allinfo.signupinfo.time[1]){
+                    alert('报名时间错误！');
+                    return;
+                }
+                let begin = this.allinfo.signupinfo.time[1];
+                for(let stage of this.allinfo.stageinfo){
+                    if(begin>=stage.handTimeEnd){
+                        alert('阶段时间错误！');
+                        return;
+                    }
+                    begin = stage.handTimeEnd;
+                    if(begin>=stage.evaluationTimeEnd){
+                        alert('阶段时间错误！');
+                        return;
+                    }
+                    begin = stage.evaluationTimeEnd;
+                }
                 //
                 if(flag){
                     alert('submit');
@@ -102,11 +135,7 @@
             }
         },
         created:function () {
-            //test
-            var self=this;
-            setInterval(function () {
-                //console.log(self.allinfo.stageinfo);
-            },500)
+
         }
     }
 </script>

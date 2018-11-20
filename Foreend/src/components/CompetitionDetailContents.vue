@@ -11,7 +11,7 @@
             <UploadFile :file_max_number="5" :file_max_size="50"></UploadFile>
         </template>
         <template v-else-if="item.value == 'infochange'">
-
+            <CompetitionCreatePage :contestId="contestId" :info="info" :change="true"></CompetitionCreatePage>
         </template>
         <template v-else-if="item.value == 'participantstable'">
             <ParticipantsTable :contestId="contestId"></ParticipantsTable>
@@ -26,13 +26,14 @@
     import GradeProject from './GradeProject'
     import UploadFile from './UploadFile'
     import ParticipantsTable from  './ParticipantsTable'
+    import CompetitionCreatePage from './CompetitionCreatePage'
     export default {
-        components:{ParticipantsTable, GradeProject,UploadFile},
+        components:{ParticipantsTable, GradeProject,UploadFile,CompetitionCreatePage},
         props:['info','showlist','contestId'],
         data:function () {
             return{
                 showlists:this.showlist
             }
-        }
+        },
     }
 </script>

@@ -64,7 +64,6 @@
                 let personlist = row.person;
                 let idx = Math.floor((this.tableheader.indexOf(col.label)-1-this.tableinfo[0].stage.length)/2);
                 if((idx<0)||(idx>this.tableheader.length)) return;
-                console.log(idx);
                 return personlist[idx].email;
             },
             CurrentPageChange:function (val) {

@@ -8,7 +8,7 @@
         <el-row>
             <el-col>
         <el-form-item label="比赛名称" prop="name" label-width="100">
-            <el-input v-model="info.name"></el-input>
+            <el-input v-model="info.name" :disabled="inputisable.basicinfo"></el-input>
         </el-form-item>
             </el-col>
         </el-row>
@@ -19,7 +19,7 @@
             <el-row v-for="(item,index) in info.holders" :key="item.key">
             <el-col>
             <el-form-item  prop="holders">
-                <el-input v-model="info.holders[index]"></el-input>
+                <el-input v-model="info.holders[index]" :disabled="inputisable.basicinfo"></el-input>
             </el-form-item>
             </el-col>
             </el-row>
@@ -28,8 +28,8 @@
         </el-row>
         <el-row>
             <el-col>
-                <el-button type="primary" size="mini" icon="el-icon-plus" circle v-on:click="info.holders.push('')"></el-button>
-                <el-button type="danger" size="mini" icon="el-icon-minus" circle v-on:click="info.holders.pop()"></el-button>
+                <el-button :disabled="inputisable.basicinfo" type="primary" size="mini" icon="el-icon-plus" circle v-on:click="info.holders.push('')"></el-button>
+                <el-button :disabled="inputisable.basicinfo" type="danger" size="mini" icon="el-icon-minus" circle v-on:click="info.holders.pop()"></el-button>
             </el-col>
         </el-row>
         <p></p>
@@ -40,7 +40,7 @@
             <el-row v-for="(item,index) in info.sponsors" :key="item.key">
             <el-col>
                 <el-form-item   prop="sponsors">
-                    <el-input v-model="info.sponsors[index]"></el-input>
+                    <el-input :disabled="inputisable.basicinfo" v-model="info.sponsors[index]"></el-input>
                 </el-form-item>
             </el-col>
             </el-row>
@@ -49,8 +49,8 @@
         </el-row>
         <el-row>
             <el-col>
-                <el-button type="primary" size="mini" icon="el-icon-plus" circle v-on:click="info.sponsors.push('')"></el-button>
-                <el-button type="danger" size="mini" icon="el-icon-minus" circle v-on:click="info.sponsors.pop()"></el-button>
+                <el-button :disabled="inputisable.basicinfo" type="primary" size="mini" icon="el-icon-plus" circle v-on:click="info.sponsors.push('')"></el-button>
+                <el-button :disabled="inputisable.basicinfo" type="danger" size="mini" icon="el-icon-minus" circle v-on:click="info.sponsors.pop()"></el-button>
             </el-col>
         </el-row>
         <p></p>
@@ -59,7 +59,7 @@
             <el-col>
         <el-form-item label="比赛类型" prop="comtype" label-width="100">
             <el-radio-group v-model="info.comtype">
-                <el-radio v-for="item in comtypes" v-bind:label="item.label" v-bind:value="item.value" :key="item.key" label-width="80"></el-radio>
+                <el-radio :disabled="inputisable.basicinfo" v-for="item in comtypes" v-bind:label="item.label" v-bind:value="item.value" :key="item.key" label-width="80"></el-radio>
             </el-radio-group>
         </el-form-item>
             </el-col>
@@ -68,7 +68,7 @@
         <el-row>
             <el-col>
                 <el-form-item label="详细信息" prop="details" label-width="100">
-                    <el-input type="textarea" :rows="10" placeholder="请输入详细信息" v-model="info.details">
+                    <el-input :disabled="inputisable.basicinfo" type="textarea" :rows="10" placeholder="请输入详细信息" v-model="info.details">
                     </el-input>
                 </el-form-item>
             </el-col>
@@ -81,7 +81,7 @@
             <el-row>
                 <el-col>
                 <el-form-item label="报名起止时间" prop="time">
-                    <el-date-picker v-model="info.time" type="datetimerange" start-placeholder="报名开始时间" end-placeholder="报名结束时间" :default-time="['00:00:00','23:59:59']"></el-date-picker>
+                    <el-date-picker :disabled="inputisable.signupinfo" v-model="info.time" type="datetimerange" start-placeholder="报名开始时间" end-placeholder="报名结束时间" :default-time="['00:00:00','23:59:59']"></el-date-picker>
                 </el-form-item>
                 </el-col>
             </el-row>
@@ -92,7 +92,7 @@
                         <el-row v-for="(item,index) in info.person" :key="item.key">
                             <el-col>
                                 <el-form-item   prop="person">
-                                    <el-input v-model="info.person[index]"></el-input>
+                                    <el-input :disabled="inputisable.signupinfo" v-model="info.person[index]"></el-input>
                                 </el-form-item>
                             </el-col>
                         </el-row>
@@ -101,8 +101,8 @@
             </el-row>
             <el-row>
                 <el-col>
-                    <el-button type="primary" size="mini" icon="el-icon-plus" circle v-on:click="info.person.push('')"></el-button>
-                    <el-button type="danger" size="mini" icon="el-icon-minus" circle v-on:click="info.person.pop()"></el-button>
+                    <el-button :disabled="inputisable.signupinfo" type="primary" size="mini" icon="el-icon-plus" circle v-on:click="info.person.push('')"></el-button>
+                    <el-button :disabled="inputisable.signupinfo" type="danger" size="mini" icon="el-icon-minus" circle v-on:click="info.person.pop()"></el-button>
                 </el-col>
             </el-row>
             <p></p>
@@ -111,8 +111,8 @@
                 <el-col>
                     <el-form-item label="报名形式" prop="mode">
                         <el-radio-group v-model="info.mode">
-                            <el-radio-button label="个人赛"></el-radio-button>
-                            <el-radio-button label="组队赛"></el-radio-button>
+                            <el-radio-button :disabled="inputisable.signupinfo" label="个人赛"></el-radio-button>
+                            <el-radio-button :disabled="inputisable.signupinfo" label="组队赛"></el-radio-button>
                         </el-radio-group>
                     </el-form-item>
                 </el-col>
@@ -144,13 +144,13 @@
         <template v-else-if="typeid == 3">
         <el-row v-for="(item,index) in info" :key="item.key">
             <el-col>
-                <CompetitonStage v-bind:tinfo="item" v-bind:index="index" ref="info"></CompetitonStage>
+                <CompetitonStage v-bind:tinfo="item" v-bind:index="index" ref="info" :change="change" :stagebegintime="stagebegintime[index]"></CompetitonStage>
             </el-col>
         </el-row>
             <el-row>
                 <el-col>
                     <el-button type="primary"  v-on:click="addStage()">添加阶段</el-button>
-                    <el-button type="primary"  v-on:click="info.pop()">删除阶段</el-button>
+                    <el-button type="primary"  v-on:click="deleteStage()" :disabled="deletestagenotok">删除阶段</el-button>
                 </el-col>
             </el-row>
         </template>
@@ -168,7 +168,7 @@ export default {
     components:{
         CompetitonStage,
     },
-    props:['finfo','typeid'],
+    props:['finfo','typeid','change','signend'],
     data:function () {
         var self=this;
         let testVali = function (rule,value,callback) {
@@ -224,13 +224,16 @@ export default {
             },
             comtypes:[
                 {label:'微信小程序',name:'type',value:'weixin'},
-                {label:'web开发',name:'type',value:'web'}]
+                {label:'web开发',name:'type',value:'web'}],
+            inputisable:{
+                basicinfo:false,
+                signupinfo:false,
+            },
+            stagebegintime:[],
+            deletestagenotok:false,
         }
     },
     methods:{
-        deleteStage: function (idx) {
-            this.info.splice(idx,1);
-        },
         validate:function () {
             var flag=true;
             if(this.typeid<3){
@@ -258,8 +261,50 @@ export default {
                name:'',
                details:''
             });
-        }
+            this.deletestagenotok = !this.checkDeleteState();
+        },
+        deleteStage:function(){
+            this.info.pop();
+            this.deletestagenotok = !this.checkDeleteState();
+
+        },
+        checkDeleteState:function () {
+            let now =Date.now();
+            //let now = 1542893167173;
+            if(this.change&&(this.typeid==3)){
+                let stagelen = this.info.length;
+                if(stagelen==0) return false;
+                else if(stagelen==1){
+                    if(now>this.signend){
+                        return false;
+                    }
+                }
+                else{
+                    if(now>this.info[stagelen-2].evaluationTimeEnd){
+                        return false;
+                    }
+                }
+            }
+            return true;
+        },
     },
+    created:function () {
+        console.log(this.change);
+        if(this.change){
+            //查看比赛详情页面，设置哪些框显示
+            this.inputisable.basicinfo=true;
+            this.inputisable.signupinfo=true;
+            //载入各个阶段开始时间
+            if(this.typeid==3){
+                this.stagebegintime.push(this.signend);
+                for(let stage of this.info){
+                    this.stagebegintime.push(stage.evaluationTimeEnd);
+                }
+                this.stagebegintime.pop();
+            }
+            this.deletestagenotok = !this.checkDeleteState();
+        }
+    }
 }
 </script>
 
