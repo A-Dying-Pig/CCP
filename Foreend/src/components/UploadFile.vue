@@ -1,7 +1,7 @@
 <template>
     <el-upload
             class="upload-file"
-            action="https://www.baidu.com"
+            action=""
             :on-preview="handlePreview"
             :on-remove="handleRemove"
             :before-remove="beforeRemove"

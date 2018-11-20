@@ -37,7 +37,7 @@
     };
     export default {
         name: "ParticipantsTable",
-        props:['contestId'],
+        props:['contestid'],
         data:function () {
             return {
                 mode:-1,
@@ -55,12 +55,14 @@
                 return stagelist[idx];
             },
             nameForm:function (row, col) {
+                if(!this.tableinfo[0]) return;
                 let personlist = row.person;
                 let idx = Math.floor((this.tableheader.indexOf(col.label)-1-this.tableinfo[0].stage.length)/2);
                 if((idx<0)||(idx>this.tableheader.length)) return;
                 return personlist[idx].name;
             },
             emailForm:function (row, col) {
+                if(!this.tableinfo[0]) return;
                 let personlist = row.person;
                 let idx = Math.floor((this.tableheader.indexOf(col.label)-1-this.tableinfo[0].stage.length)/2);
                 if((idx<0)||(idx>this.tableheader.length)) return;
@@ -81,7 +83,7 @@
                     }]
                 }];
                 axios.post('/api/admin/participants',{
-                    contestId:self.contestId,
+                    contestid:self.contestid,
                     pageNum:val,
                 }).then(function (response) {
                     self.mode = response.data.mode;
@@ -160,7 +162,7 @@
             self.tableheader.push('成员1邮箱');
 
             axios.post('/api/admin/participants',{
-                contestId:self.contestId,
+                contestid:self.contestid,
                 pageNum:1,
             }).then(function (response) {
                 self.mode = response.data.mode;

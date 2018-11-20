@@ -25,7 +25,7 @@
                 array: [{
                     title: '',
                     intro: '',
-                    contestId: 0,
+                    contestid: 0,
                     img_url: ''
                 }],
             }

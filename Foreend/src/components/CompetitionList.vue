@@ -15,11 +15,11 @@
     <div  class="enroll-info-spliter">{{ info.list }}</div>
 	<el-row class="list_wrapper">
         <el-col v-for="com in array" :key="com" class="list_item">
-            <img src="com.img_url" class="item_pic">
+            <img :src="com.img_url" class="item_pic">
             <div class="item_content_wrapper">
                 <h2><span>{{com.title}}</span></h2>
                 <p class="item_desc">{{com.intro}}</p>
-                <a href="/detail?contestId=com.contestId" >
+                <a href="/detail?contestid=com.contestid" >
                     <el-button type="text" size="small" class="button">详情</el-button>
                 </a>
             </div>
@@ -48,7 +48,11 @@ import ElementUI from 'element-ui'
 Vue.use(ElementUI);
 
 import axios from 'axios'
-
+axios.defaults.xsrfHeaderName = "X-CSRFToken";
+axios.defaults.headers.common = {
+    'X-CSRFToken':document.querySelector('#csrf-token input').value,
+    'X-Requested-With': 'XMLHttpRequest'
+};
 export default{
 	props:['finfo','current_page_num','total_page_num','array'],
 	data:function(){
@@ -121,7 +125,9 @@ export default{
 		submittype(val)
         {
            this.finfo.typename=val;
-			axios.post('/api/competition/list', { type:val,pageNum:'1' });
+			axios.post('/api/competition/list', { type:val,pageNum:'1' }).then(function (response) {
+
+            })
 		},
         HandlePageChange(val)
         {

@@ -6,7 +6,7 @@
         <el-main>
             <CompetitionDetailAllInfo :info="info"></CompetitionDetailAllInfo>
 
-            <CompetitionDetailContents :info="info" :showlist="showlist" :contestId="contestId">
+            <CompetitionDetailContents :info="info" :showlist="showlist" :contestid="contestid">
                 <template slot="details">{{ info.basicinfo.details }}</template>
             </CompetitionDetailContents>
         </el-main>
@@ -27,7 +27,7 @@
 
     export default {
         components: {NavigationBar,CompetitionDetailAllInfo,CompetitionDetailContents},
-        props:{'contestId':{
+        props:{'contestid':{
             type:Number,
                 default:NaN
     },'username':{
@@ -70,6 +70,7 @@
                 showlist:[]
             }
         },
+
         created:function () {
             var self = this;
             //get info
@@ -119,14 +120,14 @@
                     label:'队员信息'
                 });
             }*/
+            console.log(self.contestid);
             axios.post('/api/competition/detail',{
-                contestId:self.contestId,
+                contestid:self.contestid,
             }).then(function (response) {
                 self.info=[];
                 self.info = response.data.info;
                 let type = response.data.type;
                 let now = Date.now();
-
                 self.showlist=[];
                 if(type==1){
                     //当不在提交阶段时，不可以提交作品
@@ -161,10 +162,12 @@
                     }
                 }
                 else if(type==3){
+                    console.log(333);
                     self.showlist.push({
                         value:'infochange',
                         label:'修改信息'
-                    },{
+                    });
+                    self.showlist.push({
                         value:'participantstable',
                         label:'队员信息'
                     });

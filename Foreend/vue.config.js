@@ -37,12 +37,12 @@ module.exports = {
       },
       index:{
           entry: 'src/pages/index/main.js',
-          template: 'src/pages/index/index.html',
+          template: 'index/index.html',
           filename: 'index.html',
       }
   },
-    outputDir:'static',
-    baseUrl:'',
+    outputDir:'static/js',
+    baseUrl:'/static/js',
     configureWebpack:{
         resolve: {
             alias: {

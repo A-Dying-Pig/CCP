@@ -3,7 +3,7 @@
         <el-col :offset="5" :span="14">
 <el-tabs type="border-card" value="details">
     <el-tab-pane label="比赛详情" name="details"><slot name="details"></slot></el-tab-pane>
-    <el-tab-pane v-for="item in showlists" :key="item.key" :label="item.label" :name="item.value">
+    <el-tab-pane v-for="item in showlist" :key="item.key" :label="item.label" :name="item.value">
         <template v-if="item.value == 'gradework'">
             <GradeProject></GradeProject>
         </template>
@@ -11,10 +11,10 @@
             <UploadFile :file_max_number="5" :file_max_size="50"></UploadFile>
         </template>
         <template v-else-if="item.value == 'infochange'">
-            <CompetitionCreatePage :contestId="contestId" :info="info" :change="true"></CompetitionCreatePage>
+            <CompetitionCreatePage :contestid="contestid" :info="info" :change="true"></CompetitionCreatePage>
         </template>
         <template v-else-if="item.value == 'participantstable'">
-            <ParticipantsTable :contestId="contestId"></ParticipantsTable>
+            <ParticipantsTable :contestid="contestid"></ParticipantsTable>
         </template>
     </el-tab-pane>
 </el-tabs>
@@ -29,7 +29,7 @@
     import CompetitionCreatePage from './CompetitionCreatePage'
     export default {
         components:{ParticipantsTable, GradeProject,UploadFile,CompetitionCreatePage},
-        props:['info','showlist','contestId'],
+        props:['info','showlist','contestid'],
         data:function () {
             return{
                 showlists:this.showlist
