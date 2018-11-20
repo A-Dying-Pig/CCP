@@ -13,6 +13,9 @@
         <template v-else-if="item.value == 'infochange'">
 
         </template>
+        <template v-else-if="item.value == 'participantstable'">
+            <ParticipantsTable :contestId="contestId"></ParticipantsTable>
+        </template>
     </el-tab-pane>
 </el-tabs>
         </el-col>
@@ -22,9 +25,10 @@
 <script>
     import GradeProject from './GradeProject'
     import UploadFile from './UploadFile'
+    import ParticipantsTable from  './ParticipantsTable'
     export default {
-        components:{GradeProject,UploadFile},
-        props:['info','showlist'],
+        components:{ParticipantsTable, GradeProject,UploadFile},
+        props:['info','showlist','contestId'],
         data:function () {
             return{
                 showlists:this.showlist
