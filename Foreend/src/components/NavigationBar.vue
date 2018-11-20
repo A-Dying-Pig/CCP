@@ -50,10 +50,12 @@ export default{
     methods: {
     },
     mounted:function () {
-        if (this.username != '') {
+        if (this.username !== '') {
             axios.post('/api/message/getnew')
                 .then(response => {
                     this.message_number = response.data.num;
+                }).catch(function (error) {
+                    console.log('错误！！');
                 })
         }
     }

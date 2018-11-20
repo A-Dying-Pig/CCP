@@ -188,7 +188,7 @@
 
     axios.defaults.xsrfHeaderName = "X-CSRFToken";
     axios.defaults.headers.common = {
-        //'X-CSRFToken':document.querySelector('#csrf-token input').value,
+        'X-CSRFToken':document.querySelector('#csrf-token input').value,
         'X-Requested-With': 'XMLHttpRequest'
     };
 
@@ -261,7 +261,7 @@
             axios.post('/api/message/getall',{pageNum:this.message_list.current_page_num})
                 .then(response=>{
                     this.message_list = response.data;
-                })
+                });
         },
         methods:{
             UpdateMenu:function (index) {
