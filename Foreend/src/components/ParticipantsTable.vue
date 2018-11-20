@@ -1,16 +1,30 @@
 <template>
     <div>
-    <el-table :data="tableinfo" border style="width: 100%;">
-        <el-table-column prop="name" label="名称" fixed></el-table-column>
-        <el-table-column v-if="mode == 1" prop="email" label="邮箱"></el-table-column>
-        <el-table-column v-for="(item,index) in tableinfo[0].stage" :formatter="stageForm" :label="'阶段'+index+'分数'" :key="item.key"></el-table-column>
-        <template v-if="mode == 0">
-            <template v-for="(item,index) in tableinfo[0].person">
-                <el-table-column :formatter="nameForm" :label="'成员'+index+'姓名'"></el-table-column>
-                <el-table-column :formatter="emailForm" :label="'成员'+index+'邮箱'"></el-table-column>
-            </template>
-        </template>
-    </el-table>
+        <el-row type="flex" justify="center">
+            <el-col>
+                <el-table :data="tableinfo" border style="width: 100%;">
+                    <el-table-column prop="name" label="名称" fixed></el-table-column>
+                    <el-table-column v-if="mode == 1" prop="email" label="邮箱"></el-table-column>
+                    <el-table-column v-for="(item,index) in tableinfo[0].stage" :formatter="stageForm" :label="'阶段'+index+'分数'" :key="item.key"></el-table-column>
+                    <template v-if="mode == 0">
+                        <template v-for="(item,index) in tableinfo[0].person">
+                            <el-table-column :formatter="nameForm" :label="'成员'+index+'姓名'" :key="item.key"></el-table-column>
+                            <el-table-column :formatter="emailForm" :label="'成员'+index+'邮箱'" :key="item.key"></el-table-column>
+                        </template>
+                    </template>
+                </el-table>
+            </el-col>
+        </el-row>
+        <el-row type="flex" justify="center">
+            <el-col>
+                <el-pagination
+                        @current-change="CurrentPageChange"
+                        :current-page="1"
+                        layout="prev, pager, next, jumper"
+                        :total="total_page_num">
+                </el-pagination>
+            </el-col>
+        </el-row>
     </div>
 </template>
 
@@ -36,7 +50,7 @@
         methods:{
             stageForm:function (row, col) {
                 let stagelist = row.stage;
-                let idx = this.tableheader.indexOf(col.label)-2;
+                let idx = this.tableheader.indexOf(col.label)-1;
                 if((idx<0)||(idx>this.tableheader.length)) return;
                 return stagelist[idx];
             },
@@ -50,9 +64,72 @@
                 let personlist = row.person;
                 let idx = Math.floor((this.tableheader.indexOf(col.label)-1-this.tableinfo[0].stage.length)/2);
                 if((idx<0)||(idx>this.tableheader.length)) return;
-                console.log(this.tableheader.indexOf(col.label)-2-this.tableinfo[0].stage.length);
                 console.log(idx);
                 return personlist[idx].email;
+            },
+            CurrentPageChange:function (val) {
+                self.current_page_num=2;
+                this.tableinfo=[{
+                    name:'wzw',
+                    email:'ffffyouxiang',
+                    stage:[1,2,3],
+                    person:[{
+                        name:'chengyuan0',
+                        email:'0email'
+                    },{
+                        name:'chengyuan1',
+                        email:'1email'
+                    }]
+                }];
+                axios.post('/api/admin/participants',{
+                    contestId:self.contestId,
+                    pageNum:val,
+                }).then(function (response) {
+                    self.mode = response.data.mode;
+                    self.current_page_num = response.data.current_page_num;
+                    self.total_page_num = response.data.total_page_num;
+                    self.tableinfo=[];
+                    var i=1;
+                    if(self.mode==1){
+                        //个人赛
+                        for(let item of response.data.array){
+                            let one = {};
+                            one['name']=item.username;
+                            one['email']=item.email;
+                            one['stage']=[];
+                            i=1
+                            for(let point of item.points){
+                                one['stage'].append(point);
+                                i++;
+                            }
+                            self.tableinfo.append(one);
+                        }
+                    }
+                    else if(self.mode==0){
+                        //组队赛
+                        for(let item of response.data.array){
+                            let one = {};
+                            one['name']=item.captainName;
+                            one['stage']={};
+                            i=1;
+                            for(let point of item.captainPoints){
+                                one['stage'].append(point);
+                                i++;
+                            }
+                            i=1;
+                            one['person']=[];
+                            for(let person of item.group){
+                                one['person'].append({
+                                    name:person.username,
+                                    email:person.email,
+                                });
+                            }
+                            self.tableinfo.append(one);
+                        }
+                    }
+                }).catch(function (error) {
+                    console.log(error)
+                });
             }
         },
         created:function () {
@@ -74,7 +151,7 @@
             }]
             self.tableheader=[];
             self.tableheader.push('名称');
-            self.tableheader.push('邮箱');
+            //self.tableheader.push('邮箱');
             self.tableheader.push('阶段0分数');
             self.tableheader.push('阶段1分数');
             self.tableheader.push('阶段2分数');
@@ -91,6 +168,8 @@
                 self.current_page_num = response.data.current_page_num;
                 self.total_page_num = response.data.total_page_num;
                 self.tableinfo=[];
+                self.tableheader=[];
+                var i=1;
                 if(self.mode==1){
                     //个人赛
                     for(let item of response.data.array){
@@ -98,7 +177,7 @@
                         one['name']=item.username;
                         one['email']=item.email;
                         one['stage']=[];
-                        var i=1;
+                        i=1;
                         for(let point of item.points){
                             one['stage'].append(point);
                             i++;
@@ -117,7 +196,7 @@
                         let one = {};
                         one['name']=item.captainName;
                         one['stage']={};
-                        var i=1;
+                        i=1;
                         for(let point of item.captainPoints){
                             one['stage'].append(point);
                             i++;
