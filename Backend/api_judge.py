@@ -7,7 +7,7 @@ import os
 def getone(request):
     # todo: 设置分配规则，现在直接返回第一个选手的作品
     data = json.loads(request.body.decode('utf-8'))
-    contest_id = data['contestId']
+    contest_id = data['contestid']
     user_id = ContestPlayer.objects.filter()[0].id
     files = []
     base_dir = '/resources/contests/' + str(contest_id) + 'works/' + str(user_id) + '/'
@@ -20,7 +20,7 @@ def getone(request):
 def submit(request):
     data = json.loads(request.body.decode('utf-8'))
     judge_id = request.user.id
-    contest_id = data['contestId']
+    contest_id = data['contestid']
     user_id = data['userId']
     grade = data['grade']
     phase = data['phase']

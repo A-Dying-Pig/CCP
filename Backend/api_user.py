@@ -50,14 +50,14 @@ def profile(request):
     for contest in participated:
         competition['participated_competition'].append({
             'title': Contest.objects.get(id=contest.contest_id).title,
-            'url': '/detail?contestId=' + contest.contest_id,
+            'url': '/detail?contestid=' + contest.contest_id,
         })
     created = Contest.objects.filter(admin_id=id)
     competition['created_competition'] = []
     for contest in created:
         competition['created_competition'].append({
             'title': Contest.objects.get(id=contest.contest_id).title,
-            'url': '/detail?contestId=' + contest.contest_id,
+            'url': '/detail?contestid=' + contest.contest_id,
         })
 
     rated = ContestJudge.objects.filter(judge_id=id)
@@ -65,7 +65,7 @@ def profile(request):
     for contest in rated:
         competition['rated_competition'].append({
             'title': Contest.objects.get(id=contest.contest_id).title,
-            'url': '/detail?contestId=' + contest.contest_id,
+            'url': '/detail?contestid=' + contest.contest_id,
         })
 
     user = CCPUser.objects.get(id=id)

@@ -33,17 +33,17 @@ def contest(request):
         return render(request, 'contest.html', {'username': '', 'pageNum': 1})
 
 def detail(request):
-    contestId = request.GET.get('contestId')
-    print(contestId)
+    contestid = request.GET.get('contestid')
+    print(contestid)
     if request.user.is_authenticated:
-        return render(request, 'detail.html', {'username': request.user.username, 'contestid': str(contestId)})
+        return render(request, 'detail.html', {'username': request.user.username, 'contestid': str(contestid)})
     else:
-        return render(request, 'detail.html', {'username': '', 'contestid': str(contestId)})
+        return render(request, 'detail.html', {'username': '', 'contestid': str(contestid)})
 
 @login_required(login_url='/login/')
 def enroll(request):
-    contestId = request.GET.get('contestId')
-    return render(request, 'enroll.html', {'contestId': contestId, 'username': request.user.username})
+    contestid = request.GET.get('contestid')
+    return render(request, 'enroll.html', {'contestid': contestid, 'username': request.user.username})
 
 @login_required(login_url='/login')
 def profile(request):

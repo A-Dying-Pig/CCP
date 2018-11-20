@@ -9,7 +9,7 @@ from .utils import *
 
 def enroll(request):
     data = json.loads(request.body.decode('utf-8'))
-    contestId = data['contestId']
+    contestid = data['contestid']
     userId = request.user.id
     province = data['region']['province']
     city = data['region']['city']
@@ -21,7 +21,7 @@ def enroll(request):
 
     contest_player = ContestPlayer()
     contest_player.player_id = userId
-    contest_player.contest_id = contestId
+    contest_player.contest_id = contestid
     # need to modify database, add fileds to Contestplayer
     le = len(values)
     contest_player.extra_information1 = '' if le < 1 else values[0] 
@@ -44,7 +44,7 @@ def list(request):
         d = {}
         d['title'] = c.title
         d['intro'] = c.brief_introduction
-        d['contestId'] = c.id
+        d['contestid'] = c.id
         d['img_url'] = str(c.id) + '.jpg'
         array.append(d)
     total_page_num = (count - 1) // amount + 1
@@ -60,7 +60,7 @@ def slider(request):
     contest = Contest.objects.filter()
     contest_id = [contest[0].id, contest[1].id, contest[2].id]
     for i in range(0, 3):
-        context.append({'url': '/detail?contestId' + str(contest_id[i]),
+        context.append({'url': '/detail?contestid' + str(contest_id[i]),
                         'img_url': str(contest_id[i]) + '.jpg'})
     return JsonResponse(context)
 
@@ -69,7 +69,7 @@ def hot(request):
     # todo:根据比赛参赛情况返回参赛情况最好的 或者 管理员手动管理数据库中某字段
     contest = Contest.objects.filter()
     for i in range(0, 3):
-        context.append({'url': '/detail?contestId' + str(contest[i].id),
+        context.append({'url': '/detail?contestid' + str(contest[i].id),
                         'img_url': str(contest[i].id) + '.jpg',
                         'intro': contest[i].brief_introduction,
                         'title': contest[i].title})
@@ -162,7 +162,7 @@ def create(request):
 
 def detail(request):
     data = json.loads(request.body.decode('utf-8'))
-    contest_id = data['contestId']
+    contest_id = data['contestid']
 
     result = {}
     user_id = request.user.id
