@@ -6,7 +6,7 @@
         <el-main>
             <CompetitionDetailAllInfo :info="info"></CompetitionDetailAllInfo>
 
-            <CompetitionDetailContents :info="info" :showlist="showlist">
+            <CompetitionDetailContents :info="info" :showlist="showlist" :contestId="contestId">
                 <template slot="details">{{ info.basicinfo.details }}</template>
             </CompetitionDetailContents>
         </el-main>
@@ -41,7 +41,7 @@
                         name:'小程序开发',
                         holders:['软件学院'],
                         sponsors:['没有'],
-                        comtype:'小程序开发',
+                        comtype:'微信小程序',
                         details:"这里是比赛详情",
                     },
                     signupinfo:{
@@ -73,7 +73,52 @@
         created:function () {
             var self = this;
             //get info
+            /*
+            let type = 3;
+            let now = Date.now();
 
+            self.showlist=[];
+            if(type==1){
+                //当不在提交阶段时，不可以提交作品
+                let showsubmit = false;
+                let begin = self.info.signupinfo.time[1];
+                for(let stage of self.info.stageinfo){
+                    if((now>begin)&&(now<stage.handTimeEnd)){
+                        showsubmit = true;
+                    }
+                    begin = stage.evaluationTimeEnd;
+                }
+                if(showsubmit){
+                    self.showlist.push({
+                        value:'submitwork',
+                        label:'提交作品'
+                    });
+                }
+            }
+            else if(type==2){
+                //当不在评测阶段时，不可以评测作品
+                let showgrade = false;
+                for(let stage of self.info.stageinfo){
+                    if((now<stage.evaluationTimeEnd)&&(now>stage.handTimeEnd)){
+                        showgrade = true;
+                    }
+                }
+                if(showgrade){
+                    self.showlist.push({
+                        value:'gradework',
+                        label:'评委评分'
+                    });
+                }
+            }
+            else if(type==3){
+                self.showlist.push({
+                    value:'infochange',
+                    label:'修改信息'
+                },{
+                    value:'participantstable',
+                    label:'队员信息'
+                });
+            }*/
             axios.post('/api/competition/detail',{
                 contestId:self.contestId,
             }).then(function (response) {
@@ -119,6 +164,9 @@
                     self.showlist.push({
                         value:'infochange',
                         label:'修改信息'
+                    },{
+                        value:'participantstable',
+                        label:'队员信息'
                     });
                 }
             }).catch(function (error) {
