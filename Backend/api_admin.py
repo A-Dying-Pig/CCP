@@ -78,7 +78,7 @@ def detail(request):
 
     result['signupinfo'] = {}
     signupinfo = result['signupinfo']
-    signupinfo['time'] = [contest.enroll_start, contest.enroll_end]
+    signupinfo['time'] = [time.mktime(contest.enroll_start.timetuple()) * 1000, time.mktime(contest.enroll_end.timetuple()) * 1000]
     signupinfo['mode'] = 1 - contest.grouped
     signupinfo['person'] = ContestUtil.getTitle(contest)
     signupinfo['group'] = ContestUtil.getGroupTitle(contest)

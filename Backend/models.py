@@ -53,9 +53,9 @@ class Contest(models.Model):
     phase_mode5 = models.CharField(max_length=16, blank=True, null=True)
     admin_id = models.IntegerField()  # 比赛管理员User表里的id
     host1 = models.CharField(max_length=32)  # 主办方
-    host2 = models.CharField(max_length=32)
-    host3 = models.CharField(max_length=32)
-    host4 = models.CharField(max_length=32)
+    host2 = models.CharField(max_length=32, blank=True, null=True)
+    host3 = models.CharField(max_length=32, blank=True, null=True)
+    host4 = models.CharField(max_length=32, blank=True, null=True)
     organizers = models.CharField(max_length=255)  # 承办方
     extra_title1 = models.CharField(max_length=32, blank=True, null=True)  # 每个比赛特需的选手数据的标题
     extra_title2 = models.CharField(max_length=32, blank=True, null=True)
@@ -175,9 +175,9 @@ class NonReviewdContest(models.Model):
     phase_mode5 = models.CharField(max_length=16, blank=True, null=True)
     admin_id = models.IntegerField()  # 比赛管理员User表里的id
     host1 = models.CharField(max_length=32)  # 主办方
-    host2 = models.CharField(max_length=32)
-    host3 = models.CharField(max_length=32)
-    host4 = models.CharField(max_length=32)
+    host2 = models.CharField(max_length=32, blank=True, null=True)
+    host3 = models.CharField(max_length=32, blank=True, null=True)
+    host4 = models.CharField(max_length=32, blank=True, null=True)
     organizers = models.CharField(max_length=255)  # 承办方
     extra_title1 = models.CharField(max_length=32, blank=True, null=True)  # 每个比赛特需的选手数据的标题
     extra_title2 = models.CharField(max_length=32, blank=True, null=True)

@@ -1,5 +1,6 @@
 # 一些辅助函数
 from .models import *
+import time
 
 MAX_HOSTS = 4  # 最大主办方人数
 MAX_PHASE = 5
@@ -17,8 +18,8 @@ class ContestUtil:
                 tmp_dict = {}
                 tmp_dict['name'] = getattr(contest, 'phase_name'+str(i+1))
                 tmp_dict['details'] = getattr(contest, 'phase_information'+str(i+1))
-                tmp_dict['handTimeEnd'] = getattr(contest, 'phase_hand_end_time'+str(i+1))*1000
-                tmp_dict['evaluationTimeEnd'] = getattr(contest, 'phase_evaluate_end_time'+str(i+1))*1000
+                tmp_dict['handTimeEnd'] = time.mktime(getattr(contest, 'phase_hand_end_time'+str(i+1)).timetuple()) * 1000
+                tmp_dict['evaluationTimeEnd'] = time.mktime(getattr(contest, 'phase_evaluate_end_time' + str(i + 1)).timetuple()) * 1000
                 tmp_dict['mode'] = getattr(contest, 'phase_mode'+str(i+1))
                 result.append(tmp_dict)
             else:
