@@ -34,10 +34,11 @@ def contest(request):
 
 def detail(request):
     contestId = request.GET.get('contestId')
+    print(contestId)
     if request.user.is_authenticated:
-        return render(request, 'detail.html', {'username': request.user.username, 'contestId': contestId})
+        return render(request, 'detail.html', {'username': request.user.username, 'contestid': str(contestId)})
     else:
-        return render(request, 'detail.html', {'username': '', 'contestId': contestId})
+        return render(request, 'detail.html', {'username': '', 'contestid': str(contestId)})
 
 @login_required(login_url='/login/')
 def enroll(request):
@@ -51,3 +52,7 @@ def profile(request):
 @login_required(login_url='/login')
 def addContest(request):
     return render(request, 'addContest.html', {'username': request.user.username})
+
+@login_required(login_url='/login')
+def superadmin(request):
+    return render(request, 'superadmin.html', {'username': request.user.username})

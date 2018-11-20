@@ -3,6 +3,7 @@ from .models import *
 from django.http import JsonResponse, Http404, HttpResponse
 from django.contrib.auth.decorators import login_required
 import json
+import time
 import os
 from .utils import *
 
@@ -36,8 +37,8 @@ def list(request):
     data = json.loads(request.body.decode('utf-8'))
     page = int(data['pageNum'])
     type = data['type']
-    count = Contest.objects.filter().count()[(page - 1) * amount: page * amount]
-    contests = Contest.objects.all()[page * amount]
+    count = Contest.objects.filter().count()
+    contests = Contest.objects.all()[(page - 1) * amount: page * amount]
     array = []
     for c in contests:
         d = {}
@@ -186,7 +187,7 @@ def detail(request):
 
         info['signupinfo'] = {}
         signupinfo = info['signupinfo']
-        signupinfo['time'] = [contest.enroll_start, contest.enroll_end]
+        signupinfo['time'] = [time.mktime(contest.enroll_start.timetuple())*1000, time.mktime(contest.enroll_end.timetuple())*1000]
         signupinfo['mode'] = 1 - contest.grouped
         signupinfo['person'] = ContestUtil.getTitle(contest)
         signupinfo['group'] = ContestUtil.getGroupTitle(contest)
