@@ -3,9 +3,12 @@
         <el-row :gutter="20">
             <el-col :offset="5" :span="14">
                 <el-card shadow="always">
-                    <el-row :gutter="20">
-                        <el-col :space="10" class="title">
-                            {{ info.basicinfo.name }}
+                    <el-row :gutter="24">
+                        <el-col class="title" :span="5">
+                            <b>{{ info.basicinfo.name }}</b>
+                        </el-col>
+                        <el-col v-if="(type == 0)&&(Date.now()>info.signupinfo.time[0])&&(Date.now()<info.signupinfo.time[1])" :span="5" :offset="14">
+                            <el-button @click="clicksign" type="primary">报名参赛！</el-button>
                         </el-col>
                     </el-row>
                     <p></p>
@@ -28,7 +31,7 @@
 <script>
 
     export default {
-        props:['info'],
+        props:['info','type','contestid'],
         data:function () {
             return{
                 activeStage:0,
@@ -56,6 +59,9 @@
                     }
                 }
                 return this.info.stageinfo.length*2+2;
+            },
+            clicksign:function () {
+                location.href="/enroll?contestid="+this.contestid;
             }
         },
         created:function () {
@@ -67,6 +73,6 @@
 <style>
 .title{
     text-align: left;
-    font-size: 20px;
+    font-size: 40px;
 }
 </style>

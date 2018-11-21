@@ -4,7 +4,7 @@
             <NavigationBar :username="username"></NavigationBar>
         </el-header>
         <el-main>
-            <CompetitionDetailAllInfo :info="info"></CompetitionDetailAllInfo>
+            <CompetitionDetailAllInfo :info="info" :type="type" :contestid="contestid"></CompetitionDetailAllInfo>
 
             <CompetitionDetailContents :info="info" :showlist="showlist" :contestid="contestid">
                 <template slot="details">{{ info.basicinfo.details }}</template>
@@ -67,12 +67,14 @@
                         mode:'在线预览'
                     }]
                 },
-                showlist:[]
+                showlist:[],
+                type:0,
             }
         },
 
         created:function () {
             var self = this;
+            let type = 0;
             //get info
             /*
             let type = 3;
@@ -126,7 +128,7 @@
             }).then(function (response) {
                 self.info=[];
                 self.info = response.data.info;
-                let type = response.data.type;
+                self.type = response.data.type;
                 let now = Date.now();
                 self.showlist=[];
                 if(type==1){
