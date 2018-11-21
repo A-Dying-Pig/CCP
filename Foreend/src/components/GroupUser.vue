@@ -11,8 +11,8 @@
     </el-form>
 
     <el-table :data="group_user" style="width: 100%">
-        <el-table-column prop="name" label="组员" width="180"></el-table-column>
-        <el-table-column label="删除" width="180">
+        <el-table-column prop="name" label="组员" min-width="5"></el-table-column>
+        <el-table-column label="删除" width="180" min-width="1">
             <template slot-scope="scope">
                 <el-button
                         size="mini"

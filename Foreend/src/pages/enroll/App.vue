@@ -15,13 +15,13 @@
         </el-row>
 
         <el-row :gutter="0">
-          <el-col :span="12" :offset="6">
+          <el-col :span="8" :offset="9">
             <RegionPicker @new-region="UpdateRegion"></RegionPicker>
           </el-col>
         </el-row>
 
         <el-row :gutter="0">
-          <el-col :span="12" :offset="6">
+          <el-col :span="8" :offset="9">
             <UniversityPicker @new-university="UpdateUniversity"></UniversityPicker>
           </el-col>
         </el-row>
@@ -39,7 +39,7 @@
           </el-row>
 
           <el-row :gutter="0">
-            <el-col :span="12" :offset="6">
+            <el-col :span="8" :offset="9">
               <GroupUser :competition_id="competition_id"
                          :group_min_number="enroll_table.group_min_number"
                          :group_max_number="enroll_table.group_max_number"
@@ -57,7 +57,7 @@
         </div>
 
 
-        <el-row :gutter="0" class="enroll-info-spliter">
+        <el-row v-if="extra_length!==0" :gutter="0" class="enroll-info-spliter">
           <el-col :span="12" :offset="6"> -----额外信息-----</el-col>
         </el-row>
 
@@ -146,13 +146,14 @@
         mounted:function () {
             let vm = this;
             vm.extra_length = vm.enroll_table.extra.length;
-            for (let i = 0 ; i < vm.extra_length; i++){
-                vm.$set(vm.extra_info,i,'');
-            }
+            //for (let i = 0 ; i < vm.extra_length; i++){
+            //    vm.$set(vm.extra_info,i,'');
+            //}
             axios.post('/api/competition/neededinfo',{contestid:this.competition_id})
                 .then(response=>{
                     vm.enroll_table = response.data;
                     vm.extra_length = vm.enroll_table.extra.length;
+                    //console.log(vm.extra_length);
                     for (let i = 0 ; i < vm.extra_length; i++){
                         vm.$set(vm.extra_info,i,'');
                     }
@@ -225,7 +226,7 @@
                 enroll_info.username = this.m_username;
                 enroll_info.region = this.region;
                 enroll_info.university = this.university;
-                //console.log(enroll_info);
+                console.log(enroll_info);
                 axios.post('/api/competition/enroll',enroll_info)
                     .then(response=>{
                         let vm = this;

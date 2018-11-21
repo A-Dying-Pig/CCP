@@ -52,7 +52,7 @@
                     </div>
                     <div class="basic-info">
                       <div class="info-item"><span class="title">比赛名称:</span> <span class="content">{{contest_detail.basicinfo.name}}</span></div>
-                      <div class="info-item"><span class="title">举办方:</span> <span v-for="(item,index) in Array(contest_detail.basicinfo.holders)" :key="index" class="content">{{item}}</span></div>
+                      <div class="info-item"><span class="title">举办方:</span> <span v-for="(item,index) in contest_detail.basicinfo.holders" :key="index" class="content">{{item}}</span></div>
                       <div class="info-item"><span class="title">承办方:</span> <span v-for="(item,index) in contest_detail.basicinfo.sponsors" :key="index" class="content">{{item}}</span></div>
                       <div class="info-item"><span class="title">比赛类型:</span> <span class="content">{{contest_detail.basicinfo.comtype}}</span></div>
                       <div class="info-item"><span class="title">比赛详情:</span> <br>
@@ -92,8 +92,8 @@
                       <div v-for="(item,index) in contest_detail.stageinfo" :key="index" class="stage-info">
                         <div class="info-item"><span class="title">阶段比赛名称:</span> <span class="content">{{item.name}}</span></div>
                         <div class="info-item"><span class="title">阶段比赛详情:</span> <span class="content">{{item.details}}</span></div>
-                        <div class="info-item"><span class="title">阶段比赛提交截止日期:</span> <span class="content">{{item.handTimeEnd}}</span></div>
-                        <div class="info-item"><span class="title">阶段比赛打分截止日期:</span> <span class="content">{{item.evaluationTimeEnd}}</span></div>
+                        <div class="info-item"><span class="title">阶段比赛提交截止日期:</span> <span class="content">{{RealTime(item.handTimeEnd)}}</span></div>
+                        <div class="info-item"><span class="title">阶段比赛打分截止日期:</span> <span class="content">{{RealTime(item.evaluationTimeEnd)}}</span></div>
                         <div class="info-item"><span class="title">打分方式:</span> <span class="content">{{item.mode}}</span></div>
                         <hr>
                       </div>
@@ -206,8 +206,7 @@
         mounted:function () {
             axios.post('/api/super/contests',{pageNum:1})
                 .then(response=>{
-                        this.contest_list = eval(response.data);
-                        console.log(this.contest_list);
+                        this.contest_list = response.data;
                 });
         },
 
@@ -251,6 +250,10 @@
                                 message: '操作成功!',
                                 type: 'success'
                             });
+                            axios.post('/api/super/contests',{pageNum:1})
+                                .then(response=>{
+                                    this.contest_list = response.data;
+                                });
                         }
                         else{
                             vm.$message({
@@ -262,6 +265,15 @@
                     });
                 this.contest_switch = 0;
             },
+            RealTime:function (timestamp) {
+                let now = new Date(timestamp),
+                    y = now.getFullYear(),
+                    m = now.getMonth() + 1,
+                    d = now.getDate();
+                let str = y + "-" + (m < 10 ? "0" + m : m) + "-" + (d < 10 ? "0" + d : d) + " " + now.toTimeString().substr(0, 8);
+                console.log(str);
+                return str;
+            }
         }
     }
 </script>
