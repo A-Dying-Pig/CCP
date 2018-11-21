@@ -100,10 +100,10 @@
                             one['stage']=[];
                             i=1
                             for(let point of item.points){
-                                one['stage'].append(point);
+                                one['stage'].push(point);
                                 i++;
                             }
-                            self.tableinfo.append(one);
+                            self.tableinfo.push(one);
                         }
                     }
                     else if(self.mode==0){
@@ -114,18 +114,18 @@
                             one['stage']={};
                             i=1;
                             for(let point of item.captainPoints){
-                                one['stage'].append(point);
+                                one['stage'].push(point);
                                 i++;
                             }
                             i=1;
                             one['person']=[];
                             for(let person of item.group){
-                                one['person'].append({
+                                one['person'].push({
                                     name:person.username,
                                     email:person.email,
                                 });
                             }
-                            self.tableinfo.append(one);
+                            self.tableinfo.push(one);
                         }
                     }
                 }).catch(function (error) {
@@ -180,10 +180,11 @@
                         one['stage']=[];
                         i=1;
                         for(let point of item.points){
-                            one['stage'].append(point);
+                            one['stage'].push(point);
                             i++;
                         }
-                        self.tableinfo.append(one);
+
+                        self.tableinfo.push(one);
                     }
                     self.tableheader.push('名称');
                     self.tableheader.push('邮箱');
@@ -199,18 +200,18 @@
                         one['stage']={};
                         i=1;
                         for(let point of item.captainPoints){
-                            one['stage'].append(point);
+                            one['stage'].push(point);
                             i++;
                         }
                         i=1;
                         one['person']=[];
                         for(let person of item.group){
-                            one['person'].append({
+                            one['person'].push({
                                 name:person.username,
                                 email:person.email,
                             });
                         }
-                        self.tableinfo.append(one);
+                        self.tableinfo.push(one);
                     }
                     self.tableheader.push('名称');
                     for(let idx in self.tableinfo[0].stage){

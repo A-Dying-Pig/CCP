@@ -113,7 +113,12 @@ export default {
                 else if((now>this.stagebegintime)&&(now<this.info.handTimeEnd)){
                     this.editableinput['name']=true;
                     this.editableinput['details']=true;
+                }
+                else if((now>this.info.handTimeEnd)&&(now<this.info.evaluationTimeEnd)){
+                    this.editableinput['name']=true;
+                    this.editableinput['details']=true;
                     this.editableinput['handTimeEnd']=true;
+                    this.editableinput['mode']=true;
                 }
                 else {
                     this.editableinput['name']=true;
