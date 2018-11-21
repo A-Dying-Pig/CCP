@@ -87,7 +87,7 @@ def neededinfo(request):
         group_min_number = target.group_min_number
         group_max_number = target.group_max_number
         context = {
-            'comp_type': comp_type,
+            'comp_type': 1 if comp_type else 0,
             'extra': extra,
             'group_min_number': group_min_number,
             'group_max_number': group_max_number
