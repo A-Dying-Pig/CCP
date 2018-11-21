@@ -33,7 +33,6 @@ def contests(request):
 def detail(request):
     data = json.loads(request.body.decode('utf-8'))
     contest_id = data['contestid']
-
     result = {}
     contest = NonReviewdContest.objects.get(id=contest_id)
     result['basicinfo'] = {}
