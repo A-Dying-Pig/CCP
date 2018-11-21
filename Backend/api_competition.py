@@ -19,19 +19,19 @@ def enroll(request):
         groupuser = data['groupuser']
     fields = data['custom_field']
     values = data['custom_value']
-    print(values)
+
     contest_player = ContestPlayer()
     contest_player.player_id = userId
     contest_player.contest_id = contestid
     # need to modify database, add fileds to Contestplayer
     le = len(values)
-    contest_player.extra_information1 = '' if le < 1 else values['0'] 
-    contest_player.extra_information1 = '' if le < 2 else values['1']
-    #contest_player.extra_information1 = '' if le < 3 else values[2]
-    #contest_player.extra_information1 = '' if le < 4 else values[3]
+    contest_player.extra_information1 = '' if le < 1 else values[0] 
+    contest_player.extra_information1 = '' if le < 2 else values[1]
+    contest_player.extra_information1 = '' if le < 3 else values[2]
+    contest_player.extra_information1 = '' if le < 4 else values[3]
     contest_player.save()
 
-    return JsonResponse({'msg': ''})
+    return HttpResponse("")
 
 def list(request):
     amount = 10
@@ -83,7 +83,14 @@ def neededinfo(request):
     if len(contest) != 0:
         target = contest[0]
         comp_type = not target.grouped
-        extra = ContestUtil.getTitle(target)
+        extra = []
+        extra_str = target.extra_title
+        current_pos = 0
+        last_pos = 0
+        while current_pos != -1 and current_pos != len(extra_str) - 1:
+            last_pos = current_pos
+            current_pos = extra_str.find('\n', current_pos)
+            extra.append(extra_str[last_pos, current_pos])
         group_min_number = target.group_min_number
         group_max_number = target.group_max_number
         context = {
