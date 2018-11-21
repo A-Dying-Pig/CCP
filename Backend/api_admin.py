@@ -7,7 +7,7 @@ from .utils import *
 def participants(request):
     data = json.loads(request.body.decode('utf-8'))
 
-    contest_id = data['contestId']
+    contest_id = data['contestid']
     page_num = data['pageNum']
 
     result = {}
@@ -64,7 +64,7 @@ def participants(request):
 def detail(request):
     data = json.loads(request.body.decode('utf-8'))
 
-    contest_id = data['contestId']
+    contest_id = data['contestid']
 
     result = {}
     contest = Contest.objects.get(id=contest_id)
@@ -91,7 +91,7 @@ def detail(request):
 def modify(request):
     data = json.loads(request.body.decode('utf-8'))
 
-    contest_id = data['contestId']
+    contest_id = data['contestid']
 
     basicinfo = data['basicinfo']
     name = basicinfo['name']
@@ -153,7 +153,7 @@ def modify(request):
 def addJudge(request):
     data = json.loads(request.body.decode('utf-8'))
     username = data['username']
-    contest_id = data['contestId']
+    contest_id = data['contestid']
     result = {}
     try:
         judge_id = CCPUser.objects.get(username=username).id

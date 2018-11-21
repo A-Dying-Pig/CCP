@@ -9,19 +9,20 @@ from .utils import *
 
 def enroll(request):
     data = json.loads(request.body.decode('utf-8'))
-    contestId = data['contestId']
+    contestid = data['contestid']
     userId = request.user.id
     province = data['region']['province']
     city = data['region']['city']
     university = data['university']
-    comp_type = data['comp_type']
-    groupuser = data['groupuser']
+    comp_type = int(data['comp_type'])
+    if comp_type == 0:
+        groupuser = data['groupuser']
     fields = data['custom_field']
     values = data['custom_value']
 
     contest_player = ContestPlayer()
     contest_player.player_id = userId
-    contest_player.contest_id = contestId
+    contest_player.contest_id = contestid
     # need to modify database, add fileds to Contestplayer
     le = len(values)
     contest_player.extra_information1 = '' if le < 1 else values[0] 
@@ -30,7 +31,7 @@ def enroll(request):
     contest_player.extra_information1 = '' if le < 4 else values[3]
     contest_player.save()
 
-    return JsonResponse("")
+    return HttpResponse("")
 
 def list(request):
     amount = 10
@@ -44,7 +45,7 @@ def list(request):
         d = {}
         d['title'] = c.title
         d['intro'] = c.brief_introduction
-        d['contestId'] = c.id
+        d['contestid'] = c.id
         d['img_url'] = str(c.id) + '.jpg'
         array.append(d)
     total_page_num = (count - 1) // amount + 1
@@ -60,7 +61,7 @@ def slider(request):
     contest = Contest.objects.filter()
     contest_id = [contest[0].id, contest[1].id, contest[2].id]
     for i in range(0, 3):
-        context.append({'url': '/detail?contestId' + str(contest_id[i]),
+        context.append({'url': '/detail?contestid' + str(contest_id[i]),
                         'img_url': str(contest_id[i]) + '.jpg'})
     return JsonResponse(context)
 
@@ -69,14 +70,15 @@ def hot(request):
     # todo:根据比赛参赛情况返回参赛情况最好的 或者 管理员手动管理数据库中某字段
     contest = Contest.objects.filter()
     for i in range(0, 3):
-        context.append({'url': '/detail?contestId' + str(contest[i].id),
+        context.append({'url': '/detail?contestid' + str(contest[i].id),
                         'img_url': str(contest[i].id) + '.jpg',
                         'intro': contest[i].brief_introduction,
                         'title': contest[i].title})
     return JsonResponse(context)
 
 def neededinfo(request):
-    contest_id = request.POST['competition_id']
+    data = json.loads(request.body.decode('utf-8'))
+    contest_id = data['contestid']
     contest = Contest.objects.filter(id=contest_id)
     if len(contest) != 0:
         target = contest[0]
@@ -85,7 +87,7 @@ def neededinfo(request):
         group_min_number = target.group_min_number
         group_max_number = target.group_max_number
         context = {
-            'comp_type': comp_type,
+            'comp_type': 1 if comp_type else 0,
             'extra': extra,
             'group_min_number': group_min_number,
             'group_max_number': group_max_number
@@ -155,7 +157,7 @@ def create(request):
 
 def detail(request):
     data = json.loads(request.body.decode('utf-8'))
-    contest_id = data['contestId']
+    contest_id = data['contestid']
 
     result = {}
     user_id = request.user.id

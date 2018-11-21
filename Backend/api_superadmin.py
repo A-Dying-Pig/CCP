@@ -20,7 +20,7 @@ def contests(request):
     while index < min(MAX_CONTEST_ONE_PAGE * page_number, contests_number):
         target = NonReviewdContest.objects.all()[index]
         response['array'].append({
-            'contestId': target.id,
+            'contestid': target.id,
             'title': target.title,
             'holders': ContestUtil.getHost(target),
             'sponsors': target.organizers.split('\n'),
@@ -32,8 +32,7 @@ def contests(request):
 
 def detail(request):
     data = json.loads(request.body.decode('utf-8'))
-    contest_id = data['contestId']
-
+    contest_id = data['contestid']
     result = {}
     contest = NonReviewdContest.objects.get(id=contest_id)
     result['basicinfo'] = {}
@@ -58,7 +57,7 @@ def detail(request):
 
 def submit(request):
     data = json.loads(request.body.decode('utf-8'))
-    contest_id = data['contestId']
+    contest_id = data['contestid']
     passed = data['pass']
     if passed == 0:  # not pass
         target = NonReviewdContest.objects.get(id=contest_id)

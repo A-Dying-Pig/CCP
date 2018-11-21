@@ -16,14 +16,14 @@ def getall(request):
         page = int(data['pageNum'])
     except:
         page = 1
-    count = NotificationUser.objects().filter(user_id=request.user.id).count()
+    count = NotificationUser.objects.filter(user_id=request.user.id).count()
     total_page_num = (count - 1) // amount + 1
-    ntf = NotificationUser.objects().all()[(page-1)*amount, page*amount]
+    ntf = NotificationUser.objects.all()[(page-1)*amount: page*amount]
     array = []
     for n in ntf:
         d = {}
         d['messageId'] = n.id
-        d['context'] = Notification.objects().get(id=n.id).title
+        d['context'] = Notification.objects.get(id=n.id).title
         d['read'] = 1 if n.read else 0
         array.append(d)
 
@@ -36,7 +36,7 @@ def getall(request):
 def detail(request):
     data = json.loads(request.body.decode('utf-8'))
     mId = data['messageId']
-    ntf = Notification.objects().get(id=mId)
+    ntf = Notification.objects.get(id=mId)
     return JsonResponse({
         'title': ntf.title,
         'content': ntf.context
