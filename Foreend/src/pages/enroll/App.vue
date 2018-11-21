@@ -133,8 +133,7 @@
                 person_info:{
                 },
                 //extra info
-                extra_info:{
-                },
+                extra_info:[],
                 extra_length:0,
             }
         },
@@ -222,7 +221,7 @@
                 //extra_info
                 enroll_info.custom_field = this.enroll_table.extra;
                 enroll_info.custom_value = this.extra_info;
-                enroll_info.contestId = this.competition_id
+                enroll_info.contestId = this.competition_id;
                 enroll_info.username = this.m_username;
                 enroll_info.region = this.region;
                 enroll_info.university = this.university;

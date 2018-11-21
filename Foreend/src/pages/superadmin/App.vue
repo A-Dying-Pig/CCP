@@ -204,7 +204,7 @@
             SuperCheckContestItem
         },
         mounted:function () {
-            axios.post('/api/superadmin/contests',{pageNum:1})
+            axios.post('/api/super/contests',{pageNum:1})
                 .then(response=>{
                         this.contest_list = response.data;
                 });
@@ -212,26 +212,26 @@
 
         methods:{
             CurrentPageChange:function (cur_page) {
-                axios.post('/api/superadmin/contests',{pageNum:cur_page})
+                axios.post('/api/super/contests',{pageNum:cur_page})
                     .then(response=>{
-                        this.contest_list = response.data;
+                        this.contest_list = eval(response.data);
                     })
             },
             PagePrevious:function (cur_page) {
-                axios.post('/api/superadmin/contests',{pageNum:cur_page})
+                axios.post('/api/super/contests',{pageNum:cur_page})
                     .then(response=>{
                         this.contest_list = response.data;
                     })
             },
             PageNext:function (cur_page) {
-                axios.post('/api/superadmin/contests',{pageNum:cur_page})
+                axios.post('/api/super/contests',{pageNum:cur_page})
                     .then(response=>{
                         this.contest_list = response.data;
                     })
             },
             ShowContestDetail:function (id) {
                 this.contest_detail_id = id;
-                axios.post('/api/superadmin/detail',{contestId:id})
+                axios.post('/api/super/detail',{contestId:id})
                     .then(response=>{
                         this.contest_detail = response.data;
                         this.contest_switch = 1;
@@ -243,9 +243,9 @@
             },
             CheckPass:function ( cur_pass ) {
                 let vm = this;
-                axios.post('/api/superadmin/submit',{ contestId:this.contest_detail_id,pass:cur_pass})
+                axios.post('/api/super/submit',{ contestid:this.contest_detail_id,pass:cur_pass})
                     .then(response=>{
-                        if(response.data === ''){
+                        if(response.data.msg === ''){
                             vm.$message({
                                 message: '操作成功!',
                                 type: 'success'
