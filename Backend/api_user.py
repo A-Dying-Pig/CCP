@@ -56,8 +56,8 @@ def profile(request):
     competition['created_competition'] = []
     for contest in created:
         competition['created_competition'].append({
-            'title': Contest.objects.get(id=contest.contest_id).title,
-            'url': '/detail?contestid=' + str(contest.contest_id),
+            'title': Contest.objects.get(id=contest.id).title,
+            'url': '/detail?contestid=' + str(contest.id),
         })
 
     rated = ContestJudge.objects.filter(judge_id=id)
