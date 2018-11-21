@@ -6,13 +6,13 @@
             </div>
 
             <div class="super-check-contest-item-info">
-                <div class="info-item"><span class="title">比赛id:</span> <span class="content">{{contestId}}</span></div>
+                <div class="info-item"><span class="title">比赛id:</span> <span class="content">{{contestid}}</span></div>
                 <div class="info-item"><span class="title">比赛标题:</span> <span class="content">{{title}}</span></div>
                 <div class="info-item"><span class="title">举办方:</span> <span class="content">{{holders}}</span></div>
                 <div class="info-item"><span class="title">承办方:</span> <span class="content">{{sponsors}}</span></div>
             </div>
             <div class="super-button">
-                <el-button style="padding: 10px 5px" @click="$emit('new-contest-detail',contestId)">查看详情</el-button>
+                <el-button style="padding: 10px 5px" @click="$emit('new-contest-detail',contestid)">查看详情</el-button>
             </div>
         </el-card>
 
@@ -22,7 +22,7 @@
 <script>
     export default{
         props:{
-            contestId:{
+            contestid:{
                 default:0,
             },
             title:{

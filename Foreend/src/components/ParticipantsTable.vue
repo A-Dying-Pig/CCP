@@ -37,7 +37,7 @@
     };
     export default {
         name: "ParticipantsTable",
-        props:['contestId'],
+        props:['contestid'],
         data:function () {
             return {
                 mode:-1,
@@ -55,12 +55,14 @@
                 return stagelist[idx];
             },
             nameForm:function (row, col) {
+                if(!this.tableinfo[0]) return;
                 let personlist = row.person;
                 let idx = Math.floor((this.tableheader.indexOf(col.label)-1-this.tableinfo[0].stage.length)/2);
                 if((idx<0)||(idx>this.tableheader.length)) return;
                 return personlist[idx].name;
             },
             emailForm:function (row, col) {
+                if(!this.tableinfo[0]) return;
                 let personlist = row.person;
                 let idx = Math.floor((this.tableheader.indexOf(col.label)-1-this.tableinfo[0].stage.length)/2);
                 if((idx<0)||(idx>this.tableheader.length)) return;
@@ -81,7 +83,7 @@
                     }]
                 }];
                 axios.post('/api/admin/participants',{
-                    contestId:self.contestId,
+                    contestid:self.contestid,
                     pageNum:val,
                 }).then(function (response) {
                     self.mode = response.data.mode;
@@ -98,10 +100,10 @@
                             one['stage']=[];
                             i=1
                             for(let point of item.points){
-                                one['stage'].append(point);
+                                one['stage'].push(point);
                                 i++;
                             }
-                            self.tableinfo.append(one);
+                            self.tableinfo.push(one);
                         }
                     }
                     else if(self.mode==0){
@@ -112,18 +114,18 @@
                             one['stage']={};
                             i=1;
                             for(let point of item.captainPoints){
-                                one['stage'].append(point);
+                                one['stage'].push(point);
                                 i++;
                             }
                             i=1;
                             one['person']=[];
                             for(let person of item.group){
-                                one['person'].append({
+                                one['person'].push({
                                     name:person.username,
                                     email:person.email,
                                 });
                             }
-                            self.tableinfo.append(one);
+                            self.tableinfo.push(one);
                         }
                     }
                 }).catch(function (error) {
@@ -160,7 +162,7 @@
             self.tableheader.push('成员1邮箱');
 
             axios.post('/api/admin/participants',{
-                contestId:self.contestId,
+                contestid:self.contestid,
                 pageNum:1,
             }).then(function (response) {
                 self.mode = response.data.mode;
@@ -178,10 +180,11 @@
                         one['stage']=[];
                         i=1;
                         for(let point of item.points){
-                            one['stage'].append(point);
+                            one['stage'].push(point);
                             i++;
                         }
-                        self.tableinfo.append(one);
+
+                        self.tableinfo.push(one);
                     }
                     self.tableheader.push('名称');
                     self.tableheader.push('邮箱');
@@ -197,18 +200,18 @@
                         one['stage']={};
                         i=1;
                         for(let point of item.captainPoints){
-                            one['stage'].append(point);
+                            one['stage'].push(point);
                             i++;
                         }
                         i=1;
                         one['person']=[];
                         for(let person of item.group){
-                            one['person'].append({
+                            one['person'].push({
                                 name:person.username,
                                 email:person.email,
                             });
                         }
-                        self.tableinfo.append(one);
+                        self.tableinfo.push(one);
                     }
                     self.tableheader.push('名称');
                     for(let idx in self.tableinfo[0].stage){

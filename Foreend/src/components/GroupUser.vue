@@ -31,7 +31,7 @@
 
     axios.defaults.xsrfHeaderName = "X-CSRFToken";
     axios.defaults.headers.common = {
-        //'X-CSRFToken':document.querySelector('#csrf-token input').value,
+        'X-CSRFToken':document.querySelector('#csrf-token input').value,
         'X-Requested-With': 'XMLHttpRequest'
     };
 
@@ -118,7 +118,7 @@
                 }
 
                 let vm = this;
-                axios.post('/api/user/check',{username:this.ruleForm.curr_user,contestId:this.competition_id})
+                axios.post('/api/user/check',{username:this.ruleForm.curr_user,contestid:this.competition_id})
                     .then((response)=>{
                             if(response.data !== ''){
                                 vm.input_error = response.data;

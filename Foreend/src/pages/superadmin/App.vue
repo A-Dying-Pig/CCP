@@ -15,7 +15,7 @@
                 <el-row :gutter="0" v-for="(item,index) in contest_list.array" :key="index">
                   <el-col :span="12" :offset="6" >
                     <SuperCheckContestItem
-                          :contestId="item.contestId"
+                          :contestid="item.contestid"
                           :holders="item.holders"
                           :sponsors="item.sponsors"
                           :img_url="item.img_url"
@@ -52,7 +52,7 @@
                     </div>
                     <div class="basic-info">
                       <div class="info-item"><span class="title">比赛名称:</span> <span class="content">{{contest_detail.basicinfo.name}}</span></div>
-                      <div class="info-item"><span class="title">举办方:</span> <span v-for="(item,index) in contest_detail.basicinfo.holders" :key="index" class="content">{{item}}</span></div>
+                      <div class="info-item"><span class="title">举办方:</span> <span v-for="(item,index) in Array(contest_detail.basicinfo.holders)" :key="index" class="content">{{item}}</span></div>
                       <div class="info-item"><span class="title">承办方:</span> <span v-for="(item,index) in contest_detail.basicinfo.sponsors" :key="index" class="content">{{item}}</span></div>
                       <div class="info-item"><span class="title">比赛类型:</span> <span class="content">{{contest_detail.basicinfo.comtype}}</span></div>
                       <div class="info-item"><span class="title">比赛详情:</span> <br>
@@ -149,14 +149,14 @@
                     total_page_num:5,
                     array: [
                         {
-                          contestId:0,
+                          contestid:0,
                           title:'编程知识大赛',
                           holders:'丁郑',
                           sponsors:'张玉君',
                           img_url:require('../../assets/img/logo.png'),
                         },
                         {
-                            contestId:0,
+                            contestid:0,
                             title:'美食比赛',
                             holders:'xx',
                             sponsors:'yy',
@@ -206,7 +206,8 @@
         mounted:function () {
             axios.post('/api/super/contests',{pageNum:1})
                 .then(response=>{
-                        this.contest_list = response.data;
+                        this.contest_list = eval(response.data);
+                        console.log(this.contest_list);
                 });
         },
 
@@ -231,7 +232,7 @@
             },
             ShowContestDetail:function (id) {
                 this.contest_detail_id = id;
-                axios.post('/api/super/detail',{contestId:id})
+                axios.post('/api/super/detail',{contestid:id})
                     .then(response=>{
                         this.contest_detail = response.data;
                         this.contest_switch = 1;

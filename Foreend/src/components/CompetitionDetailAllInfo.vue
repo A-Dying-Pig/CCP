@@ -37,7 +37,7 @@
         methods:{
           timestamp2datestr:function (stamp) {
               let date = new Date(stamp);
-              return date.getMonth()+'月'+date.getDate()+'日'+date.getHours()+':'+date.getMinutes();
+              return (Number(date.getMonth())+1)+'月'+date.getDate()+'日'+date.getHours()+':'+date.getMinutes();
           },
             getActivestage:function () {
                 let now = Date.now();

@@ -34,7 +34,7 @@
               type:Boolean,
               default:false
             },
-            contestId:{
+            contestid:{
                 type:Number,
                 default:-1
             },
@@ -58,7 +58,11 @@
                             group:[
                             ]
                         },
-                        stageinfo:[{}]
+                        stageinfo:[{
+                            name:'',
+                            details:'',
+                            mode:'在线预览'
+                        }]
                     }
                 }
             }
@@ -121,13 +125,26 @@
                 //
                 if(flag){
                     alert('submit');
-                    axios.post('/api/competition/create',self.allinfo)
-                        .then(function (response) {
-                            console.log(response);
-                        })
-                        .catch(function (error) {
-                            console.log(error);
-                        });
+                    if(self.change){
+                        self.allinfo['contestid']=self.contestid;
+                        axios.post('/api/admin/modify',self.allinfo)
+                            .then(function (response) {
+                                console.log(response);
+                            })
+                            .catch(function (error) {
+                                console.log(error);
+                            });
+                    }
+                    else {
+                        axios.post('/api/competition/create',self.allinfo)
+                            .then(function (response) {
+                                console.log(response);
+                            })
+                            .catch(function (error) {
+                                console.log(error);
+                            });
+                    }
+
                 }
                 else {
                     alert('submit error');
