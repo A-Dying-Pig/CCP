@@ -83,14 +83,7 @@ def neededinfo(request):
     if len(contest) != 0:
         target = contest[0]
         comp_type = not target.grouped
-        extra = []
-        extra_str = target.extra_title
-        current_pos = 0
-        last_pos = 0
-        while current_pos != -1 and current_pos != len(extra_str) - 1:
-            last_pos = current_pos
-            current_pos = extra_str.find('\n', current_pos)
-            extra.append(extra_str[last_pos, current_pos])
+        extra = ContestUtil.getTitle(target)
         group_min_number = target.group_min_number
         group_max_number = target.group_max_number
         context = {
