@@ -20,9 +20,16 @@
 </template>
 
 <script>
+    import axios from 'axios'
+    axios.defaults.xsrfHeaderName = "X-CSRFToken";
+    axios.defaults.headers.common = {
+        'X-CSRFToken':document.querySelector('#csrf-token input').value,
+        'X-Requested-With': 'XMLHttpRequest'
+    };
     export default {
         components:{},
         name: "GradeProject",
+        props:['contestid','stageinfo'],
         data:function () {
             return{
                 files:[/*{
@@ -43,16 +50,18 @@
                     },{
                         min:0,max:100,message:'分数必须在0-100之间',trigger:'blur'
                     }],
-                }
+                },
+                userid:'',
             }
         },
         methods:{
             getfiles:function(){
                 console.log('getting file');
-                this.files=[];
+                //this.files=[];
                 var self=this;
                 axios.get('/api/competiton/getonepro')
                     .then(function (response) {
+                        this.files=[];
                         let urllist = response.data.files;
                         for(let url of urllist){
                             let filename = url.split('/').pop();
@@ -65,15 +74,42 @@
                                 type:filetype,
                                 url:url,
                             })
-                        };
+                        }
                     })
                     .catch(function (error) {
                         console.log(error);
                     });
             },
             submitgrade:function () {
+                let self = this;
                 let res = this.$refs.gradeinfo.validate((valid) => {
                     if (valid) {
+                        //submit
+                        //get phase
+                        let phase = 0;
+                        let now = Date.now();
+                        for(let stage of self.stageinfo){
+                            if(now<stage.evaluationTimeEnd){
+                                break;
+                            }
+                            phase++;
+                        }
+                        axios.post('/api/judge/submit',{
+                            contestid:self.contestid,
+                            userId:self.userid,
+                            grade:self.gradeinfo.grade,
+                            phase:phase
+                        }).then(function (response) {
+                            if(response.data.msg===''){
+                                self.$message.success('提交成功！');
+                            }
+                            else {
+                                self.$message.error('提交失败！服务器返回错误！');
+                            }
+                        }).catch(function (error) {
+                            self.$message.error('提交失败！');
+                        })
+                        //getnext
                         this.getfiles();
                         return true;
                     } else {

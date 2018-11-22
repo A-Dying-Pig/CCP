@@ -5,7 +5,7 @@
     <el-tab-pane label="比赛详情" name="details"><slot name="details"></slot></el-tab-pane>
     <el-tab-pane v-for="item in showlist" :key="item.key" :label="item.label" :name="item.value">
         <template v-if="item.value == 'gradework'">
-            <GradeProject></GradeProject>
+            <GradeProject :contestid="contestid" :stageinfo="info.stageinfo"></GradeProject>
         </template>
         <template v-else-if="item.value == 'submitwork'">
             <UploadFile :file_max_number="5" :file_max_size="50"></UploadFile>
@@ -15,6 +15,9 @@
         </template>
         <template v-else-if="item.value == 'participantstable'">
             <ParticipantsTable :contestid="contestid"></ParticipantsTable>
+        </template>
+        <template v-else-if="item.value == 'judgelist'">
+            <JudgeList :contestid="contestid"></JudgeList>
         </template>
     </el-tab-pane>
 </el-tabs>
@@ -27,8 +30,9 @@
     import UploadFile from './UploadFile'
     import ParticipantsTable from  './ParticipantsTable'
     import CompetitionCreatePage from './CompetitionCreatePage'
+    import JudgeList from './JudgeList'
     export default {
-        components:{ParticipantsTable, GradeProject,UploadFile,CompetitionCreatePage},
+        components:{JudgeList, ParticipantsTable, GradeProject,UploadFile,CompetitionCreatePage},
         props:['info','showlist','contestid'],
         data:function () {
             return{

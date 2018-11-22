@@ -74,7 +74,6 @@
 
         created:function () {
             var self = this;
-            let type = 0;
             //get info
             /*
             let type = 3;
@@ -131,7 +130,7 @@
                 self.type = response.data.type;
                 let now = Date.now();
                 self.showlist=[];
-                if(type==1){
+                if(self.type==1){
                     //当不在提交阶段时，不可以提交作品
                     let showsubmit = false;
                     let begin = self.info.signupinfo.time[1];
@@ -148,7 +147,7 @@
                         });
                     }
                 }
-                else if(type==2){
+                else if(self.type==2){
                     //当不在评测阶段时，不可以评测作品
                     let showgrade = false;
                     for(let stage of self.info.stageinfo){
@@ -163,7 +162,7 @@
                         });
                     }
                 }
-                else if(type==3){
+                else if(self.type==3){
                     console.log(333);
                     self.showlist.push({
                         value:'infochange',
@@ -171,7 +170,11 @@
                     });
                     self.showlist.push({
                         value:'participantstable',
-                        label:'队员信息'
+                        label:'选手信息'
+                    });
+                    self.showlist.push({
+                        value:'judgelist',
+                        label:'评委信息'
                     });
                 }
             }).catch(function (error) {

@@ -124,12 +124,15 @@
                 }
                 //
                 if(flag){
-                    alert('submit');
                     if(self.change){
                         self.allinfo['contestid']=self.contestid;
                         axios.post('/api/admin/modify',self.allinfo)
                             .then(function (response) {
                                 console.log(response);
+                            self.$message({
+                                    message: '操作成功!',
+                                    type: 'success'
+                                });
                             })
                             .catch(function (error) {
                                 console.log(error);
@@ -139,6 +142,11 @@
                         axios.post('/api/competition/create',self.allinfo)
                             .then(function (response) {
                                 console.log(response);
+                                self.$message({
+                                    message: '操作成功!',
+                                    type: 'success'
+                                });
+                                location.href = "/";
                             })
                             .catch(function (error) {
                                 console.log(error);
