@@ -146,56 +146,13 @@
                 activeName:'1',
                 contest_list:{
                     current_page_num:1,
-                    total_page_num:5,
+                    total_page_num:1,
                     array: [
-                        {
-                          contestid:0,
-                          title:'编程知识大赛',
-                          holders:'丁郑',
-                          sponsors:'张玉君',
-                          img_url:require('../../assets/img/logo.png'),
-                        },
-                        {
-                            contestid:0,
-                            title:'美食比赛',
-                            holders:'xx',
-                            sponsors:'yy',
-                            img_url:require('../../assets/img/logo.png'),
-                        }
                     ]
                 },
                 contest_switch:0, // 0 for contest list; 1 for detail information
                 contest_detail_id:0,
                 contest_detail:{
-                    basicinfo:{
-                        name:'哇哈哈',
-                        holders:['清华大学','肯德基'],
-                        sponsors:['北京大学','麦当劳'],
-                        comtype:'小程序比赛',
-                        details:'啊呀呀呀呀呀呀呀呀啊呀呀呀呀呀呀呀呀啊呀呀呀呀呀呀呀呀啊呀呀呀呀呀呀呀呀啊呀呀呀呀呀呀呀呀啊呀呀呀呀呀呀呀呀啊呀呀呀呀呀呀呀呀啊呀呀呀呀呀呀呀呀'
-                    },
-                    signupinfo:{
-                        time:['2018-8-3-23-20','2018-8-5-23-20'],
-                        mode:0, // 0 group 1 person
-                        person:['身高','年龄'],
-                        group:['队伍名称','队伍人数'],
-                    },
-                    stageinfo:[
-                        {
-                            name:'阶段一',
-                            details:'阶段一的详细信息',
-                            handTimeEnd:'2018-8-5-22-20',
-                            evaluationTimeEnd:'2018-8-8-22-20',
-                            mode:'线下评测'
-                        },
-                        {
-                            name:'阶段2',
-                            details:'阶段2的详细信息',
-                            handTimeEnd:'2018-8-5-22-20',
-                            evaluationTimeEnd:'2018-8-8-22-20',
-                            mode:'线上评测'
-                        },
-                    ]
                 }
             }
         },

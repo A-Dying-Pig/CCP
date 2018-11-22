@@ -102,8 +102,8 @@
                     return{
                         comp_type:0,
                         group_min_number:1,
-                        group_max_number:4,
-                        extra:['身高','体重','年级']
+                        group_max_number:1,
+                        extra:[],
                     }
                 }
             },

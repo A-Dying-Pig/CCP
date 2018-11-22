@@ -66,18 +66,6 @@
                     current_page_num:1,
                     total_page_num:1,
                     array: [
-                        {
-                            contestid:0,
-                            title:'编程知识大赛',
-                            img_url:require('../../assets/img/logo.png'),
-                            intro:'lalala',
-                        },
-                        {
-                            contestid:0,
-                            title:'美食比赛',
-                            intro:'bababa',
-                            img_url:require('../../assets/img/logo.png'),
-                        }
                     ]
                 },
                 comtypes:[
@@ -96,7 +84,9 @@
             CurrentPageChange:function (cur_page) {
                 axios.post('/api/competition/list',{pageNum:cur_page,type:'all'})
                     .then(response=>{
-                        this.contest_list = response.data;
+                        this.contest_list.array = response.data.array.reverse();
+                        this.contest_list.current_page_num = response.data.current_page_num;
+                        this.contest_list.total_page_num = response.data.total_page_num;
                     })
             },
             PagePrevious:function (cur_page) {

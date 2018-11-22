@@ -1,11 +1,11 @@
 <template>
     <el-upload
             class="upload-file"
-            action=""
+            action="https://jsonplaceholder.typicode.com/posts/"
             :on-preview="handlePreview"
             :on-remove="handleRemove"
             :before-remove="beforeRemove"
-            :before-upload="beforeFileUpload"
+            :before-upload="beforeFileUploxad"
             multiple
             :limit="file_max_number"
             :on-exceed="handleExceed"

@@ -38,15 +38,15 @@
             return{
                 info:{
                     basicinfo:{
-                        name:'小程序开发',
-                        holders:['软件学院'],
-                        sponsors:['没有'],
-                        comtype:'微信小程序',
-                        details:"这里是比赛详情",
+                        name:'',
+                        holders:[''],
+                        sponsors:[''],
+                        comtype:'',
+                        details:"",
                     },
                     signupinfo:{
                         time:[1542593167172,1542593267172],
-                        mode:'个人赛',
+                        mode:'',
                         person:[
                             ''
                         ],
@@ -54,17 +54,17 @@
                         ]
                     },
                     stageinfo:[{
-                        name:'初赛',
-                        details:'初赛详情',
+                        name:'',
+                        details:'',
                         handTimeEnd:1542793167172,
                         evaluationTimeEnd:1542893167172,
-                        mode:'在线预览'
+                        mode:''
                     },{
-                        name:'复赛',
-                        details:'复赛详情',
+                        name:'',
+                        details:'',
                         handTimeEnd:1542993167172,
                         evaluationTimeEnd:1543003167172,
-                        mode:'在线预览'
+                        mode:''
                     }]
                 },
                 showlist:[],

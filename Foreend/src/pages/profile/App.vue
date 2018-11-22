@@ -208,22 +208,22 @@
                 img_url:require('../../assets/img/logo.png'),
                 activeName: '1',
                 competition:{
-                    participated_competition:[{url:'/comp1',title:'我参加的比赛1'},{url:'/comp2',title:'我参加的比赛2'}],
-                    created_competition:[{url:'/comp3',title:'我创建的比赛3'},{url:'/comp4',title:'我创建的比赛4'}],
-                    rated_competition:[{url:'/comp5',title:'我参评的比赛5'},{url:'/comp6',title:'我参评的比赛6'}],
+                    participated_competition:[],
+                    created_competition:[],
+                    rated_competition:[],
                 },
                 person:{
-                    university:'清华大学',
+                    university:'',
                     region:{
-                        province:'陕西省',
-                        city:'西安市'
+                        province:'',
+                        city:''
                     }
                 },
                 new_person:{
-                    university:'清华大学',
+                    university:'',
                     region:{
-                        province:'陕西省',
-                        city:'西安市'
+                        province:'',
+                        city:''
                     }
                 },
                 info_saved:true,
