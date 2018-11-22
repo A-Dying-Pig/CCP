@@ -96,7 +96,7 @@ export default{
 		submittype(val)
         {
             let self = this;
-           self.finfo.typename=val;
+            self.finfo.typename=val;
 			axios.post('/api/competition/list', { type:val,pageNum:'1' }).then(function (response) {
                self.comps = response.data.array;
             })

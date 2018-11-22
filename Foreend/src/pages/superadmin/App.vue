@@ -214,7 +214,7 @@
             CurrentPageChange:function (cur_page) {
                 axios.post('/api/super/contests',{pageNum:cur_page})
                     .then(response=>{
-                        this.contest_list = eval(response.data);
+                        this.contest_list = response.data;
                     })
             },
             PagePrevious:function (cur_page) {
