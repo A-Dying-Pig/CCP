@@ -5,10 +5,16 @@ import json
 from .utils import *
 
 def contests(request):
+    try:
+        user = CCPUser.objects.get(id=request.user.id)
+    except:
+        return JsonResponse({'msg': 'User does not exist.'})
+    if not user.is_superuser: # 是超级用户
+        return JsonResponse({'msg': 'Authority denied.'})
     data = json.loads(request.body.decode('utf-8'))
     page_number = data['pageNum']
     response = {}
-    contests_number = NonReviewdContest.objects.all().count()
+    contests_number = Contest.objects.filter(checked=-1).count()
     total_pasges = int(contests_number / MAX_CONTEST_ONE_PAGE) if contests_number % MAX_CONTEST_ONE_PAGE == 0 \
         else int(contests_number / MAX_CONTEST_ONE_PAGE) + 1
     if total_pasges < 1:  # 数据库里没数据
@@ -18,7 +24,7 @@ def contests(request):
     response['array'] = []
     index = MAX_CONTEST_ONE_PAGE * (page_number - 1)
     while index < min(MAX_CONTEST_ONE_PAGE * page_number, contests_number):
-        target = NonReviewdContest.objects.all()[index]
+        target = Contest.objects.filter(checked=-1)[index]
         response['array'].append({
             'contestid': target.id,
             'title': target.title,
@@ -31,10 +37,18 @@ def contests(request):
     return JsonResponse(response)
 
 def detail(request):
+    try:
+        user = CCPUser.objects.get(id=request.user.id)
+    except:
+        return JsonResponse({'msg': 'User does not exist.'})
+    if not user.is_superuser: # 是超级用户
+        return JsonResponse({'msg': 'Authority denied.'})
     data = json.loads(request.body.decode('utf-8'))
     contest_id = data['contestid']
     result = {}
-    contest = NonReviewdContest.objects.get(id=contest_id)
+    contest = Contest.objects.get(id=contest_id)
+    if contest.checked != -1: # 如果不是未审核状态
+        return JsonResponse({'error':'该比赛不是未审核状态'})
     result['basicinfo'] = {}
     basicinfo = result['basicinfo']
     basicinfo['name'] = contest.title
@@ -56,66 +70,21 @@ def detail(request):
     return JsonResponse(result)
 
 def submit(request):
+    try:
+        user = CCPUser.objects.get(id=request.user.id)
+    except:
+        return JsonResponse({'msg': 'User does not exist.'})
+    if not user.is_superuser: # 是超级用户
+        return JsonResponse({'msg': 'Authority denied.'})
     data = json.loads(request.body.decode('utf-8'))
     contest_id = data['contestid']
     passed = data['pass']
     if passed == 0:  # not pass
-        target = NonReviewdContest.objects.get(id=contest_id)
-        target.checked = True
+        target = Contest.objects.get(id=contest_id)
+        target.checked = 0
         return JsonResponse({'msg': ''})
     else:  # pass
-        old_contest = NonReviewdContest.objects.get(id=contest_id)
-        new_contest = Contest()
-
-        new_contest.title = old_contest.title
-        new_contest.category = old_contest.category
-        new_contest.grouped = old_contest.grouped
-        new_contest.group_min_number = old_contest.group_min_number
-        new_contest.group_max_number = old_contest.group_max_number
-        new_contest.enroll_start = old_contest.enroll_start
-        new_contest.enroll_end = old_contest.enroll_end
-        new_contest.information = old_contest.information
-        new_contest.brief_introduction = old_contest.brief_introduction
-        new_contest.phase_name1 = old_contest.phase_name1
-        new_contest.phase_name2 = old_contest.phase_name2
-        new_contest.phase_name3 = old_contest.phase_name3
-        new_contest.phase_name4 = old_contest.phase_name4
-        new_contest.phase_name5 = old_contest.phase_name5
-        new_contest.phase_hand_end_time1 = old_contest.phase_hand_end_time1
-        new_contest.phase_hand_end_time2 = old_contest.phase_hand_end_time2
-        new_contest.phase_hand_end_time3 = old_contest.phase_hand_end_time3
-        new_contest.phase_hand_end_time4 = old_contest.phase_hand_end_time4
-        new_contest.phase_hand_end_time5 = old_contest.phase_hand_end_time5
-        new_contest.phase_evaluate_end_time1 = old_contest.phase_evaluate_end_time1
-        new_contest.phase_evaluate_end_time2 = old_contest.phase_evaluate_end_time2
-        new_contest.phase_evaluate_end_time3 = old_contest.phase_evaluate_end_time3
-        new_contest.phase_evaluate_end_time4 = old_contest.phase_evaluate_end_time4
-        new_contest.phase_evaluate_end_time5 = old_contest.phase_evaluate_end_time5
-        new_contest.phase_information1 = old_contest.phase_information1
-        new_contest.phase_information2 = old_contest.phase_information2
-        new_contest.phase_information3 = old_contest.phase_information3
-        new_contest.phase_information4 = old_contest.phase_information4
-        new_contest.phase_information5 = old_contest.phase_information5
-        new_contest.phase_mode1 = old_contest.phase_mode1
-        new_contest.phase_mode2 = old_contest.phase_mode2
-        new_contest.phase_mode3 = old_contest.phase_mode3
-        new_contest.phase_mode4 = old_contest.phase_mode4
-        new_contest.phase_mode5 = old_contest.phase_mode5
-        new_contest.admin_id = old_contest.admin_id
-        new_contest.host1 = old_contest.host1
-        new_contest.host2 = old_contest.host2
-        new_contest.host3 = old_contest.host3
-        new_contest.host4 = old_contest.host4
-        new_contest.organizers = old_contest.organizers
-        new_contest.extra_title1 = old_contest.extra_title1
-        new_contest.extra_title2 = old_contest.extra_title2
-        new_contest.extra_title3 = old_contest.extra_title3
-        new_contest.extra_title4 = old_contest.extra_title4
-        new_contest.extra_group_title1 = old_contest.extra_group_title1
-        new_contest.extra_group_title2 = old_contest.extra_group_title2
-        new_contest.extra_group_title3 = old_contest.extra_group_title3
-        new_contest.extra_group_title4 = old_contest.extra_group_title4
-
-        new_contest.save()
-        old_contest.delete()
+        old_contest = Contest.objects.get(id=contest_id)
+        old_contest.checked = 1
+        old_contest.save()
         return JsonResponse({'msg': ''})

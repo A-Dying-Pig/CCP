@@ -15,6 +15,10 @@ def participants(request):
         contest = Contest.objects.get(id=contest_id)
     except:
         return JsonResponse({'msg': 'Contest does not exist.'})
+
+    if contest.admin_id != request.user.id:  # 当前用户不是管理员
+        return JsonResponse({'msg': 'Current user is not the admin of this contest'})
+
     result['mode'] = 1 - contest.grouped
     result['current_page_num'] = page_num
     if result['mode'] == 1: # 个人赛
@@ -67,7 +71,14 @@ def detail(request):
     contest_id = data['contestid']
 
     result = {}
-    contest = Contest.objects.get(id=contest_id)
+    try:
+        contest = Contest.objects.get(id=contest_id)
+    except:
+        return JsonResponse({'msg': 'Contest does not exist.'})
+
+    if contest.admin_id != request.user.id:  # 当前用户不是管理员
+        return JsonResponse({'msg': 'Current user is not the admin of this contest'})
+
     result['basicinfo'] = {}
     basicinfo = result['basicinfo']
     basicinfo['name'] = contest.title
@@ -113,9 +124,12 @@ def modify(request):
             or len(stageinfo) > MAX_PHASE or len(time) != 2:
         return JsonResponse({'msg': 'Too much fields.'})
     try:
-        contest = Contest.objects.get(contest_id=contest_id)
+        contest = Contest.objects.get(id=contest_id)
     except:
-        return JsonResponse({'msg': 'Contest does not exists.'})
+        return JsonResponse({'msg': 'Contest does not exist.'})
+
+    if contest.admin_id != request.user.id:  # 当前用户不是管理员
+        return JsonResponse({'msg': 'Current user is not the admin of this contest'})
 
     contest.title = name
     index = 0
@@ -156,6 +170,14 @@ def addJudge(request):
     contest_id = data['contestid']
     result = {}
     try:
+        contest = Contest.objects.get(id=contest_id)
+    except:
+        return JsonResponse({'msg': 'Contest does not exist.'})
+
+    if contest.admin_id != request.user.id:  # 当前用户不是管理员
+        return JsonResponse({'msg': 'Current user is not the admin of this contest'})
+
+    try:
         judge_id = CCPUser.objects.get(username=username).id
     except:
         return JsonResponse({'msg': 'Judge dos not exist'})
@@ -167,6 +189,16 @@ def addJudge(request):
     return JsonResponse({'msg': ''})
 
 def upload(request):
+    data = json.loads(request.body.decode('utf-8'))
+    contest_id = data['contestid']
+    try:
+        contest = Contest.objects.get(id=contest_id)
+    except:
+        return JsonResponse({'msg': 'Contest does not exist.'})
+
+    if contest.admin_id != request.user.id:  # 当前用户不是管理员
+        return JsonResponse({'msg': 'Current user is not the admin of this contest'})
+
     File = request.FILES.get("upload_file", None)
     if File is None:
         return JsonResponse({'msg': 'File not found.'})
