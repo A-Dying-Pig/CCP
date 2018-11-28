@@ -24,7 +24,7 @@ def contests(request):
             'title': target.title,
             'holders': ContestUtil.getHost(target),
             'sponsors': target.organizers.split('\n')[1:],
-            'img_url': '/resources/contests/images/' + str(target.id) + '.jpg',  # todo:多种格式
+            'img_url': '/static/img' + str(target.id) + '.jpg',  # todo:多种格式
             'details': target.information
         })
         index = index + 1

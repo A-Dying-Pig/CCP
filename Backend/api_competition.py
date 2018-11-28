@@ -46,7 +46,7 @@ def list(request):
         d['title'] = c.title
         d['intro'] = c.brief_introduction
         d['contestid'] = c.id
-        d['img_url'] = str(c.id) + '.jpg'
+        d['img_url'] = '/static/img' + str(c.id) + '.jpg'
         array.append(d)
     total_page_num = (count - 1) // amount + 1
     return JsonResponse({
@@ -62,7 +62,7 @@ def slider(request):
     contest_id = [contest[0].id, contest[1].id, contest[2].id]
     for i in range(0, 3):
         context.append({'url': '/detail?contestid' + str(contest_id[i]),
-                        'img_url': str(contest_id[i]) + '.jpg'})
+                        'img_url': + str(contest_id[i]) + '.jpg'})
     return JsonResponse(context)
 
 def hot(request):
