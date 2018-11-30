@@ -78,6 +78,7 @@ class ContestPlayer(models.Model):
     extra_information2 = models.CharField(max_length=64, blank=True, null=True)
     extra_information3 = models.CharField(max_length=64, blank=True, null=True)
     extra_information4 = models.CharField(max_length=64, blank=True, null=True)
+    submitted = models.BooleanField(default=False)  # 该选手在当前阶段是否提交过作品
     class Meta:
         db_table = "ContestPlayer"
 
