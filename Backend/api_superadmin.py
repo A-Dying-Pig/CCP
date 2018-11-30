@@ -13,12 +13,12 @@ def contests(request):
         return JsonResponse({'msg': 'Authority denied.'})
     data = json.loads(request.body.decode('utf-8'))
     page_number = data['pageNum']
-    response = {}
+    response = {'msg': ''}
     contests_number = Contest.objects.filter(checked=-1).count()
     total_pasges = int(contests_number / MAX_CONTEST_ONE_PAGE) if contests_number % MAX_CONTEST_ONE_PAGE == 0 \
         else int(contests_number / MAX_CONTEST_ONE_PAGE) + 1
     if total_pasges < 1:  # 数据库里没数据
-        return JsonResponse({'current_page_num': page_number, 'total_page_num': 0, 'array': []})
+        return JsonResponse({'msg': '', 'current_page_num': page_number, 'total_page_num': 0, 'array': []})
     response['current_page_num'] = page_number
     response['total_page_num'] = total_pasges
     response['array'] = []
@@ -45,10 +45,10 @@ def detail(request):
         return JsonResponse({'msg': 'Authority denied.'})
     data = json.loads(request.body.decode('utf-8'))
     contest_id = data['contestid']
-    result = {}
+    result = {'msg': ''}
     contest = Contest.objects.get(id=contest_id)
     if contest.checked != -1: # 如果不是未审核状态
-        return JsonResponse({'error':'该比赛不是未审核状态'})
+        return JsonResponse({'msg': '该比赛不是未审核状态'})
     result['basicinfo'] = {}
     basicinfo = result['basicinfo']
     basicinfo['name'] = contest.title

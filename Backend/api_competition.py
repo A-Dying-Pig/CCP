@@ -31,7 +31,7 @@ def enroll(request):
     contest_player.extra_information1 = '' if le < 4 else values[3]
     contest_player.save()
 
-    return HttpResponse("")
+    return JsonResponse({'msg': ''})
 
 def list(request):
     amount = 10
@@ -52,7 +52,8 @@ def list(request):
     return JsonResponse({
         'total_page_num': total_page_num,
         'current_page_num': page,
-        'array': array
+        'array': array,
+        'msg': ''
     })
 
 def slider(request):
@@ -63,7 +64,11 @@ def slider(request):
     for i in range(0, 3):
         context.append({'url': '/detail?contestid' + str(contest_id[i]),
                         'img_url': + str(contest_id[i]) + '.jpg'})
-    return JsonResponse(context)
+    result = {
+        'array': context,
+        'msg': ''
+    }
+    return JsonResponse(result)
 
 def hot(request):
     context = []
@@ -74,6 +79,10 @@ def hot(request):
                         'img_url': str(contest[i].id) + '.jpg',
                         'intro': contest[i].brief_introduction,
                         'title': contest[i].title})
+    result = {
+        'array': context,
+        'msg': ''
+    }
     return JsonResponse(context)
 
 def neededinfo(request):
@@ -90,15 +99,15 @@ def neededinfo(request):
             'comp_type': 1 if comp_type else 0,
             'extra': extra,
             'group_min_number': group_min_number,
-            'group_max_number': group_max_number
+            'group_max_number': group_max_number,
+            'msg': ''
         }
         return JsonResponse(context)
     else:
-        return JsonResponse({})
+        return JsonResponse({'msg': '您所要查找的信息不存在！'})
 
 def create(request):
     data = json.loads(request.body.decode('utf-8'))
-    print(data)
 
     basicinfo = data['basicinfo']
     name = basicinfo['name']
@@ -159,7 +168,7 @@ def detail(request):
     data = json.loads(request.body.decode('utf-8'))
     contest_id = data['contestid']
 
-    result = {}
+    result = {'msg': ''}
     user_id = request.user.id
     try:
         contest = Contest.objects.get(id=contest_id)
@@ -189,6 +198,7 @@ def detail(request):
 
         result['info']['stageinfo'] = []
         result['info']['stageinfo'] = ContestUtil.getStage(contest)
+        return JsonResponse(result)
     except:
-        pass
-    return JsonResponse(result)
+        return JsonResponse({'msg': '未知错误！'})
+
