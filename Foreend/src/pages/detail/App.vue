@@ -29,7 +29,7 @@
         components: {NavigationBar,CompetitionDetailAllInfo,CompetitionDetailContents},
         props:{'contestid':{
             type:Number,
-                default:NaN
+                default:-1
     },'username':{
             type:String,
                 default:''
@@ -56,14 +56,16 @@
                     stageinfo:[{
                         name:'',
                         details:'',
-                        handTimeEnd:1542793167172,
-                        evaluationTimeEnd:1542893167172,
+                        stageTimeBegin:1543827739311,
+                        handTimeEnd:1543838739311,
+                        evaluationTimeEnd:1543839739311,
                         mode:''
                     },{
                         name:'',
                         details:'',
-                        handTimeEnd:1542993167172,
-                        evaluationTimeEnd:1543003167172,
+                        stageTimeBegin:1543840739311,
+                        handTimeEnd:1543841739311,
+                        evaluationTimeEnd:1543842739311,
                         mode:''
                     }]
                 },
@@ -73,10 +75,10 @@
         },
 
         created:function () {
-            var self = this;
+            let self = this;
             //get info
-
-            let type = 2;
+/*
+            let type = 3;
             let now = Date.now();
 
             self.showlist=[];
@@ -125,7 +127,7 @@
                     label:'队员信息'
                 });
             }
-            console.log(self.contestid);/*
+            console.log(self.contestid);*/
             axios.post('/api/competition/detail',{
                 contestid:self.contestid,
             }).then(function (response) {
@@ -163,6 +165,9 @@
                         self.showlist.push({
                             value:'gradework',
                             label:'评委评分'
+                        },{
+                            value:'judgefinish',
+                            label:'查看过往评分'
                         });
                     }
                 }
@@ -183,7 +188,7 @@
                 }
             }).catch(function (error) {
                 console.log('/api/competition/detail'+'错误！！')
-            })*/
+            })
         }
     }
 </script>

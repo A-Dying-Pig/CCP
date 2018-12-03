@@ -201,6 +201,12 @@ export default {
             }
             callback();
         };
+        let timeVali = function (rule, value, callback) {
+            if(value[0].getMinutes()||value[0].getSeconds()||value[1].getMinutes()||value[1].getSeconds()){
+                callback(new Error("必须为整小时数！"));
+            }
+            callback();
+        };
         return {
             info:this.finfo,
             basicrules:{
@@ -215,7 +221,8 @@ export default {
                     {min:5,max:1000,message:'长度在5到1000个字符之间',trigger:'blur'}],
             },
             signuprules:{
-                time:[{required:true,message:'请输入报名日期！',trigger:'blur'}],
+                time:[{required:true,message:'请输入报名日期！',trigger:'change'},
+                    {validator:timeVali,message:"时间必须为整小时数",trigger:'change'}],
                 person:[{type:'array',validator:signupVali,trigger:'blur'},
                     {type:'array',max:10,message:'需要选手填写的个人信息条数不超过10个',trigger:'blur'}],
                 mode:[{required:true,message:'请输入报名形式！',trigger:'change'}],

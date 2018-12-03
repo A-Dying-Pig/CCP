@@ -17,6 +17,7 @@
                             <el-step :title="timestamp2datestr(info.signupinfo.time[0]) + '报名开始'"></el-step>
                             <el-step :title="timestamp2datestr(info.signupinfo.time[1]) + '报名结束'"></el-step>
                             <template v-for="item in info.stageinfo">
+                                <el-step :title="timestamp2datestr(item.stageTimeBegin)+item.name+'开始'"></el-step>
                                 <el-step :title="timestamp2datestr(item.handTimeEnd)+item.name+'提交截止'"></el-step>
                                 <el-step :title="timestamp2datestr(item.evaluationTimeEnd)+item.name+'评测截止'"></el-step>
                             </template>
@@ -40,7 +41,7 @@
         methods:{
           timestamp2datestr:function (stamp) {
               let date = new Date(stamp);
-              return (Number(date.getMonth())+1)+'月'+date.getDate()+'日'+date.getHours()+':'+date.getMinutes();
+              return (Number(date.getMonth())+1)+'月'+date.getDate()+'日'+date.getHours()+'时';
           },
             getActivestage:function () {
                 let now = Date.now();
@@ -51,14 +52,17 @@
                     return 1;
                 }
                 for(let idx in this.info.stageinfo){
-                    if(now<this.info.stageinfo[idx].handTimeEnd){
-                        return idx*2+2;
+                    if(now<this.info.stageinfo[idx].stageTimeBegin){
+                        return idx*3+2;
                     }
                     if(now<this.info.stageinfo[idx].handTimeEnd){
-                        return idx*2+3;
+                        return idx*3+3;
+                    }
+                    if(now<this.info.stageinfo[idx].handTimeEnd){
+                        return idx*3+4;
                     }
                 }
-                return this.info.stageinfo.length*2+2;
+                return this.info.stageinfo.length*3+2;
             },
             clicksign:function () {
                 location.href="/enroll?contestid="+this.contestid;
