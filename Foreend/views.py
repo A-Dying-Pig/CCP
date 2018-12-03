@@ -6,7 +6,7 @@ from django.contrib import auth
 
 def index(request):
     if request.user.is_authenticated:
-        return render(request, 'index.html', {'username': request.user.username})
+        return render(request, 'index.html', {'username': request.user.username if request.user.is_authenticated else '#undefined'})
     else:
         return render(request, 'index.html', {'username': ''})
 
@@ -28,15 +28,14 @@ def logout(request):
 
 def contest(request):
     if request.user.is_authenticated:
-        return render(request, 'contest.html', {'username': request.user.username, 'pageNum': 1})
+        return render(request, 'contest.html', {'username': request.user.username if request.user.is_authenticated else '#undefined', 'pageNum': 1})
     else:
         return render(request, 'contest.html', {'username': '', 'pageNum': 1})
 
 def detail(request):
     contestid = request.GET.get('contestid')
-    print(contestid)
     if request.user.is_authenticated:
-        return render(request, 'detail.html', {'username': request.user.username, 'contestid': str(contestid)})
+        return render(request, 'detail.html', {'username': request.user.username if request.user.is_authenticated else '#undefined', 'contestid': str(contestid)})
     else:
         return render(request, 'detail.html', {'username': '', 'contestid': str(contestid)})
 
@@ -57,11 +56,11 @@ def addContest(request):
 def superadmin(request):
     if not request.user.is_superuser:
         return render(request, 'message.html', {'title': '' ,'msg': 'Unauthorized.', 'username':request.user.username, 'url':'/'})
-    return render(request, 'superadmin.html', {'username': request.user.username})
+    return render(request, 'superadmin.html', {'username': request.user.username if request.user else ''})
 
 def about(request):
-    return render(request, 'message.html', {'title': '雷怡然征婚', 'msg': '雷怡然征婚，请加微信号：SJ11235813', 'username':request.user.username, 'url': ''})
+    return render(request, 'message.html', {'title': '雷怡然征婚', 'msg': '雷怡然征婚，请加微信号：SJ11235813', 'username':request.user.username if request.user.is_authenticated else '#undefined', 'url': ''})
 
 def service(request):
-    return render(request, 'message.html', {'title': '雷怡然征婚', 'msg': '雷怡然征婚，请加微信号：SJ11235813', 'username':request.user.username, 'url': ''})
+    return render(request, 'message.html', {'title': '雷怡然征婚', 'msg': '雷怡然征婚，请加微信号：SJ11235813', 'username':request.user.username if request.user.is_authenticated else '#undefined', 'url': ''})
 
