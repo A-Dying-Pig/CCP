@@ -55,4 +55,13 @@ def addContest(request):
 
 @login_required(login_url='/login')
 def superadmin(request):
+    if not request.user.is_superuser:
+        return render(request, 'message.html', {'title': '' ,'msg': 'Unauthorized.', 'username':request.user.username, 'url':'/'})
     return render(request, 'superadmin.html', {'username': request.user.username})
+
+def about(request):
+    return render(request, 'message.html', {'title': '雷怡然征婚', 'msg': '雷怡然征婚，请加微信号：SJ11235813', 'username':request.user.username, 'url': ''})
+
+def service(request):
+    return render(request, 'message.html', {'title': '雷怡然征婚', 'msg': '雷怡然征婚，请加微信号：SJ11235813', 'username':request.user.username, 'url': ''})
+
