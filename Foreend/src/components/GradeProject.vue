@@ -1,48 +1,86 @@
 <template>
     <div>
-        <div v-for="item in files" :key="item.key">
-            <el-row type="flex" justify="center">
-                {{ item.name }}
-            </el-row>
-            <el-row type="flex" justify="center">
-                <img v-if="item.type === 'img'" :src="item.url"/>
-            </el-row>
-        </div>
-        <el-form v-bind:model="gradeinfo" ref="gradeinfo" :rules="rules" label-width="100px">
-            <el-form-item label="分数" prop="grade">
-                <el-input v-model.number="gradeinfo.grade" placeholder="请输入分数"></el-input>
-            </el-form-item>
-            <el-form-item>
-                <el-button v-on:click="submitgrade()">提交</el-button>
-            </el-form-item>
-        </el-form>
+        <el-row :gutter="24">
+            <el-col :span="6">
+                <slVueTree v-model="nodes" :allow-multiselect="false" @select="nodeSelected" id="slvuetree">
+                    <template slot="title" slot-scope="{ node }">
+                            <span>
+                                <i class="icon-fileicon" v-if="node.isLeaf"></i>
+                                <i class="icon-diricon" v-if="!node.isLeaf"></i>
+                            </span>
+                        {{ node.title }}
+                    </template>
+                </slVueTree>
+            </el-col>
+            <el-col :span="18">
+                <el-row :gutter="24">
+                    <el-col :span="24">
+                        <el-row :gutter="24">
+                            <el-col :span="10">
+                                <template v-if="selectnode.type > 0">
+                                    文件名称：{{ selectnode.title }} <el-button type="primary" @click="downloadfile">点击下载</el-button>
+                                </template>
+                            </el-col>
+                        </el-row>
+                        <el-row :gutter="24">
+                            <el-col :span="24">
+                                <template v-if="selectnode.type == 1">
+                                    <img :src="selectnode.src"/>
+                                </template>
+                                <template v-else-if="selectnode.type == 2">
+                                    <PDF :pdfurl="selectnode.src"></PDF>
+                                </template>
+                                <template v-else-if="selectnode.type == 3">
+                                    抱歉，该文件不支持在线预览！
+                                </template>
+                            </el-col>
+                        </el-row>
+                    </el-col>
+                </el-row>
+                <el-row :gutter="24">
+                    <el-col :span="24">
+                        <el-form v-bind:model="gradeinfo" ref="gradeinfo" :rules="rules" label-width="100px">
+                            <el-form-item label="分数" prop="grade">
+                                <el-input v-model.number="gradeinfo.grade" placeholder="请输入分数" :disabled="readonly"></el-input>
+                            </el-form-item>
+                            <el-form-item>
+                                <el-button v-on:click="submitgrade()" :disabled="readonly">提交</el-button>
+                            </el-form-item>
+                        </el-form>
+                    </el-col>
+                </el-row>
+            </el-col>
+        </el-row>
     </div>
 </template>
 
 <script>
     import axios from 'axios'
+    import slVueTree from 'sl-vue-tree'
+    import PDF from './PDF'
     axios.defaults.xsrfHeaderName = "X-CSRFToken";
     axios.defaults.headers.common = {
         'X-CSRFToken':document.querySelector('#csrf-token input').value,
         'X-Requested-With': 'XMLHttpRequest'
     };
     export default {
-        components:{},
+        components:{
+            slVueTree,
+            PDF
+        },
         name: "GradeProject",
-        props:['contestid','stageinfo'],
+        props:['contestid','stageinfo','readonly','participantid','participantgrade'],
         data:function () {
+            let defaultgrade = this.participantgrade?this.participantgrade:0;
             return{
-                files:[/*{
-                    name:'1.pdf',
-                    type:'pdf',
-                    url:'http://math.sjtu.edu.cn/faculty/chengwang/files/2015fall/ch1.pdf',
-                },*/{
-                    name:'1.jpg',
-                    type:'img',
-                    url:'https://goss.vcg.com/creative/vcg/800/version23/VCG41565794281.jpg'
-                }],
+                nodes:[],
+                selectnode:{
+                    title:'',
+                    src:'',
+                    type:0//img 1, pdf 2, other 3
+                },
                 gradeinfo:{
-                    grade:0,
+                    grade:defaultgrade,
                 },
                 rules:{
                     grade:[{required:true,message:'请给选手打分',trigger:'blur'},{
@@ -51,7 +89,6 @@
                         min:0,max:100,message:'分数必须在0-100之间',trigger:'blur'
                     }],
                 },
-                userid:'',
             }
         },
         methods:{
@@ -59,24 +96,23 @@
                 console.log('getting file');
                 //this.files=[];
                 var self=this;
-                axios.get('/api/competiton/getonepro')
-                    .then(function (response) {
-                        this.files=[];
-                        let urllist = response.data.files;
-                        for(let url of urllist){
-                            let filename = url.split('/').pop();
-                            let filetype = filename.split('.').pop();
-                            if(self.checkimg(filetype)){
-                                filetype = 'img';
-                            }
-                            self.files.push({
-                                name:filename,
-                                type:filetype,
-                                url:url,
-                            })
-                        }
-                    })
-                    .catch(function (error) {
+                self.nodes = [];/*
+                self.nodes = [
+                    {title: '1.jpg', isLeaf: true, data:{src:'https://ss0.bdstatic.com/94oJfD_bAAcT8t7mm9GUKT-xh_/timg?image&quality=100&size=b4000_4000&sec=1543562262&di=07276496cd2ad6274f8d1767c94b4f19&src=http://imgsrc.baidu.com/imgad/pic/item/9e3df8dcd100baa1f437f36f4d10b912c9fc2ece.jpg'}},
+                    {title: '2.jpg', isLeaf: true, data: { src:'https://ss1.bdstatic.com/70cFvXSh_Q1YnxGkpoWK1HF6hhy/it/u=3390961998,1154407883&fm=200&gp=0.jpg' }},
+                    {
+                        title: 'Folder1', children: [
+                            {title: '3.pdf', isLeaf: true, data:{src:'https://cdn.filestackcontent.com/wcrjf9qPTCKXV3hMXDwK'}},
+                            {title: '4.txt', isLeaf: true, data:{src:'https://www.ietf.org/rfc/rfc959.txt'}}
+                        ]
+                    }
+                ]*/
+                axios.post('/api/judge/getone',{
+                    contestid:self.contestid,
+                    participantid:(this.readonly?this.participantid:-1),
+                }).then(function (response) {
+                        self.nodes = response.data.files;
+                    }).catch(function (error) {
                         console.log(error);
                     });
             },
@@ -117,20 +153,49 @@
                     }
                 });
             },
-            checkimg : function(typename) {
-                if((typename==='jpg')||(typename==='png')){
+            checkimg : function(name) {
+                if((name.endsWith('jpg'))||(name.endsWith('png'))){
                     return true;
                 }
                 return false;
             } ,
+            nodeSelected :function (nodes) {
+                let node = nodes[0];
+                console.log(node);
+                if(node.isLeaf === false){
+                    console.log('select a directory');
+                    return;
+                }
+                this.selectnode.title = node.title;
+                this.selectnode.src = node.data.src;
+                console.log('select:'+this.selectnode.src);
+                if(this.checkimg(this.selectnode.title)){
+                    this.selectnode.type = 1;
+                }
+                else if(this.selectnode.title.endsWith('pdf')){
+                    this.selectnode.type = 2;
+                }
+                else {
+                    this.selectnode.type = 3;
+                }
+            }
         },
         created:function () {
-
             this.getfiles();
             }
     }
 </script>
 
 <style scoped>
-
+#slvuetree{
+    background-color: rgb(245,247,250);
+    border: white;
+    color: black;
+}
+.sl-vue-tree-node-item:hover,
+.sl-vue-tree-node-item.sl-vue-tree-cursor-hover {
+    color: black;
+}
 </style>
+<style src="sl-vue-tree/dist/sl-vue-tree-dark.css"></style>
+<style src="../assets/fonts/fileico/style.css"></style>

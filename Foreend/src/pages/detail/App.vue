@@ -38,11 +38,11 @@
             return{
                 info:{
                     basicinfo:{
-                        name:'',
+                        name:'111',
                         holders:[''],
                         sponsors:[''],
                         comtype:'',
-                        details:"",
+                        details:"222",
                     },
                     signupinfo:{
                         time:[1542593167172,1542593267172],
@@ -75,8 +75,8 @@
         created:function () {
             var self = this;
             //get info
-            /*
-            let type = 3;
+
+            let type = 2;
             let now = Date.now();
 
             self.showlist=[];
@@ -99,7 +99,8 @@
             }
             else if(type==2){
                 //当不在评测阶段时，不可以评测作品
-                let showgrade = false;
+                //let showgrade = false;
+                let showgrade = true;
                 for(let stage of self.info.stageinfo){
                     if((now<stage.evaluationTimeEnd)&&(now>stage.handTimeEnd)){
                         showgrade = true;
@@ -109,6 +110,9 @@
                     self.showlist.push({
                         value:'gradework',
                         label:'评委评分'
+                    },{
+                        value:'judgefinish',
+                        label:'查看过往评分'
                     });
                 }
             }
@@ -120,8 +124,8 @@
                     value:'participantstable',
                     label:'队员信息'
                 });
-            }*/
-            console.log(self.contestid);
+            }
+            console.log(self.contestid);/*
             axios.post('/api/competition/detail',{
                 contestid:self.contestid,
             }).then(function (response) {
@@ -179,7 +183,7 @@
                 }
             }).catch(function (error) {
                 console.log('/api/competition/detail'+'错误！！')
-            })
+            })*/
         }
     }
 </script>
