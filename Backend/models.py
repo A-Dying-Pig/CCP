@@ -31,6 +31,11 @@ class Contest(models.Model):
     phase_name3 = models.CharField(max_length=32, blank=True, null=True)
     phase_name4 = models.CharField(max_length=32, blank=True, null=True)
     phase_name5 = models.CharField(max_length=32, blank=True, null=True)
+    phase_start_time1 = models.DateTimeField(blank=True, null=True)  # 每个阶段的开始时间
+    phase_start_time2 = models.DateTimeField(blank=True, null=True)
+    phase_start_time3 = models.DateTimeField(blank=True, null=True)
+    phase_start_time4 = models.DateTimeField(blank=True, null=True)
+    phase_start_time5 = models.DateTimeField(blank=True, null=True)
     phase_hand_end_time1 = models.DateTimeField(blank=True, null=True)  # 每个阶段选手上交作品截止时间
     phase_hand_end_time2 = models.DateTimeField(blank=True, null=True)
     phase_hand_end_time3 = models.DateTimeField(blank=True, null=True)
@@ -51,6 +56,11 @@ class Contest(models.Model):
     phase_mode3 = models.CharField(max_length=16, blank=True, null=True)
     phase_mode4 = models.CharField(max_length=16, blank=True, null=True)
     phase_mode5 = models.CharField(max_length=16, blank=True, null=True)
+    phase_region_mode1 = models.IntegerField(default=0)  # 各阶段划分赛区的方式
+    phase_region_mode2 = models.IntegerField(default=0)
+    phase_region_mode3 = models.IntegerField(default=0)
+    phase_region_mode4 = models.IntegerField(default=0)
+    phase_region_mode5 = models.IntegerField(default=0)
     admin_id = models.IntegerField()  # 比赛管理员User表里的id
     host1 = models.CharField(max_length=32)  # 主办方
     host2 = models.CharField(max_length=32, blank=True, null=True)
@@ -74,11 +84,15 @@ class Contest(models.Model):
 class ContestPlayer(models.Model):
     player_id = models.IntegerField(db_index=True)  # 选手id
     contest_id = models.IntegerField(db_index=True)  # 比赛id
+    phase_region1 = models.CharField(max_length=32, blank=True, null=True)  # 选手在每个阶段的赛区
+    phase_region2 = models.CharField(max_length=32, blank=True, null=True)
+    phase_region3 = models.CharField(max_length=32, blank=True, null=True)
+    phase_region4 = models.CharField(max_length=32, blank=True, null=True)
+    phase_region5 = models.CharField(max_length=32, blank=True, null=True)
     extra_information1 = models.CharField(max_length=64, blank=True, null=True)  # 每个比赛特需的选手数据
     extra_information2 = models.CharField(max_length=64, blank=True, null=True)
     extra_information3 = models.CharField(max_length=64, blank=True, null=True)
     extra_information4 = models.CharField(max_length=64, blank=True, null=True)
-    submitted = models.BooleanField(default=False)  # 该选手在当前阶段是否提交过作品
     class Meta:
         db_table = "ContestPlayer"
 
@@ -106,6 +120,11 @@ class ContestGroup(models.Model):
 class ContestJudge(models.Model):
     judge_id = models.IntegerField(db_index=True)  # 评委id
     contest_id = models.IntegerField(db_index=True)  # 比赛id
+    phase_region1 = models.CharField(max_length=32, blank=True, null=True)
+    phase_region2 = models.CharField(max_length=32, blank=True, null=True)
+    phase_region3 = models.CharField(max_length=32, blank=True, null=True)
+    phase_region4 = models.CharField(max_length=32, blank=True, null=True)
+    phase_region5 = models.CharField(max_length=32, blank=True, null=True)
     class Meta:
         db_table = "ContestJudge"
 

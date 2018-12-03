@@ -10,6 +10,9 @@ MAX_CONTEST_ONE_PAGE = 10
 MAX_PARTICIPANT_ONE_PAGE = 10
 
 class ContestUtil:
+    NON_REGION = 0
+    BIG_REGION = 1
+    PROVINCE_REGION = 2
     @classmethod
     def getStage(cls, contest):
         result = []
@@ -18,8 +21,9 @@ class ContestUtil:
                 tmp_dict = {}
                 tmp_dict['name'] = getattr(contest, 'phase_name'+str(i+1))
                 tmp_dict['details'] = getattr(contest, 'phase_information'+str(i+1))
-                tmp_dict['handTimeEnd'] = time.mktime(getattr(contest, 'phase_hand_end_time'+str(i+1)).timetuple()) * 1000
-                tmp_dict['evaluationTimeEnd'] = time.mktime(getattr(contest, 'phase_evaluate_end_time' + str(i + 1)).timetuple()) * 1000
+                tmp_dict['stageTimeBegin'] = (time.mktime(getattr(contest, 'phase_start_time' + str(i+1)).timetuple()) + 8 * 60 * 60 * 1000) * 1000
+                tmp_dict['handTimeEnd'] = (time.mktime(getattr(contest, 'phase_hand_end_time'+str(i+1)).timetuple()) + 8 * 60 * 60 * 1000) * 1000
+                tmp_dict['evaluationTimeEnd'] = (time.mktime(getattr(contest, 'phase_evaluate_end_time' + str(i+1)).timetuple()) + 8 * 60 * 60 * 1000) * 1000
                 tmp_dict['mode'] = getattr(contest, 'phase_mode'+str(i+1))
                 result.append(tmp_dict)
             else:
