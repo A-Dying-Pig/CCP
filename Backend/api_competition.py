@@ -30,7 +30,7 @@ def enroll(request):
     contest_player.contest_id = contestid
     # need to modify database, add fileds to Contestplayer
     le = len(values)
-    contest_player.extra_information1 = '' if le < 1 else values[0] 
+    contest_player.extra_information1 = '' if le < 1 else values[0]
     contest_player.extra_information1 = '' if le < 2 else values[1]
     contest_player.extra_information1 = '' if le < 3 else values[2]
     contest_player.extra_information1 = '' if le < 4 else values[3]
