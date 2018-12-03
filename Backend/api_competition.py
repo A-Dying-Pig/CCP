@@ -6,6 +6,11 @@ import json
 import time
 import os
 from .utils import *
+import pytz
+from datetime import datetime
+
+utctz=pytz.timezone('UTC')
+chinatz=pytz.timezone('Asia/Shanghai')
 
 def enroll(request):
     data = json.loads(request.body.decode('utf-8'))
@@ -63,7 +68,7 @@ def slider(request):
     contest_id = [contest[0].id, contest[1].id, contest[2].id]
     for i in range(0, 3):
         context.append({'url': '/detail?contestid' + str(contest_id[i]),
-                        'img_url': + str(contest_id[i]) + '.jpg'})
+                        'img_url': '/static/img' + str(contest_id[i]) + '.jpg'})
     result = {
         'array': context,
         'msg': ''
@@ -83,7 +88,7 @@ def hot(request):
         'array': context,
         'msg': ''
     }
-    return JsonResponse(context)
+    return JsonResponse(result)
 
 def neededinfo(request):
     data = json.loads(request.body.decode('utf-8'))
@@ -142,8 +147,8 @@ def create(request):
         index = index + 1
     contest.category = comtype
     contest.information = details
-    contest.enroll_start = time[0]
-    contest.enroll_end = time[1]
+    contest.enroll_start = datetime.strptime(time[0],"%Y-%m-%dT%H:%M:%S.000Z").replace(tzinfo=pytz.utc)
+    contest.enroll_end = datetime.strptime(time[1],"%Y-%m-%dT%H:%M:%S.000Z").replace(tzinfo=pytz.utc)
     contest.grouped = 1 if mode == 0 else 0
     index = 0
     while index < len(person):
@@ -158,8 +163,9 @@ def create(request):
         setattr(contest, 'phase_name' + str(index + 1), stageinfo[index]['name'])
         setattr(contest, 'phase_information' + str(index + 1), stageinfo[index]['details'])
         setattr(contest, 'phase_mode' + str(index + 1), stageinfo[index]['mode'])
-        setattr(contest, 'phase_hand_end_time' + str(index + 1), stageinfo[index]['handTimeEnd'])
-        setattr(contest, 'phase_evaluate_end_time' + str(index + 1), stageinfo[index]['evaluationTimeEnd'])
+        # setattr(contest, 'phase_start_time' + str(index + 1), datetime.strptime(stageinfo[index]['stageTimeBegin'], "%Y-%m-%dT%H:%M:%S.000Z").replace(tzinfo=pytz.utc))
+        setattr(contest, 'phase_hand_end_time' + str(index + 1), datetime.strptime(stageinfo[index]['handTimeEnd'],"%Y-%m-%dT%H:%M:%S.000Z").replace(tzinfo=pytz.utc))
+        setattr(contest, 'phase_evaluate_end_time' + str(index + 1), datetime.strptime(stageinfo[index]['evaluationTimeEnd'],"%Y-%m-%dT%H:%M:%S.000Z").replace(tzinfo=pytz.utc))
         index = index + 1
     contest.save()
     return JsonResponse({'code': 0, 'msg': ''})
@@ -191,7 +197,7 @@ def detail(request):
 
         info['signupinfo'] = {}
         signupinfo = info['signupinfo']
-        signupinfo['time'] = [time.mktime(contest.enroll_start.timetuple())*1000, time.mktime(contest.enroll_end.timetuple())*1000]
+        signupinfo['time'] = [(time.mktime(contest.enroll_start.timetuple()) + 8 * 60 * 60)*1000, (time.mktime(contest.enroll_end.timetuple()) + 8 * 60 * 60)*1000]
         signupinfo['mode'] = 1 - contest.grouped
         signupinfo['person'] = ContestUtil.getTitle(contest)
         signupinfo['group'] = ContestUtil.getGroupTitle(contest)
@@ -199,6 +205,7 @@ def detail(request):
         result['info']['stageinfo'] = []
         result['info']['stageinfo'] = ContestUtil.getStage(contest)
         return JsonResponse(result)
-    except:
+    except Exception as e:
+        print("Exception here:")
+        print(e)
         return JsonResponse({'msg': '未知错误！'})
-

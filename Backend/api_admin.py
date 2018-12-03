@@ -3,6 +3,12 @@ from django.http import HttpResponse,JsonResponse
 from django.contrib.auth.decorators import login_required
 import json
 from .utils import *
+from datetime import datetime
+import pytz
+
+utctz=pytz.timezone('UTC')
+chinatz=pytz.timezone('Asia/Shanghai')
+
 
 def participants(request):
     data = json.loads(request.body.decode('utf-8'))
@@ -151,8 +157,8 @@ def modify(request):
         index = index + 1
     contest.category = comtype
     contest.information = details
-    contest.enroll_start = time[0]
-    contest.enroll_end = time[1]
+    contest.enroll_start = datetime.strptime(time[0],"%Y-%m-%dT%H:%M:%S.000Z").replace(tzinfo=pytz.utc)
+    contest.enroll_end = datetime.strptime(time[1],"%Y-%m-%dT%H:%M:%S.000Z").replace(tzinfo=pytz.utc)
     contest.grouped = 1 if mode == 0 else 0
     index = 0
     while index < len(person):
@@ -167,8 +173,9 @@ def modify(request):
         setattr(contest, 'phase_name' + str(index + 1), stageinfo[index]['name'])
         setattr(contest, 'phase_information' + str(index + 1), stageinfo[index]['details'])
         setattr(contest, 'phase_mode' + str(index + 1), stageinfo[index]['mode'])
-        setattr(contest, 'phase_hand_end_time' + str(index + 1), stageinfo[index]['handTimeEnd'])
-        setattr(contest, 'phase_evaluate_end_time' + str(index + 1), stageinfo[index]['evaluationTimeEnd'])
+        setattr(contest, 'phase_start_time' + str(index + 1), datetime.strptime(stageinfo[index]['stageTimeBegin'], "%Y-%m-%dT%H:%M:%S.000Z").replace(tzinfo=pytz.utc))
+        setattr(contest, 'phase_hand_end_time' + str(index + 1), datetime.strptime(stageinfo[index]['handTimeEnd'],"%Y-%m-%dT%H:%M:%S.000Z").replace(tzinfo=pytz.utc))
+        setattr(contest, 'phase_evaluate_end_time' + str(index + 1), datetime.strptime(stageinfo[index]['evaluationTimeEnd'],"%Y-%m-%dT%H:%M:%S.000Z").replace(tzinfo=pytz.utc))
         index = index + 1
     contest.save()
     return JsonResponse({'msg': ''})
