@@ -11,6 +11,7 @@ https://docs.djangoproject.com/en/2.1/ref/settings/
 """
 
 import os
+import json
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
@@ -130,3 +131,13 @@ STATICFILES_DIRS = [
 ]
 
 AUTH_USER_MODEL = "Backend.CCPUser"
+
+with open('config.json', 'r') as f:
+    mail = json.load(f)['mail']
+
+EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+EMAIL_HOST = mail['EMAIL_HOST'] 
+EMAIL_HOST_USER = mail['EMAIL_HOST_USER']
+EMAIL_HOST_PASSWORD = mail['EMAIL_HOST_PASSWORD']
+EMAIL_PORT = mail['EMAIL_PORT']
+EMAIL_USE_TLS = True
