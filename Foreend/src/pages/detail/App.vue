@@ -1,7 +1,7 @@
 <template><div id="app">
     <el-container>
         <el-header>
-            <NavigationBar :username="username"></NavigationBar>
+            <NavigationBar :username="musername"></NavigationBar>
         </el-header>
         <el-main>
             <CompetitionDetailAllInfo :info="info" :type="type" :contestid="contestid"></CompetitionDetailAllInfo>
@@ -30,7 +30,7 @@
         props:{'contestid':{
             type:Number,
                 default:NaN
-    },'username':{
+    },'musername':{
             type:String,
                 default:''
     }},
@@ -176,7 +176,13 @@
                         value:'judgelist',
                         label:'评委信息'
                     });
+                    //TODO 时间判读
+                    self.showlist.push({
+                        value:'advancedparticipants',
+                        label:'设置晋级选手名单'
+                    });
                 }
+
             }).catch(function (error) {
                 console.log('/api/competition/detail'+'错误！！')
             })

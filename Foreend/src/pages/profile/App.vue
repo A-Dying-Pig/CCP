@@ -2,7 +2,7 @@
   <div id="app">
     <el-container>
       <el-header height="100px" class="header">
-        <div><NavigationBar :username="username"></NavigationBar></div>
+        <div><NavigationBar :username="musername"></NavigationBar></div>
       </el-header>
     </el-container>
 
@@ -52,6 +52,8 @@
               </el-table>
             </el-tab-pane>
             <el-tab-pane label="我创建的比赛" name="2">
+
+              <div v-show="send_message_switch===0"  class="created-contests-table">
               <el-table :data="competition.created_competition" style="width: 100%">
                 <el-table-column
                         prop="title"
@@ -65,9 +67,56 @@
                 >
                   <template slot-scope="scope">
                     <a :href="competition.created_competition[scope.$index].url" class="person-table-btn el-button">查看详情</a>
+                    <el-button type="info" @click="SendMessageClicked(competition.created_competition[scope.$index].id,scope.$index)">发送消息</el-button>
                   </template>
                 </el-table-column>
               </el-table>
+              </div>
+
+              <div v-show="send_message_switch===1" class="created-contests-send-message">
+                <div class="send-message-btn">
+                  <el-button type="text" icon="el-icon-back" @click="SendMessageBack">返回</el-button>
+                </div>
+
+                <div class="message-target">
+                  <div>请选择对象</div>
+                  <el-cascader
+                          expand-trigger="hover"
+                          :options="send_message_menu"
+                          v-model="send_message_target"
+                  >
+                  </el-cascader>
+                </div>
+
+                <div class="send-message-select">
+                  <el-radio v-model="send_message_type" label=0>全部选手</el-radio>
+                  <el-radio v-model="send_message_type" label=1>当前阶段赛晋级选手</el-radio>
+                  <el-radio v-model="send_message_type" label=-1>当前阶段赛淘汰选手</el-radio>
+                </div>
+
+                <div class="send-message-input">
+                  <div class="send-message-input-title">消息标题
+                    <el-input
+                          type="textarea"
+                          autosize
+                          placeholder="请输入标题"
+                          v-model="send_message_title">
+                    </el-input>
+                  </div>
+                  <div class="send-message-input-content">消息内容
+                    <el-input
+                          type="textarea"
+                          :autosize="{ minRows:8,maxRows: 10}"
+                          placeholder="请输入内容"
+                          v-model="send_message_content">
+                    </el-input>
+                  </div>
+                </div>
+
+                <div class="send-message-btn">
+                  <el-button type="success" @click="SendMessageSubmit">发布</el-button></div>
+                </div>
+
             </el-tab-pane>
             <el-tab-pane label="我参评的比赛" name="3">
               <el-table :data="competition.rated_competition" style="width: 100%">
@@ -198,7 +247,7 @@
             which_menu:{ //1 competitions; 2 settings; 3 message lists
                 default:'1',
             },
-            username:{
+            musername:{
                 default:'',
                 type:String,
             }
@@ -242,6 +291,16 @@
                 },
                 message_detail_index:0,
                 message_switch:0, //0 for message list,1 for message detail
+                send_message_switch:0,
+                send_message_contest:-1,
+                send_message_target:[],
+                send_message_menu:[
+                    {value:0,label:'所有选手'},
+                    {value:-1,label:'赛区',children: [{value:1,label:'上海'}]}
+                ],
+                send_message_title:'',
+                send_message_content:'',
+                send_message_type:-1,
             }
         },
         components: {
@@ -256,7 +315,7 @@
                   this.img_url = response.data.img_url;
                   this.competition = response.data.competition;
                   this.person = response.data.person;
-                  this.new_person = this.person
+                  this.new_person = this.person;
                 });
             axios.post('/api/message/getall',{pageNum:this.message_list.current_page_num})
                 .then(response=>{
@@ -314,7 +373,62 @@
             },
             MessageBackClick:function () {
                 this.message_switch = 0;
-            }
+            },
+            SendMessageClicked:function (contest_id,index) {
+                this.send_message_contest = contest_id;
+                /*
+                let len = this.competition.created_competition[index].list.length;
+                if (len !== 0){
+                    this.$set(this.send_message_menu, 1, {value:-1,label:'赛区',children: []});
+                    for (let i = 0 ; i < len; i++){
+                        let temp={};
+                        temp.value = this.competition.created_competition[index].list[i].id;
+                        temp.label = this.competition.created_competition[index].list[i].value;
+                        this.send_message_menu[1].children.push(temp);
+                    }
+
+                }
+                else{
+                    this.send_message_menu.splice(1,1);
+                }
+                */
+                this.send_message_switch = 1;
+            },
+            SendMessageBack:function () {
+                this.send_message_content = '';
+                this.send_message_title = '';
+                this.send_message_target = [];
+                this.send_message_type = -1;
+                this.send_message_contest = -1;
+                this.send_message_switch = 0;
+            },
+            SendMessageSubmit:function () {
+                let temp = {};
+                temp.contestid = this.send_message_contest;
+                temp.title = this.send_message_title;
+                temp.content = this.send_message_content;
+                temp.target = {};
+                temp.target.id = this.send_message_target[this.send_message_target.length - 1];
+                temp.target.type = Number(this.send_message_type);
+                console.log(temp);
+                let vm = this;
+                axios.post('/api/admin/broadcast',temp)
+                    .then(response=>{
+                        if(response.data.msg ===''){
+                            vm.$message({
+                                message: '发布成功!',
+                                type: 'success'
+                            });
+                        }
+                        else{
+                            vm.$message({
+                                message: `发布失败! ${response.data.msg}`,
+                                type: 'error'
+                            });
+                        }
+                    })
+
+            },
 
         }
     }
@@ -332,6 +446,25 @@
   }
   .profile-page{
     margin-top: 40px;
+  }
+  .send-message-input{
+    margin-top: 30px;
+    margin-bottom: 30px;
+  }
+  .send-message-input-title{
+    margin-bottom: 20px;
+  }
+  .send-message-input-content{
+    margin-top: 20px;
+
+  }
+  .send-message-btn{
+    margin-top: 10px;
+    margin-bottom: 10px;
+  }
+  .send-message-select{
+    margin-top: 20px;
+    margin-bottom: 10px;
   }
 
 </style>

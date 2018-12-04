@@ -4,7 +4,7 @@
         <div class = "navi_left">
         <a v-for="(item,index) in navi_left_items" :key="index" :href="item.href" class="navi_btn_left">{{item.name}}</a>
         </div>
-        <div class = "navi_right" v-if="username===''">
+        <div class = "navi_right" v-if="username==='#undefined'">
             <a v-for="(item,index) in navi_right_items" :key="index" :href="item.href" class="navi_btn_right">{{item.name}}</a>
         </div>
         <div v-else class = "navi_right">
@@ -19,11 +19,16 @@
 
 <script>
     import axios from 'axios'
+    axios.defaults.xsrfHeaderName = "X-CSRFToken";
+    axios.defaults.headers.common = {
+        'X-CSRFToken':document.querySelector('#csrf-token input').value,
+        'X-Requested-With': 'XMLHttpRequest'
+    };
 
 export default{
     props:{
         username:{
-            default:'',
+            default:'#undefined',
             type:String
         },
     },

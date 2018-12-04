@@ -2,7 +2,7 @@
   <div id="app">
     <el-container>
     <el-header height="100px" class="header">
-      <div><NavigationBar :username="username"></NavigationBar></div>
+      <div><NavigationBar :username="musername"></NavigationBar></div>
     </el-header>
 
       <el-main>
@@ -53,7 +53,7 @@
 
     export default {
         props:{
-            username:{
+            musername:{
                 default:'',
                 type:String
             }

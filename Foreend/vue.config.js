@@ -44,6 +44,11 @@ module.exports = {
           entry: 'src/pages/superadmin/main.js',
           template: 'src/pages/superadmin/superadmin.html',
           filename: '../../templates/superadmin.html',
+      },
+      message:{
+          entry: 'src/pages/message/main.js',
+          template: 'src/pages/message/message.html',
+          filename: '../../templates/message.html',
       }
   },
     outputDir:'static/js',
