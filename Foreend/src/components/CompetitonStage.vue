@@ -21,7 +21,15 @@
 
         <el-row>
             <el-col>
-                <el-form-item label="选手提交截止时间（开始时间承接上一阶段）" prop="handTimeEnd">
+                <el-form-item label="阶段开始时间" prop="stageTimeBegin">
+                    <el-date-picker v-model="info.stageTimeBegin" type="datetime" placeholder="选择日期时间" :disabled="editableinput.stageTimeBegin"></el-date-picker>
+                </el-form-item>
+            </el-col>
+        </el-row>
+
+        <el-row>
+            <el-col>
+                <el-form-item label="选手提交截止时间（开始时间为阶段开始时间）" prop="handTimeEnd">
                     <el-date-picker v-model="info.handTimeEnd" type="datetime" placeholder="选择日期时间" :disabled="editableinput.handTimeEnd"></el-date-picker>
                 </el-form-item>
             </el-col>
@@ -65,19 +73,31 @@ export default {
         },
         props:['tinfo','index','change','stagebegintime'],
         data:function () {
+            let hourVali=function (rule, value, callback) {
+                let date = value;
+                if(date.getMinutes()||date.getSeconds()){
+                    callback(new Error("必须为整小时数"));
+                }
+                callback();
+            };
             return {
                 info:this.tinfo,
                 rules:{
                     name:[{required:true,message:'请输入阶段名称',trigger:'blur'},
                         {max:10,message:'长度不超过10个字符',trigger:'blur'}],
-                    handTimeEnd:[{required:true,message:'请指定提交截止时间',trigger:'change'}],
-                    evaluationTimeEnd:[{required:true,message:'请指定评测截止时间',trigger:'change'}],
+                    handTimeEnd:[{required:true,message:'请指定提交截止时间',trigger:'change'},
+                        {validator:hourVali,message:"时间必须为整小时数",trigger:'change'}],
+                    evaluationTimeEnd:[{required:true,message:'请指定评测截止时间',trigger:'change'},
+                        {validator:hourVali,message:"时间必须为整小时数",trigger:'change'}],
                     mode:[{required:true,message:'请指定评测方式',trigger:'change'}],
-                    detail:[{required:true,message:'请输入阶段信息',trigger:'blur'}]
+                    detail:[{required:true,message:'请输入阶段信息',trigger:'blur'}],
+                    stageTimeBegin:[{required:true,message:'请指定阶段开始时间',trigger:'change'},
+                        {validator:hourVali,message:"时间必须为整小时数",trigger:'change'}],
                 },
                 editableinput:{
                     name:false,
                     details:false,
+                    stageTimeBegin:false,
                     handTimeEnd:false,
                     evaluationTimeEnd:false,
                     mode:false,
@@ -97,6 +117,10 @@ export default {
                 }
             });
             return flag;
+        },
+        checkhour:function (time) {
+            console.log(time)
+            return false;
         }
     },
     created:function () {
@@ -107,22 +131,25 @@ export default {
                 if(!this.stagebegintime){
                     return;
                 }
-                if(now<this.stagebegintime){
+                if(now<this.info.stageTimeBegin){
                     return;
                 }
-                else if((now>this.stagebegintime)&&(now<this.info.handTimeEnd)){
+                else if((now>this.info.stageTimeBegin)&&(now<this.info.handTimeEnd)){
                     this.editableinput['name']=true;
                     this.editableinput['details']=true;
+                    this.editableinput['stageTimeBegin']=true;
                 }
                 else if((now>this.info.handTimeEnd)&&(now<this.info.evaluationTimeEnd)){
                     this.editableinput['name']=true;
                     this.editableinput['details']=true;
+                    this.editableinput['stageTimeBegin']=true;
                     this.editableinput['handTimeEnd']=true;
                     this.editableinput['mode']=true;
                 }
                 else {
                     this.editableinput['name']=true;
                     this.editableinput['details']=true;
+                    this.editableinput['stageTimeBegin']=true;
                     this.editableinput['handTimeEnd']=true;
                     this.editableinput['evaluationTimeEnd']=true;
                     this.editableinput['mode']=true;

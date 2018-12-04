@@ -5,11 +5,17 @@
   "scripts": {
     "serve": "vue-cli-service serve --open",
     "build": "vue-cli-service build --mode multi-page --no-clean",
-    "lint": "vue-cli-service lint"
+    "lint": "vue-cli-service lint",
+    "analyz": "NODE_ENV=production npm_config_report=true npm run build"
   },
   "dependencies": {
+    "debug": "^3.1.0",
+    "filestack-js": "^0.11.4",
+    "lodash": "^4.17.10",
+    "pdfjs-dist": "^2.0.489",
     "ajv": "^6.5.5",
     "ajv-keywords": "^3.2.0",
+    "sl-vue-tree": "^1.8.2",
     "vue": "^2.5.17",
     "vue-resource": "^1.5.1",
     "vue-router": "^3.0.1"
@@ -26,7 +32,15 @@
     "v-distpicker": "^1.0.20",
     "vue-pdf": "^3.3.1",
     "vue-simditor": "0.0.3",
-    "vue-template-compiler": "^2.5.17"
+    "vue-svg-loader": "^0.5.0",
+    "vue-template-compiler": "^2.5.17",
+    "vue-ztree": "^1.0.0",
+    "webpack-bundle-analyzer": "^3.0.3"
+  },
+  "babel": {
+    "presets": [
+      "@vue/app"
+    ]
   },
   "eslintConfig": {
     "root": true,
@@ -59,6 +73,6 @@
     "vue": "vue/dist/vue.common.js"
   },
   "alias": {
-    "vue" : "./node_modules/vue/dist/vue.common.js"
+    "vue": "./node_modules/vue/dist/vue.common.js"
   }
 }

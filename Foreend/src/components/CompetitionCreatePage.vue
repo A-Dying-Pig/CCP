@@ -111,13 +111,18 @@
                 }
                 let begin = this.allinfo.signupinfo.time[1];
                 for(let stage of this.allinfo.stageinfo){
+                    if(begin>=stage.stageTimeBegin){
+                        alert('阶段开始时间错误！');
+                        return;
+                    }
+                    begin = stage.stageTimeBegin;
                     if(begin>=stage.handTimeEnd){
-                        alert('阶段时间错误！');
+                        alert('阶段提交结束时间错误！');
                         return;
                     }
                     begin = stage.handTimeEnd;
                     if(begin>=stage.evaluationTimeEnd){
-                        alert('阶段时间错误！');
+                        alert('阶段评测结束时间错误！');
                         return;
                     }
                     begin = stage.evaluationTimeEnd;

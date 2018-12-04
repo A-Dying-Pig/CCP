@@ -1,3 +1,11 @@
+const output = {
+    globalObject: "this",
+};
+
+const publicPath = process.env.WEBPACK_PUBLIC_PATH;
+if (publicPath) {
+    Object.assign(output, {publicPath});
+}
 module.exports = {
   pages: {
       register:{
@@ -18,7 +26,7 @@ module.exports = {
       detail: {
           entry: 'src/pages/detail/main.js',
           template: 'src/pages/detail/detail.html',
-          filename: '../../templates/detail.html',
+          filename: '../../detail.html',
       },
       enroll: {
           entry: 'src/pages/enroll/main.js',
@@ -52,12 +60,24 @@ module.exports = {
       }
   },
     outputDir:'static/js',
-    baseUrl:'/static/js',
+    baseUrl:'static/js/',
     configureWebpack:{
         resolve: {
             alias: {
-                'vue$': 'vue/dist/vue.esm.js' // 'vue/dist/vue.common.js' for webpack 1
+                'vue$': 'vue/dist/vue.esm.js'
             }
-        }
-    }
+        },
+        devServer: {
+            watchOptions: {
+                poll: true,
+            },
+        },
+        output,
+    },
+    chainWebpack: config => {
+        config.module
+            .rule('svg')
+            .use('file-loader')
+            .loader('vue-svg-loader')
+    },
 }

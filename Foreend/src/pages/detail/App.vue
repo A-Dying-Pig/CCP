@@ -27,22 +27,24 @@
 
     export default {
         components: {NavigationBar,CompetitionDetailAllInfo,CompetitionDetailContents},
-        props:{'contestid':{
-            type:Number,
-                default:NaN
-    },'musername':{
-            type:String,
-                default:''
-    }},
+        props:{'contestid': {
+                    type:Number,
+                    default:-1
+                },
+                'musername':{
+                    type:String,
+                    default:''
+                }
+        },
         data:function () {
             return{
                 info:{
                     basicinfo:{
-                        name:'',
+                        name:'111',
                         holders:[''],
                         sponsors:[''],
                         comtype:'',
-                        details:"",
+                        details:"222",
                     },
                     signupinfo:{
                         time:[1542593167172,1542593267172],
@@ -56,14 +58,16 @@
                     stageinfo:[{
                         name:'',
                         details:'',
-                        handTimeEnd:1542793167172,
-                        evaluationTimeEnd:1542893167172,
+                        stageTimeBegin:1543827739311,
+                        handTimeEnd:1543838739311,
+                        evaluationTimeEnd:1543839739311,
                         mode:''
                     },{
                         name:'',
                         details:'',
-                        handTimeEnd:1542993167172,
-                        evaluationTimeEnd:1543003167172,
+                        stageTimeBegin:1543840739311,
+                        handTimeEnd:1543841739311,
+                        evaluationTimeEnd:1543842739311,
                         mode:''
                     }]
                 },
@@ -73,9 +77,9 @@
         },
 
         created:function () {
-            var self = this;
+            let self = this;
             //get info
-            /*
+/*
             let type = 3;
             let now = Date.now();
 
@@ -99,7 +103,8 @@
             }
             else if(type==2){
                 //当不在评测阶段时，不可以评测作品
-                let showgrade = false;
+                //let showgrade = false;
+                let showgrade = true;
                 for(let stage of self.info.stageinfo){
                     if((now<stage.evaluationTimeEnd)&&(now>stage.handTimeEnd)){
                         showgrade = true;
@@ -109,6 +114,9 @@
                     self.showlist.push({
                         value:'gradework',
                         label:'评委评分'
+                    },{
+                        value:'judgefinish',
+                        label:'查看过往评分'
                     });
                 }
             }
@@ -120,8 +128,8 @@
                     value:'participantstable',
                     label:'队员信息'
                 });
-            }*/
-            console.log(self.contestid);
+            }
+            console.log(self.contestid);*/
             axios.post('/api/competition/detail',{
                 contestid:self.contestid,
             }).then(function (response) {
@@ -159,6 +167,9 @@
                         self.showlist.push({
                             value:'gradework',
                             label:'评委评分'
+                        },{
+                            value:'judgefinish',
+                            label:'查看过往评分'
                         });
                     }
                 }
