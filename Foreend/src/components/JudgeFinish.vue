@@ -41,12 +41,12 @@
             }
         },
         created:function () {
-            this.grades = [];
+            /*this.grades = [];
             axios.post('/api/judge/finished',{
                 contestid:this.contestid
             }).then(function (response) {
                 this.grades = response.data.grades;
-            })
+            })*/
         }
     }
 </script>

@@ -83,7 +83,7 @@ export default{
 }
 
 .navi_btn_left{
-     -moz-appearance: button;
+     /*-moz-appearance: button;*/
      text-decoration: none;
      padding-left:20px;
      padding-right:20px;

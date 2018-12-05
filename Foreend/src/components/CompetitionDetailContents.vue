@@ -22,6 +22,9 @@
         <template v-else-if="item.value == 'judgefinish'">
             <JudgeFinish :contestid="contestid"></JudgeFinish>
         </template>
+        <template v-else-if="item.value == 'competitionfiles'">
+            <CompetitionFiles :contestid="contestid" :type="type"></CompetitionFiles>
+        </template>
     </el-tab-pane>
 </el-tabs>
         </el-col>
@@ -35,9 +38,10 @@
     import CompetitionCreatePage from './CompetitionCreatePage'
     import JudgeList from './JudgeList'
     import JudgeFinish from './JudgeFinish'
+    import CompetitionFiles from './CompetitionFiles'
     export default {
-        components:{JudgeList, ParticipantsTable, GradeProject,UploadFile,CompetitionCreatePage,JudgeFinish},
-        props:['info','showlist','contestid'],
+        components:{JudgeList, ParticipantsTable, GradeProject,UploadFile,CompetitionCreatePage,JudgeFinish,CompetitionFiles},
+        props:['info','showlist','contestid','type'],
         data:function () {
             return{
                 showlists:this.showlist

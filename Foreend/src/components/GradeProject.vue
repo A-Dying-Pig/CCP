@@ -96,7 +96,7 @@
                 console.log('getting file');
                 //this.files=[];
                 var self=this;
-                self.nodes = [];/*
+                self.nodes = [];
                 self.nodes = [
                     {title: '1.jpg', isLeaf: true, data:{src:'https://ss0.bdstatic.com/94oJfD_bAAcT8t7mm9GUKT-xh_/timg?image&quality=100&size=b4000_4000&sec=1543562262&di=07276496cd2ad6274f8d1767c94b4f19&src=http://imgsrc.baidu.com/imgad/pic/item/9e3df8dcd100baa1f437f36f4d10b912c9fc2ece.jpg'}},
                     {title: '2.jpg', isLeaf: true, data: { src:'https://ss1.bdstatic.com/70cFvXSh_Q1YnxGkpoWK1HF6hhy/it/u=3390961998,1154407883&fm=200&gp=0.jpg' }},
@@ -106,7 +106,7 @@
                             {title: '4.txt', isLeaf: true, data:{src:'https://www.ietf.org/rfc/rfc959.txt'}}
                         ]
                     }
-                ]*/
+                ]
                 axios.post('/api/judge/getone',{
                     contestid:self.contestid,
                     participantid:(this.readonly?this.participantid:-1),
