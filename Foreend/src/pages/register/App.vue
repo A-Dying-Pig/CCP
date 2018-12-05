@@ -172,7 +172,7 @@
                         let vm = this;
                         axios.post('/api/user/register', {username:this.input_msg.username,password:this.input_msg.pass,email:this.input_msg.email})
                             .then(response=>{
-                                if (response.data==='') {
+                                if (response.data==='#') {
                                     //成功
                                     vm.$message({
                                         message: '注册成功!',

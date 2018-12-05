@@ -1,7 +1,7 @@
 <template><div id="app">
     <el-container>
         <el-header>
-            <NavigationBar :username="username"></NavigationBar>
+            <NavigationBar :username="musername"></NavigationBar>
         </el-header>
 
         <el-main>
@@ -55,7 +55,7 @@
     };
 
     export default {
-        props:['username','pageTotal'],
+        props:['musername','pageTotal'],
         components: {
             NavigationBar,
             ContestListItem,
@@ -84,9 +84,7 @@
             CurrentPageChange:function (cur_page) {
                 axios.post('/api/competition/list',{pageNum:cur_page,type:'all'})
                     .then(response=>{
-                        this.contest_list.array = response.data.array.reverse();
-                        this.contest_list.current_page_num = response.data.current_page_num;
-                        this.contest_list.total_page_num = response.data.total_page_num;
+                        this.contest_list = response.data;
                     })
             },
             PagePrevious:function (cur_page) {

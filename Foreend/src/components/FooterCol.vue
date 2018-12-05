@@ -16,8 +16,8 @@
                 default:{
                     title:'关于我们',
                     content:[
-                        {sub_title:'了解我们',href:'/'},
-                        {sub_title:'服务协议',href:'/'}
+                        {sub_title:'了解我们',href:'/about'},
+                        {sub_title:'服务协议',href:'/service'},
                     ]
                 }
             }

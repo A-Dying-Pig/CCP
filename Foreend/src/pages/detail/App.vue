@@ -1,7 +1,7 @@
 <template><div id="app">
     <el-container>
         <el-header>
-            <NavigationBar :username="username"></NavigationBar>
+            <NavigationBar :username="musername"></NavigationBar>
         </el-header>
         <el-main>
             <CompetitionDetailAllInfo :info="info" :type="type" :contestid="contestid"></CompetitionDetailAllInfo>
@@ -27,13 +27,15 @@
 
     export default {
         components: {NavigationBar,CompetitionDetailAllInfo,CompetitionDetailContents},
-        props:{'contestid':{
-            type:Number,
-                default:-1
-    },'username':{
-            type:String,
-                default:''
-    }},
+        props:{'contestid': {
+                    type:Number,
+                    default:-1
+                },
+                'musername':{
+                    type:String,
+                    default:''
+                }
+        },
         data:function () {
             return{
                 info:{
@@ -169,7 +171,6 @@
                     }
                 }
                 else if(self.type===3){
-                    console.log(333);
                     self.showlist.push({
                         value:'infochange',
                         label:'修改信息'
@@ -182,7 +183,22 @@
                         value:'judgelist',
                         label:'评委信息'
                     });
+                    let showadvance = false;
+                    let begin = self.info.signupinfo.time[1];
+                    for(let stage of self.info.stageinfo){
+                        if((now>begin)&&(now<stage.stageTimeBegin)){
+                            showadvance = true;
+                        }
+                        begin = stage.evaluationTimeEnd;
+                    }
+                    if(showadvance){
+                        self.showlist.push({
+                            value:'advancedparticipants',
+                            label:'设置晋级选手名单'
+                        });
+                    }
                 }
+
             }).catch(function (error) {
                 console.log('/api/competition/detail'+'错误！！')
             })

@@ -2,7 +2,7 @@
   <div id="app">
     <el-container>
       <el-header height="100px" class="header">
-        <div><NavigationBar :username="username"></NavigationBar></div>
+        <div><NavigationBar :username="musername"></NavigationBar></div>
       </el-header>
     </el-container>
 
@@ -92,6 +92,7 @@
                       <div v-for="(item,index) in contest_detail.stageinfo" :key="index" class="stage-info">
                         <div class="info-item"><span class="title">阶段比赛名称:</span> <span class="content">{{item.name}}</span></div>
                         <div class="info-item"><span class="title">阶段比赛详情:</span> <span class="content">{{item.details}}</span></div>
+                        <div class="info-item"><span class="title">阶段比赛开始日期:</span> <span class="content">{{RealTime(item.stageTimeBegin)}}</span></div>
                         <div class="info-item"><span class="title">阶段比赛提交截止日期:</span> <span class="content">{{RealTime(item.handTimeEnd)}}</span></div>
                         <div class="info-item"><span class="title">阶段比赛打分截止日期:</span> <span class="content">{{RealTime(item.evaluationTimeEnd)}}</span></div>
                         <div class="info-item"><span class="title">打分方式:</span> <span class="content">{{item.mode}}</span></div>
@@ -136,7 +137,7 @@
     export default {
         name: 'app',
         props:{
-            username:{
+            musername:{
                 default:'',
                 type:String,
             }

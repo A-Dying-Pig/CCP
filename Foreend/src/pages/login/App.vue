@@ -13,7 +13,7 @@
 
       <el-row :gutter="0" class = "warning_msg">
         <el-col :span="24">
-          <el-alert v-show="error_msg!==''" :title="error_msg" type="error" center></el-alert>
+          <el-alert v-show="error_msg!=='#'" :title="error_msg" type="error" center></el-alert>
         </el-col>
       </el-row>
 
@@ -72,7 +72,7 @@
         name: 'app',
         props:{
             error_msg:{
-                default:'',
+                default:'#',
                 type:String
             }
         },
@@ -115,7 +115,7 @@
                         let vm = this;
                         axios.post('/api/user/login', {username:this.input_msg.username,password:this.input_msg.pass})
                             .then(response=>{
-                                if (response.data==='') {
+                                if (response.data.msg ==='') {
                                     //成功
                                     vm.$message({
                                         message: '登录成功!',
@@ -125,11 +125,11 @@
                                 }
                                 else{
                                   //失败
-                                  vm.error_msg = response.data;
+                                  vm.error_msg = response.data.msg;
                                 }
                             });
                     } else {
-                        console.log('error submit!!');
+                        //console.log('error submit!!');
                         return false;
                     }
                 });

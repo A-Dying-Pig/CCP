@@ -1,7 +1,7 @@
 <template><div id="app">
     <el-container>
         <el-header>
-            <NavigationBar :username="username"></NavigationBar>
+            <NavigationBar :username="musername"></NavigationBar>
         </el-header>
         <el-main>
             <CompetitionCreatePage></CompetitionCreatePage>
@@ -14,7 +14,7 @@
     import NavigationBar from "../../components/NavigationBar";
     export default {
         props:{
-            'username':{
+            'musername':{
                 type:String,
                 default:''
             }

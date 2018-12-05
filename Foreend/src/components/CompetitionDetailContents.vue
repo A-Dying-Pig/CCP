@@ -7,17 +7,20 @@
         <template v-if="item.value == 'gradework'">
             <GradeProject :contestid="contestid" :stageinfo="info.stageinfo" :readonly="false"></GradeProject>
         </template>
-        <template v-else-if="item.value == 'submitwork'">
+        <template v-else-if="item.value === 'submitwork'">
             <UploadFile :file_max_number="5" :file_max_size="50"></UploadFile>
         </template>
-        <template v-else-if="item.value == 'infochange'">
+        <template v-else-if="item.value === 'infochange'">
             <CompetitionCreatePage :contestid="contestid" :info="info" :change="true"></CompetitionCreatePage>
         </template>
-        <template v-else-if="item.value == 'participantstable'">
+        <template v-else-if="item.value === 'participantstable'">
             <ParticipantsTable :contestid="contestid"></ParticipantsTable>
         </template>
-        <template v-else-if="item.value == 'judgelist'">
+        <template v-else-if="item.value === 'judgelist'">
             <JudgeList :contestid="contestid"></JudgeList>
+        </template>
+        <template v-else-if="item.value === 'advancedparticipants'">
+            <AdvancedParticipants :contestid="contestid"> </AdvancedParticipants>
         </template>
         <template v-else-if="item.value == 'judgefinish'">
             <JudgeFinish :contestid="contestid"></JudgeFinish>
@@ -37,10 +40,11 @@
     import ParticipantsTable from  './ParticipantsTable'
     import CompetitionCreatePage from './CompetitionCreatePage'
     import JudgeList from './JudgeList'
+    import AdvancedParticipants from './AdvancedParticipants'
     import JudgeFinish from './JudgeFinish'
     import CompetitionFiles from './CompetitionFiles'
     export default {
-        components:{JudgeList, ParticipantsTable, GradeProject,UploadFile,CompetitionCreatePage,JudgeFinish,CompetitionFiles},
+        components:{JudgeList, ParticipantsTable, GradeProject,UploadFile,CompetitionCreatePage,JudgeFinish,CompetitionFiles,AdvancedParticipants},
         props:['info','showlist','contestid','type'],
         data:function () {
             return{
