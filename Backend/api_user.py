@@ -98,3 +98,33 @@ def modify(request):
     city = data['region']['city']
     CCPUser.objects.filter(id=id).update(university=university, province=province, city=city)
     return JsonResponse({'msg': ''})
+
+
+def upload(request):
+    data = json.loads(request.body.decode('utf-8'))
+    contest_id = data['contestid']
+    try:
+        contest = Contest.objects.get(id=contest_id)
+    except:
+        return JsonResponse({'msg': 'Contest does not exist.'})
+
+    try:
+        ContestPlayer.objects.get(contest_id=contest_id, player_id=request.user.id)
+    except:
+        return JsonResponse({'msg': 'Current user did not attend this contest'})
+
+    File = request.FILES.get("file", None)
+    if File is None:
+        return JsonResponse({'msg': 'File not found.'})
+    else:
+        # 打开特定的文件进行二进制的写操作;
+        try:
+            with open("/resources/contests/" + request.user.id + '/' + File.name, 'wb') as f:
+                # 分块写入文件;
+                for chunk in File.chunks():
+                    f.write(chunk)
+            return JsonResponse({'msg': ''})
+        except Exception as e:
+            print(e)
+            return JsonResponse({'msg': '未知错误'})
+

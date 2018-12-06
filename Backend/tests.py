@@ -147,7 +147,7 @@ class api_user_competiton_start_Test(TestCase):
         response_content = json.loads(response_content)
         self.assertEqual(response_content['msg'], '')    
 
-    def test_createcompetition_successful(self):
+    def test_createcompetition_group_successful(self):
         c = Client()
         user_info={      
             "username": "user", 
@@ -169,36 +169,95 @@ class api_user_competiton_start_Test(TestCase):
                 "details" : "hhhhhhhh"
                 },
             "signupinfo": {
-                "time" : ["2018-12-30 12:00","2019-12-30 12:00"],
+                "time" : ["2018-12-30T12:10:00.000Z","2019-12-30T12:10:00.000Z"],
                 "mode" : 0,
-                "person" : ["1","2","3","4"],
+                "person" : [],
                 "group" : ["1","2","3","4"],
             },
             "stageinfo":
                 [{"name" : "1",
                 "details" : "details",
-                "handTimeEnd" : "2018-12-30 12:00",
-                "evaluationTimeEnd" : "2018-12-30 12:00",
+                "handTimeEnd" : "2018-12-30T12:10:00.000Z",
+                "evaluationTimeEnd" : "2018-12-30T12:10:00.000Z",
                 "mode" : 0},
                 {"name" : "2",
                 "details" : "details",
-                "handTimeEnd" : "2018-12-30 12:00",
-                "evaluationTimeEnd" : "2018-12-30 12:00",
+                "handTimeEnd" : "2018-12-30T12:10:00.000Z",
+                "evaluationTimeEnd" : "2018-12-30T12:10:00.000Z",
                 "mode" : 0},
                 {"name" : "3",
                 "details" : "details",
-                "handTimeEnd" : "2018-12-30 12:00",
-                "evaluationTimeEnd" : "2018-12-30 12:00",
+                "handTimeEnd" : "2018-12-30T12:10:00.000Z",
+                "evaluationTimeEnd" : "2018-12-30T12:10:00.000Z",
                 "mode" : 0},
                 {"name" : "4",
                 "details" : "details",
-                "handTimeEnd" : "2018-12-30 12:00",
-                "evaluationTimeEnd" : "2018-12-30 12:00",
+                "handTimeEnd" : "2018-12-30T12:10:00.000Z",
+                "evaluationTimeEnd" : "2018-12-30T12:10:00.000Z",
                 "mode" : 0},
                 {"name" : "5",
                 "details" : "details",
-                "handTimeEnd" : "2018-12-30 12:00",
-                "evaluationTimeEnd" : "2018-12-30 12:00",
+                "handTimeEnd" : "2018-12-30T12:10:00.000Z",
+                "evaluationTimeEnd" : "2018-12-30T12:10:00.000Z",
+                "mode" : 0}]
+        }
+        response = c.post('/api/competition/create',json.dumps(comp_info),content_type="application/json")
+        response_content = response.content.decode()
+        response_content = json.loads(response_content)
+        self.assertEqual(response_content['msg'], '')
+
+    def test_createcompetition_personal_successful(self):
+        c = Client()
+        user_info={      
+            "username": "user", 
+            "password": "ccp",
+            "email":"zyj1@126.com"
+        }
+        response = c.post('/api/user/register',json.dumps(user_info),content_type="application/json")
+        user_info={
+            "username": "user", 
+            "password": "ccp"            
+        }
+        response = c.post('/api/user/login',json.dumps(user_info),content_type="application/json")        
+        comp_info = {
+            "basicinfo": {
+                "name" : "快乐肥宅大赛",
+                "holders" : ["快乐肥宅","快乐肥宅1","快乐肥宅2","快乐肥宅3"],
+                "sponsors" : [],
+                "comtype" : "趣味比赛",
+                "details" : "hhhhhhhh"
+                },
+            "signupinfo": {
+                "time" : ["2018-12-30T12:10:00.000Z","2019-12-30T12:10:00.000Z"],
+                "mode" : 1,
+                "person" : ["1","2","3","4"],
+                "group" : [],
+            },
+            "stageinfo":
+                [{"name" : "1",
+                "details" : "details",
+                "handTimeEnd" : "2018-12-30T12:10:00.000Z",
+                "evaluationTimeEnd" : "2018-12-30T12:10:00.000Z",
+                "mode" : 0},
+                {"name" : "2",
+                "details" : "details",
+                "handTimeEnd" : "2018-12-30T12:10:00.000Z",
+                "evaluationTimeEnd" : "2018-12-30T12:10:00.000Z",
+                "mode" : 0},
+                {"name" : "3",
+                "details" : "details",
+                "handTimeEnd" : "2018-12-30T12:10:00.000Z",
+                "evaluationTimeEnd" : "2018-12-30T12:10:00.000Z",
+                "mode" : 0},
+                {"name" : "4",
+                "details" : "details",
+                "handTimeEnd" : "2018-12-30T12:10:00.000Z",
+                "evaluationTimeEnd" : "2018-12-30T12:10:00.000Z",
+                "mode" : 0},
+                {"name" : "5",
+                "details" : "details",
+                "handTimeEnd" : "2018-12-30T12:10:00.000Z",
+                "evaluationTimeEnd" : "2018-12-30T12:10:00.000Z",
                 "mode" : 0}]
         }
         response = c.post('/api/competition/create',json.dumps(comp_info),content_type="application/json")
@@ -228,7 +287,7 @@ class api_user_competiton_start_Test(TestCase):
                 "details" : "hhhhhhhh"
                 },
             "signupinfo": {
-                "time" : ["2018-12-30 12:00","2019-12-30 12:00"],
+                "time" : ["2018-12-30T12:10:00.000Z","2019-12-30T12:10:00.000Z"],
                 "mode" : 0,
                 "person" : ["1","2","3","4"],
                 "group" : ["1","2","3","4"],
@@ -236,28 +295,28 @@ class api_user_competiton_start_Test(TestCase):
             "stageinfo":
                 [{"name" : "1",
                 "details" : "details",
-                "handTimeEnd" : "2018-12-30 12:00",
-                "evaluationTimeEnd" : "2018-12-30 12:00",
+                "handTimeEnd" : "2018-12-30T12:10:00.000Z",
+                "evaluationTimeEnd" : "2018-12-30T12:10:00.000Z",
                 "mode" : 0},
                 {"name" : "2",
                 "details" : "details",
-                "handTimeEnd" : "2018-12-30 12:00",
-                "evaluationTimeEnd" : "2018-12-30 12:00",
+                "handTimeEnd" : "2018-12-30T12:10:00.000Z",
+                "evaluationTimeEnd" : "2018-12-30T12:10:00.000Z",
                 "mode" : 0},
                 {"name" : "3",
                 "details" : "details",
-                "handTimeEnd" : "2018-12-30 12:00",
-                "evaluationTimeEnd" : "2018-12-30 12:00",
+                "handTimeEnd" : "2018-12-30T12:10:00.000Z",
+                "evaluationTimeEnd" : "2018-12-30T12:10:00.000Z",
                 "mode" : 0},
                 {"name" : "4",
                 "details" : "details",
-                "handTimeEnd" : "2018-12-30 12:00",
-                "evaluationTimeEnd" : "2018-12-30 12:00",
+                "handTimeEnd" : "2018-12-30T12:10:00.000Z",
+                "evaluationTimeEnd" : "2018-12-30T12:10:00.000Z",
                 "mode" : 0},
                 {"name" : "5",
                 "details" : "details",
-                "handTimeEnd" : "2018-12-30 12:00",
-                "evaluationTimeEnd" : "2018-12-30 12:00",
+                "handTimeEnd" : "2018-12-30T12:10:00.000Z",
+                "evaluationTimeEnd" : "2018-12-30T12:10:00.000Z",
                 "mode" : 0}]
         }
         response = c.post('/api/competition/create',json.dumps(comp_info),content_type="application/json")
@@ -287,7 +346,7 @@ class api_user_competiton_start_Test(TestCase):
                 "details" : "hhhhhhhh"
                 },
             "signupinfo": {
-                "time" : ["2018-12-30 12:00","2019-12-30 12:00"],
+                "time" : ["2018-12-30T12:10:00.000Z","2019-12-30T12:10:00.000Z"],
                 "mode" : 0,
                 "person" : ["1","2","3","4","5"],
                 "group" : ["1","2","3","4"],
@@ -295,28 +354,28 @@ class api_user_competiton_start_Test(TestCase):
             "stageinfo":
                 [{"name" : "1",
                 "details" : "details",
-                "handTimeEnd" : "2018-12-30 12:00",
-                "evaluationTimeEnd" : "2018-12-30 12:00",
+                "handTimeEnd" : "2018-12-30T12:10:00.000Z",
+                "evaluationTimeEnd" : "2018-12-30T12:10:00.000Z",
                 "mode" : 0},
                 {"name" : "2",
                 "details" : "details",
-                "handTimeEnd" : "2018-12-30 12:00",
-                "evaluationTimeEnd" : "2018-12-30 12:00",
+                "handTimeEnd" : "2018-12-30T12:10:00.000Z",
+                "evaluationTimeEnd" : "2018-12-30T12:10:00.000Z",
                 "mode" : 0},
                 {"name" : "3",
                 "details" : "details",
-                "handTimeEnd" : "2018-12-30 12:00",
-                "evaluationTimeEnd" : "2018-12-30 12:00",
+                "handTimeEnd" : "2018-12-30T12:10:00.000Z",
+                "evaluationTimeEnd" : "2018-12-30T12:10:00.000Z",
                 "mode" : 0},
                 {"name" : "4",
                 "details" : "details",
-                "handTimeEnd" : "2018-12-30 12:00",
-                "evaluationTimeEnd" : "2018-12-30 12:00",
+                "handTimeEnd" : "2018-12-30T12:10:00.000Z",
+                "evaluationTimeEnd" : "2018-12-30T12:10:00.000Z",
                 "mode" : 0},
                 {"name" : "5",
                 "details" : "details",
-                "handTimeEnd" : "2018-12-30 12:00",
-                "evaluationTimeEnd" : "2018-12-30 12:00",
+                "handTimeEnd" : "2018-12-30T12:10:00.000Z",
+                "evaluationTimeEnd" : "2018-12-30T12:10:00.000Z",
                 "mode" : 0}]
         }
         response = c.post('/api/competition/create',json.dumps(comp_info),content_type="application/json")
@@ -346,7 +405,7 @@ class api_user_competiton_start_Test(TestCase):
                 "details" : "hhhhhhhh"
                 },
             "signupinfo": {
-                "time" : ["2018-12-30 12:00","2019-12-30 12:00"],
+                "time" : ["2018-12-30T12:10:00.000Z","2019-12-30T12:10:00.000Z"],
                 "mode" : 0,
                 "person" : ["1","2","3","4"],
                 "group" : ["1","2","3","4","5"],
@@ -354,28 +413,28 @@ class api_user_competiton_start_Test(TestCase):
             "stageinfo":
                 [{"name" : "1",
                 "details" : "details",
-                "handTimeEnd" : "2018-12-30 12:00",
-                "evaluationTimeEnd" : "2018-12-30 12:00",
+                "handTimeEnd" : "2018-12-30T12:10:00.000Z",
+                "evaluationTimeEnd" : "2018-12-30T12:10:00.000Z",
                 "mode" : 0},
                 {"name" : "2",
                 "details" : "details",
-                "handTimeEnd" : "2018-12-30 12:00",
-                "evaluationTimeEnd" : "2018-12-30 12:00",
+                "handTimeEnd" : "2018-12-30T12:10:00.000Z",
+                "evaluationTimeEnd" : "2018-12-30T12:10:00.000Z",
                 "mode" : 0},
                 {"name" : "3",
                 "details" : "details",
-                "handTimeEnd" : "2018-12-30 12:00",
-                "evaluationTimeEnd" : "2018-12-30 12:00",
+                "handTimeEnd" : "2018-12-30T12:10:00.000Z",
+                "evaluationTimeEnd" : "2018-12-30T12:10:00.000Z",
                 "mode" : 0},
                 {"name" : "4",
                 "details" : "details",
-                "handTimeEnd" : "2018-12-30 12:00",
-                "evaluationTimeEnd" : "2018-12-30 12:00",
+                "handTimeEnd" : "2018-12-30T12:10:00.000Z",
+                "evaluationTimeEnd" : "2018-12-30T12:10:00.000Z",
                 "mode" : 0},
                 {"name" : "5",
                 "details" : "details",
-                "handTimeEnd" : "2018-12-30 12:00",
-                "evaluationTimeEnd" : "2018-12-30 12:00",
+                "handTimeEnd" : "2018-12-30T12:10:00.000Z",
+                "evaluationTimeEnd" : "2018-12-30T12:10:00.000Z",
                 "mode" : 0}]
         }
         response = c.post('/api/competition/create',json.dumps(comp_info),content_type="application/json")
@@ -405,7 +464,7 @@ class api_user_competiton_start_Test(TestCase):
                 "details" : "hhhhhhhh"
                 },
             "signupinfo": {
-                "time" : ["2018-12-30 12:00","2019-12-30 12:00"],
+                "time" : ["2018-12-30T12:10:00.000Z","2019-12-30T12:10:00.000Z"],
                 "mode" : 0,
                 "person" : ["1","2","3","4"],
                 "group" : ["1","2","3","4"],
@@ -413,33 +472,33 @@ class api_user_competiton_start_Test(TestCase):
             "stageinfo":
                 [{"name" : "1",
                 "details" : "details",
-                "handTimeEnd" : "2018-12-30 12:00",
-                "evaluationTimeEnd" : "2018-12-30 12:00",
+                "handTimeEnd" : "2018-12-30T12:10:00.000Z",
+                "evaluationTimeEnd" : "2018-12-30T12:10:00.000Z",
                 "mode" : 0},
                 {"name" : "2",
                 "details" : "details",
-                "handTimeEnd" : "2018-12-30 12:00",
-                "evaluationTimeEnd" : "2018-12-30 12:00",
+                "handTimeEnd" : "2018-12-30T12:10:00.000Z",
+                "evaluationTimeEnd" : "2018-12-30T12:10:00.000Z",
                 "mode" : 0},
                 {"name" : "3",
                 "details" : "details",
-                "handTimeEnd" : "2018-12-30 12:00",
-                "evaluationTimeEnd" : "2018-12-30 12:00",
+                "handTimeEnd" : "2018-12-30T12:10:00.000Z",
+                "evaluationTimeEnd" : "2018-12-30T12:10:00.000Z",
                 "mode" : 0},
                 {"name" : "4",
                 "details" : "details",
-                "handTimeEnd" : "2018-12-30 12:00",
-                "evaluationTimeEnd" : "2018-12-30 12:00",
+                "handTimeEnd" : "2018-12-30T12:10:00.000Z",
+                "evaluationTimeEnd" : "2018-12-30T12:10:00.000Z",
                 "mode" : 0},
                 {"name" : "5",
                 "details" : "details",
-                "handTimeEnd" : "2018-12-30 12:00",
-                "evaluationTimeEnd" : "2018-12-30 12:00",
+                "handTimeEnd" : "2018-12-30T12:10:00.000Z",
+                "evaluationTimeEnd" : "2018-12-30T12:10:00.000Z",
                 "mode" : 0},
                 {"name" : "6",
                 "details" : "details",
-                "handTimeEnd" : "2018-12-30 12:00",
-                "evaluationTimeEnd" : "2018-12-30 12:00",
+                "handTimeEnd" : "2018-12-30T12:10:00.000Z",
+                "evaluationTimeEnd" : "2018-12-30T12:10:00.000Z",
                 "mode" : 0}]
         }
         response = c.post('/api/competition/create',json.dumps(comp_info),content_type="application/json")
@@ -469,7 +528,7 @@ class api_user_competiton_start_Test(TestCase):
                 "details" : "hhhhhhhh"
                 },
             "signupinfo": {
-                "time" : ["2018-12-30 12:00"],
+                "time" : ["2018-12-30T12:10:00.000Z"],
                 "mode" : 0,
                 "person" : ["1","2","3","4"],
                 "group" : ["1","2","3","4"],
@@ -477,28 +536,28 @@ class api_user_competiton_start_Test(TestCase):
             "stageinfo":
                 [{"name" : "1",
                 "details" : "details",
-                "handTimeEnd" : "2018-12-30 12:00",
-                "evaluationTimeEnd" : "2018-12-30 12:00",
+                "handTimeEnd" : "2018-12-30T12:10:00.000Z",
+                "evaluationTimeEnd" : "2018-12-30T12:10:00.000Z",
                 "mode" : 0},
                 {"name" : "2",
                 "details" : "details",
-                "handTimeEnd" : "2018-12-30 12:00",
-                "evaluationTimeEnd" : "2018-12-30 12:00",
+                "handTimeEnd" : "2018-12-30T12:10:00.000Z",
+                "evaluationTimeEnd" : "2018-12-30T12:10:00.000Z",
                 "mode" : 0},
                 {"name" : "3",
                 "details" : "details",
-                "handTimeEnd" : "2018-12-30 12:00",
-                "evaluationTimeEnd" : "2018-12-30 12:00",
+                "handTimeEnd" : "2018-12-30T12:10:00.000Z",
+                "evaluationTimeEnd" : "2018-12-30T12:10:00.000Z",
                 "mode" : 0},
                 {"name" : "4",
                 "details" : "details",
-                "handTimeEnd" : "2018-12-30 12:00",
-                "evaluationTimeEnd" : "2018-12-30 12:00",
+                "handTimeEnd" : "2018-12-30T12:10:00.000Z",
+                "evaluationTimeEnd" : "2018-12-30T12:10:00.000Z",
                 "mode" : 0},
                 {"name" : "5",
                 "details" : "details",
-                "handTimeEnd" : "2018-12-30 12:00",
-                "evaluationTimeEnd" : "2018-12-30 12:00",
+                "handTimeEnd" : "2018-12-30T12:10:00.000Z",
+                "evaluationTimeEnd" : "2018-12-30T12:10:00.000Z",
                 "mode" : 0}]
         }
         response = c.post('/api/competition/create',json.dumps(comp_info),content_type="application/json")
@@ -507,7 +566,6 @@ class api_user_competiton_start_Test(TestCase):
         self.assertEqual(response_content['msg'], 'Too much fields.')
 
 class api_user_competiton_Test(TestCase):
-    #self.contestId = 1
     def setUp(self):
         self.c=Client()
         #用户登录和比赛创建
@@ -518,6 +576,17 @@ class api_user_competiton_Test(TestCase):
             "email":"zyj123@126.com"
         }
         response = self.c.post('/api/user/register',json.dumps(user_info),content_type="application/json")
+        user_info={      
+            "username": "admin2", 
+            "password": "ccp",
+            "email":"zyj2@126.com"
+        }
+        response = self.c.post('/api/user/register',json.dumps(user_info),content_type="application/json")
+        user_info={      
+            "username": "admin3", 
+            "password": "ccp",
+            "email":"zyj3@126.com"
+        }
         user_info={
             "username": "admin", 
             "password": "ccp"            
@@ -533,14 +602,60 @@ class api_user_competiton_Test(TestCase):
         response = self.c.post('/api/user/modify',json.dumps(modify_info),content_type="application/json")
         comp_info = {
             "basicinfo": {
-                "name" : "快乐肥宅大赛",
+                "name" : "快乐肥宅大赛-个人",
                 "holders" : ["快乐肥宅","快乐肥宅1","快乐肥宅2","快乐肥宅3"],
                 "sponsors" : [],
                 "comtype" : "趣味比赛",
                 "details" : "hhhhhhhh"
                 },
             "signupinfo": {
-                "time" : ["2018-12-30 12:00","2019-12-30 12:00"],
+                "time" : ["2018-12-30T12:10:00.000Z","2019-12-30T12:10:00.000Z"],
+                "mode" : 1,
+                "person" : ["1","2","3","4"],
+                "group" : ["1","2","3","4"],
+            },
+            "stageinfo":
+                [{"name" : "1",
+                "details" : "details",
+                "handTimeEnd" : "2018-12-30T12:10:00.000Z",
+                "evaluationTimeEnd" : "2018-12-30T12:10:00.000Z",
+                "mode" : 0},
+                {"name" : "2",
+                "details" : "details",
+                "handTimeEnd" : "2018-12-30T12:10:00.000Z",
+                "evaluationTimeEnd" : "2018-12-30T12:10:00.000Z",
+                "mode" : 0},
+                {"name" : "3",
+                "details" : "details",
+                "handTimeEnd" : "2018-12-30T12:10:00.000Z",
+                "evaluationTimeEnd" : "2018-12-30T12:10:00.000Z",
+                "mode" : 0},
+                {"name" : "4",
+                "details" : "details",
+                "handTimeEnd" : "2018-12-30T12:10:00.000Z",
+                "evaluationTimeEnd" : "2018-12-30T12:10:00.000Z",
+                "mode" : 0},
+                {"name" : "5",
+                "details" : "details",
+                "handTimeEnd" : "2018-12-30T12:10:00.000Z",
+                "evaluationTimeEnd" : "2018-12-30T12:10:00.000Z",
+                "mode" : 0}]
+        }
+        response = self.c.post('/api/competition/create',json.dumps(comp_info),content_type="application/json")
+        contest = Contest.objects.filter()
+        self.contestId_personal = contest[0].id
+
+        #组队赛
+        comp_info = {
+            "basicinfo": {
+                "name" : "快乐肥宅大赛-组队",
+                "holders" : ["快乐肥宅","快乐肥宅1","快乐肥宅2","快乐肥宅3"],
+                "sponsors" : [],
+                "comtype" : "趣味比赛",
+                "details" : "hhhhhhhh"
+                },
+            "signupinfo": {
+                "time" : ["2018-12-30T12:10:00.000Z","2019-12-30T12:10:00.000Z"],
                 "mode" : 0,
                 "person" : ["1","2","3","4"],
                 "group" : ["1","2","3","4"],
@@ -548,47 +663,53 @@ class api_user_competiton_Test(TestCase):
             "stageinfo":
                 [{"name" : "1",
                 "details" : "details",
-                "handTimeEnd" : "2018-12-30 12:00",
-                "evaluationTimeEnd" : "2018-12-30 12:00",
+                "handTimeEnd" : "2018-12-30T12:10:00.000Z",
+                "evaluationTimeEnd" : "2018-12-30T12:10:00.000Z",
                 "mode" : 0},
                 {"name" : "2",
                 "details" : "details",
-                "handTimeEnd" : "2018-12-30 12:00",
-                "evaluationTimeEnd" : "2018-12-30 12:00",
+                "handTimeEnd" : "2018-12-30T12:10:00.000Z",
+                "evaluationTimeEnd" : "2018-12-30T12:10:00.000Z",
                 "mode" : 0},
                 {"name" : "3",
                 "details" : "details",
-                "handTimeEnd" : "2018-12-30 12:00",
-                "evaluationTimeEnd" : "2018-12-30 12:00",
+                "handTimeEnd" : "2018-12-30T12:10:00.000Z",
+                "evaluationTimeEnd" : "2018-12-30T12:10:00.000Z",
                 "mode" : 0},
                 {"name" : "4",
                 "details" : "details",
-                "handTimeEnd" : "2018-12-30 12:00",
-                "evaluationTimeEnd" : "2018-12-30 12:00",
+                "handTimeEnd" : "2018-12-30T12:10:00.000Z",
+                "evaluationTimeEnd" : "2018-12-30T12:10:00.000Z",
                 "mode" : 0},
                 {"name" : "5",
                 "details" : "details",
-                "handTimeEnd" : "2018-12-30 12:00",
-                "evaluationTimeEnd" : "2018-12-30 12:00",
+                "handTimeEnd" : "2018-12-30T12:10:00.000Z",
+                "evaluationTimeEnd" : "2018-12-30T12:10:00.000Z",
                 "mode" : 0}]
         }
         response = self.c.post('/api/competition/create',json.dumps(comp_info),content_type="application/json")
         contest = Contest.objects.filter()
-        #print('-------------------------------')
-        #print('id='+str(contest[0].id))
-        #print('len(contests)='+str(len(contest)))
-        self.contestId = contest[0].id
-
-    def test_enroll_personal(self):           
+        self.contestId_group = contest[1].id
+        '''
+        print('-------------------------------')
+        print('id='+str(contest[0].id))
+        print('len(contests)='+str(len(contest)))
+        '''
+        
+    def test_enroll_personal(self):
+        user_info={
+            "username": "admin2", 
+            "password": "ccp"            
+        }
+        response = self.c.post('/api/user/login',json.dumps(user_info),content_type="application/json")           
         comp_info = {
-            "contestid": self.contestId,
+            "contestid": self.contestId_personal,
             "region":{
                 "province" : "北京",
                 "city" : "北京"                
                 },
             "university" : "清华大学",
-            "groupuser" : ["admin"],
-            "comp_type" : 1,
+            "groupuser" : [],            
             "custom_field" : ["1"],
             "custom_value" : ['1'],
             }            
@@ -597,29 +718,118 @@ class api_user_competiton_Test(TestCase):
         response_content = json.loads(response_content)
         self.assertEqual(response_content['msg'], '')
 
-    def test_enroll_group(self):       
+    def test_enroll_group(self): 
+        user_info={
+            "username": "admin2", 
+            "password": "ccp"            
+        }
+        response = self.c.post('/api/user/login',json.dumps(user_info),content_type="application/json")
         comp_info = {
-            "contestid": self.contestId,
+            "contestid": self.contestId_group,
             "region":{
                 "province" : "北京",
                 "city" : "北京"                
                 },
             "university" : "清华大学",
-            "groupuser" : ["admin","admin2"],
-            "comp_type" : 0,
+            "groupuser" : ["admin3"],
             "custom_field" : ["1","2"],
             "custom_value" : ['1',"2"],
             }            
         response = self.c.post('/api/competition/enroll',json.dumps(comp_info),content_type="application/json")
         response_content = response.content.decode()
         response_content = json.loads(response_content)
-        self.assertEqual(response_content['msg'], '')    
+        self.assertEqual(response_content['msg'], '')
+
+    def test_enroll_group_onePerson(self): 
+        user_info={
+            "username": "admin2", 
+            "password": "ccp"            
+        }
+        response = self.c.post('/api/user/login',json.dumps(user_info),content_type="application/json")
+        comp_info = {
+            "contestid": self.contestId_group,
+            "region":{
+                "province" : "北京",
+                "city" : "北京"                
+                },
+            "university" : "清华大学",
+            "groupuser" : [],
+            "custom_field" : ["1","2"],
+            "custom_value" : ['1',"2"],
+            }            
+        response = self.c.post('/api/competition/enroll',json.dumps(comp_info),content_type="application/json")
+        response_content = response.content.decode()
+        response_content = json.loads(response_content)
+        self.assertEqual(response_content['msg'], '')
+
+    def test_enroll_personal_twoPeople(self): 
+        user_info={
+            "username": "admin2", 
+            "password": "ccp"            
+        }
+        response = self.c.post('/api/user/login',json.dumps(user_info),content_type="application/json")
+        comp_info = {
+            "contestid": self.contestId_personal,
+            "region":{
+                "province" : "北京",
+                "city" : "北京"                
+                },
+            "university" : "清华大学",
+            "groupuser" : ["admin3"],
+            "custom_field" : ["1","2"],
+            "custom_value" : ['1',"2"],
+            }            
+        response = self.c.post('/api/competition/enroll',json.dumps(comp_info),content_type="application/json")
+        response_content = response.content.decode()
+        response_content = json.loads(response_content)
+        self.assertEqual(response_content['msg'], '')
+
+    def test_enroll_group_membernotexist(self): 
+        user_info={
+            "username": "admin2", 
+            "password": "ccp"            
+        }
+        response = self.c.post('/api/user/login',json.dumps(user_info),content_type="application/json")
+        comp_info = {
+            "contestid": self.contestId_group,
+            "region":{
+                "province" : "北京",
+                "city" : "北京"                
+                },
+            "university" : "清华大学",
+            "groupuser" : ["admin4"],
+            "custom_field" : ["1","2"],
+            "custom_value" : ['1',"2"],
+            }            
+        response = self.c.post('/api/competition/enroll',json.dumps(comp_info),content_type="application/json")
+        response_content = response.content.decode()
+        response_content = json.loads(response_content)
+        self.assertEqual(response_content['msg'], '参赛队员不存在') 
+
+    def test_enroll_admin(self):       
+        comp_info = {
+            "contestid": self.contestId_personal,
+            "region":{
+                "province" : "北京",
+                "city" : "北京"                
+                },
+            "university" : "清华大学",
+            "groupuser" : [],
+            "custom_field" : ["1"],
+            "custom_value" : ['1'],
+            }            
+        response = self.c.post('/api/competition/enroll',json.dumps(comp_info),content_type="application/json")
+        response_content = response.content.decode()
+        response_content = json.loads(response_content)
+        self.assertEqual(response_content['msg'], '管理员不能报名比赛')    
+
 
     def test_neededinfo_successful(self):
         contest = Contest.objects.filter()
-        print('-------------in test_needinfo_succ------------------')
-        print('id='+str(contest[0].id))
-        print('len(contests)='+str(len(contest)))
+        #print('-------------in test_needinfo_succ------------------')
+        #print('id='+str(contest[0].id))
+        #print('len(contests)='+str(len(contest)))
+        '''
         comp_info = {
             "basicinfo": {
                 "name" : "快乐肥宅大赛",
@@ -629,7 +839,7 @@ class api_user_competiton_Test(TestCase):
                 "details" : "hhhhhhhh"
                 },
             "signupinfo": {
-                "time" : ["2018-12-30 12:00","2019-12-30 12:00"],
+                "time" : ["2018-12-30T12:10:00.000Z","2019-12-30T12:10:00.000Z"],
                 "mode" : 0,
                 "person" : ["1","2","3","4"],
                 "group" : ["1","2","3","4"],
@@ -637,33 +847,34 @@ class api_user_competiton_Test(TestCase):
             "stageinfo":
                 [{"name" : "1",
                 "details" : "details",
-                "handTimeEnd" : "2018-12-30 12:00",
-                "evaluationTimeEnd" : "2018-12-30 12:00",
+                "handTimeEnd" : "2018-12-30T12:10:00.000Z",
+                "evaluationTimeEnd" : "2018-12-30T12:10:00.000Z",
                 "mode" : 0},
                 {"name" : "2",
                 "details" : "details",
-                "handTimeEnd" : "2018-12-30 12:00",
-                "evaluationTimeEnd" : "2018-12-30 12:00",
+                "handTimeEnd" : "2018-12-30T12:10:00.000Z",
+                "evaluationTimeEnd" : "2018-12-30T12:10:00.000Z",
                 "mode" : 0},
                 {"name" : "3",
                 "details" : "details",
-                "handTimeEnd" : "2018-12-30 12:00",
-                "evaluationTimeEnd" : "2018-12-30 12:00",
+                "handTimeEnd" : "2018-12-30T12:10:00.000Z",
+                "evaluationTimeEnd" : "2018-12-30T12:10:00.000Z",
                 "mode" : 0},
                 {"name" : "4",
                 "details" : "details",
-                "handTimeEnd" : "2018-12-30 12:00",
-                "evaluationTimeEnd" : "2018-12-30 12:00",
+                "handTimeEnd" : "2018-12-30T12:10:00.000Z",
+                "evaluationTimeEnd" : "2018-12-30T12:10:00.000Z",
                 "mode" : 0},
                 {"name" : "5",
                 "details" : "details",
-                "handTimeEnd" : "2018-12-30 12:00",
-                "evaluationTimeEnd" : "2018-12-30 12:00",
+                "handTimeEnd" : "2018-12-30T12:10:00.000Z",
+                "evaluationTimeEnd" : "2018-12-30T12:10:00.000Z",
                 "mode" : 0}]
         }
         response = self.c.post('/api/competition/create',json.dumps(comp_info),content_type="application/json")
+        '''
         comp_info = {
-            "contestid": self.contestId
+            "contestid": self.contestId_personal
             }            
         response = self.c.post('/api/competition/neededinfo',json.dumps(comp_info),content_type="application/json")
         response_content = response.content.decode()
@@ -672,7 +883,7 @@ class api_user_competiton_Test(TestCase):
 
     def test_neededinfo_wrong(self):
         comp_info = {
-            "contestid": self.contestId+1
+            "contestid": self.contestId_group+1
             }            
         response = self.c.post('/api/competition/neededinfo',json.dumps(comp_info),content_type="application/json")
         response_content = response.content.decode()
@@ -738,11 +949,11 @@ class api_user_competiton_Test(TestCase):
         self.assertEqual(response_content['current_page_num'], 2)
         self.assertEqual(len(response_content['array']), 0)
 
-    def test_detail_no_relation(self):
+    def test_detail_no_relation(self):        
         user_info={      
             "username": "admin2", 
             "password": "ccp",
-            "email":"zyj1@126.com"
+            "email":"zyj2@126.com"
         }
         response = self.c.post('/api/user/register',json.dumps(user_info),content_type="application/json")
         user_info={
@@ -751,7 +962,7 @@ class api_user_competiton_Test(TestCase):
         }
         response = self.c.post('/api/user/login',json.dumps(user_info),content_type="application/json")     
         comp_info = {
-            "contestid": self.contestId
+            "contestid": self.contestId_personal
             }            
         response = self.c.post('/api/competition/detail',json.dumps(comp_info),content_type="application/json")
         response_content = response.content.decode()
@@ -773,20 +984,19 @@ class api_user_competiton_Test(TestCase):
         }
         response = self.c.post('/api/user/login',json.dumps(user_info),content_type="application/json")     
         comp_info = {
-            "contestid": self.contestId,
+            "contestid": self.contestId_personal,
             "region":{
                 "province" : "北京",
                 "city" : "北京"                
                 },
             "university" : "清华大学",
-            "groupuser" : ["admin"],
-            "comp_type" : 1,
+            "groupuser" : [],
             "custom_field" : ["1"],
             "custom_value" : ['1'],
             }            
         response = self.c.post('/api/competition/enroll',json.dumps(comp_info),content_type="application/json")
         comp_info = {
-            "contestid": self.contestId
+            "contestid": self.contestId_personal
             }            
         response = self.c.post('/api/competition/detail',json.dumps(comp_info),content_type="application/json")
         response_content = response.content.decode()
@@ -834,20 +1044,7 @@ class api_user_competiton_Test(TestCase):
 
     def test_detail_admin(self):
         comp_info = {
-            "contestid": self.contestId,
-            "region":{
-                "province" : "北京",
-                "city" : "北京"                
-                },
-            "university" : "清华大学",
-            "groupuser" : ["admin"],
-            "comp_type" : 1,
-            "custom_field" : ["1"],
-            "custom_value" : ['1'],
-            }            
-        response = self.c.post('/api/competition/enroll',json.dumps(comp_info),content_type="application/json")
-        comp_info = {
-            "contestid": self.contestId
+            "contestid": self.contestId_personal
             }            
         response = self.c.post('/api/competition/detail',json.dumps(comp_info),content_type="application/json")
         response_content = response.content.decode()
@@ -858,7 +1055,7 @@ class api_user_competiton_Test(TestCase):
 
     def test_detail_wrong(self):
         comp_info = {
-            "contestid": self.contestId+1
+            "contestid": self.contestId_group+1
             }            
         response = self.c.post('/api/competition/detail',json.dumps(comp_info),content_type="application/json")
         response_content = response.content.decode()
@@ -911,7 +1108,7 @@ class api_user_competiton_Test(TestCase):
         }
         response = self.c.post('/api/user/login',json.dumps(user_info),content_type="application/json")
         comp_info = {
-            "contestid": self.contestId,
+            "contestid": self.contestId_personal,
             "pass": 1
             }            
         response = self.c.post('/api/super/submit',json.dumps(comp_info),content_type="application/json")
@@ -926,7 +1123,7 @@ class api_user_competiton_Test(TestCase):
         }
         response = self.c.post('/api/user/login',json.dumps(user_info),content_type="application/json")
         comp_info = {
-            "contestid": self.contestId,
+            "contestid": self.contestId_personal,
             "pass": 0
             }            
         response = self.c.post('/api/super/submit',json.dumps(comp_info),content_type="application/json")
@@ -941,7 +1138,7 @@ class api_user_competiton_Test(TestCase):
         }
         response = self.c.post('/api/user/login',json.dumps(user_info),content_type="application/json")
         comp_info = {
-            "contestid": self.contestId
+            "contestid": self.contestId_group
             }            
         response = self.c.post('/api/super/detail',json.dumps(comp_info),content_type="application/json")
         response_content = response.content.decode()
@@ -957,17 +1154,20 @@ class api_user_competiton_Test(TestCase):
         }
         response = self.c.post('/api/user/login',json.dumps(user_info),content_type="application/json")
         comp_info = {
-            "contestid": self.contestId,
+            "contestid": self.contestId_group,
             "pass": 1
             }            
         response = self.c.post('/api/super/submit',json.dumps(comp_info),content_type="application/json")
         comp_info = {
-            "contestid": self.contestId
+            "contestid": self.contestId_group
             }            
         response = self.c.post('/api/super/detail',json.dumps(comp_info),content_type="application/json")
         response_content = response.content.decode()
         response_content = json.loads(response_content)
         self.assertEqual(response_content['msg'], "该比赛不是未审核状态")
+
+
+
 
 
 
