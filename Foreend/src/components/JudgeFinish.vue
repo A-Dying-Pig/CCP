@@ -13,6 +13,7 @@
         </el-table-column>
         <el-table-column>
             <template slot="header"  slot-scope="scope">
+                <p hidden>{{ scope.row.grade }}</p>
                 <el-input
                         v-model="search"
                         size="mini"

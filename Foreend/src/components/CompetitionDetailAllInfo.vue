@@ -1,13 +1,13 @@
 <template>
     <div>
-        <el-row :gutter="20">
-            <el-col :offset="5" :span="14">
+        <el-row>
+            <el-col :offset="3" :span="18">
                 <el-card shadow="always">
                     <el-row :gutter="24">
                         <el-col class="title" :span="5">
                             <b>{{ info.basicinfo.name }}</b>
                         </el-col>
-                        <el-col v-if="(type == 0)&&(Date.now()>info.signupinfo.time[0])&&(Date.now()<info.signupinfo.time[1])" :span="5" :offset="14">
+                        <el-col v-if="(type === 0)&&(Date.now()>info.signupinfo.time[0])&&(Date.now()<info.signupinfo.time[1])" :span="5" :offset="14">
                             <el-button @click="clicksign" type="primary">报名参赛！</el-button>
                         </el-col>
                     </el-row>
@@ -17,9 +17,9 @@
                             <el-step :title="timestamp2datestr(info.signupinfo.time[0]) + '报名开始'"></el-step>
                             <el-step :title="timestamp2datestr(info.signupinfo.time[1]) + '报名结束'"></el-step>
                             <template v-for="item in info.stageinfo">
-                                <el-step :title="timestamp2datestr(item.stageTimeBegin)+item.name+'开始'"></el-step>
-                                <el-step :title="timestamp2datestr(item.handTimeEnd)+item.name+'提交截止'"></el-step>
-                                <el-step :title="timestamp2datestr(item.evaluationTimeEnd)+item.name+'评测截止'"></el-step>
+                                <el-step :title="timestamp2datestr(item.stageTimeBegin)+item.name+'开始'" :key="item.key"></el-step>
+                                <el-step :title="timestamp2datestr(item.handTimeEnd)+item.name+'提交截止'" :key="item.key"></el-step>
+                                <el-step :title="timestamp2datestr(item.evaluationTimeEnd)+item.name+'评测截止'" :key="item.key"></el-step>
                             </template>
                         </el-steps>
                     </el-row>
