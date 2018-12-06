@@ -14,7 +14,7 @@
 
         <el-card  class="advanced-selector">
             <div class="advanced-selector-btn">
-                筛选选手 <el-button icon="el-icon-search" type="text"></el-button>
+                快速查找 <el-button icon="el-icon-search" type="text"></el-button>
             </div>
 
             <div class="advanced-selector-item">
@@ -97,9 +97,6 @@
 
 
 </template>
-
-
-
 
 
 
@@ -302,13 +299,14 @@
                     if (this.current_page_participants[i].advanced)
                         sum += 1;
                 //current participants
-                this.current_participants[(this.current_page - 1) * this.participants_per_page + index].advanced = ad;
+                //this.current_participants[(this.current_page - 1) * this.participants_per_page + index].advanced = ad;
                 //participants
-                for (let i = 0; i < this.participants_number; i++){
-                    if (this.participants[i].username === this.current_page_participants[index].username){
-                        this.participants[i].advanced = ad;
-                    }
-                }
+                //for (let i = 0; i < this.participants_number; i++){
+                //    if (this.participants[i].username === this.current_page_participants[index].username){
+                //        this.participants[i].advanced = ad;
+                //    }
+                //}
+                //console.log(this.participants);
 
                 if (sum > 0 && sum < this.current_page_participants_number) {
                     this.select_all_participants_of_current_page = true;
@@ -331,19 +329,20 @@
                 }
 
                 //current participants
-                let offset = (this.current_page - 1) * this.participants_per_page;
-                for (let i = 0; i < this.current_page_participants_number; i++) {
-                    this.current_participants[offset + i].advanced = all;
-                }
+                //let offset = (this.current_page - 1) * this.participants_per_page;
+                //for (let i = 0; i < this.current_page_participants_number; i++) {
+                //    this.current_participants[offset + i].advanced = all;
+                //}
                 //participants
-                for (let i = 0; i < this.participants_number; i++){
-                    for (let j = 0; j < this.current_page_participants_number; j++){
-                        if (this.participants[i].username === this.current_page_participants[j].username){
-                            this.participants[i].advanced = all;
-                            break;
-                        }
-                    }
-                }
+                //for (let i = 0; i < this.participants_number; i++){
+                //    for (let j = 0; j < this.current_page_participants_number; j++){
+                //        if (this.participants[i].username === this.current_page_participants[j].username){
+                //            this.participants[i].advanced = all;
+                //            break;
+                //        }
+                //    }
+                //}
+                //console.log(this.participants);
                 this.GetCount();
             },
             SortByGrade:function () {
@@ -362,12 +361,12 @@
                 for (let i = 0 ; i < this.current_participants_number; i++)
                     this.current_participants[i].advanced = true;
                 //participants
-                for (let i = 0 ; i < this.participants_number; i++)
-                    for (let j = 0; j < this.current_participants_number; j++)
-                        if (this.participants[i].username === this.current_participants[j].username){
-                            this.participants[i].advanced = true;
-                        }
-
+                //for (let i = 0 ; i < this.participants_number; i++)
+                //    for (let j = 0; j < this.current_participants_number; j++)
+                //        if (this.participants[i].username === this.current_participants[j].username){
+                //            this.participants[i].advanced = true;
+                //        }
+                //console.log(this.participants);
                 this.GetCount();
             },
             GetCount:function () {
@@ -399,7 +398,6 @@
                         return element.university === vm.university_search;
                     });
                 }
-
 
                 this.current_participants_number = this.current_participants.length;
                 this.total_page = Math.ceil(this.current_participants_number / this.participants_per_page);
