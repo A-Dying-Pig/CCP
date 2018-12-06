@@ -110,13 +110,12 @@
                 </el-row>
 
               </div>
+            </el-tab-pane>
 
-
+            <el-tab-pane label="设置首页热门比赛和轮播图" name="2">
+              <IndexInfo></IndexInfo>
             </el-tab-pane>
           </el-tabs>
-
-
-
       </el-main>
 
     </el-container>
@@ -126,6 +125,7 @@
 <script>
     import NavigationBar from '../../components/NavigationBar'
     import SuperCheckContestItem from '../../components/SuperCheckContestItem'
+    import IndexInfo from '../../components/IndexInfo'
     import axios from 'axios'
 
     axios.defaults.xsrfHeaderName = "X-CSRFToken";
@@ -158,6 +158,7 @@
             }
         },
         components: {
+            IndexInfo,
             NavigationBar,
             SuperCheckContestItem
         },
