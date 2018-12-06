@@ -73,7 +73,7 @@
             let self = this;
             //get info
 
-            self.type = 0;
+            self.type = 3;
             let now = Date.now();
 
             self.showlist=[];
@@ -83,7 +83,8 @@
             })
             if(self.type===1){
                 //当不在提交阶段时，不可以提交作品
-                let showsubmit = false;
+                //let showsubmit = false;
+                let showsubmit = true;
                 let begin = self.info.signupinfo.time[1];
                 for(let stage of self.info.stageinfo){
                     if((now>begin)&&(now<stage.handTimeEnd)){
@@ -91,12 +92,12 @@
                     }
                     begin = stage.evaluationTimeEnd;
                 }
-                if(showsubmit){
+                //if(showsubmit){
                     self.showlist.push({
                         value:'submitwork',
                         label:'提交作品'
                     });
-                }
+                //}
             }
             else if(self.type===2){
                 //当不在评测阶段时，不可以评测作品
@@ -124,7 +125,23 @@
                 },{
                     value:'participantstable',
                     label:'队员信息'
+                },{
+                    value:'judgelist',
+                    label:'评委信息'
                 });
+                //let showprogress = false;
+                let showprogress = true;
+                for(let stage of self.info.stageinfo){
+                    if((now<stage.evaluationTimeEnd)&&(now>stage.handTimeEnd)){
+                        showprogress = true;
+                    }
+                }
+                if(showprogress){
+                    self.showlist.push({
+                        value:'judgeprogress',
+                        label:'查看评测进度'
+                    })
+                }
             }
             console.log(self.contestid);
             axios.post('/api/competition/detail',{
@@ -149,6 +166,21 @@
                         self.showlist.push({
                             value:'submitwork',
                             label:'提交作品'
+                        });
+                    }
+                    //let showadvance = false;
+                    let showadvance = true;
+                    begin = self.info.signupinfo.time[1];
+                    for(let stage of self.info.stageinfo){
+                        if((now>begin)&&(now<stage.stageTimeBegin)){
+                            showadvance = true;
+                        }
+                        begin = stage.evaluationTimeEnd;
+                    }
+                    if(showadvance){
+                        self.showlist.push({
+                            value:'advancedparticipants',
+                            label:'设置晋级选手名单'
                         });
                     }
                 }

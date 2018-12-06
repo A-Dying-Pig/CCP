@@ -11,7 +11,7 @@
             :limit="file_max_number"
             :on-exceed="handleExceed"
             :file-list="fileList">
-        <el-button slot="trigger" size="small" type="primary">上传文件</el-button>
+        <el-button slot="trigger" size="small" type="primary">选择文件</el-button>
         <el-button style="margin-left: 10px;" size="small" type="success" @click="submitUpload">上传到服务器</el-button>
         <div slot="tip" class="el-upload__tip"></div>
     </el-upload>
@@ -84,6 +84,7 @@
                         message:'没有文件可上传！',
                         type:'error'
                     })
+                    return;
                 }
                 for(let fileobj of self.fileobjs){
                     let fd = new FormData();

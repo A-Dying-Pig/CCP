@@ -1,6 +1,6 @@
 <template>
-    <el-row :gutter="20">
-        <el-col :offset="5" :span="14">
+    <el-row>
+        <el-col :offset="3" :span="18">
 <el-tabs type="border-card" value="details">
     <el-tab-pane label="比赛详情" name="details"><slot name="details"></slot></el-tab-pane>
     <el-tab-pane v-for="item in showlist" :key="item.key" :label="item.label" :name="item.value">
@@ -8,7 +8,7 @@
             <GradeProject :contestid="contestid" :stageinfo="info.stageinfo" :readonly="false"></GradeProject>
         </template>
         <template v-else-if="item.value === 'submitwork'">
-            <UploadFile :file_max_number="5" :file_max_size="50"></UploadFile>
+            <UploadFile :file_max_number="1" :file_max_size="100" :uploadurl="'/api/contestant/submit'"></UploadFile>
         </template>
         <template v-else-if="item.value === 'infochange'">
             <CompetitionCreatePage :contestid="contestid" :info="info" :change="true"></CompetitionCreatePage>
@@ -28,6 +28,9 @@
         <template v-else-if="item.value == 'competitionfiles'">
             <CompetitionFiles :contestid="contestid" :type="type"></CompetitionFiles>
         </template>
+        <template v-else-if="item.value == 'judgeprogress'">
+            <JudgeProgress :contestid="contestid" :type="type"></JudgeProgress>
+        </template>
     </el-tab-pane>
 </el-tabs>
         </el-col>
@@ -43,8 +46,9 @@
     import AdvancedParticipants from './AdvancedParticipants'
     import JudgeFinish from './JudgeFinish'
     import CompetitionFiles from './CompetitionFiles'
+    import JudgeProgress from './JudgeProgress'
     export default {
-        components:{JudgeList, ParticipantsTable, GradeProject,UploadFile,CompetitionCreatePage,JudgeFinish,CompetitionFiles,AdvancedParticipants},
+        components:{JudgeList, ParticipantsTable, GradeProject,UploadFile,CompetitionCreatePage,JudgeFinish,CompetitionFiles,AdvancedParticipants,JudgeProgress},
         props:['info','showlist','contestid','type'],
         data:function () {
             return{
