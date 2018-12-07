@@ -7,7 +7,7 @@ import random
 from .utils import ContestUtil
 
 def allot(contest_id, phase, timesperpiece):
-
+    contest = Contest.objects.get(id=contest_id)
     mode = getattr(contest, 'phase_region_mode' + str(phase))
     if mode == ContestUtil.NON_REGION:
         array = ContestGrade.objects.filter(contest_id=contest_id, phase=phase)

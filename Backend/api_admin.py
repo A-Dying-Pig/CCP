@@ -207,7 +207,8 @@ def addJudge(request):
     return JsonResponse({'msg': ''})
 
 def upload(request):
-    data = json.loads(request.body.decode('utf-8'))
+    #data = json.loads(request.body.decode('utf-8'))
+    data = request.POST
     contest_id = data['contestid']
     try:
         contest = Contest.objects.get(id=contest_id)
@@ -220,12 +221,12 @@ def upload(request):
     except:
         return JsonResponse({'msg': 'Current user is not the admin of this contest'})
 
-    File = request.FILES.get("upload_file", None)
+    File = request.FILES.get("file", None)
     if File is None:
         return JsonResponse({'msg': 'File not found.'})
     else:
         # 打开特定的文件进行二进制的写操作;
-        with open("/resources/contests/" + File.name, 'wb') as f:
+        with open("resources/contests/" + File.name, 'wb+') as f:
             # 分块写入文件;
             for chunk in File.chunks():
                 f.write(chunk)

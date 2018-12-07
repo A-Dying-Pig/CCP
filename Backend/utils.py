@@ -22,7 +22,7 @@ class ContestUtil:
                 tmp_dict['name'] = getattr(contest, 'phase_name'+str(i+1))
                 tmp_dict['details'] = getattr(contest, 'phase_information'+str(i+1))
 
-                #todo:add back tmp_dict['stageTimeBegin'] = (time.mktime(getattr(contest, 'phase_start_time' + str(i+1)).timetuple()) + 8 * 60 * 60) * 1000
+                tmp_dict['stageTimeBegin'] = (time.mktime(getattr(contest, 'phase_start_time' + str(i+1)).timetuple()) + 8 * 60 * 60) * 1000
                 tmp_dict['handTimeEnd'] = (time.mktime(getattr(contest, 'phase_hand_end_time'+str(i+1)).timetuple()) + 8 * 60 * 60) * 1000
                 tmp_dict['evaluationTimeEnd'] = (time.mktime(getattr(contest, 'phase_evaluate_end_time' + str(i+1)).timetuple()) + 8 * 60 * 60) * 1000
                 tmp_dict['mode'] = getattr(contest, 'phase_mode'+str(i+1))

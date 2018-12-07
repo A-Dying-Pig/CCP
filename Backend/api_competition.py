@@ -13,29 +13,67 @@ utctz=pytz.timezone('UTC')
 chinatz=pytz.timezone('Asia/Shanghai')
 
 def enroll(request):
+    if not request.user.is_authenticated:
+        return JsonResponse({'msg': '请先登录'})
     data = json.loads(request.body.decode('utf-8'))
     contestid = data['contestid']
     userId = request.user.id
     province = data['region']['province']
     city = data['region']['city']
     university = data['university']
-    comp_type = int(data['comp_type'])
-    if comp_type == 0:
+
+    try:
+        contest = Contest.objects.get(id=contestid)
+    except:
+        return JsonResponse({'msg': '比赛不存在'})
+
+    comp_type = contest.grouped
+    if comp_type == 1:
         groupuser = data['groupuser']
     fields = data['custom_field']
     values = data['custom_value']
 
-    contest_player = ContestPlayer()
-    contest_player.player_id = userId
-    contest_player.contest_id = contestid
-    # need to modify database, add fileds to Contestplayer
-    le = len(values)
-    contest_player.extra_information1 = '' if le < 1 else values[0]
-    contest_player.extra_information1 = '' if le < 2 else values[1]
-    contest_player.extra_information1 = '' if le < 3 else values[2]
-    contest_player.extra_information1 = '' if le < 4 else values[3]
-    contest_player.save()
+    if ContestPlayer.objects.filter(player_id=userId, contest_id=contestid):
+        return JsonResponse({'msg': '不能重复报名'})
 
+    if ContestJudge.objects.filter(judge_id=userId, contest_id=contestid):
+        return JsonResponse({'msg': '比赛评委不能报名成为比赛选手'})
+
+    try:
+        if Contest.objects.get(id=contestid).admin_id == userId:
+            return JsonResponse({'msg': '比赛主办方不能报名成为比赛选手'})
+    except Exception as e:
+        print(e)
+        return JsonResponse({'msg': '未知错误'})
+
+    le = len(values)
+    if le < 0 or le > 4:
+        return JsonResponse({'msg': '额外信息数目超出限制'})
+
+    # need to modify database, add fileds to Contestplayer
+    if comp_type == 0:  # 个人赛
+        contest_player = ContestPlayer()
+        contest_player.player_id = userId
+        contest_player.contest_id = contestid
+        index = 0
+        while index < le:
+            setattr(contest_player, 'extra_information' + str(index + 1), values[index])
+            index = index + 1
+        contest_player.save()
+    elif comp_type == 1:  # 组队赛
+        contest_group = ContestGroup()
+        contest_group.leader_id = request.user.id
+        glen = len(groupuser)
+        if glen < 0 or glen > 4:
+            return JsonResponse({'msg': '队员人数超出限制'})
+        index = 0
+        while index < glen:
+            setattr(contest_group, 'member' + str(index + 1) + '_id', groupuser[index])
+            index = index + 1
+        index = 0
+        while index < le:
+            setattr(contest_group, 'extra_information' + str(index + 1), values[index])
+            index = index + 1
     return JsonResponse({'msg': ''})
 
 def list(request):
@@ -43,8 +81,8 @@ def list(request):
     data = json.loads(request.body.decode('utf-8'))
     page = int(data['pageNum'])
     type = data['type']
-    count = Contest.objects.filter().count()
-    contests = Contest.objects.all()[(page - 1) * amount: page * amount]
+    count = Contest.objects.filter(checked=1).count()
+    contests = Contest.objects.filter(checked=1)[(page - 1) * amount: page * amount]
     array = []
     for c in contests:
         d = {}
@@ -163,7 +201,7 @@ def create(request):
         setattr(contest, 'phase_name' + str(index + 1), stageinfo[index]['name'])
         setattr(contest, 'phase_information' + str(index + 1), stageinfo[index]['details'])
         setattr(contest, 'phase_mode' + str(index + 1), stageinfo[index]['mode'])
-        # setattr(contest, 'phase_start_time' + str(index + 1), datetime.strptime(stageinfo[index]['stageTimeBegin'], "%Y-%m-%dT%H:%M:%S.000Z").replace(tzinfo=pytz.utc))
+        setattr(contest, 'phase_start_time' + str(index + 1), datetime.strptime(stageinfo[index]['stageTimeBegin'], "%Y-%m-%dT%H:%M:%S.000Z").replace(tzinfo=pytz.utc))
         setattr(contest, 'phase_hand_end_time' + str(index + 1), datetime.strptime(stageinfo[index]['handTimeEnd'],"%Y-%m-%dT%H:%M:%S.000Z").replace(tzinfo=pytz.utc))
         setattr(contest, 'phase_evaluate_end_time' + str(index + 1), datetime.strptime(stageinfo[index]['evaluationTimeEnd'],"%Y-%m-%dT%H:%M:%S.000Z").replace(tzinfo=pytz.utc))
         index = index + 1
