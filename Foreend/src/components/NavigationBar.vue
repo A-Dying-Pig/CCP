@@ -49,7 +49,7 @@ export default{
                 {name:this.username,href:'/profile'},
                 {name:'登出',href:'/logout'}
             ],
-            message_number:13,
+            message_number:0,
         }
     },
     methods: {

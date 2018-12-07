@@ -6,9 +6,9 @@
     </el-header>
 
       <el-main>
-         <!--<el-row :gutter="0">
+        <el-row :gutter="0">
           <el-col :span="24" class="banner">报名比赛 </el-col>
-        </el-row>-->
+        </el-row>
 
         <el-row :gutter="0" >
           <div class="enroll-info-spliter"> -----基本信息-----</div>
@@ -94,7 +94,6 @@
     };
 
     export default {
-        name: 'app',
         props:{
             enroll_table:{
                 type: Object,
@@ -233,7 +232,7 @@
                 axios.post('/api/competition/enroll',enroll_info)
                     .then(response=>{
                         let vm = this;
-                        if (response.data==='') {
+                        if (response.data.msg==='') {
                             //成功
                             vm.$message({
                                 message: '报名成功!',
