@@ -143,7 +143,7 @@ class ContestGrade(models.Model):
 class Notification(models.Model):
     context = models.CharField(max_length=2048)  # 消息体
     title = models.CharField(max_length=64)  # 消息标题
-    time = models.DateTimeField()  # 消息发送时间
+    time = models.DateTimeField(null=True)  # 消息发送时间
     class Meta:
         db_table = "Notification"
 

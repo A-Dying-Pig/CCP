@@ -40,7 +40,8 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'Backend',
     'Foreend',
-    'Files'
+    'Files',
+    'django_crontab'
 ]
 
 MIDDLEWARE = [
@@ -80,7 +81,7 @@ WSGI_APPLICATION = 'Kernal.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.mysql',
-        'NAME': 'ccp',
+        'NAME': 'ccp_tmp',
         'USER': 'ccp_remote',
         'PASSWORD': 'cCpremOte',
         'HOST': '123.206.47.47',
@@ -132,12 +133,18 @@ STATICFILES_DIRS = [
 
 AUTH_USER_MODEL = "Backend.CCPUser"
 
+'''
 with open('config.json', 'r') as f:
     mail = json.load(f)['mail']
 
 EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
-EMAIL_HOST = mail['EMAIL_HOST'] 
+EMAIL_HOST = mail['EMAIL_HOST']
 EMAIL_HOST_USER = mail['EMAIL_HOST_USER']
 EMAIL_HOST_PASSWORD = mail['EMAIL_HOST_PASSWORD']
 EMAIL_PORT = mail['EMAIL_PORT']
 EMAIL_USE_TLS = True
+'''
+
+CRONJOBS = [
+    ('*/1 * * * *', 'Backend.cron.testCron')
+]
