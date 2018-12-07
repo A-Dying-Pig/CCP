@@ -6,16 +6,14 @@
     </el-header>
     <el-main>
 
-      <!--<el-row :gutter="20">
-=======
+
       <el-row :gutter="0">
->>>>>>> 69ee2c13fe0f55cbbdc948bf1afd559341611f9d
         <el-col :span="24" class="banner">创建您的账户 </el-col>
-      </el-row>-->
+      </el-row>
 
       <el-row :gutter="0" class = "warning_msg">
         <el-col :span="24">
-          <el-alert v-show="error_msg!==''" :title="error_msg" type="error" center></el-alert>
+          <el-alert v-show="error_msg!=='#'" :title="error_msg" type="error" center></el-alert>
         </el-col>
       </el-row>
 
@@ -172,7 +170,7 @@
                         let vm = this;
                         axios.post('/api/user/register', {username:this.input_msg.username,password:this.input_msg.pass,email:this.input_msg.email})
                             .then(response=>{
-                                if (response.data==='#') {
+                                if (response.data==='') {
                                     //成功
                                     vm.$message({
                                         message: '注册成功!',
