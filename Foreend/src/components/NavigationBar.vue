@@ -8,7 +8,7 @@
             <a v-for="(item,index) in navi_right_items" :key="index" :href="item.href" class="navi_btn_right">{{item.name}}</a>
         </div>
         <div v-else class = "navi_right">
-            <el-badge :value="message_number" class="profile-msg-number-icon" :max="99">
+            <el-badge :value="message_number" :hidden="message_number === 0" class="profile-msg-number-icon" :max="99">
                 <a href="/message" class="profile-msg-number"><i class="el-icon-bell"></i> </a>
             </el-badge>
             <a v-for="(item,index) in navi_right_items_login" :key="index" :href="item.href" class="navi_btn_right">{{item.name}}</a>

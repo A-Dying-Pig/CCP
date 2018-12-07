@@ -160,7 +160,7 @@
                     axios.post('/api/admin/setjudge',{
                             username:self.new_judge.username,
                             id:self.new_judge.id,
-                            contestid:self.contestid,
+                            contestid:thi.contestid,
                             type:0
                         })
                             .then(function (response) {
@@ -263,6 +263,7 @@
                 this.total_page = 0;
 
                 let vm = this;
+                console.log(this.contestid);
                 axios.post('/api/admin/judgelist',{contestid:this.contestid})
                     .then(response=>{
                         if (response.data.msg !== ''){

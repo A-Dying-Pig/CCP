@@ -215,9 +215,12 @@
 
                 //if all check has passed
                 let enroll_info = {};
-                enroll_info.comp_type = this.enroll_table.comp_type;
+                //enroll_info.comp_type = this.enroll_table.comp_type;
                 if(this.enroll_table.comp_type === 0){
                     enroll_info.groupuser = this.group_info.group_member;
+                }
+                else{
+                    enroll_info.groupuser = [];
                 }
                 //extra_info
                 enroll_info.custom_field = this.enroll_table.extra;
