@@ -143,6 +143,7 @@ class ContestGrade(models.Model):
 class Notification(models.Model):
     context = models.CharField(max_length=2048)  # 消息体
     title = models.CharField(max_length=64)  # 消息标题
+    time = models.DateTimeField()  # 消息发送时间
     class Meta:
         db_table = "Notification"
 
@@ -151,6 +152,5 @@ class NotificationUser(models.Model):
     notification_id = models.IntegerField(db_index=True)  # 消息id
     user_id = models.IntegerField(db_index=True)  # 接受消息的用户id
     read = models.BooleanField(default=False)  # 消息已读/未读
-    time = models.DateTimeField()  # 消息发送时间
     class Meta:
         db_table = "NotificationUser"

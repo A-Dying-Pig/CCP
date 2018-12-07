@@ -5,6 +5,7 @@ import json
 from .utils import *
 from datetime import datetime
 import pytz
+import django.utils.timezone as tz
 
 utctz=pytz.timezone('UTC')
 chinatz=pytz.timezone('Asia/Shanghai')
@@ -13,7 +14,7 @@ chinatz=pytz.timezone('Asia/Shanghai')
 def participants(request):
     data = json.loads(request.body.decode('utf-8'))
 
-    contest_id = data['contestid']
+    contest_id = int(data['contestid'])
     page_num = data['pageNum']
 
     result = {'msg': ''}
@@ -77,7 +78,7 @@ def participants(request):
 def detail(request):
     data = json.loads(request.body.decode('utf-8'))
 
-    contest_id = data['contestid']
+    contest_id = int(data['contestid'])
 
     result = {'msg': ''}
     try:
@@ -114,7 +115,7 @@ def detail(request):
 def modify(request):
     data = json.loads(request.body.decode('utf-8'))
 
-    contest_id = data['contestid']
+    contest_id = int(data['contestid'])
 
     basicinfo = data['basicinfo']
     name = basicinfo['name']
@@ -180,10 +181,21 @@ def modify(request):
     contest.save()
     return JsonResponse({'msg': ''})
 
-def addJudge(request):
+def setjudge(request):
     data = json.loads(request.body.decode('utf-8'))
     username = data['username']
-    contest_id = data['contestid']
+    contest_id = int(data['contestid'])
+    zone_id = data['id']
+    type = data['type']
+    phase = ContestUtil.getCurrentPhase(contest_id)['phase']
+    regionmode = ContestUtil.getCurrentRegionMode(contest_id)
+    with open('zone.json', 'r', encoding='utf8') as f:
+        zone = json.load(f)
+    if regionmode == 1: #province
+        zone = zone['province'][zone_id]
+    elif regionmode == 2: #region
+        zone = zone['region'][zone_id]
+
     try:
         contest = Contest.objects.get(id=contest_id)
     except:
@@ -199,16 +211,28 @@ def addJudge(request):
         judge_id = CCPUser.objects.get(username=username).id
     except:
         return JsonResponse({'msg': 'Judge dos not exist'})
-
-    contest_judge = ContestJudge()
-    contest_judge.judge_id = judge_id
-    contest_judge.contest_id = contest_id
-    contest_judge.save()
+    if type == 0:
+        contest_judge = ContestJudge()
+        contest_judge.judge_id = judge_id
+        contest_judge.contest_id = contest_id
+        setattr(contest_judge, 'phase_region'+str(phase), zone)
+        contest_judge.save()
+    elif type == 1:
+        ContestJudge.objects.filter(judge_id=judge_id).delete()
+        contest_judge = ContestJudge()
+        contest_judge.judge_id = judge_id
+        contest_judge.contest_id = contest_id
+        setattr(contest_judge, 'phase_region'+str(phase), zone)
+        contest_judge.save()
+    elif type == 2:
+        ContestJudge.objects.filter(judge_id=judge_id).delete()
+    
     return JsonResponse({'msg': ''})
+
 
 def upload(request):
     data = json.loads(request.body.decode('utf-8'))
-    contest_id = data['contestid']
+    contest_id = int(data['contestid'])
     try:
         contest = Contest.objects.get(id=contest_id)
     except:
@@ -230,3 +254,118 @@ def upload(request):
             for chunk in File.chunks():
                 f.write(chunk)
         return JsonResponse({'msg': ''})
+
+
+def broadcast(request):
+    # todo privileges
+    data = json.loads(request.body.decode('utf-8'))
+    contestid = int(data['contestid'])
+    title = data['title']
+    content = data['content']
+    target_id = data['target']['id']
+    target_type = data['target']['type']
+    notification = Notification()
+    notification.context = content
+    notification.title = title
+    notification.save()
+    msg_id = Notification.objects.last().id
+    
+    # todo next turn
+    if target_id == -1:
+        players = ContestPlayer.objects.filter(contest_id=contestid)
+    else:
+        d = ContestUtil.getCurrentRegionMode(contestid)
+        with open('zone.json', 'r', encoding='utf8') as f:
+            zone = json.load(f)
+        if d == 0: #all
+            pass
+        elif d == 1: #province
+            zone = zone['province'][target_id]
+        elif d == 2: #region
+            zone = zone['region'][target_id]
+        modelcriteria = {'contest_id': contestid, 'phase_region'+str(d): zone}
+        players = ContestPlayer.objects.filter(**modelcriteria)
+
+    for player in players:
+        pid = player.player_id
+        notificationuser = NotificationUser()
+        notificationuser.notification_id = msg_id
+        notificationuser.user_id = pid
+        notificationuser.read = False
+        notificationuser.save()
+
+    return JsonResponse({'msg': ''})
+
+def zone(request):
+    # todo privilleges
+    data = json.loads(request.body.decode('utf-8'))
+    contestid = int(data['contestid'])
+    res = {}
+    res['msg'] = ''
+    res['list'] = []
+    with open('zone.json', 'r', encoding='utf8') as f:
+        zone = json.load(f)
+    d = ContestUtil.getCurrentRegionMode(contestid)
+    cid = 0
+    if d == 1: #province
+        for province in zone['province']:
+            dic = {}
+            dic['id'] = cid
+            dic['value'] = province
+            res['list'].append(dic)
+            cid = cid + 1
+    elif d == 2: #region
+        for region in zone['region']:
+            dic = {}
+            dic['id'] = cid
+            dic['value'] = region
+            res['list'].append(dic)
+            cid = cid + 1
+    return JsonResponse(res)
+
+def judgelist(request):
+    # todo privileges
+    data = json.loads(request.body.decode('utf-8'))
+    contestid = int(data['contestid'])
+    res = {}
+    res['msg'] = ''
+    res['judges'] = []
+    phase = ContestUtil.getCurrentPhase(contestid)['phase']
+    judges = ContestJudge.objects.filter(contest_id=contestid)
+    with open('zone.json', 'r', encoding='utf8') as f:
+        zone = json.load(f)
+    zone_id = {}
+    cid = 0
+    for province in zone['province']:
+        zone_id[province] = cid
+        cid = cid + 1
+    cid = 0
+    for region in zone['region']:
+        zone_id[region] = cid
+        cid = cid + 1
+    for judge in judges:
+        dic = {}
+        dic['username'] = CCPUser.objects.filter(id=judge.judge_id)[0].username
+        print(dic['username'])
+        print(phase)
+        print(getattr(judge, 'phase_region'+str(phase)))
+        dic['id'] = zone_id[getattr(judge, 'phase_region'+str(phase))]
+        res['judges'].append(dic)
+    return JsonResponse(res)
+
+def judgeprogress(request):
+    # todo privileges
+    data = json.loads(request.body.decode('utf-8'))
+    contestid = int(data['contestid'])
+    res = {}
+    res['msg'] = ''
+    res['judges'] = []
+    judges = ContestJudge.objects.filter(contest_id=contestid)
+    phase = ContestUtil.getCurrentPhase(contestid)['phase']
+    for judge in judges:
+        dic = {}
+        dic['name'] = CCPUser.objects.filter(id=judge.judge_id)[0].username
+        dic['sum'] = ContestGrade.objects.filter(contest_id=contestid, judge_id=judge.id, phase=phase).count()
+        dic['finish'] = ContestGrade.objects.filter(contest_id=contestid, judge_id=judge.id, phase=phase).exclude(grade=-1).count()
+        res['judges'].append(dic)
+    return JsonResponse(res)

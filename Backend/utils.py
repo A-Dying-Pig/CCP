@@ -115,6 +115,20 @@ class ContestUtil:
     def setGroupTitle(cls, contest, index, group_title):
         pass
 
+    @classmethod
+    def getCurrentPhase(cls, contestid):
+        # todo
+        # return current phase and status
+        # phase 0 is the enroll stage
+        # phase 1 is the first stage, 0 is submission, 1 is judging
+        return {'phase': 1, 'status': 0}
+
+    @classmethod
+    def getCurrentRegionMode(cls, contestid):
+        # todo
+        # return current Regionmode 0, 1, 2
+        return 1
+
 class ContestPlayerUtil:
     @classmethod
     def getInfo(cls, cp_obj, index):
