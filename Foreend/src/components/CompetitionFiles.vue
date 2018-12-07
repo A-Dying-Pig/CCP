@@ -19,7 +19,7 @@
     import UploadFile from './UploadFile'
     axios.defaults.xsrfHeaderName = "X-CSRFToken";
     axios.defaults.headers.common = {
-        //'X-CSRFToken':document.querySelector('#csrf-token input').value,
+        'X-CSRFToken':document.querySelector('#csrf-token input').value,
         'X-Requested-With': 'XMLHttpRequest'
     };
     export default {
@@ -63,6 +63,7 @@
             axios.post('/api/competition/filelist',{
                 contestid:self.contestid,
             }).then(function (response) {
+                self.files = [];
                 self.files = response.data.files;
                 console.log(self.files);
             }).catch(function (error) {

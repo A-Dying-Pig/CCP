@@ -21,7 +21,7 @@
     import axios from 'axios'
     axios.defaults.xsrfHeaderName = "X-CSRFToken";
     axios.defaults.headers.common = {
-        //'X-CSRFToken':document.querySelector('#csrf-token input').value,
+        'X-CSRFToken':document.querySelector('#csrf-token input').value,
         'X-Requested-With': 'XMLHttpRequest'
     };
 
@@ -152,6 +152,10 @@
                 self.type = response.data.type;
                 let now = Date.now();
                 self.showlist=[];
+                self.showlist.push({
+                    value:'competitionfiles',
+                    label:'比赛文件'
+                });
                 if(self.type===1){
                     //当不在提交阶段时，不可以提交作品
                     let showsubmit = false;

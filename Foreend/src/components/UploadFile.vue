@@ -10,6 +10,7 @@
             multiple
             :limit="file_max_number"
             :on-exceed="handleExceed"
+            :auto-upload="false"
             :file-list="fileList">
         <el-button slot="trigger" size="small" type="primary">选择文件</el-button>
         <el-button style="margin-left: 10px;" size="small" type="success" @click="submitUpload">上传到服务器</el-button>
@@ -21,7 +22,7 @@
     import axios from 'axios'
     axios.defaults.xsrfHeaderName = "X-CSRFToken";
     axios.defaults.headers.common = {
-        //'X-CSRFToken':document.querySelector('#csrf-token input').value,
+        'X-CSRFToken':document.querySelector('#csrf-token input').value,
         'X-Requested-With': 'XMLHttpRequest'
     };
     //before upload 用来限制文件的大小和格式
@@ -90,6 +91,7 @@
                     let fd = new FormData();
                     fd.append('file',fileobj);
                     fd.append('contestid',this.contestid);
+                    console.log(self.uploadurl)
                     axios.post(self.uploadurl,fd,{
 
                     }).then(function (response) {
