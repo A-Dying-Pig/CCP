@@ -80,7 +80,10 @@
             self.showlist.push({
                 value:'competitionfiles',
                 label:'比赛文件'
-            })
+            },{
+                value:'discussion',
+                label:'讨论区'
+            });
             if(self.type===1){
                 //当不在提交阶段时，不可以提交作品
                 //let showsubmit = false;
@@ -155,6 +158,9 @@
                 self.showlist.push({
                     value:'competitionfiles',
                     label:'比赛文件'
+                },{
+                    value:'discussion',
+                    label:'讨论区'
                 });
                 if(self.type===1){
                     //当不在提交阶段时，不可以提交作品

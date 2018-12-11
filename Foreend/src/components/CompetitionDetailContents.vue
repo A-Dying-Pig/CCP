@@ -8,7 +8,7 @@
             <GradeProject :contestid="contestid" :stageinfo="info.stageinfo" :readonly="false"></GradeProject>
         </template>
         <template v-else-if="item.value === 'submitwork'">
-            <UploadFile :file_max_number="1" :file_max_size="100" :uploadurl="'/api/contestant/submit'"></UploadFile>
+            <UploadFile :file_max_number="1" :file_max_size="100" :uploadurl="'/api/contestant/submit'" accept="zip"></UploadFile>
         </template>
         <template v-else-if="item.value === 'infochange'">
             <CompetitionCreatePage :contestid="contestid" :info="info" :change="true"></CompetitionCreatePage>
@@ -22,14 +22,17 @@
         <template v-else-if="item.value === 'advancedparticipants'">
             <AdvancedParticipants :contestid="contestid"> </AdvancedParticipants>
         </template>
-        <template v-else-if="item.value == 'judgefinish'">
+        <template v-else-if="item.value === 'judgefinish'">
             <JudgeFinish :contestid="contestid"></JudgeFinish>
         </template>
-        <template v-else-if="item.value == 'competitionfiles'">
+        <template v-else-if="item.value === 'competitionfiles'">
             <CompetitionFiles :contestid="contestid" :type="type"></CompetitionFiles>
         </template>
-        <template v-else-if="item.value == 'judgeprogress'">
+        <template v-else-if="item.value === 'judgeprogress'">
             <JudgeProgress :contestid="contestid" :type="type"></JudgeProgress>
+        </template>
+        <template v-else-if="item.value === 'discussion'">
+            <DiscussionMain :contestid="contestid" :width="width"></DiscussionMain>
         </template>
     </el-tab-pane>
 </el-tabs>
@@ -47,13 +50,21 @@
     import JudgeFinish from './JudgeFinish'
     import CompetitionFiles from './CompetitionFiles'
     import JudgeProgress from './JudgeProgress'
+    import DiscussionMain from './DiscussionMain'
     export default {
-        components:{JudgeList, ParticipantsTable, GradeProject,UploadFile,CompetitionCreatePage,JudgeFinish,CompetitionFiles,AdvancedParticipants,JudgeProgress},
+        components:{JudgeList, ParticipantsTable, GradeProject,UploadFile,CompetitionCreatePage,JudgeFinish,CompetitionFiles,AdvancedParticipants,JudgeProgress,DiscussionMain},
         props:['info','showlist','contestid','type'],
         data:function () {
             return{
-                showlists:this.showlist
+                showlists:this.showlist,
+                width:window.innerWidth*0.7,
             }
         },
+        mounted:function () {
+            let self = this;
+            window.onresize = function resize(){
+                self.width = window.innerWidth*0.7;
+            }
+        }
     }
 </script>
