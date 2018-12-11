@@ -78,7 +78,6 @@ def allot(contest_id, phase, timesperpiece):
                 
 
 def getone(request):
-    # todo: 设置分配规则，现在直接返回第一个选手的作品
     try:
         judge_id = request.user.id
     except:

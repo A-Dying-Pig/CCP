@@ -119,7 +119,7 @@ def upload(request):
     else:
         # 打开特定的文件进行二进制的写操作;
         try:
-            with open("/resources/contests/" + request.user.id + '/' + File.name, 'wb') as f:
+            with open("/resources/contests/" + str(contest_id) + '/playerFiles/' + request.user.id + '/' + File.name, 'wb') as f:
                 # 分块写入文件;
                 for chunk in File.chunks():
                     f.write(chunk)

@@ -88,3 +88,84 @@ def submit(request):
         old_contest.checked = 1
         old_contest.save()
         return JsonResponse({'msg': ''})
+
+def indexInfo(request):
+    try:
+        user = CCPUser.objects.get(id=request.user.id)
+    except:
+        return JsonResponse({'msg': 'User does not exist.'})
+    if not user.is_superuser: # 是超级用户
+        return JsonResponse({'msg': 'Authority denied.'})
+    try:
+        contests = []
+        hot_contests = HotContest.objects.all()
+        for single_contest in hot_contests:
+            contests.append({
+                'contestid': single_contest.contest_id,
+                'is_slider': 0,
+                'is_hot': 1,
+                'title': single_contest.title
+            })
+
+        slider = Slider.objects.all()
+        for single_contest in slider:
+            in_list = False
+            for contest in contests:
+                if contest['contestid'] == single_contest.contest_id:
+                    contest['is_slider'] = 1
+                    in_list = True
+                    break
+            if not in_list:
+                contests.append({
+                    'contestid': single_contest.contest_id,
+                    'is_slider': 1,
+                    'is_hot': 0,
+                    'title': single_contest.title
+                })
+        return JsonResponse({'msg': '',
+                             'contests': contests})
+    except Exception as e:
+        print(e)
+        return JsonResponse({'msg': '未知错误！'})
+
+def setIndex(request):
+    try:
+        user = CCPUser.objects.get(id=request.user.id)
+    except:
+        return JsonResponse({'msg': 'User does not exist.'})
+    if not user.is_superuser: # 是超级用户
+        return JsonResponse({'msg': 'Authority denied.'})
+    try:
+        data = json.loads(request.body.decode('utf-8'))
+        req_slider = data['slider']
+        req_hot = data['hot']
+        hots = []
+        sliders = []
+        for con_id in req_slider:
+            try:
+                contest = Contest.objects.get(id=con_id)
+            except:
+                return JsonResponse({'msg': '比赛不存在'})
+            sliders.append({'id': con_id, 'title': contest.title})
+        for con_id in req_hot:
+            try:
+                contest = Contest.objects.get(id=con_id)
+            except:
+                return JsonResponse({'msg': '比赛不存在'})
+            hots.append(({'id': con_id, 'title': contest.title}))
+        HotContest.objects.all().delete()
+        Slider.objects.all().delete()
+        for single_slider in sliders:
+            s = Slider()
+            s.contest_id = single_slider['id']
+            s.title = single_slider['title']
+            s.save()
+        for single_hot in hots:
+            h = HotContest()
+            h.contest_id = single_hot['id']
+            h.title = single_hot['title']
+            h.save()
+        return JsonResponse({'msg': ''})
+    except Exception as e:
+        print(e)
+        return JsonResponse({'msg': '未知错误！'})

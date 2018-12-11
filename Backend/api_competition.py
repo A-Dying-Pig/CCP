@@ -247,3 +247,24 @@ def detail(request):
         print("Exception here:")
         print(e)
         return JsonResponse({'msg': '未知错误！'})
+
+def fileList(request):
+    try:
+        data = json.loads(request.body.decode('utf-8'))
+        contest_id = data['contestid']
+        contest_path = "/resources/contests/" + str(contest_id)
+        files = os.listdir(contest_path)
+        result = []
+        for file in files:
+            entire_dir = os.path.join(contest_path, file)
+            if os.path.isfile(entire_dir):
+                result.append({
+                    'name': file,
+                    'url': entire_dir,
+                    'size': os.path.getsize(entire_dir)
+                })
+        return JsonResponse({'msg': '',
+                             'files': result})
+    except Exception as e:
+        print(e)
+        return JsonResponse({'msg': '未知错误！'})

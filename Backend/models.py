@@ -154,3 +154,14 @@ class NotificationUser(models.Model):
     read = models.BooleanField(default=False)  # 消息已读/未读
     class Meta:
         db_table = "NotificationUser"
+
+# 轮播图
+class Slider(models.Model):
+    contest_id = models.IntegerField()  # 比赛id
+    title = models.CharField(max_length=32)  # 比赛名称
+
+
+# 热门比赛
+class HotContest(models.Model):
+    contest_id = models.IntegerField()  # 比赛id
+    title = models.CharField(max_length=32)  # 比赛名称
