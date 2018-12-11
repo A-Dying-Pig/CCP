@@ -159,9 +159,10 @@ class NotificationUser(models.Model):
 class Slider(models.Model):
     contest_id = models.IntegerField()  # 比赛id
     title = models.CharField(max_length=32)  # 比赛名称
-
+    brief_introduction = models.CharField(max_length=128)  # 比赛简介
 
 # 热门比赛
 class HotContest(models.Model):
     contest_id = models.IntegerField()  # 比赛id
     title = models.CharField(max_length=32)  # 比赛名称
+    brief_introduction = models.CharField(max_length=128)  # 比赛简介

@@ -100,33 +100,40 @@ def list(request):
     })
 
 def slider(request):
-    context = []
-    # todo:保存轮播图信息
-    contest = Contest.objects.filter()
-    contest_id = [contest[0].id, contest[1].id, contest[2].id]
-    for i in range(0, 3):
-        context.append({'url': '/detail?contestid' + str(contest_id[i]),
-                        'img_url': '/static/img' + str(contest_id[i]) + '.jpg'})
-    result = {
-        'array': context,
-        'msg': ''
-    }
-    return JsonResponse(result)
+    try:
+        context = []
+        contests = Slider.objects.all()
+        for contest in contests:
+            context.append({'url': '/detail?contestid=' + str(contest.contest_id),
+                            'img_url': '/static/img' + str(contest.contest_id) + '.jpg'})
+        result = {
+            'array': context,
+            'msg': ''
+        }
+        return JsonResponse(result)
+    except Exception as e:
+        print(e)
+        return JsonResponse({'msg': '未知错误'})
 
 def hot(request):
-    context = []
-    # todo:根据比赛参赛情况返回参赛情况最好的 或者 管理员手动管理数据库中某字段
-    contest = Contest.objects.filter()
-    for i in range(0, 3):
-        context.append({'url': '/detail?contestid' + str(contest[i].id),
-                        'img_url': str(contest[i].id) + '.jpg',
-                        'intro': contest[i].brief_introduction,
-                        'title': contest[i].title})
-    result = {
-        'array': context,
-        'msg': ''
-    }
-    return JsonResponse(result)
+    try:
+        context = []
+        contests = HotContest.objects.all()
+        for contest in contests:
+            context.append({
+                'url': 'detail?contestid=' + str(contest.contest_id),
+                'img_url': '/static/img' + str(contest.contest_id) + '.jpg',
+                'intro': contest.brief_introduction,
+                'title': contest.brief_introduction
+            })
+        result = {
+            'array': context,
+            'msg': ''
+        }
+        return JsonResponse(result)
+    except Exception as e:
+        print(e)
+        return JsonResponse({'msg': '未知错误'})
 
 def neededinfo(request):
     data = json.loads(request.body.decode('utf-8'))

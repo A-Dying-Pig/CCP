@@ -4,7 +4,7 @@ from django.contrib.auth.decorators import login_required
 import json
 import os
 import random
-from .utils import ContestUtil
+from .utils import ContestUtil,GeneralUtil
 
 def allot(contest_id, phase, timesperpiece):
     contest = Contest.objects.get(id=contest_id)
@@ -84,16 +84,15 @@ def getone(request):
         return JsonResponse({'msg': '权限认证失败！'})
     data = json.loads(request.body.decode('utf-8'))
     contest_id = data['contestid']
-    user_id = ContestPlayer.objects.filter()[0].id
-    files = []
-    base_dir = '/resources/contests/' + str(contest_id) + 'works/' + str(user_id) + '/'
-    for maindir, subdir, file_name_list in os.walk(base_dir):
-        for filename in file_name_list:
-            apath = os.path.join(maindir, filename)  # 合并成一个完整路径
-            files.append(apath)
+    participant_id = data['participantid']
+    if participant_id == -1:
+        # todo: get participant_id
+        participant_id = 1
+    base_dir = "/resources/contests/" + str(contest_id) + '/playerFiles/' + str(participant_id)
+    children = GeneralUtil.getChildren(base_dir)
     return JsonResponse({
-        'files': files,
-        'msg': ''
+        'msg': '',
+        'files': children
     })
 
 def submit(request):
