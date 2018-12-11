@@ -116,3 +116,21 @@ def submit(request):
 
     return JsonResponse({'msg': ''})
 
+def finished(request):
+    try:
+        judge_id = request.user.id
+    except:
+        return JsonResponse({'msg': 'Unauthorized'})
+    data = json.loads(request.body.decode('utf-8'))
+    contest_id = data['contestid']
+    res = {}
+    res['msg'] = ''
+    res['grades'] = []
+    result = ContestGrade.objects.filter(contest_id=contestid, judge_id=judge_id).exclude(grade=-1)
+    for row in result:
+        dic = {}
+        dic['participantid'] = row.leader_id
+        dic['grade'] = row.grade
+        res['grades'].append(dic)
+    return JsonResponse(res)
+

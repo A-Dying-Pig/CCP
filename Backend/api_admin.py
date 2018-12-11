@@ -369,3 +369,43 @@ def judgeprogress(request):
         dic['finish'] = ContestGrade.objects.filter(contest_id=contestid, judge_id=judge.id, phase=phase).exclude(grade=-1).count()
         res['judges'].append(dic)
     return JsonResponse(res)
+
+
+def advanced(request):
+    # todo privileges
+    data = json.loads(request.body.decode('utf-8'))
+    contestid = int(data['contestid'])
+    target = int(data['target'])
+    res = {}
+    res['msg'] = ''
+    participants = []
+    phase = ContestUtil.getCurrentPhase(contestid)['phase']
+    result = ContestGrade.objects.filter(contest_id=contestid).values('leader_id').annotate(average_rating=Avg('grade'))
+    for row in result:
+        dic = {}
+        dic['username'] = CCPUser.objects.filter(id=row.leader_id)[0].username
+        dic['university'] = CCPUser.objects.filter(id=row.leader_id)[0].university
+        dic['grade'] = row.average_rating
+        # default is 0
+        dic['advanced'] = 0
+        res['participants'].append(dic)
+    return JsonResponse(res)
+
+def setadvanced(request):
+    # todo privileges
+    data = json.loads(request.body.decode('utf-8'))
+    contestid = int(data['contestid'])
+    target = int(data['target'])
+    participants = data['participants']
+    # need to be checked carefully
+    phase = ContestUtil.getCurrentPhase(contestid)['phase']
+    for p in participants:
+        contestgrade = ContestGrade()
+        leader_id = CCPUser.objects.filter(username=p)[0].id
+        contestgrade.leader_id = leader_id
+        contestgrade.contest_id = contestid
+        contestgrade.phase = phase
+        contestgrade.save()
+    res = {}
+    res['msg'] = ''
+    return res
