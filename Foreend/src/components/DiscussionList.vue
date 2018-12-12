@@ -7,8 +7,8 @@
     </el-row>
     <el-row type="flex" justify="center">
         <el-col :span="24">
-    <el-table :data="disdata" style="width: 100%;" :show-header="false" @row-click="toone">
-        <el-table-column :width="width * 0.8" >
+    <el-table :data="disdata" :show-header="false" @row-click="toone">
+        <el-table-column min-width="6" >
             <template slot-scope="scope">
                 <div>
                     <p class="discussiontitle">{{ scope.row.title }}</p>
@@ -16,7 +16,7 @@
                 </div>
             </template>
         </el-table-column>
-        <el-table-column :width="width * 0.1" >
+        <el-table-column min-width="1" >
             <template slot-scope="scope">
                 <div>
                     <p class="discussiontitle">{{ scope.row.replynum }}</p>
@@ -24,7 +24,7 @@
                 </div>
             </template>
         </el-table-column>
-        <el-table-column :width="width * 0.1" >
+        <el-table-column min-width="1" >
             <template slot-scope="scope">
                 <div>
                     <p class="discussiontitle">{{ scope.row.viewnum }}</p>
@@ -60,7 +60,7 @@
         props:{
             showtype:{
                 Type:Object,
-                default:{show:0}
+                default:{show:0,discussionid:0}
             },
             current_page_num:{
                 Type:Number,
@@ -73,10 +73,6 @@
             disdatap:{
                 Type:Array,
                 default:[]
-            },
-            width:{
-                Type:Number,
-                default:0
             },
             onedis:{
                 Type:Object,
@@ -97,8 +93,8 @@
             toone:function (row, event, column) {
                 let self = this;
                 this.isshowList.show = 1;
+                this.showtype.discussionid = row.discussionid;
                 //get one discussion
-                self.onedis.title = row.title;
                 console.log(self.onedis.title);
                 axios.post('/api/competition/discussion',{
                     contestid:self.contestid,
@@ -108,7 +104,7 @@
                     if(response.data.msg!==''){
                         self.$message({
                             message:response.data.msg,
-                            type:'success'
+                            type:'error'
                         });
                         return
                     }
@@ -125,7 +121,6 @@
             },
             handleCurrentChange:function (pagenum) {
                 console.log(pagenum);
-                console.log(this.width);
                 this.getdata(pagenum);
             },
             timeformat:function (stamp) {
@@ -187,7 +182,7 @@
             let self = this;
             self.disdata = [
                 {
-                    id:1,
+                    discussionid:1,
                     title:'竞赛答疑专用贴！！',
                     author:'小程序竞赛举办方',
                     issuetime:1544308970429,
@@ -196,7 +191,7 @@
                     viewnum:100
                 },
                 {
-                    id:2,
+                    discussionid:2,
                     title:'求组队！！',
                     author:'萌新',
                     issuetime:1544308970429,

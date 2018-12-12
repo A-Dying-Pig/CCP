@@ -3,7 +3,7 @@
         <el-card class="box-card">
             <div class="title">
                 <div class="user-image">
-                    <img src="../assets/1.png" class="the-image">
+                    <img :src="img_url" class="the-image">
                 </div>
                 <div class="user-text">
                     <div class="user-name">
@@ -26,9 +26,9 @@
 <script>
     export default{
         props:{
-            //img_url:{
-            //    default:require('../assets/1.png')
-            //},
+            img_url:{
+                default:require('../assets/img/logo.png')
+            },
             username:{
                 default:'leiyiran',
             },
@@ -44,20 +44,33 @@
         },
         data:function () {
             return {
-                img_url:{
-                    default:require('../assets/1.png')
-                },
             }
         },
         methods:{
             RealTime:function (timestamp) {
-                let now = new Date(timestamp),
-                    y = now.getFullYear(),
-                    m = now.getMonth() + 1,
-                    d = now.getDate();
-                let str = y + "-" + (m < 10 ? "0" + m : m) + "-" + (d < 10 ? "0" + d : d) + " " + now.toTimeString().substr(0, 8);
-                return str;
-            }
+                let now = new Date();
+                let then = new Date(timestamp);
+                //year
+                if(then.getFullYear()!==now.getFullYear()){
+                    return now.getFullYear()-then.getFullYear()+'年前';
+                }
+                //month
+                else if(then.getMonth()!==now.getMonth()){
+                    return now.getMonth()-then.getMonth()+'月前';
+                }
+                //day
+                else if(then.getDay()!==now.getDay()){
+                    return now.getDay()-then.getDay()+'天前';
+                }
+                else {
+                    let hour =then.getHours()+'';
+                    let minite = then.getMinutes()+'';
+                    if(then.getMinutes()<10){
+                        minite = '0'+minite;
+                    }
+                    return hour+':'+minite;
+                }
+            },
         }
     }
 </script>
@@ -87,7 +100,7 @@
     margin-top:5px;
 }
 .content{
-    margin-top: 80px;
+    margin-top: 60px;
     margin-left:100px;
 }
 </style>
