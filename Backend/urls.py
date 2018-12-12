@@ -20,6 +20,8 @@ urlpatterns = [
     path('competition/detail', competition.detail),
     path('competition/list', competition.list),
     path('competition/filelist', competition.fileList),
+    path('competition/enrollnum', competition.enrollNum),
+    path('competition/uploadimg', competition.uploadImg),
     path('super/contests', superadmin.contests),
     path('super/detail', superadmin.detail),
     path('super/submit', superadmin.submit),

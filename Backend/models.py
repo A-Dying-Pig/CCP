@@ -159,10 +159,35 @@ class NotificationUser(models.Model):
 class Slider(models.Model):
     contest_id = models.IntegerField()  # 比赛id
     title = models.CharField(max_length=32)  # 比赛名称
-    brief_introduction = models.CharField(max_length=128)  # 比赛简介
+    class Meta:
+        db_table = "Slider"
 
 # 热门比赛
 class HotContest(models.Model):
     contest_id = models.IntegerField()  # 比赛id
     title = models.CharField(max_length=32)  # 比赛名称
     brief_introduction = models.CharField(max_length=128)  # 比赛简介
+    class Meta:
+        db_table = "HotContest"
+
+# 讨论区主题帖
+class Post(models.Model):
+    title = models.CharField(max_length=128)  # 标题
+    author_id = models.IntegerField(db_index=True)
+    author = models.CharField(max_length=128)  # 发帖人用户名
+    content = models.CharField(max_length=1024)  # 发帖内容
+    time = models.DateTimeField()  # 发帖时间
+    replies = models.IntegerField(default=0)  # 回帖数量
+    last_reply_time = models.DateTimeField()  # 最后回复时间
+    views = models.IntegerField(default=0)  # 浏览量
+    class Meta:
+        db_table = "Post"
+
+# 讨论区回帖
+class Reply(models.Model):
+    post_id = models.IntegerField(db_index=True)  # 主题帖id
+    author_id = models.IntegerField(db_index=True)  # 回帖人id
+    content = models.CharField(max_length=1024)  # 回帖内容
+    time = models.DateTimeField()  # 回帖时间
+    class Meta:
+        db_table = "Reply"
