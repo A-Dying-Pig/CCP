@@ -1,7 +1,7 @@
 <template>
     <div>
         <DiscussionList v-show="showtype.show === 0" :contestid="contestid" :showtype="showtype" :current_page_num="current_page_num" :total_page_num="total_page_num" :disdatap="disdata" :width="width" :onedis="onedis"></DiscussionList>
-        <DiscussionOnepage v-show="showtype.show === 1" :showtype="showtype" :onedis="onedis"></DiscussionOnepage>
+        <DiscussionOnepage v-show="showtype.show === 1" :showtype="showtype" :contestid="contestid" :onedis="onedis"></DiscussionOnepage>
         <DiscussionWrite v-show="showtype.show === 2" :showtype="showtype" :contestid="contestid"></DiscussionWrite>
     </div>
 </template>
@@ -26,20 +26,33 @@
         data:function () {
             return{
                 showtype:{
-                    show:0
+                    show:0,
+                    discussionid:0,
                 },
                 current_page_num:1,
                 total_page_num:10,
                 disdata:[],
                 onedis:{
-                    msg:'',
-                    current_page_num:0,
-                    total_page_num:0,
-                    title:'',
-                    content:'',
-                    author:'',
-                    issuetime:0,
-                    array:[]
+                        current_page_num:1,
+                        total_page_num:5,
+                        title: '测试标题',
+                        content:"I am a good student. My name is Leiyiran",
+                        author:'你好我叫雷怡然',
+                        issuetime:1234567891234,
+                        array:[
+                            {
+                                imgurl:require('../assets/img/logo.png'),
+                                username:'Flying Donut',
+                                content:"You are right",
+                                time:1234567891011,
+                            },
+                            {
+                                imgurl:require('../assets/img/logo.png'),
+                                username:'Flying Donut2',
+                                content:"You are right2",
+                                time:3234567891011,
+                            }
+                        ]
                 }
             }
         },
