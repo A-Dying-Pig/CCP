@@ -1,4 +1,5 @@
 .idea
+<<<<<<< HEAD
 .vscode/
 *.pyc
 **/migrations
@@ -6,3 +7,10 @@ resources
 *.sqlite3
 Foreend/static
 Foreend/templates
+=======
+Foreend/node_modules/*
+Foreend/src/components/node_modules/*
+Foreend/src/pages/CompetitionCreate/node_modules/*
+Foreend/static/*
+Foreend/templates/*
+>>>>>>> 6e3bb927ec0c6dc74b9ab1632c27739403a28a30
