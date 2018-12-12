@@ -7,9 +7,13 @@
                         <el-col class="title" :span="5">
                             <b>{{ info.basicinfo.name }}</b>
                         </el-col>
-                        <el-col v-if="(type === 0)&&(Date.now()>info.signupinfo.time[0])&&(Date.now()<info.signupinfo.time[1])" :span="5" :offset="14">
+                        <el-col :span="2" :offset="14">
+                            <p style="font-size: 12px">已报名<span style="color: #3a8ee6">{{ enrollnum }}</span>人</p>
+                        </el-col>
+                        <el-col v-if="showbutton" :span="3" >
                             <el-button @click="clicksign" type="primary">报名参赛！</el-button>
                         </el-col>
+
                     </el-row>
                     <p></p>
                     <el-row :gutter="20">
@@ -30,12 +34,19 @@
 </template>
 
 <script>
-
+    import axios from 'axios'
+    axios.defaults.xsrfHeaderName = "X-CSRFToken";
+    axios.defaults.headers.common = {
+        //'X-CSRFToken':document.querySelector('#csrf-token input').value,
+        'X-Requested-With': 'XMLHttpRequest'
+    };
     export default {
         props:['info','type','contestid'],
         data:function () {
             return{
                 activeStage:0,
+                enrollnum:0,
+                showbutton:1
             }
         },
         methods:{
@@ -69,7 +80,25 @@
             }
         },
         created:function () {
-            //activeStage
+            let self = this;
+            self.showbutton = ((self.type === 0)&&(Date.now()>self.info.signupinfo.time[0])&&(Date.now()<self.info.signupinfo.time[1]));
+            axios.post('/api/competition/enrollnum',{
+                contestid:self.contestid
+            }).then(function (response) {
+                if(response.data.msg!==''){
+                    self.$message({
+                        message:'获取报名人数错误！'+response.data.msg,
+                        type:'error'
+                    });
+                    return;
+                }
+                self.enrollnum = response.data.enrollnum;
+            }).catch(function (error) {
+                self.$message({
+                    message:'获取报名人数错误！',
+                    type:'error'
+                });
+            })
         }
     }
 </script>
