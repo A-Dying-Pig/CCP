@@ -713,6 +713,128 @@ class api_user_competiton_Test(TestCase):
         response_content = json.loads(response_content)
         self.assertEqual(response_content['msg'], 'File not found.') 
 
+    def test_broadcast_successful(self):
+        user_info={
+            "username": "admin", 
+            "password": "ccp"            
+        }
+        response = self.c.post('/api/user/login',json.dumps(user_info),content_type="application/json")
+        comp_info = {
+            "contestid":self.contestId_group,
+            "title":"初赛时间",
+            "content":"hhhhhh",
+            "target":{
+                id:-1,
+                type:0
+            }           
+        }
+        response = self.c.post('/api/admin/broadcast',json.dumps(comp_info),content_type="application/json") 
+        response_content = response.content.decode()
+        response_content = json.loads(response_content)
+        self.assertEqual(response_content['msg'], '') 
+
+    def test_broadcast_notadmin(self):
+        user_info={
+            "username": "admin2", 
+            "password": "ccp"            
+        }
+        response = self.c.post('/api/user/login',json.dumps(user_info),content_type="application/json")
+        comp_info = {
+            "contestid":self.contestId_group,
+            "title":"初赛时间",
+            "content":"hhhhhh",
+            "target":{
+                id:-1,
+                type:0
+            }           
+        }
+        response = self.c.post('/api/admin/broadcast',json.dumps(comp_info),content_type="application/json") 
+        response_content = response.content.decode()
+        response_content = json.loads(response_content)
+        self.assertEqual(response_content['msg'], '非管理员不能推送消息')
+
+    def test_broadcast_compNotexist(self):
+        user_info={
+            "username": "admin", 
+            "password": "ccp"            
+        }
+        response = self.c.post('/api/user/login',json.dumps(user_info),content_type="application/json")
+        comp_info = {
+            "contestid":self.contestId_group+1,
+            "title":"初赛时间",
+            "content":"hhhhhh",
+            "target":{
+                id:-1,
+                type:0
+            }           
+        }
+        response = self.c.post('/api/admin/broadcast',json.dumps(comp_info),content_type="application/json") 
+        response_content = response.content.decode()
+        response_content = json.loads(response_content)
+        self.assertEqual(response_content['msg'], '比赛不存在')
+
+    def test_zone_successful(self):
+        user_info={
+            "username": "admin", 
+            "password": "ccp"            
+        }
+        response = self.c.post('/api/user/login',json.dumps(user_info),content_type="application/json")
+        comp_info = {
+            "contestid":self.contestId_group,            
+        }
+        response = self.c.post('/api/admin/zone',json.dumps(comp_info),content_type="application/json") 
+        response_content = response.content.decode()
+        response_content = json.loads(response_content)
+        self.assertEqual(response_content['msg'], '')
+
+    def test_zone_notadmin(self):
+        user_info={
+            "username": "admin2", 
+            "password": "ccp"            
+        }
+        response = self.c.post('/api/user/login',json.dumps(user_info),content_type="application/json")
+        comp_info = {
+            "contestid":self.contestId_group,            
+        }
+        response = self.c.post('/api/admin/zone',json.dumps(comp_info),content_type="application/json") 
+        response_content = response.content.decode()
+        response_content = json.loads(response_content)
+        self.assertEqual(response_content['msg'], '非管理员不能查看赛区')
+
+    def test_zone_compNotexist(self):
+        user_info={
+            "username": "admin", 
+            "password": "ccp"            
+        }
+        response = self.c.post('/api/user/login',json.dumps(user_info),content_type="application/json")
+        comp_info = {
+            "contestid":self.contestId_group+1,            
+        }
+        response = self.c.post('/api/admin/zone',json.dumps(comp_info),content_type="application/json") 
+        response_content = response.content.decode()
+        response_content = json.loads(response_content)
+        self.assertEqual(response_content['msg'], '比赛不存在')
+
+    def test_advanced_successful(self):
+        user_info={
+            "username": "admin", 
+            "password": "ccp"            
+        }
+        response = self.c.post('/api/user/login',json.dumps(user_info),content_type="application/json")
+        comp_info = {
+            "contestid":self.contestId_group, 
+            "target":-1           
+        }
+        response = self.c.post('/api/admin/advanced',json.dumps(comp_info),content_type="application/json") 
+        response_content = response.content.decode()
+        response_content = json.loads(response_content)
+        self.assertEqual(response_content['msg'], '')
+
+
+
+
+
+
     
 
 
