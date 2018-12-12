@@ -57,3 +57,4 @@ def detail(request):
     except:
         return JsonResponse({'msg': '未知错误！'})
 
+

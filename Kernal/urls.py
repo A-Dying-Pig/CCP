@@ -17,5 +17,7 @@ urlpatterns = [
     path(r'addContest', Foreend.views.addContest),
     path(r'api/', include('Backend.urls')),
     path(r'superadmin', Foreend.views.superadmin),
+    path(r'about', Foreend.views.about),
+    path(r'service', Foreend.views.service),
     re_path(r'^resources/', Files.views.download),
 ]

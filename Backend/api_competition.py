@@ -8,34 +8,73 @@ import os
 from .utils import *
 import pytz
 from datetime import datetime
+import shutil
 
 utctz=pytz.timezone('UTC')
 chinatz=pytz.timezone('Asia/Shanghai')
 
 def enroll(request):
+    if not request.user.is_authenticated:
+        return JsonResponse({'msg': '请先登录'})
     data = json.loads(request.body.decode('utf-8'))
     contestid = data['contestid']
     userId = request.user.id
     province = data['region']['province']
     city = data['region']['city']
     university = data['university']
-    comp_type = int(data['comp_type'])
-    if comp_type == 0:
+
+    try:
+        contest = Contest.objects.get(id=contestid)
+    except:
+        return JsonResponse({'msg': '比赛不存在'})
+
+    comp_type = contest.grouped
+    if comp_type == 1:
         groupuser = data['groupuser']
     fields = data['custom_field']
     values = data['custom_value']
 
-    contest_player = ContestPlayer()
-    contest_player.player_id = userId
-    contest_player.contest_id = contestid
-    # need to modify database, add fileds to Contestplayer
-    le = len(values)
-    contest_player.extra_information1 = '' if le < 1 else values[0]
-    contest_player.extra_information1 = '' if le < 2 else values[1]
-    contest_player.extra_information1 = '' if le < 3 else values[2]
-    contest_player.extra_information1 = '' if le < 4 else values[3]
-    contest_player.save()
+    if ContestPlayer.objects.filter(player_id=userId, contest_id=contestid):
+        return JsonResponse({'msg': '不能重复报名'})
 
+    if ContestJudge.objects.filter(judge_id=userId, contest_id=contestid):
+        return JsonResponse({'msg': '比赛评委不能报名成为比赛选手'})
+
+    try:
+        if Contest.objects.get(id=contestid).admin_id == userId:
+            return JsonResponse({'msg': '比赛主办方不能报名成为比赛选手'})
+    except Exception as e:
+        print(e)
+        return JsonResponse({'msg': '未知错误'})
+
+    le = len(values)
+    if le < 0 or le > 4:
+        return JsonResponse({'msg': '额外信息数目超出限制'})
+
+    # need to modify database, add fileds to Contestplayer
+    if comp_type == 0:  # 个人赛
+        contest_player = ContestPlayer()
+        contest_player.player_id = userId
+        contest_player.contest_id = contestid
+        index = 0
+        while index < le:
+            setattr(contest_player, 'extra_information' + str(index + 1), values[index])
+            index = index + 1
+        contest_player.save()
+    elif comp_type == 1:  # 组队赛
+        contest_group = ContestGroup()
+        contest_group.leader_id = request.user.id
+        glen = len(groupuser)
+        if glen < 0 or glen > 4:
+            return JsonResponse({'msg': '队员人数超出限制'})
+        index = 0
+        while index < glen:
+            setattr(contest_group, 'member' + str(index + 1) + '_id', groupuser[index])
+            index = index + 1
+        index = 0
+        while index < le:
+            setattr(contest_group, 'extra_information' + str(index + 1), values[index])
+            index = index + 1
     return JsonResponse({'msg': ''})
 
 def list(request):
@@ -43,8 +82,8 @@ def list(request):
     data = json.loads(request.body.decode('utf-8'))
     page = int(data['pageNum'])
     type = data['type']
-    count = Contest.objects.filter().count()
-    contests = Contest.objects.all()[(page - 1) * amount: page * amount]
+    count = Contest.objects.filter(checked=1).count()
+    contests = Contest.objects.filter(checked=1)[(page - 1) * amount: page * amount]
     array = []
     for c in contests:
         d = {}
@@ -62,33 +101,40 @@ def list(request):
     })
 
 def slider(request):
-    context = []
-    # todo:保存轮播图信息
-    contest = Contest.objects.filter()
-    contest_id = [contest[0].id, contest[1].id, contest[2].id]
-    for i in range(0, 3):
-        context.append({'url': '/detail?contestid' + str(contest_id[i]),
-                        'img_url': '/static/img' + str(contest_id[i]) + '.jpg'})
-    result = {
-        'array': context,
-        'msg': ''
-    }
-    return JsonResponse(result)
+    try:
+        context = []
+        contests = Slider.objects.all()
+        for contest in contests:
+            context.append({'url': '/detail?contestid=' + str(contest.contest_id),
+                            'img_url': '/static/img/' + str(contest.contest_id) + '.jpg'})
+        result = {
+            'array': context,
+            'msg': ''
+        }
+        return JsonResponse(result)
+    except Exception as e:
+        print(e)
+        return JsonResponse({'msg': '未知错误'})
 
 def hot(request):
-    context = []
-    # todo:根据比赛参赛情况返回参赛情况最好的 或者 管理员手动管理数据库中某字段
-    contest = Contest.objects.filter()
-    for i in range(0, 3):
-        context.append({'url': '/detail?contestid' + str(contest[i].id),
-                        'img_url': str(contest[i].id) + '.jpg',
-                        'intro': contest[i].brief_introduction,
-                        'title': contest[i].title})
-    result = {
-        'array': context,
-        'msg': ''
-    }
-    return JsonResponse(result)
+    try:
+        context = []
+        contests = HotContest.objects.all()
+        for contest in contests:
+            context.append({
+                'url': 'detail?contestid=' + str(contest.contest_id),
+                'img_url': '/static/img/' + str(contest.contest_id) + '.jpg',
+                'intro': contest.brief_introduction,
+                'title': contest.brief_introduction
+            })
+        result = {
+            'array': context,
+            'msg': ''
+        }
+        return JsonResponse(result)
+    except Exception as e:
+        print(e)
+        return JsonResponse({'msg': '未知错误'})
 
 def neededinfo(request):
     data = json.loads(request.body.decode('utf-8'))
@@ -163,7 +209,11 @@ def create(request):
         setattr(contest, 'phase_name' + str(index + 1), stageinfo[index]['name'])
         setattr(contest, 'phase_information' + str(index + 1), stageinfo[index]['details'])
         setattr(contest, 'phase_mode' + str(index + 1), stageinfo[index]['mode'])
+<<<<<<< HEAD
         # setattr(contest, 'phase_start_time' + str(index + 1), datetime.strptime(stageinfo[index]['stageTimeBegin'], "%Y-%m-%dT%H:%M:%S.000Z").replace(tzinfo=pytz.utc))
+=======
+        setattr(contest, 'phase_start_time' + str(index + 1), datetime.strptime(stageinfo[index]['stageTimeBegin'], "%Y-%m-%dT%H:%M:%S.000Z").replace(tzinfo=pytz.utc))
+>>>>>>> 6fb3e53b65b473ca01ee7865ef5ea406f5a30859
         setattr(contest, 'phase_hand_end_time' + str(index + 1), datetime.strptime(stageinfo[index]['handTimeEnd'],"%Y-%m-%dT%H:%M:%S.000Z").replace(tzinfo=pytz.utc))
         setattr(contest, 'phase_evaluate_end_time' + str(index + 1), datetime.strptime(stageinfo[index]['evaluationTimeEnd'],"%Y-%m-%dT%H:%M:%S.000Z").replace(tzinfo=pytz.utc))
         index = index + 1
@@ -209,3 +259,74 @@ def detail(request):
         print("Exception here:")
         print(e)
         return JsonResponse({'msg': '未知错误！'})
+
+def fileList(request):
+    try:
+        data = json.loads(request.body.decode('utf-8'))
+        contest_id = data['contestid']
+        contest_path = "/resources/contests/" + str(contest_id)
+        files = os.listdir(contest_path)
+        result = []
+        for file in files:
+            entire_dir = os.path.join(contest_path, file)
+            if os.path.isfile(entire_dir):
+                result.append({
+                    'name': file,
+                    'url': entire_dir,
+                    'size': os.path.getsize(entire_dir)
+                })
+        return JsonResponse({'msg': '',
+                             'files': result})
+    except Exception as e:
+        print(e)
+        return JsonResponse({'msg': '未知错误！'})
+
+def enrollNum(request):
+    try:
+        data = json.loads(request.body.decode('utf-8'))
+        contest_id = data['contestid']
+        try:
+            contest = Contest.objects.get(id=contest_id)
+        except:
+            return JsonResponse({'msg': '比赛不存在'})
+        if contest.grouped == 1:  # 组队赛
+            num = ContestGroup.objects.filter(contest_id=contest_id).count()
+        else:
+            num = ContestPlayer.objects.filter(contest_id=contest_id).count()
+        return JsonResponse({'msg': '', 'enrollnum': num})
+    except Exception as e:
+        print(e)
+        return JsonResponse({'msg': '未知错误'})
+
+def uploadImg(request):
+    try:
+        data = json.loads(request.body.decode('utf-8'))
+        contest_id = data['contestid']
+        try:
+            contest = Contest.objects.get(id=contest_id)
+        except:
+            return JsonResponse({'msg': 'Contest does not exist.'})
+
+        try:
+            if contest.admin_id != request.user.id:  # 当前用户不是管理员
+                return JsonResponse({'msg': 'Current user is not the admin of this contest'})
+        except:
+            return JsonResponse({'msg': 'Current user is not the admin of this contest'})
+
+        File = request.FILES.get("file", None)
+        if File is None:
+            return JsonResponse({'msg': 'File not found.'})
+        else:
+            # 先删掉原来的文件夹内的所有内容，再新建一个
+            shutil.rmtree('/static/img/' + str(contest_id))
+            os.mkdir('static/img/' + str(contest_id))
+            # 打开特定的文件进行二进制的写操作;
+            with open("/static/img/" + str(contest_id) + '/' + File.name, 'wb+') as f:
+                # 分块写入文件;
+                for chunk in File.chunks():
+                    f.write(chunk)
+            return JsonResponse({'msg': ''})
+    except Exception as e:
+        print(e)
+        return JsonResponse({'msg': '未知错误'})
+
