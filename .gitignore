@@ -6,3 +6,4 @@ resources
 *.sqlite3
 Foreend/static
 Foreend/templates
+Foreend/node_modules/*
