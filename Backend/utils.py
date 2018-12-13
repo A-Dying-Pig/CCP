@@ -1,6 +1,7 @@
 # 一些辅助函数
 from .models import *
 import time
+import os
 
 MAX_HOSTS = 4  # 最大主办方人数
 MAX_PHASE = 5
@@ -121,13 +122,52 @@ class ContestUtil:
         # return current phase and status
         # phase 0 is the enroll stage
         # phase 1 is the first stage, 0 is submission, 1 is judging
-        return {'phase': 1, 'status': 0}
+        contest = Contest.objects.get(id=contestid)
+        enroll_start = time.mktime(contest.enroll_start.timetuple()) + 8 * 60 * 60
+        enroll_end = time.mktime(contest.enroll_end.timetuple()) + 8 * 60 * 60
+        cur_time = time.time()
+        if cur_time < enroll_start:
+            return {'phase': -1}
+        if enroll_start < cur_time < enroll_end:
+            return {'phase': 0}
+        for i in range(1, 6):
+            if i != MAX_PHASE and getattr(contest, 'phase_name' + str(i+1)) is not None:
+                pre_start = getattr(contest, 'phase_start_time' + str(i))
+                pre_sub = getattr(contest, 'phase_hand_end_time' + str(i))
+                pre_judge = getattr(contest, 'phase_evaluate_end_time' + str(i))
+                cur_start = getattr(contest, 'phase_start_time' + str(i+1))
+                if time.mktime(pre_start.timetuple()) + 8 * 60 * 60 < cur_time < time.mktime(cur_start.timetuple()) + 8 * 60 * 60:
+                    if cur_time < time.mktime(pre_sub.timetuple()) + 8 * 60 * 60:
+                        return {'phase': i, 'status': 0}
+                    elif cur_time < time.mktime(pre_judge.timetuple()) + 8 * 60 * 60:
+                        return {'phase': i, 'status': 1}
+                    else:
+                        return {'phase': i, 'status': 2}
+            else:  # i阶段已经是最后一个阶段
+                sub_time = getattr(contest, 'phase_hand_end_time' + str(i))
+                judge_time = getattr(contest, 'phase_evaluate_end_time' + str(i))
+                if cur_time < time.mktime(sub_time.timetuple()) + 8 * 60 * 60:
+                    return {'phase': i, 'status': 0}
+                elif cur_time < time.mktime(judge_time.timetuple()) + 8 * 60 * 60:
+                    return {'phase': i, 'status': 1}
+                else:
+                    return {'phase': i, 'status': 2}
 
     @classmethod
     def getCurrentRegionMode(cls, contestid):
         # todo
         # return current Regionmode 0, 1, 2
-        return 1
+        try:
+            cur_phase = cls.getCurrentPhase(contestid)
+            contest = Contest.objects.get(id=contestid)
+            mode = getattr(contest, 'phase_mode'+str(cur_phase['phase']))
+            if mode is None:
+                return -1
+            else:
+                return mode
+        except Exception as e:
+            print(e)
+            return -1
 
 class ContestPlayerUtil:
     @classmethod
@@ -193,4 +233,27 @@ class ContestGradeUtil:
             phase_grade = total_grade / phase_judges
             result.append(phase_grade)
             index = index + 1
+        return result
+
+
+class GeneralUtil:
+    @classmethod
+    def getChildren(cls, basedir):  # api/judge/getone接口遍历得到文件夹结构的递归函数
+        targets = os.listdir(basedir)
+        result = []
+        for file_name in targets:
+            full_path = os.path.join(basedir, file_name)
+            if os.path.isdir(full_path):  # 文件夹
+                children = cls.getChildren(full_path)
+                result.append({
+                    'title': file_name,
+                    'isLeaf': False,
+                    'children': children
+                })
+            elif os.path.isfile(full_path):  # 文件
+                result.append({
+                    'title': file_name,
+                    'isLeaf': True,
+                    'data': {'src': full_path}
+                })
         return result
