@@ -45,19 +45,7 @@
           </el-col>
         </el-row>
 
-<!--
-        <el-row :gutter="20">
-          <el-col :span="2" :offset="9">
-            <el-form-item>
-              <el-button type="text" @click="submitForm('input_msg')"><span class="form-btn">继续</span></el-button>
-            </el-form-item>
-          </el-col>
-
-          <el-col :span="2" :offset="2">
-            <el-form-item>
--->
         <el-row :gutter="0">
-
           <div class="register-btn">
               <el-button type="text" @click="submitForm('input_msg')"><span class="form-btn">继续</span></el-button>
               <el-button type='text' @click="resetForm('input_msg')"><span class="form-btn">重置</span></el-button>
@@ -170,7 +158,7 @@
                         let vm = this;
                         axios.post('/api/user/register', {username:this.input_msg.username,password:this.input_msg.pass,email:this.input_msg.email})
                             .then(response=>{
-                                if (response.data==='') {
+                                if (response.data.msg ==='') {
                                     //成功
                                     vm.$message({
                                         message: '注册成功!',
