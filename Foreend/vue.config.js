@@ -26,7 +26,7 @@ module.exports = {
       detail: {
           entry: 'src/pages/detail/main.js',
           template: 'src/pages/detail/detail.html',
-          filename: 'detail.html',
+          filename: '../../templates/detail.html',
       },
       enroll: {
           entry: 'src/pages/enroll/main.js',
@@ -60,7 +60,7 @@ module.exports = {
       }
   },
     outputDir:'static/js',
-    baseUrl:'',
+    baseUrl:'static/js/',
     configureWebpack:{
         resolve: {
             alias: {
