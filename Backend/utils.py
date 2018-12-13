@@ -160,7 +160,7 @@ class ContestUtil:
         try:
             cur_phase = cls.getCurrentPhase(contestid)
             contest = Contest.objects.get(id=contestid)
-            mode = getattr(contest, 'phase_mode'+str(cur_phase['phase']))
+            mode = getattr(contest, 'phase_region_mode'+str(cur_phase['phase']))
             if mode is None:
                 return -1
             else:
