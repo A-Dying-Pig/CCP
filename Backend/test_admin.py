@@ -829,7 +829,7 @@ class api_user_competiton_Test(TestCase):
         response = self.c.post('/api/user/login',json.dumps(user_info),content_type="application/json")
         comp_info = {
             "contestid":self.contestId_personal, 
-            "type":0
+            "type":0,
             "username": judge1,
             "id":'1'                 
         }
@@ -854,14 +854,14 @@ class api_user_competiton_Test(TestCase):
         response = self.c.post('/api/user/login',json.dumps(user_info),content_type="application/json")
         comp_info = {
             "contestid":self.contestId_personal, 
-            "type":0
+            "type":0,
             "username": judge1,
             "id":'1'                 
         }
         response = self.c.post('/api/admin/setjudge',json.dumps(comp_info),content_type="application/json") 
         comp_info = {
             "contestid":self.contestId_personal, 
-            "type":1
+            "type":1,
             "username": judge1,
             "id":'2'                 
         }
@@ -886,14 +886,14 @@ class api_user_competiton_Test(TestCase):
         response = self.c.post('/api/user/login',json.dumps(user_info),content_type="application/json")
         comp_info = {
             "contestid":self.contestId_personal, 
-            "type":0
+            "type":0,
             "username": judge1,
             "id":'1'                 
         }
         response = self.c.post('/api/admin/setjudge',json.dumps(comp_info),content_type="application/json") 
         comp_info = {
             "contestid":self.contestId_personal, 
-            "type":2
+            "type":2,
             "username": judge1,
             "id":'1'                 
         }
@@ -918,7 +918,7 @@ class api_user_competiton_Test(TestCase):
         response = self.c.post('/api/user/login',json.dumps(user_info),content_type="application/json")
         comp_info = {
             "contestid":self.contestId_personal, 
-            "type":0
+            "type":0,
             "username": judge1,
             "id":'1'                 
         }
@@ -941,7 +941,7 @@ class api_user_competiton_Test(TestCase):
         response = self.c.post('/api/user/login',json.dumps(user_info),content_type="application/json")
         comp_info = {
             "contestid":self.contestId_group+1, 
-            "type":0
+            "type":0,
             "username": judge1,
             "id":'1'                 
         }
@@ -958,7 +958,7 @@ class api_user_competiton_Test(TestCase):
         response = self.c.post('/api/user/login',json.dumps(user_info),content_type="application/json")
         comp_info = {
             "contestid":self.contestId_group, 
-            "type":0
+            "type":0,
             "username": judge1,
             "id":'1'                 
         }
@@ -981,7 +981,7 @@ class api_user_competiton_Test(TestCase):
         response = self.c.post('/api/user/login',json.dumps(user_info),content_type="application/json")
         comp_info = {
             "contestid":self.contestId_personal, 
-            "type":1
+            "type":1,
             "username": judge1,
             "id":'2'                 
         }
@@ -1004,14 +1004,14 @@ class api_user_competiton_Test(TestCase):
         response = self.c.post('/api/user/login',json.dumps(user_info),content_type="application/json")
         comp_info = {
             "contestid":self.contestId_personal, 
-            "type":0
+            "type":0,
             "username": judge1,
             "id":'1'                 
         }
         response = self.c.post('/api/admin/setjudge',json.dumps(comp_info),content_type="application/json") 
         comp_info = {
             "contestid":self.contestId_personal, 
-            "type":1
+            "type":1,
             "username": judge2,
             "id":'2'                 
         }
@@ -1034,14 +1034,14 @@ class api_user_competiton_Test(TestCase):
         response = self.c.post('/api/user/login',json.dumps(user_info),content_type="application/json")
         comp_info = {
             "contestid":self.contestId_personal, 
-            "type":0
+            "type":0,
             "username": judge1,
             "id":'1'                 
         }
         response = self.c.post('/api/admin/setjudge',json.dumps(comp_info),content_type="application/json") 
         comp_info = {
             "contestid":self.contestId_personal, 
-            "type":1
+            "type":1,
             "username": judge1,
             "id":'2'                 
         }
@@ -1049,6 +1049,387 @@ class api_user_competiton_Test(TestCase):
         response_content = response.content.decode()
         response_content = json.loads(response_content)
         self.assertEqual(response_content['msg'], '要删除的评委信息有误')
+
+    def test_judgelist_successful(self):
+        user_info={      
+            "username": "judge1", 
+            "password": "ccp",
+            "email":"judge1@126.com"
+        }
+        response = self.c.post('/api/user/register',json.dumps(user_info),content_type="application/json")
+        user_info={
+            "username": "admin", 
+            "password": "ccp"            
+        }
+        response = self.c.post('/api/user/login',json.dumps(user_info),content_type="application/json")
+        comp_info = {
+            "contestid":self.contestId_personal, 
+            "type":0,
+            "username": judge1,
+            "id":'1'                 
+        }
+        response = self.c.post('/api/admin/setjudge',json.dumps(comp_info),content_type="application/json") 
+        comp_info = {
+            "contestid":self.contestId_personal                           
+        }
+        response = self.c.post('/api/admin/judgelist',json.dumps(comp_info),content_type="application/json") 
+        response_content = response.content.decode()
+        response_content = json.loads(response_content)
+        self.assertEqual(response_content['msg'], '')
+        self.assertEqual(len(response_content['judges']),1)
+        self.assertEqual(response_content['judges'][0]['username'],"judge1")
+
+    def test_judgelist_notadmin(self):
+        user_info={      
+            "username": "judge1", 
+            "password": "ccp",
+            "email":"judge1@126.com"
+        }
+        response = self.c.post('/api/user/register',json.dumps(user_info),content_type="application/json")
+        user_info={
+            "username": "admin", 
+            "password": "ccp"            
+        }
+        response = self.c.post('/api/user/login',json.dumps(user_info),content_type="application/json")
+        comp_info = {
+            "contestid":self.contestId_personal, 
+            "type":0,
+            "username": judge1,
+            "id":'1'                 
+        }
+        response = self.c.post('/api/admin/setjudge',json.dumps(comp_info),content_type="application/json") 
+        user_info={      
+            "username": "admin2", 
+            "password": "ccp",
+            "email":"zyj2@126.com"
+        }
+        response = self.c.post('/api/user/register',json.dumps(user_info),content_type="application/json")
+        user_info={
+            "username": "admin2", 
+            "password": "ccp"            
+        }
+        response = self.c.post('/api/user/login',json.dumps(user_info),content_type="application/json")
+        comp_info = {
+            "contestid":self.contestId_personal                           
+        }
+        response = self.c.post('/api/admin/judgelist',json.dumps(comp_info),content_type="application/json") 
+        response_content = response.content.decode()
+        response_content = json.loads(response_content)
+        self.assertEqual(response_content['msg'], 'Current user is not the admin of this contest')
+
+    def test_judgelist_compNotexist(self):
+        user_info={      
+            "username": "judge1", 
+            "password": "ccp",
+            "email":"judge1@126.com"
+        }
+        response = self.c.post('/api/user/register',json.dumps(user_info),content_type="application/json")
+        user_info={
+            "username": "admin", 
+            "password": "ccp"            
+        }
+        response = self.c.post('/api/user/login',json.dumps(user_info),content_type="application/json")
+        comp_info = {
+            "contestid":self.contestId_personal, 
+            "type":0,
+            "username": judge1,
+            "id":'1'                 
+        }
+        response = self.c.post('/api/admin/setjudge',json.dumps(comp_info),content_type="application/json") 
+        comp_info = {
+            "contestid":self.contestId_group+1                           
+        }
+        response = self.c.post('/api/admin/judgelist',json.dumps(comp_info),content_type="application/json") 
+        response_content = response.content.decode()
+        response_content = json.loads(response_content)
+        self.assertEqual(response_content['msg'], 'Contest does not exist.')
+
+    def test_judgelist_nojudge(self):
+        user_info={      
+            "username": "judge1", 
+            "password": "ccp",
+            "email":"judge1@126.com"
+        }
+        response = self.c.post('/api/user/register',json.dumps(user_info),content_type="application/json")
+        user_info={
+            "username": "admin", 
+            "password": "ccp"            
+        }
+        response = self.c.post('/api/user/login',json.dumps(user_info),content_type="application/json")
+        comp_info = {
+            "contestid":self.contestId_personal                           
+        }
+        response = self.c.post('/api/admin/judgelist',json.dumps(comp_info),content_type="application/json") 
+        response_content = response.content.decode()
+        response_content = json.loads(response_content)
+        self.assertEqual(response_content['msg'], '')
+        self.assertEqual(len(response_content['judges']),0)
+
+    def test_competition_filelist_successful(self):
+        user_info={
+            "username": "admin", 
+            "password": "ccp"            
+        }
+        response = self.c.post('/api/user/login',json.dumps(user_info),content_type="application/json")
+        comp_info = {
+            "contestid":self.contestId_personal,
+            "file": "C:\Users\Administrator\Desktop\1.txt" 
+        }
+        response = self.c.post('/api/admin/upload',json.dumps(comp_info),content_type="application/json") 
+        user_info={
+            "username": "admin2", 
+            "password": "ccp"            
+        }
+        response = self.c.post('/api/user/login',json.dumps(user_info),content_type="application/json")           
+        comp_info={
+            "contestid":self.contestId_personal
+        }
+        response = self.c.post('/api/competiton/filelist',json.dumps(comp_info),content_type="application/json") 
+        response_content = response.content.decode()
+        response_content = json.loads(response_content)
+        self.assertEqual(len(response_content['files']),1)
+
+    def test_competition_filelist_nofile(self):
+        user_info={
+            "username": "admin2", 
+            "password": "ccp"            
+        }
+        response = self.c.post('/api/user/login',json.dumps(user_info),content_type="application/json")           
+        comp_info={
+            "contestid":self.contestId_personal
+        }
+        response = self.c.post('/api/competiton/filelist',json.dumps(comp_info),content_type="application/json") 
+        response_content = response.content.decode()
+        response_content = json.loads(response_content)
+        self.assertEqual(len(response_content['files']),0)
+
+    def test_competition_filelist_playernotexist(self):
+        user_info={
+            "username": "admin", 
+            "password": "ccp"            
+        }
+        response = self.c.post('/api/user/login',json.dumps(user_info),content_type="application/json")
+        comp_info = {
+            "contestid":self.contestId_personal,
+            "file": "C:\Users\Administrator\Desktop\1.txt" 
+        }
+        response = self.c.post('/api/admin/upload',json.dumps(comp_info),content_type="application/json") 
+        user_info={
+            "username": "admin3", 
+            "password": "ccp"            
+        }
+        response = self.c.post('/api/user/login',json.dumps(user_info),content_type="application/json")           
+        comp_info={
+            "contestid":self.contestId_personal
+        }
+        response = self.c.post('/api/competiton/filelist',json.dumps(comp_info),content_type="application/json") 
+        response_content = response.content.decode()
+        response_content = json.loads(response_content)
+        self.assertEqual(response_content['msg'],'未知错误！')
+
+    def test_competition_filelist_playernotexist(self):
+        user_info={
+            "username": "admin", 
+            "password": "ccp"            
+        }
+        response = self.c.post('/api/user/login',json.dumps(user_info),content_type="application/json")
+        comp_info = {
+            "contestid":self.contestId_personal,
+            "file": "C:\Users\Administrator\Desktop\1.txt" 
+        }
+        response = self.c.post('/api/admin/upload',json.dumps(comp_info),content_type="application/json") 
+        user_info={
+            "username": "admin2", 
+            "password": "ccp"            
+        }
+        response = self.c.post('/api/user/login',json.dumps(user_info),content_type="application/json")           
+        comp_info={
+            "contestid":self.contestId_personal+10
+        }
+        response = self.c.post('/api/competiton/filelist',json.dumps(comp_info),content_type="application/json") 
+        response_content = response.content.decode()
+        response_content = json.loads(response_content)
+        self.assertEqual(response_content['msg'],'未知错误！')
+
+    def test_judgeprogress_successful(self):
+        user_info={
+            "username": "admin2", 
+            "password": "ccp"            
+        }
+        response = self.c.post('/api/user/login',json.dumps(user_info),content_type="application/json")   
+        submit_info={
+            "contestid":self.contestId_personal,
+            "file": "C:\Users\Administrator\Desktop\1.txt" 
+        }
+        response = self.c.post('/api/contest/submit',json.dumps(submit_info),content_type="application/json")
+        user_info={      
+            "username": "judge1", 
+            "password": "ccp",
+            "email":"judge1@126.com"
+        }
+        response = self.c.post('/api/user/register',json.dumps(user_info),content_type="application/json")
+        user_info={
+            "username": "admin", 
+            "password": "ccp"            
+        }
+        response = self.c.post('/api/user/login',json.dumps(user_info),content_type="application/json")
+        comp_info = {
+            "contestid":self.contestId_personal, 
+            "type":0,
+            "username": judge1,
+            "id":'1'                 
+        }
+        response = self.c.post('/api/admin/setjudge',json.dumps(comp_info),content_type="application/json") 
+        user_info={
+            "username": "judge1", 
+            "password": "ccp"            
+        }
+        response = self.c.post('/api/user/login',json.dumps(user_info),content_type="application/json")
+        contestplayer = contestplayer.objects.filter()
+        self.contestplayer_id = contestplayer[0].player_id
+        submit_info={
+            "contestid":self.contestId_personal,
+            "userId":self.contestplayer_id,
+            "grade":95,
+            "phase":"hhhhhhh"            
+        }
+        response = self.c.post('/api/judge/submit',json.dumps(submit_info),content_type="application/json")
+        user_info={
+            "username": "admin", 
+            "password": "ccp"            
+        }
+        response = self.c.post('/api/user/login',json.dumps(user_info),content_type="application/json")
+        comp_info={
+            "contestid":self.contestId_personal                      
+        }
+        response = self.c.post('/api/admin/judgeprogress',json.dumps(comp_info),content_type="application/json")
+        response_content = response.content.decode()
+        response_content = json.loads(response_content)
+        self.assertEqual(len(response_content['judges']),1)
+        self.assertEqual(response_content['judges'][0]['name'],"judge1")
+        self.assertEqual(response_content['judges'][0]['finish'],1)
+
+    def test_judgeprogress_notadmin(self):
+        user_info={
+            "username": "admin2", 
+            "password": "ccp"            
+        }
+        response = self.c.post('/api/user/login',json.dumps(user_info),content_type="application/json")   
+        submit_info={
+            "contestid":self.contestId_personal,
+            "file": "C:\Users\Administrator\Desktop\1.txt" 
+        }
+        response = self.c.post('/api/contest/submit',json.dumps(submit_info),content_type="application/json")
+        user_info={      
+            "username": "judge1", 
+            "password": "ccp",
+            "email":"judge1@126.com"
+        }
+        response = self.c.post('/api/user/register',json.dumps(user_info),content_type="application/json")
+        user_info={
+            "username": "admin", 
+            "password": "ccp"            
+        }
+        response = self.c.post('/api/user/login',json.dumps(user_info),content_type="application/json")
+        comp_info = {
+            "contestid":self.contestId_personal, 
+            "type":0,
+            "username": judge1,
+            "id":'1'                 
+        }
+        response = self.c.post('/api/admin/setjudge',json.dumps(comp_info),content_type="application/json") 
+        user_info={
+            "username": "judge1", 
+            "password": "ccp"            
+        }
+        response = self.c.post('/api/user/login',json.dumps(user_info),content_type="application/json")
+        contestplayer = contestplayer.objects.filter()
+        self.contestplayer_id = contestplayer[0].player_id
+        submit_info={
+            "contestid":self.contestId_personal,
+            "userId":self.contestplayer_id,
+            "grade":95,
+            "phase":"hhhhhhh"            
+        }
+        response = self.c.post('/api/judge/submit',json.dumps(submit_info),content_type="application/json")
+        comp_info={
+            "contestid":self.contestId_personal                      
+        }
+        response = self.c.post('/api/admin/judgeprogress',json.dumps(comp_info),content_type="application/json")
+        response_content = response.content.decode()
+        response_content = json.loads(response_content)
+        self.assertEqual(response_content['msg'],"非管理员不能查看评测进度")
+
+    def test_judgeprogress_compnotExist(self):
+        user_info={
+            "username": "admin2", 
+            "password": "ccp"            
+        }
+        response = self.c.post('/api/user/login',json.dumps(user_info),content_type="application/json")   
+        submit_info={
+            "contestid":self.contestId_personal,
+            "file": "C:\Users\Administrator\Desktop\1.txt" 
+        }
+        response = self.c.post('/api/contest/submit',json.dumps(submit_info),content_type="application/json")
+        user_info={      
+            "username": "judge1", 
+            "password": "ccp",
+            "email":"judge1@126.com"
+        }
+        response = self.c.post('/api/user/register',json.dumps(user_info),content_type="application/json")
+        user_info={
+            "username": "admin", 
+            "password": "ccp"            
+        }
+        response = self.c.post('/api/user/login',json.dumps(user_info),content_type="application/json")
+        comp_info = {
+            "contestid":self.contestId_personal, 
+            "type":0,
+            "username": judge1,
+            "id":'1'                 
+        }
+        response = self.c.post('/api/admin/setjudge',json.dumps(comp_info),content_type="application/json") 
+        user_info={
+            "username": "judge1", 
+            "password": "ccp"            
+        }
+        response = self.c.post('/api/user/login',json.dumps(user_info),content_type="application/json")
+        contestplayer = contestplayer.objects.filter()
+        self.contestplayer_id = contestplayer[0].player_id
+        submit_info={
+            "contestid":self.contestId_personal,
+            "userId":self.contestplayer_id,
+            "grade":95,
+            "phase":"hhhhhhh"            
+        }
+        response = self.c.post('/api/judge/submit',json.dumps(submit_info),content_type="application/json")
+        user_info={
+            "username": "admin", 
+            "password": "ccp"            
+        }
+        response = self.c.post('/api/user/login',json.dumps(user_info),content_type="application/json")
+        comp_info={
+            "contestid":self.contestId_group+1                      
+        }
+        response = self.c.post('/api/admin/judgeprogress',json.dumps(comp_info),content_type="application/json")
+        response_content = response.content.decode()
+        response_content = json.loads(response_content)
+        self.assertEqual(response_content['msg'],"比赛不存在")
+
+
+
+
+    
+
+
+
+
+        
+
+
+
+
+
 
 
 
