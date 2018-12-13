@@ -56,6 +56,17 @@
             </el-col>
         </el-row>
 
+        <el-row>
+            <el-col>
+                <el-form-item label="赛区划分" prop="zone">
+                    <el-radio-group v-model="info.zone" :disabled="editableinput.zone">
+                        <el-radio-button label="统一赛区"></el-radio-button>
+                        <el-radio-button label="按省划分"></el-radio-button>
+                        <el-radio-button label="按地区划分"></el-radio-button>
+                    </el-radio-group>
+                </el-form-item>
+            </el-col>
+        </el-row>
 
     </el-form>
 </div>
@@ -90,6 +101,7 @@ export default {
                     evaluationTimeEnd:[{required:true,message:'请指定评测截止时间',trigger:'change'},
                         {validator:hourVali,message:"时间必须为整小时数",trigger:'change'}],
                     mode:[{required:true,message:'请指定评测方式',trigger:'change'}],
+                    zone:[{required:true,message:'请指定赛区划分方式',trigger:'change'}],
                     detail:[{required:true,message:'请输入阶段信息',trigger:'blur'}],
                     stageTimeBegin:[{required:true,message:'请指定阶段开始时间',trigger:'change'},
                         {validator:hourVali,message:"时间必须为整小时数",trigger:'change'}],
@@ -101,6 +113,7 @@ export default {
                     handTimeEnd:false,
                     evaluationTimeEnd:false,
                     mode:false,
+                    zone:false
                 }
             }
         },
@@ -138,6 +151,7 @@ export default {
                     this.editableinput['name']=true;
                     this.editableinput['details']=true;
                     this.editableinput['stageTimeBegin']=true;
+                    this.editableinput['zone']=true;
                 }
                 else if((now>this.info.handTimeEnd)&&(now<this.info.evaluationTimeEnd)){
                     this.editableinput['name']=true;
@@ -145,6 +159,7 @@ export default {
                     this.editableinput['stageTimeBegin']=true;
                     this.editableinput['handTimeEnd']=true;
                     this.editableinput['mode']=true;
+                    this.editableinput['zone']=true;
                 }
                 else {
                     this.editableinput['name']=true;
@@ -153,6 +168,7 @@ export default {
                     this.editableinput['handTimeEnd']=true;
                     this.editableinput['evaluationTimeEnd']=true;
                     this.editableinput['mode']=true;
+                    this.editableinput['zone']=true;
                 }
             }
 

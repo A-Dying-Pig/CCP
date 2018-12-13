@@ -266,7 +266,9 @@ export default {
         addStage:function () {
             this.info.push({
                name:'',
-               details:''
+               details:'',
+                mode:'在线预览',
+                zone:'统一赛区'
             });
             this.deletestagenotok = !this.checkDeleteState();
         },

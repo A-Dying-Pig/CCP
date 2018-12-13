@@ -164,7 +164,7 @@
                 });
                 if(self.type===1){
                     //当不在提交阶段时，不可以提交作品
-                    let showsubmit = false;
+                    let showsubmit = true;
                     let begin = self.info.signupinfo.time[1];
                     for(let stage of self.info.stageinfo){
                         if((now>begin)&&(now<stage.handTimeEnd)){
@@ -196,7 +196,7 @@
                 }
                 else if(self.type===2){
                     //当不在评测阶段时，不可以评测作品
-                    let showgrade = false;
+                    let showgrade = true;
                     for(let stage of self.info.stageinfo){
                         if((now<stage.evaluationTimeEnd)&&(now>stage.handTimeEnd)){
                             showgrade = true;
@@ -225,7 +225,7 @@
                         value:'judgelist',
                         label:'评委信息'
                     });
-                    let showadvance = false;
+                    let showadvance = true;
                     let begin = self.info.signupinfo.time[1];
                     for(let stage of self.info.stageinfo){
                         if((now>begin)&&(now<stage.stageTimeBegin)){

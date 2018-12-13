@@ -10,7 +10,7 @@
             multiple
             :limit="file_max_number"
             :on-exceed="handleExceed"
-            :auto-upload="false"
+            :auto-upload="true"
             :file-list="fileList">
         <el-button slot="trigger" size="small" type="primary">选择文件</el-button>
         <el-button style="margin-left: 10px;" size="small" type="success" @click="submitUpload">上传到服务器</el-button>
