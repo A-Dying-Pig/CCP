@@ -179,7 +179,7 @@ class Post(models.Model):
     content = models.CharField(max_length=1024)  # 发帖内容
     time = models.DateTimeField()  # 发帖时间
     replies = models.IntegerField(default=0)  # 回帖数量
-    last_reply_time = models.DateTimeField()  # 最后回复时间
+    last_reply_time = models.DateTimeField(null=True)  # 最后回复时间
     views = models.IntegerField(default=0)  # 浏览量
     class Meta:
         db_table = "Post"

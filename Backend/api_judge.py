@@ -83,7 +83,7 @@ def getone(request):
     except:
         return JsonResponse({'msg': '权限认证失败！'})
     data = json.loads(request.body.decode('utf-8'))
-    contest_id = data['contestid']
+    contest_id = int(data['contestid'])
     participant_id = data['participantid']
     if participant_id == -1:
         # todo: get participant_id
@@ -101,7 +101,7 @@ def submit(request):
         judge_id = request.user.id
     except:
         return JsonResponse({'msg': '权限认证失败！'})
-    contest_id = data['contestid']
+    contest_id = int(data['contestid'])
     user_id = data['userId']
     grade = data['grade']
     phase = data['phase']
@@ -120,7 +120,7 @@ def finished(request):
     except:
         return JsonResponse({'msg': 'Unauthorized'})
     data = json.loads(request.body.decode('utf-8'))
-    contest_id = data['contestid']
+    contest_id = int(data['contestid'])
     res = {}
     res['msg'] = ''
     res['grades'] = []

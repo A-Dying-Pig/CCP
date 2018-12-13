@@ -2,6 +2,7 @@ from django.shortcuts import render
 from .models import *
 from django.http import JsonResponse, Http404, HttpResponse
 from django.contrib.auth.decorators import login_required
+from django.db import transaction
 import json
 import time
 import os
@@ -17,7 +18,7 @@ def enroll(request):
     if not request.user.is_authenticated:
         return JsonResponse({'msg': '请先登录'})
     data = json.loads(request.body.decode('utf-8'))
-    contestid = data['contestid']
+    contestid = int(data['contestid'])
     userId = request.user.id
     province = data['region']['province']
     city = data['region']['city']
@@ -138,7 +139,7 @@ def hot(request):
 
 def neededinfo(request):
     data = json.loads(request.body.decode('utf-8'))
-    contest_id = data['contestid']
+    contest_id = int(data['contestid'])
     contest = Contest.objects.filter(id=contest_id)
     if len(contest) != 0:
         target = contest[0]
@@ -218,7 +219,7 @@ def create(request):
 
 def detail(request):
     data = json.loads(request.body.decode('utf-8'))
-    contest_id = data['contestid']
+    contest_id = int(data['contestid'])
 
     result = {'msg': ''}
     user_id = request.user.id
@@ -259,7 +260,7 @@ def detail(request):
 def fileList(request):
     try:
         data = json.loads(request.body.decode('utf-8'))
-        contest_id = data['contestid']
+        contest_id = int(data['contestid'])
         contest_path = "/resources/contests/" + str(contest_id)
         files = os.listdir(contest_path)
         result = []
@@ -280,7 +281,7 @@ def fileList(request):
 def enrollNum(request):
     try:
         data = json.loads(request.body.decode('utf-8'))
-        contest_id = data['contestid']
+        contest_id = int(data['contestid'])
         try:
             contest = Contest.objects.get(id=contest_id)
         except:
@@ -297,7 +298,7 @@ def enrollNum(request):
 def uploadImg(request):
     try:
         data = json.loads(request.body.decode('utf-8'))
-        contest_id = data['contestid']
+        contest_id = int(data['contestid'])
         try:
             contest = Contest.objects.get(id=contest_id)
         except:
@@ -330,8 +331,8 @@ def discussion(request):
     try:
         amount = MAX_REPLY_ONE_PAGE
         data = json.loads(request.body.decode('utf-8'))
-        contest_id = data['contestid']
-        post_id = data['discussionid']
+        contest_id = int(data['contestid'])
+        post_id = int(data['discussionid'])
         page = data['pageNum']
         try:
             post = Post.objects.get(id=post_id)
@@ -356,6 +357,10 @@ def discussion(request):
                 'content': single_reply.content,
                 'time': (time.mktime(single_reply.time.timetuple()) + 8 * 60 * 60) * 1000
             })
+        with transaction.atomic():
+            post = Post.objects.select_for_update().get(id=post_id)
+            post.views = post.views + 1
+            post.save()
         return JsonResponse(result)
     except Exception as e:
         print(e)
@@ -363,11 +368,84 @@ def discussion(request):
 
 def addDiscussion(request):
     try:
+        if not request.user.is_authenticated:
+            return JsonResponse({'msg': '请先登录'})
         data = json.loads(request.body.decode('utf-8'))
-        contest_id = data['contestid']
+        contest_id = int(data['contestid'])
         title = data['title']
         content = data['content']
         post = Post()
+        post.contest_id = contest_id
+        post.author_id = request.user.id
+        post.author = CCPUser.objects.get(id=request.user.id).username
+        post.title = title
+        post.content = content
+        post.time = datetime.utcnow()
+        post.save()
+        return JsonResponse({'msg': ''})
+    except Exception as e:
+        print(e)
+        return JsonResponse({'msg': '未知错误'})
+
+def discussionReply(request):
+    try:
+        if not request.user.is_authenticated:
+            return JsonResponse({'msg': '请先登录'})
+        data = json.loads(request.body.decode('utf-8'))
+        contest_id = int(data['contestid'])
+        post_id = int(data['discussionid'])
+        content = data['content']
+        reply_time = data['replytime']
+        try:
+            with transaction.atomic():
+                try:
+                    post = Post.objects.select_for_update().get(id=post_id, contest_id=contest_id)
+                except:
+                    return JsonResponse({'msg': '主题帖不存在'})
+                reply = Reply()
+                reply.post_id = post_id
+                reply.author_id = request.user.id
+                reply.author = CCPUser.objects.get(id=request.user.id).username
+                reply.content = content
+                reply.time = datetime.strptime(reply_time, "%Y-%m-%dT%H:%M:%S.000Z").replace(tzinfo=pytz.utc)
+                post.replies = post.replies + 1
+                post.last_reply_time = reply.time
+                reply.save()
+                post.save()
+                return JsonResponse({'msg': ''})
+        except Exception as e:
+            print(e)
+            return JsonResponse({'msg': '数据不符合要求'})
+    except Exception as e:
+        print(e)
+        return JsonResponse({'msg': '未知错误'})
+
+def discussionList(request):
+    try:
+        data = json.loads(request.body.decode('utf-8'))
+        try:
+            page = data['pageNum']
+        except:
+            page = 1
+        amount = MAX_POST_ONE_PAGE
+        contest_id = int(data['contestid'])
+        result = {'msg': ''}
+        count = Post.objects.filter(contest_id=contest_id).count()
+        posts = Post.objects.filter(contest_id=contest_id)[(page - 1) * amount: page * amount]
+        result['current_page_num'] = page
+        result['total_page_num'] = (count - 1) // amount + 1
+        result['array'] = []
+        for post in posts:
+            result['array'].append({
+                'discussionid': post.id,
+                'title': post.title,
+                'author': post.author,
+                'issuetime': (time.mktime(post.time.timetuple()) + 8 * 60 * 60) * 1000,
+                'replynum': post.replies,
+                'lasttime': (time.mktime(post.last_reply_time.timetuple()) + 8 * 60 * 60) * 1000,
+                'viewnum': post.views
+            })
+        return JsonResponse(result)
     except Exception as e:
         print(e)
         return JsonResponse({'msg': '未知错误'})

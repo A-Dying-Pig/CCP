@@ -44,7 +44,7 @@ def detail(request):
     if not user.is_superuser: # 是超级用户
         return JsonResponse({'msg': 'Authority denied.'})
     data = json.loads(request.body.decode('utf-8'))
-    contest_id = data['contestid']
+    contest_id = int(data['contestid'])
     result = {'msg': ''}
     contest = Contest.objects.get(id=contest_id)
     if contest.checked != -1: # 如果不是未审核状态
@@ -77,7 +77,7 @@ def submit(request):
     if not user.is_superuser: # 是超级用户
         return JsonResponse({'msg': 'Authority denied.'})
     data = json.loads(request.body.decode('utf-8'))
-    contest_id = data['contestid']
+    contest_id = int(data['contestid'])
     passed = data['pass']
     if passed == 0:  # not pass
         target = Contest.objects.get(id=contest_id)

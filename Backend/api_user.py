@@ -103,7 +103,7 @@ def modify(request):
 
 def upload(request):
     data = json.loads(request.body.decode('utf-8'))
-    contest_id = data['contestid']
+    contest_id = int(data['contestid'])
     try:
         contest = Contest.objects.get(id=contest_id)
     except:
