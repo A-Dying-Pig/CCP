@@ -130,7 +130,7 @@ class ContestUtil:
             return {'phase': -1}
         if enroll_start < cur_time < enroll_end:
             return {'phase': 0}
-        for i in range(1,6):
+        for i in range(1, 6):
             if i != MAX_PHASE and getattr(contest, 'phase_name' + str(i+1)) is not None:
                 pre_start = getattr(contest, 'phase_start_time' + str(i))
                 pre_sub = getattr(contest, 'phase_hand_end_time' + str(i))
@@ -157,13 +157,17 @@ class ContestUtil:
     def getCurrentRegionMode(cls, contestid):
         # todo
         # return current Regionmode 0, 1, 2
-        cur_phase = cls.getCurrentPhase(contestid)
-        contest = Contest.objects.get(id=contestid)
-        mode = getattr(contest,'phase_mode'+str(cur_phase))
-        if mode is None:
+        try:
+            cur_phase = cls.getCurrentPhase(contestid)
+            contest = Contest.objects.get(id=contestid)
+            mode = getattr(contest, 'phase_mode'+str(cur_phase['phase']))
+            if mode is None:
+                return -1
+            else:
+                return mode
+        except Exception as e:
+            print(e)
             return -1
-        else:
-            return mode
 
 class ContestPlayerUtil:
     @classmethod

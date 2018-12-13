@@ -815,7 +815,142 @@ class api_user_competiton_Test(TestCase):
         response_content = json.loads(response_content)
         self.assertEqual(response_content['msg'], '比赛不存在')
 
-    def test_advanced_successful(self):
+    def test_setjudge_add_successful(self):
+        user_info={      
+            "username": "judge1", 
+            "password": "ccp",
+            "email":"judge1@126.com"
+        }
+        response = self.c.post('/api/user/register',json.dumps(user_info),content_type="application/json")
+        user_info={
+            "username": "admin", 
+            "password": "ccp"            
+        }
+        response = self.c.post('/api/user/login',json.dumps(user_info),content_type="application/json")
+        comp_info = {
+            "contestid":self.contestId_personal, 
+            "type":0
+            "username": judge1,
+            "id":'1'                 
+        }
+        response = self.c.post('/api/admin/setjudge',json.dumps(comp_info),content_type="application/json") 
+        response_content = response.content.decode()
+        response_content = json.loads(response_content)
+        self.assertEqual(response_content['msg'], '')
+        judgeInfo=ContestJudge.objects.filter()
+        self.assertEqual(judgeInfo[0].contest_id,contestid)
+
+    def test_setjudge_change_successful(self):
+        user_info={      
+            "username": "judge1", 
+            "password": "ccp",
+            "email":"judge1@126.com"
+        }
+        response = self.c.post('/api/user/register',json.dumps(user_info),content_type="application/json")
+        user_info={
+            "username": "admin", 
+            "password": "ccp"            
+        }
+        response = self.c.post('/api/user/login',json.dumps(user_info),content_type="application/json")
+        comp_info = {
+            "contestid":self.contestId_personal, 
+            "type":0
+            "username": judge1,
+            "id":'1'                 
+        }
+        response = self.c.post('/api/admin/setjudge',json.dumps(comp_info),content_type="application/json") 
+        comp_info = {
+            "contestid":self.contestId_personal, 
+            "type":1
+            "username": judge1,
+            "id":'2'                 
+        }
+        response = self.c.post('/api/admin/setjudge',json.dumps(comp_info),content_type="application/json") 
+        response_content = response.content.decode()
+        response_content = json.loads(response_content)
+        self.assertEqual(response_content['msg'], '')
+        judgeInfo=ContestJudge.objects.filter()
+        self.assertEqual(judgeInfo[0].contest_id,contestid)
+
+    def test_setjudge_delete_successful(self):
+        user_info={      
+            "username": "judge1", 
+            "password": "ccp",
+            "email":"judge1@126.com"
+        }
+        response = self.c.post('/api/user/register',json.dumps(user_info),content_type="application/json")
+        user_info={
+            "username": "admin", 
+            "password": "ccp"            
+        }
+        response = self.c.post('/api/user/login',json.dumps(user_info),content_type="application/json")
+        comp_info = {
+            "contestid":self.contestId_personal, 
+            "type":0
+            "username": judge1,
+            "id":'1'                 
+        }
+        response = self.c.post('/api/admin/setjudge',json.dumps(comp_info),content_type="application/json") 
+        comp_info = {
+            "contestid":self.contestId_personal, 
+            "type":2
+            "username": judge1,
+            "id":'1'                 
+        }
+        response = self.c.post('/api/admin/setjudge',json.dumps(comp_info),content_type="application/json") 
+        response_content = response.content.decode()
+        response_content = json.loads(response_content)
+        self.assertEqual(response_content['msg'], '')
+        judgeInfo=ContestJudge.objects.filter()
+        self.assertEqual(judgeInfo[0].contest_id,'')
+
+    def test_setjudge_add_notadmin(self):
+        user_info={      
+            "username": "judge1", 
+            "password": "ccp",
+            "email":"judge1@126.com"
+        }
+        response = self.c.post('/api/user/register',json.dumps(user_info),content_type="application/json")
+        user_info={
+            "username": "admin2", 
+            "password": "ccp"            
+        }
+        response = self.c.post('/api/user/login',json.dumps(user_info),content_type="application/json")
+        comp_info = {
+            "contestid":self.contestId_personal, 
+            "type":0
+            "username": judge1,
+            "id":'1'                 
+        }
+        response = self.c.post('/api/admin/setjudge',json.dumps(comp_info),content_type="application/json") 
+        response_content = response.content.decode()
+        response_content = json.loads(response_content)
+        self.assertEqual(response_content['msg'], 'Current user is not the admin of this contest')
+
+    def test_setjudge_add_compNotexist(self):
+        user_info={      
+            "username": "judge1", 
+            "password": "ccp",
+            "email":"judge1@126.com"
+        }
+        response = self.c.post('/api/user/register',json.dumps(user_info),content_type="application/json")
+        user_info={
+            "username": "admin", 
+            "password": "ccp"            
+        }
+        response = self.c.post('/api/user/login',json.dumps(user_info),content_type="application/json")
+        comp_info = {
+            "contestid":self.contestId_group+1, 
+            "type":0
+            "username": judge1,
+            "id":'1'                 
+        }
+        response = self.c.post('/api/admin/setjudge',json.dumps(comp_info),content_type="application/json") 
+        response_content = response.content.decode()
+        response_content = json.loads(response_content)
+        self.assertEqual(response_content['msg'], 'Contest does not exist.')
+
+    def test_setjudge_add_judgeNotexist(self):
         user_info={
             "username": "admin", 
             "password": "ccp"            
@@ -823,12 +958,124 @@ class api_user_competiton_Test(TestCase):
         response = self.c.post('/api/user/login',json.dumps(user_info),content_type="application/json")
         comp_info = {
             "contestid":self.contestId_group, 
-            "target":-1           
+            "type":0
+            "username": judge1,
+            "id":'1'                 
         }
-        response = self.c.post('/api/admin/advanced',json.dumps(comp_info),content_type="application/json") 
+        response = self.c.post('/api/admin/setjudge',json.dumps(comp_info),content_type="application/json") 
+        response_content = response.content.decode()
+        response_content = json.loads(response_content)
+        self.assertEqual(response_content['msg'], 'Judge dos not exist')
+
+    def test_setjudge_change_notadd(self):
+        user_info={      
+            "username": "judge1", 
+            "password": "ccp",
+            "email":"judge1@126.com"
+        }
+        response = self.c.post('/api/user/register',json.dumps(user_info),content_type="application/json")
+        user_info={
+            "username": "admin", 
+            "password": "ccp"            
+        }
+        response = self.c.post('/api/user/login',json.dumps(user_info),content_type="application/json")
+        comp_info = {
+            "contestid":self.contestId_personal, 
+            "type":1
+            "username": judge1,
+            "id":'2'                 
+        }
+        response = self.c.post('/api/admin/setjudge',json.dumps(comp_info),content_type="application/json") 
+        response_content = response.content.decode()
+        response_content = json.loads(response_content)
+        self.assertEqual(response_content['msg'], '需要首先添加评委')
+
+    def test_setjudge_change_wrongjudge(self):
+        user_info={      
+            "username": "judge1", 
+            "password": "ccp",
+            "email":"judge1@126.com"
+        }
+        response = self.c.post('/api/user/register',json.dumps(user_info),content_type="application/json")
+        user_info={
+            "username": "admin", 
+            "password": "ccp"            
+        }
+        response = self.c.post('/api/user/login',json.dumps(user_info),content_type="application/json")
+        comp_info = {
+            "contestid":self.contestId_personal, 
+            "type":0
+            "username": judge1,
+            "id":'1'                 
+        }
+        response = self.c.post('/api/admin/setjudge',json.dumps(comp_info),content_type="application/json") 
+        comp_info = {
+            "contestid":self.contestId_personal, 
+            "type":1
+            "username": judge2,
+            "id":'2'                 
+        }
+        response = self.c.post('/api/admin/setjudge',json.dumps(comp_info),content_type="application/json") 
+        response_content = response.content.decode()
+        response_content = json.loads(response_content)
+        self.assertEqual(response_content['msg'], 'Judge dos not exist')
+
+    def test_setjudge_delete_wrongjudge(self):
+        user_info={      
+            "username": "judge1", 
+            "password": "ccp",
+            "email":"judge1@126.com"
+        }
+        response = self.c.post('/api/user/register',json.dumps(user_info),content_type="application/json")
+        user_info={
+            "username": "admin", 
+            "password": "ccp"            
+        }
+        response = self.c.post('/api/user/login',json.dumps(user_info),content_type="application/json")
+        comp_info = {
+            "contestid":self.contestId_personal, 
+            "type":0
+            "username": judge1,
+            "id":'1'                 
+        }
+        response = self.c.post('/api/admin/setjudge',json.dumps(comp_info),content_type="application/json") 
+        comp_info = {
+            "contestid":self.contestId_personal, 
+            "type":1
+            "username": judge1,
+            "id":'2'                 
+        }
+        response = self.c.post('/api/admin/setjudge',json.dumps(comp_info),content_type="application/json") 
+        response_content = response.content.decode()
+        response_content = json.loads(response_content)
+        self.assertEqual(response_content['msg'], '要删除的评委信息有误')
+
+
+
+
+
+
+
+
+
+
+
+
+    '''
+    def test_judgelist_successful(self):
+        user_info={
+            "username": "admin", 
+            "password": "ccp"            
+        }
+        response = self.c.post('/api/user/login',json.dumps(user_info),content_type="application/json")
+        comp_info = {
+            "contestid":self.contestId_personal,                   
+        }
+        response = self.c.post('/api/admin/judgelist',json.dumps(comp_info),content_type="application/json") 
         response_content = response.content.decode()
         response_content = json.loads(response_content)
         self.assertEqual(response_content['msg'], '')
+    '''
 
 
 
