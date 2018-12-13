@@ -172,6 +172,7 @@ class HotContest(models.Model):
 
 # 讨论区主题帖
 class Post(models.Model):
+    contest_id = models.IntegerField(db_index=True)  # 比赛id
     title = models.CharField(max_length=128)  # 标题
     author_id = models.IntegerField(db_index=True)
     author = models.CharField(max_length=128)  # 发帖人用户名
@@ -187,6 +188,7 @@ class Post(models.Model):
 class Reply(models.Model):
     post_id = models.IntegerField(db_index=True)  # 主题帖id
     author_id = models.IntegerField(db_index=True)  # 回帖人id
+    author = models.CharField(max_length=128)  # 回帖人用户名
     content = models.CharField(max_length=1024)  # 回帖内容
     time = models.DateTimeField()  # 回帖时间
     class Meta:

@@ -12,6 +12,7 @@ urlpatterns = [
     path('user/check', user.check),
     path('user/profile', user.profile),
     path('user/modify', user.modify),
+    path('contestant/submit', user.upload),
     path('competition/create', competition.create),
     path('competition/neededinfo', competition.neededinfo),
     path('competition/enroll', competition.enroll),

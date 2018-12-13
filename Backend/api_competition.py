@@ -78,7 +78,7 @@ def enroll(request):
     return JsonResponse({'msg': ''})
 
 def list(request):
-    amount = 10
+    amount = MAX_CONTEST_ONE_PAGE
     data = json.loads(request.body.decode('utf-8'))
     page = int(data['pageNum'])
     type = data['type']
@@ -243,7 +243,7 @@ def detail(request):
 
         info['signupinfo'] = {}
         signupinfo = info['signupinfo']
-        signupinfo['time'] = [(time.mktime(contest.enroll_start.timetuple()) + 8 * 60 * 60)*1000, (time.mktime(contest.enroll_end.timetuple()) + 8 * 60 * 60)*1000]
+        signupinfo['time'] = [(time.mktime(contest.enroll_start.timetuple()) + 8 * 60 * 60) * 1000, (time.mktime(contest.enroll_end.timetuple()) + 8 * 60 * 60) * 1000]
         signupinfo['mode'] = 1 - contest.grouped
         signupinfo['person'] = ContestUtil.getTitle(contest)
         signupinfo['group'] = ContestUtil.getGroupTitle(contest)
@@ -314,14 +314,60 @@ def uploadImg(request):
             return JsonResponse({'msg': 'File not found.'})
         else:
             # 先删掉原来的文件夹内的所有内容，再新建一个
-            shutil.rmtree('/static/img/' + str(contest_id))
-            os.mkdir('static/img/' + str(contest_id))
+            shutil.rmtree('/resources/contests/' + str(contest_id))
+            os.mkdir('/resources/contests/' + str(contest_id))
             # 打开特定的文件进行二进制的写操作;
-            with open("/static/img/" + str(contest_id) + '/' + File.name, 'wb+') as f:
+            with open(RESOURCE_BASE_DIR + "/resources/contests/" + str(contest_id) + '/img/' + File.name, 'wb+') as f:
                 # 分块写入文件;
                 for chunk in File.chunks():
                     f.write(chunk)
             return JsonResponse({'msg': ''})
+    except Exception as e:
+        print(e)
+        return JsonResponse({'msg': '未知错误'})
+
+def discussion(request):
+    try:
+        amount = MAX_REPLY_ONE_PAGE
+        data = json.loads(request.body.decode('utf-8'))
+        contest_id = data['contestid']
+        post_id = data['discussionid']
+        page = data['pageNum']
+        try:
+            post = Post.objects.get(id=post_id)
+        except:
+            return JsonResponse({'msg': '主题帖不存在'})
+        if contest_id != post.contest_id:
+            return JsonResponse({'msg': '比赛与主题帖不匹配'})
+        result = {'msg': ''}
+        result['current_page_num'] = page
+        count = Reply.objects.filter(post_id=post_id).count()
+        replys = Reply.objects.filter(post_id=post_id)[(page - 1) * amount: page * amount]
+        result['total_page_num'] = (count - 1) // amount + 1
+        result['title'] = post.title
+        result['content'] = post.content
+        result['author'] = post.author
+        result['issuetime'] = (time.mktime(post.time.timetuple()) + 8 * 60 * 60) * 1000
+        result['array'] = []
+        for single_reply in replys:
+            result['array'].append({
+                'imgurl': "/resources/user_images/" + str(single_reply.author_id) + '/',
+                'username': single_reply.author,
+                'content': single_reply.content,
+                'time': (time.mktime(single_reply.time.timetuple()) + 8 * 60 * 60) * 1000
+            })
+        return JsonResponse(result)
+    except Exception as e:
+        print(e)
+        return JsonResponse({'msg': '未知错误'})
+
+def addDiscussion(request):
+    try:
+        data = json.loads(request.body.decode('utf-8'))
+        contest_id = data['contestid']
+        title = data['title']
+        content = data['content']
+        post = Post()
     except Exception as e:
         print(e)
         return JsonResponse({'msg': '未知错误'})
