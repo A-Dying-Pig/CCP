@@ -263,6 +263,6 @@ class GeneralUtil:
                 result.append({
                     'title': file_name,
                     'isLeaf': True,
-                    'data': {'src': full_path}
+                    'data': {'src': full_path[len(RESOURCE_BASE_DIR):]}
                 })
         return result
