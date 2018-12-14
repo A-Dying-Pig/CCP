@@ -9,6 +9,7 @@ from .utils import *
 import pytz
 from datetime import datetime
 import shutil
+import jwt
 
 utctz=pytz.timezone('UTC')
 chinatz=pytz.timezone('Asia/Shanghai')
@@ -325,3 +326,29 @@ def uploadImg(request):
     except Exception as e:
         print(e)
         return JsonResponse({'msg': '未知错误'})
+
+def send_invitation(sender_id, receiver_id, contest_id):
+    sender_name = CCPUser.objects.filter(id=sender_id)[0].username
+    with open('config.json', 'r', encoding='utf8') as f:
+        d = json.load(f)
+        key = d['key']
+        domain = d['domain']
+    encoded = jwt.encode({'sender': sender_id, 'receiver': receiver_id, 'contest': contest_id}, key, algorithms='HS256')
+    link = domain + '/invite?token=' + encoded
+    msg = sender_name + '邀请你加入队伍，点击链接' + link
+    notification = Notification()
+    notification.context = msg
+    notification.title = sender_name + '邀请你加入队伍'
+    notification.time = datetime.now()
+    notification.save()
+    msg_id = Notification.objects.last().id
+    ntfuser = NotificationUser()
+    ntfuser.notification_id = msg_id
+    ntfuser.user_id = receiver_id
+    ntfuser.save()
+
+
+def addGroupUser(leader_id, member_id, contest_id):
+    cg_obj = ContestGroup.objects.filter(leader_id=leader_id, contest_id=contest_id)[0]
+    ContestGroupUtil.addMember(cg_obj, member_id)
+    return True
