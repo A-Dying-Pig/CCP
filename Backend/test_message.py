@@ -136,20 +136,20 @@ class api_message_Test(TestCase):
         }
         response = self.c.post('/api/admin/broadcast',json.dumps(comp_info),content_type="application/json") 
         
-    def test_message_getnum(self): 
+    def test_message_getnew(self): 
         user_info={
             "username": "admin2", 
             "password": "ccp"            
         }
         response = self.c.post('/api/user/login',json.dumps(user_info),content_type="application/json")
-        response = self.c.post('/api/message/getnum') 
+        response = self.c.post('/api/message/getnew') 
         response_content = response.content.decode()
         response_content = json.loads(response_content)
-        self.assertEqual(len(response_content['num']), 2)
+        self.assertEqual(response_content['num'], 2)
         self.assertEqual(response.status_code,200)
 
-    def test_message_getnum_notplayer(self): 
-        response = self.c.post('/api/message/getnum') 
+    def test_message_getnew_notplayer(self): 
+        response = self.c.post('/api/message/getnew') 
         response_content = response.content.decode()
         response_content = json.loads(response_content)
         self.assertEqual(response_content['msg'], '未知错误！')
@@ -251,7 +251,7 @@ class api_message_Test(TestCase):
         response = self.c.post('/api/message/detail',json.dumps(message_info),content_type="application/json") 
         response_content = response.content.decode()
         response_content = json.loads(response_content)
-        self.assertEqual(response_content['title'], '未知错误！')
+        self.assertEqual(response_content['msg'], '未知错误！')
 
     def test_message_change(self):
         user_info={
@@ -271,10 +271,10 @@ class api_message_Test(TestCase):
         }
         response = self.c.post('/api/message/detail',json.dumps(message_info),content_type="application/json") 
         #未读消息数变为1
-        response = self.c.post('/api/message/getnum') 
+        response = self.c.post('/api/message/getnew') 
         response_content = response.content.decode()
         response_content = json.loads(response_content)
-        self.assertEqual(len(response_content['num']), 1)
+        self.assertEqual(response_content['num'], 1)
         #全部信息列表发生变化
         message_info={
             "pageNum":1
@@ -286,4 +286,6 @@ class api_message_Test(TestCase):
         self.assertEqual(len(response_content['array']),2)
         self.assertEqual(response_content['array'][0]['read'],1)
         self.assertEqual(response_content['array'][1]['read'],0)
+
+
 

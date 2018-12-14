@@ -681,7 +681,7 @@ class api_user_competiton_Test(TestCase):
         response = self.c.post('/api/user/login',json.dumps(user_info),content_type="application/json")
         comp_info = {
             "contestid":self.contestId_personal,
-            "file": "C:\Users\Administrator\Desktop\1.txt" 
+            "file": "C:\\Users\\Administrator\\Desktop\\1.txt" 
         }
         response = self.c.post('/api/admin/upload',json.dumps(comp_info),content_type="application/json") 
         response_content = response.content.decode()
@@ -696,7 +696,7 @@ class api_user_competiton_Test(TestCase):
         response = self.c.post('/api/user/login',json.dumps(user_info),content_type="application/json")
         comp_info = {
             "contestid":self.contestId_group+1,
-            "file": "C:\Users\Administrator\Desktop\1.txt" 
+            "file": "C:\\Users\\Administrator\\Desktop\\1.txt" 
         }
         response = self.c.post('/api/admin/upload',json.dumps(comp_info),content_type="application/json") 
         response_content = response.content.decode()
@@ -711,7 +711,7 @@ class api_user_competiton_Test(TestCase):
         response = self.c.post('/api/user/login',json.dumps(user_info),content_type="application/json")
         comp_info = {
             "contestid":self.contestId_group,
-            "file": "C:\Users\Administrator\Desktop\1.txt" 
+            "file": "C:\\Users\\Administrator\\Desktop\\1.txt" 
         }
         response = self.c.post('/api/admin/upload',json.dumps(comp_info),content_type="application/json") 
         response_content = response.content.decode()
@@ -726,7 +726,7 @@ class api_user_competiton_Test(TestCase):
         response = self.c.post('/api/user/login',json.dumps(user_info),content_type="application/json")
         comp_info = {
             "contestid":self.contestId_group,
-            "file": "C:\Users\Administrator\Desktop\2.txt" 
+            "file": "C:\\Users\\Administrator\\Desktop\\2.txt" 
         }
         response = self.c.post('/api/admin/upload',json.dumps(comp_info),content_type="application/json") 
         response_content = response.content.decode()

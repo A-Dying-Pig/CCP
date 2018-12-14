@@ -370,7 +370,6 @@ def judgeprogress(request):
         res['judges'].append(dic)
     return JsonResponse(res)
 
-
 def advanced(request):
     # todo privileges
     data = json.loads(request.body.decode('utf-8'))

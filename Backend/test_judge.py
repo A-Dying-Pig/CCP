@@ -139,7 +139,7 @@ class api_judge_Test(TestCase):
             "contestid":self.contestId_personal,
             "file": "C:\Users\Administrator\Desktop\1.txt" 
         }
-        response = self.c.post('/api/contest/submit',json.dumps(submit_info),content_type="application/json")
+        response = self.c.post('/api/contestant/submit',json.dumps(submit_info),content_type="application/json")
         response_content = response.content.decode()
         response_content = json.loads(response_content)
         self.assertEqual(response_content['msg'], '')  
@@ -154,7 +154,7 @@ class api_judge_Test(TestCase):
             "contestid":self.contestId_personal+1,
             "file": "C:\Users\Administrator\Desktop\1.txt" 
         }
-        response = self.c.post('/api/contest/submit',json.dumps(submit_info),content_type="application/json")
+        response = self.c.post('/api/contestant/submit',json.dumps(submit_info),content_type="application/json")
         response_content = response.content.decode()
         response_content = json.loads(response_content)
         self.assertEqual(response_content['msg'], 'Contest does not exist.')
@@ -175,7 +175,7 @@ class api_judge_Test(TestCase):
             "contestid":self.contestId_personal,
             "file": "C:\Users\Administrator\Desktop\1.txt" 
         }
-        response = self.c.post('/api/contest/submit',json.dumps(submit_info),content_type="application/json")
+        response = self.c.post('/api/contestant/submit',json.dumps(submit_info),content_type="application/json")
         response_content = response.content.decode()
         response_content = json.loads(response_content)
         self.assertEqual(response_content['msg'], 'Current user did not attend this contest') 
@@ -190,7 +190,7 @@ class api_judge_Test(TestCase):
             "contestid":self.contestId_personal,
             "file": "C:\Users\Administrator\Desktop\2.txt" 
         }
-        response = self.c.post('/api/contest/submit',json.dumps(submit_info),content_type="application/json")
+        response = self.c.post('/api/contestant/submit',json.dumps(submit_info),content_type="application/json")
         response_content = response.content.decode()
         response_content = json.loads(response_content)
         self.assertEqual(response_content['msg'], 'File not found.') 
@@ -205,7 +205,7 @@ class api_judge_Test(TestCase):
             "contestid":self.contestId_personal,
             "file": "C:\Users\Administrator\Desktop\1.txt" 
         }
-        response = self.c.post('/api/contest/submit',json.dumps(submit_info),content_type="application/json")
+        response = self.c.post('/api/contestant/submit',json.dumps(submit_info),content_type="application/json")
         contestplayer = contestplayer.objects.filter()
         self.contestplayer_id = contestplayer[0].player_id
         user_info={
@@ -233,7 +233,7 @@ class api_judge_Test(TestCase):
             "contestid":self.contestId_personal,
             "file": "C:\Users\Administrator\Desktop\1.txt" 
         }
-        response = self.c.post('/api/contest/submit',json.dumps(submit_info),content_type="application/json")
+        response = self.c.post('/api/contestant/submit',json.dumps(submit_info),content_type="application/json")
         contestplayer = contestplayer.objects.filter()
         self.contestplayer_id = contestplayer[0].player_id
         judge_info={
@@ -255,7 +255,7 @@ class api_judge_Test(TestCase):
             "contestid":self.contestId_personal,
             "file": "C:\Users\Administrator\Desktop\1.txt" 
         }
-        response = self.c.post('/api/contest/submit',json.dumps(submit_info),content_type="application/json")
+        response = self.c.post('/api/contestant/submit',json.dumps(submit_info),content_type="application/json")
         contestplayer = contestplayer.objects.filter()
         self.contestplayer_id = contestplayer[0].player_id
         user_info={
