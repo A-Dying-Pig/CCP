@@ -5,6 +5,7 @@ import json
 import os
 import random
 from .utils import ContestUtil,GeneralUtil,RESOURCE_BASE_DIR
+import traceback
 
 def allot(contest_id, phase, timesperpiece):
     contest = Contest.objects.get(id=contest_id)

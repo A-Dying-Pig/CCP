@@ -2,6 +2,7 @@ from .models import *
 from django.http import HttpResponse, JsonResponse
 from django.contrib.auth.decorators import login_required
 import json
+import traceback
 
 def getnew(request):
     try:
@@ -11,6 +12,7 @@ def getnew(request):
             'msg': ''
         })
     except:
+        traceback.print_exc()
         return JsonResponse({'msg': '未知错误！'})
 
 def getall(request):
@@ -39,6 +41,7 @@ def getall(request):
             'msg': ''
         })
     except:
+        traceback.print_exc()
         return JsonResponse({'msg': '未知错误！'})
 
 def detail(request):
@@ -55,6 +58,7 @@ def detail(request):
         except:
             return JsonResponse({'msg': '您查找的消息不存在！'})
     except:
+        traceback.print_exc()
         return JsonResponse({'msg': '未知错误！'})
 
 

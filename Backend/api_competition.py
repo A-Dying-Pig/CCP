@@ -12,6 +12,7 @@ import pytz
 from datetime import datetime
 import shutil
 import jwt
+import traceback
 
 utctz=pytz.timezone('UTC')
 chinatz=pytz.timezone('Asia/Shanghai')
@@ -47,7 +48,7 @@ def enroll(request):
         if Contest.objects.get(id=contestid).admin_id == userId:
             return JsonResponse({'msg': '比赛主办方不能报名成为比赛选手'})
     except Exception as e:
-        print(e)
+        traceback.print_exc()
         return JsonResponse({'msg': '未知错误'})
 
     le = len(values)
@@ -56,29 +57,42 @@ def enroll(request):
 
     # need to modify database, add fileds to Contestplayer
     if comp_type == 0:  # 个人赛
-        contest_player = ContestPlayer()
-        contest_player.player_id = userId
-        contest_player.contest_id = contestid
-        index = 0
-        while index < le:
-            setattr(contest_player, 'extra_information' + str(index + 1), values[index])
-            index = index + 1
-        contest_player.save()
+        with transaction.atomic():
+            contest_player = ContestPlayer()
+            contest_player.player_id = userId
+            contest_player.contest_id = contestid
+            index = 0
+            while index < le:
+                setattr(contest_player, 'extra_information' + str(index + 1), values[index])
+                index = index + 1
+            contest_player.save()
+            contest_grade = ContestGrade()
+            contest_grade.leader_id = userId
+            contest_grade.contest_id = contestid
+            contest_grade.phase = 1
+            contest_grade.save()
     elif comp_type == 1:  # 组队赛
-        contest_group = ContestGroup()
-        contest_group.leader_id = request.user.id
-        glen = len(groupuser)
-        if glen < 0 or glen > 4:
-            return JsonResponse({'msg': '队员人数超出限制'})
-        index = 0
-        while index < glen:
-            setattr(contest_group, 'member' + str(index + 1) + '_id', groupuser[index])
-            send_invitation(userId, groupuser[index], contestid)
-            index = index + 1
-        index = 0
-        while index < le:
-            setattr(contest_group, 'extra_information' + str(index + 1), values[index])
-            index = index + 1
+        with transaction.atomic():
+            contest_group = ContestGroup()
+            contest_group.leader_id = request.user.id
+            glen = len(groupuser)
+            if glen < 0 or glen > 4:
+                return JsonResponse({'msg': '队员人数超出限制'})
+            index = 0
+            while index < glen:
+                setattr(contest_group, 'member' + str(index + 1) + '_id', groupuser[index])
+                send_invitation(userId, groupuser[index], contestid)
+                index = index + 1
+            index = 0
+            while index < le:
+                setattr(contest_group, 'extra_information' + str(index + 1), values[index])
+                index = index + 1
+            contest_group.save()
+            contest_grade = ContestGrade()
+            contest_grade.phase = 1
+            contest_grade.contest_id = contestid
+            contest_grade.leader_id = userId
+            contest_grade.save()
     return JsonResponse({'msg': ''})
 
 def list(request):
@@ -117,7 +131,7 @@ def slider(request):
         }
         return JsonResponse(result)
     except Exception as e:
-        print(e)
+        traceback.print_exc()
         return JsonResponse({'msg': '未知错误'})
 
 def hot(request):
@@ -137,7 +151,7 @@ def hot(request):
         }
         return JsonResponse(result)
     except Exception as e:
-        print(e)
+        traceback.print_exc()
         return JsonResponse({'msg': '未知错误'})
 
 def neededinfo(request):
@@ -257,7 +271,7 @@ def detail(request):
         return JsonResponse(result)
     except Exception as e:
         print("Exception here:")
-        print(e)
+        traceback.print_exc()
         return JsonResponse({'msg': '未知错误！'})
 
 def fileList(request):
@@ -272,13 +286,13 @@ def fileList(request):
             if os.path.isfile(entire_dir):
                 result.append({
                     'name': file,
-                    'url': entire_dir,
+                    'url': entire_dir[len(RESOURCE_BASE_DIR):],
                     'size': os.path.getsize(entire_dir)
                 })
         return JsonResponse({'msg': '',
                              'files': result})
     except Exception as e:
-        print(e)
+        traceback.print_exc()
         return JsonResponse({'msg': '未知错误！'})
 
 def enrollNum(request):
@@ -295,7 +309,7 @@ def enrollNum(request):
             num = ContestPlayer.objects.filter(contest_id=contest_id).count()
         return JsonResponse({'msg': '', 'enrollnum': num})
     except Exception as e:
-        print(e)
+        traceback.print_exc()
         return JsonResponse({'msg': '未知错误'})
 
 def uploadImg(request):
@@ -326,7 +340,7 @@ def uploadImg(request):
                     f.write(chunk)
             return JsonResponse({'msg': ''})
     except Exception as e:
-        print(e)
+        traceback.print_exc()
         return JsonResponse({'msg': '未知错误'})
 
 def send_invitation(sender_id, receiver_id, contest_id):
@@ -393,7 +407,7 @@ def discussion(request):
             post.save()
         return JsonResponse(result)
     except Exception as e:
-        print(e)
+        traceback.print_exc()
         return JsonResponse({'msg': '未知错误'})
 
 def addDiscussion(request):
@@ -411,10 +425,11 @@ def addDiscussion(request):
         post.title = title
         post.content = content
         post.time = datetime.utcnow()
+        post.last_reply_time = datetime.utcnow()
         post.save()
         return JsonResponse({'msg': ''})
     except Exception as e:
-        print(e)
+        traceback.print_exc()
         return JsonResponse({'msg': '未知错误'})
 
 def discussionReply(request):
@@ -444,10 +459,10 @@ def discussionReply(request):
                 post.save()
                 return JsonResponse({'msg': ''})
         except Exception as e:
-            print(e)
+            traceback.print_exc()
             return JsonResponse({'msg': '数据不符合要求'})
     except Exception as e:
-        print(e)
+        traceback.print_exc()
         return JsonResponse({'msg': '未知错误'})
 
 def discussionList(request):
@@ -477,5 +492,5 @@ def discussionList(request):
             })
         return JsonResponse(result)
     except Exception as e:
-        print(e)
+        traceback.print_exc()
         return JsonResponse({'msg': '未知错误'})

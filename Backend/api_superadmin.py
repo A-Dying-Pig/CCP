@@ -3,6 +3,7 @@ from django.http import HttpResponse, JsonResponse
 from django.contrib.auth.decorators import login_required
 import json
 from .utils import *
+import traceback
 
 def contests(request):
     try:
@@ -125,7 +126,7 @@ def indexInfo(request):
         return JsonResponse({'msg': '',
                              'contests': contests})
     except Exception as e:
-        print(e)
+        traceback.print_exc()
         return JsonResponse({'msg': '未知错误！'})
 
 def setIndex(request):
@@ -168,5 +169,5 @@ def setIndex(request):
             h.save()
         return JsonResponse({'msg': ''})
     except Exception as e:
-        print(e)
+        traceback.print_exc()
         return JsonResponse({'msg': '未知错误！'})

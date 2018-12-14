@@ -170,7 +170,7 @@ class ContestUtil:
             else:
                 return mode
         except Exception as e:
-            print(e)
+            traceback.print_exc()
             return -1
 
 class ContestPlayerUtil:

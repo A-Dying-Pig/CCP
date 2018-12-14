@@ -7,6 +7,9 @@ from django.contrib import auth
 import json
 import os
 from .utils import *
+import shutil
+import traceback
+import datetime
 
 def register(request):
     data = json.loads(request.body.decode('utf-8'))
@@ -108,23 +111,42 @@ def upload(request):
         contest = Contest.objects.get(id=contest_id)
     except:
         return JsonResponse({'msg': 'Contest does not exist.'})
-
-    try:
-        ContestPlayer.objects.get(contest_id=contest_id, player_id=request.user.id)
-    except:
-        return JsonResponse({'msg': 'Current user did not attend this contest'})
+    cur_phase = ContestUtil.getCurrentPhase(contest_id)
+    if not(getattr(contest, 'phase_start_time' + cur_phase) < datetime.datetime.utcnow() < getattr(contest, 'phase_hand_end_time' + cur_phase)):
+        return JsonResponse({'msg': '比赛当前阶段的提交已经截止'})
+    if contest.grouped == 0:  # 组队赛
+        try:
+            ContestPlayer.objects.get(contest_id=contest_id, player_id=request.user.id)
+        except:
+            return JsonResponse({'msg': 'Current user did not attend this contest'})
+    else:  #个人赛
+        try:
+            ContestGroup.objects.get(contest_id=contest_id, leader_id=request.user.id)
+        except:
+            return JsonResponse({'msg': 'Current user is not a leader of one group in this contest'})
+    cg = ContestGrade.objects.filter(leader_id=request.user.id, contest_id=contest_id, phase=cur_phase)
+    if cg.count() == 0:  # 不存在，则创建新的
+        cg = ContestGrade()
+    cg.leader_id = request.user.id
+    cg.work_name = name
+    cg.phase = cur_phase
+    cg.save()
 
     File = request.FILES.get("file", None)
     if File is None:
         return JsonResponse({'msg': 'File not found.'})
     else:
-        # 打开特定的文件进行二进制的写操作;
+        # 先删除旧文件夹下所有内容，再打开特定的文件进行二进制的写操作;
         try:
+            cur_dir = RESOURCE_BASE_DIR + "/resources/contests/" + str(contest_id) + '/playerFiles/' + str(request.user.id)
+            if os.path.isdir(cur_dir):
+                shutil.rmtree(cur_dir)
+            os.mkdir(cur_dir)
             with open(RESOURCE_BASE_DIR + "/resources/contests/" + str(contest_id) + '/playerFiles/' + str(request.user.id) + '/' + File.name, 'wb') as f:
                 # 分块写入文件;
                 for chunk in File.chunks():
                     f.write(chunk)
             return JsonResponse({'msg': ''})
         except Exception as e:
-            print(e)
+            traceback.print_exc()
             return JsonResponse({'msg': '未知错误'})

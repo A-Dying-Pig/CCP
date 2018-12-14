@@ -136,8 +136,6 @@ class ContestGrade(models.Model):
     phase = models.IntegerField(blank=True, null=True)  # 比赛阶段
     judge_id = models.IntegerField(default=-1, db_index=True)  # 评委id
     grade = models.IntegerField(default=-1)  # 选手(小组)由当前评委打出的该阶段比赛的成绩
-    pre_grade = models.IntegerField(default=-1)  # 上次成绩
-    reason = models.CharField(max_length=128, null=True)  # 修改成绩的理由
     work_name = models.CharField(max_length=32, default='work')  # 作品名
     class Meta:
         db_table = "ContestGrade"
@@ -177,7 +175,7 @@ class HotContest(models.Model):
 class Post(models.Model):
     contest_id = models.IntegerField(db_index=True)  # 比赛id
     title = models.CharField(max_length=128)  # 标题
-    author_id = models.IntegerField(db_index=True)
+    author_id = models.IntegerField(db_index=True)  # 发帖人id
     author = models.CharField(max_length=128)  # 发帖人用户名
     content = models.CharField(max_length=1024)  # 发帖内容
     time = models.DateTimeField()  # 发帖时间
