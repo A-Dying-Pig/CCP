@@ -48,13 +48,27 @@
             accept:{
                 type:String,
                 default:'all'
+            },
+            needname:{
+                type:Boolean,
+                default:true
+            },
+            uploadinfo:{
+                type:Object,
+                default:function () {
+                    return {}
+                }
+            },
+            fileList:{
+                type:Array,
+                default:function () {
+                    return []
+                }
             }
         },
         data() {
             return {
                 is_wrong:false,
-                fileList:[],
-                fileobjs:[],
             };
         },
         methods: {
@@ -80,6 +94,16 @@
                 let self = this;
                 let failnum = 0;
                 console.log(fileobj);
+                if(self.needname === true){
+                    if(self.uploadinfo.name===''){
+                        self.$message({
+                            message:'请输入名称！',
+                            type:'error'
+                        });
+                        return false;
+                    }
+                }
+
                 let fd = new FormData();
                 fd.append('file',fileobj);
                 fd.append('contestid',self.contestid);
@@ -122,7 +146,7 @@
                 }
                 return isLt;
             }
-        }
+        },
     }
 
 

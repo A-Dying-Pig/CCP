@@ -48,6 +48,7 @@
                             sponsors:[],
                             comtype:'',
                             details:"",
+                            img:''
                         },
                         signupinfo:{
                             time:[],
@@ -88,20 +89,24 @@
                 }
                 if(!flag) return;
                 //TODO put check here
-                if(this.allinfo.basicinfo.holders.length==0){
+                if(this.allinfo.basicinfo.img === ''){
+                    alert('需要提交比赛图片！');
+                    return
+                }
+                if(this.allinfo.basicinfo.holders.length===0){
                     alert('至少要有一个主办方！');
                     return;
                 }
-                if(this.allinfo.stageinfo.length==0){
+                if(this.allinfo.stageinfo.length===0){
                     alert('至少要有一个阶段！');
                     return;
                 }
-                if(this.allinfo.signupinfo.person.length==0){
+                if(this.allinfo.signupinfo.person.length===0){
                     alert('至少要有一个选手信息！');
                     return;
                 }
                 for(let sp of this.allinfo.basicinfo.sponsors){
-                    if(sp==''){
+                    if(sp===''){
                         alert('承办方输入框不可空！');
                         return;
                     }

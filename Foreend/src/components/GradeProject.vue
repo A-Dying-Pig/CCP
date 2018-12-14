@@ -18,7 +18,8 @@
                         <el-row :gutter="24">
                             <el-col :span="10">
                                 <template v-if="selectnode.type > 0">
-                                    文件名称：{{ selectnode.title }} <el-button type="primary" @click="downloadfile">点击下载</el-button>
+                                    文件名称：{{ selectnode.title }}
+                                    <a :href="selectnode.src" :download="selectnode.title"><el-button type="primary" @click="downloadfile">点击下载</el-button></a>
                                 </template>
                             </el-col>
                         </el-row>
@@ -115,6 +116,9 @@
                     }).catch(function (error) {
                         console.log(error);
                     });
+            },
+            downloadfile:function(){
+
             },
             submitgrade:function () {
                 let self = this;

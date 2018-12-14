@@ -8,7 +8,7 @@
             <GradeProject :contestid="contestid" :stageinfo="info.stageinfo" :readonly="false"></GradeProject>
         </template>
         <template v-else-if="item.value === 'submitwork'">
-            <UploadFile :file_max_number="1" :file_max_size="100" :uploadurl="'/api/contestant/submit'" accept="zip" :contestid="contestid"></UploadFile>
+            <ParticipantUpload :contestid="contestid"></ParticipantUpload>
         </template>
         <template v-else-if="item.value === 'infochange'">
             <CompetitionCreatePage :contestid="contestid" :info="info" :change="true"></CompetitionCreatePage>
@@ -42,7 +42,6 @@
 
 <script>
     import GradeProject from './GradeProject'
-    import UploadFile from './UploadFile'
     import ParticipantsTable from  './ParticipantsTable'
     import CompetitionCreatePage from './CompetitionCreatePage'
     import JudgeList from './JudgeList'
@@ -51,8 +50,11 @@
     import CompetitionFiles from './CompetitionFiles'
     import JudgeProgress from './JudgeProgress'
     import DiscussionMain from './DiscussionMain'
+    import ParticipantUpload from './ParticipantUpload'
     export default {
-        components:{JudgeList, ParticipantsTable, GradeProject,UploadFile,CompetitionCreatePage,JudgeFinish,CompetitionFiles,AdvancedParticipants,JudgeProgress,DiscussionMain},
+        components:{
+            ParticipantUpload,
+            JudgeList, ParticipantsTable, GradeProject,CompetitionCreatePage,JudgeFinish,CompetitionFiles,AdvancedParticipants,JudgeProgress,DiscussionMain},
         props:['info','showlist','contestid','type'],
         data:function () {
             return{
