@@ -80,6 +80,6 @@ def invite(request):
     if request.user.id != decoded['receiver']:
         return render(request, 'message.html', {'title': '#', 'msg': '邀请链接失效', 'musername': request.user.username, 'url': '/'})
     if api_competition.addGroupUser(decoded['sender'], decoded['receiver'], decoded['contest']):
-        return render(request, 'message.html', {'title': '#', 'msg': '加入成功', 'musername': request.user.username, url='/'})
+        return render(request, 'message.html', {'title': '#', 'msg': '加入成功', 'musername': request.user.username, url: '/'})
     else:
         return render(request, 'message.html', {'title': '#', 'msg': '邀请链接失效', 'musername': request.user.username, 'url': '/'})
