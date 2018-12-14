@@ -480,3 +480,7 @@ def discussionList(request):
     except Exception as e:
         print(e)
         return JsonResponse({'msg': '未知错误'})
+
+
+def worksname():
+    pass

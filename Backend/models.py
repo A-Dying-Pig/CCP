@@ -139,6 +139,15 @@ class ContestGrade(models.Model):
     class Meta:
         db_table = "ContestGrade"
 
+class OldGrade(models.Model):
+    leader_id = models.IntegerField(db_index=True)
+    contest_id = models.IntegerField(db_index=True)
+    phase = models.IntegerField(blank=True, null=True)
+    oldgrade = models.IntegerField(default=-1)
+    reason = models.CharField(max_length=512, blank=True, null=True)
+    class Meta:
+        db_table = "OldGrade"
+
 # 消息列表
 class Notification(models.Model):
     context = models.CharField(max_length=2048)  # 消息体
@@ -193,3 +202,12 @@ class Reply(models.Model):
     time = models.DateTimeField()  # 回帖时间
     class Meta:
         db_table = "Reply"
+
+# 晋级名单是否已提交
+class Submitted(models.Model):
+    contest_id = models.IntegerField(db_index=True)
+    phase = models.IntegerField(db_index=True)
+    zone_id = models.IntegerField(db_index=True)
+    advanced = models.IntegerField(db_index=True)
+    class Meta:
+        db_table = "Submitted"

@@ -27,6 +27,7 @@ urlpatterns = [
     path('competition/discussion', competition.discussion),
     path('competition/discussionreply', competition.discussionReply),
     path('competition/discussionlist', competition.discussionList),
+    path('competition/worksname', competition.worksname),
     path('super/contests', superadmin.contests),
     path('super/detail', superadmin.detail),
     path('super/submit', superadmin.submit),
