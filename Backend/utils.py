@@ -170,7 +170,7 @@ class ContestUtil:
             else:
                 return mode
         except Exception as e:
-            print(e)
+            traceback.print_exc()
             return -1
 
 class ContestPlayerUtil:
@@ -263,6 +263,6 @@ class GeneralUtil:
                 result.append({
                     'title': file_name,
                     'isLeaf': True,
-                    'data': {'src': full_path}
+                    'data': {'src': full_path[len(RESOURCE_BASE_DIR):]}
                 })
         return result
