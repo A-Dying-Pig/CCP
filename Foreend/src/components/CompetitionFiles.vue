@@ -10,7 +10,7 @@
         </el-table-column>
 
     </el-table>
-        <UploadFile :contestid="contestid" :uploadurl="'/api/admin/upload'" v-if="type === 3"></UploadFile>
+        <UploadFile :contestid="contestid" :uploadurl="'/api/admin/upload'" v-if="type === 3" :uploaddata="{contestid:contestid}"></UploadFile>
     </div>
 </template>
 

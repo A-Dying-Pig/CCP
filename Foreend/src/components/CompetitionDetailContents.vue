@@ -8,7 +8,7 @@
             <GradeProject :contestid="contestid" :stageinfo="info.stageinfo" :readonly="false"></GradeProject>
         </template>
         <template v-else-if="item.value === 'submitwork'">
-            <UploadFile :file_max_number="1" :file_max_size="100" :uploadurl="'/api/contestant/submit'" accept="zip"></UploadFile>
+            <UploadFile :file_max_number="1" :file_max_size="100" :uploadurl="'/api/contestant/submit'" accept="zip" :contestid="contestid"></UploadFile>
         </template>
         <template v-else-if="item.value === 'infochange'">
             <CompetitionCreatePage :contestid="contestid" :info="info" :change="true"></CompetitionCreatePage>
