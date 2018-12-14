@@ -278,7 +278,7 @@ def fileList(request):
     try:
         data = json.loads(request.body.decode('utf-8'))
         contest_id = int(data['contestid'])
-        contest_path = RESOURCE_BASE_DIR + "/resources/contests/" + str(contest_id)
+        contest_path = RESOURCE_BASE_DIR + "/resources/contests/" + str(contest_id) + "/contestFile"
         files = os.listdir(contest_path)
         result = []
         for file in files:
