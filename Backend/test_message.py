@@ -48,28 +48,38 @@ class api_message_Test(TestCase):
             "stageinfo":
                 [{"name" : "1",
                 "details" : "details",
+                "stageTimeBegin": "2018-12-20T12:10:00.000Z",
                 "handTimeEnd" : "2018-12-30T12:10:00.000Z",
                 "evaluationTimeEnd" : "2018-12-30T12:10:00.000Z",
+                "zone":0,     
                 "mode" : 0},
                 {"name" : "2",
                 "details" : "details",
+                "stageTimeBegin": "2018-12-20T12:10:00.000Z",
                 "handTimeEnd" : "2018-12-30T12:10:00.000Z",
                 "evaluationTimeEnd" : "2018-12-30T12:10:00.000Z",
+                "zone":0,     
                 "mode" : 0},
                 {"name" : "3",
                 "details" : "details",
+                "stageTimeBegin": "2018-12-20T12:10:00.000Z",
                 "handTimeEnd" : "2018-12-30T12:10:00.000Z",
                 "evaluationTimeEnd" : "2018-12-30T12:10:00.000Z",
+                "zone":0,     
                 "mode" : 0},
                 {"name" : "4",
                 "details" : "details",
+                "stageTimeBegin": "2018-12-20T12:10:00.000Z",
                 "handTimeEnd" : "2018-12-30T12:10:00.000Z",
                 "evaluationTimeEnd" : "2018-12-30T12:10:00.000Z",
+                "zone":0,     
                 "mode" : 0},
                 {"name" : "5",
                 "details" : "details",
+                "stageTimeBegin": "2018-12-20T12:10:00.000Z",
                 "handTimeEnd" : "2018-12-30T12:10:00.000Z",
                 "evaluationTimeEnd" : "2018-12-30T12:10:00.000Z",
+                "zone":0,     
                 "mode" : 0}]
         }
         response = self.c.post('/api/competition/create',json.dumps(comp_info),content_type="application/json")
@@ -110,8 +120,8 @@ class api_message_Test(TestCase):
             "title":"初赛时间",
             "content":"hhhhhh",
             "target":{
-                id:-1,
-                type:0
+                "id":-1,
+                "type":0
             }           
         }
         response = self.c.post('/api/admin/broadcast',json.dumps(comp_info),content_type="application/json") 
@@ -120,8 +130,8 @@ class api_message_Test(TestCase):
             "title":"复赛时间",
             "content":"hhhhhh",
             "target":{
-                id:-1,
-                type:0
+                "id":-1,
+                "type":0
             }           
         }
         response = self.c.post('/api/admin/broadcast',json.dumps(comp_info),content_type="application/json") 

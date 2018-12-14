@@ -48,28 +48,38 @@ class api_user_competiton_Test(TestCase):
             "stageinfo":
                 [{"name" : "1",
                 "details" : "details",
+                "stageTimeBegin": "2018-12-20T12:10:00.000Z",
                 "handTimeEnd" : "2018-12-30T12:10:00.000Z",
                 "evaluationTimeEnd" : "2018-12-30T12:10:00.000Z",
+                "zone":0,
                 "mode" : 0},
                 {"name" : "2",
                 "details" : "details",
+                "stageTimeBegin": "2018-12-20T12:10:00.000Z",
                 "handTimeEnd" : "2018-12-30T12:10:00.000Z",
                 "evaluationTimeEnd" : "2018-12-30T12:10:00.000Z",
+                "zone":0,
                 "mode" : 0},
                 {"name" : "3",
                 "details" : "details",
+                "stageTimeBegin": "2018-12-20T12:10:00.000Z",
                 "handTimeEnd" : "2018-12-30T12:10:00.000Z",
                 "evaluationTimeEnd" : "2018-12-30T12:10:00.000Z",
+                "zone":0,
                 "mode" : 0},
                 {"name" : "4",
                 "details" : "details",
+                "stageTimeBegin": "2018-12-20T12:10:00.000Z",
                 "handTimeEnd" : "2018-12-30T12:10:00.000Z",
                 "evaluationTimeEnd" : "2018-12-30T12:10:00.000Z",
+                "zone":0,
                 "mode" : 0},
                 {"name" : "5",
                 "details" : "details",
+                "stageTimeBegin": "2018-12-20T12:10:00.000Z",
                 "handTimeEnd" : "2018-12-30T12:10:00.000Z",
                 "evaluationTimeEnd" : "2018-12-30T12:10:00.000Z",
+                "zone":0,     
                 "mode" : 0}]
         }
         response = self.c.post('/api/competition/create',json.dumps(comp_info),content_type="application/json")
@@ -93,28 +103,38 @@ class api_user_competiton_Test(TestCase):
             "stageinfo":
                 [{"name" : "1",
                 "details" : "details",
+                "stageTimeBegin": "2018-12-20T12:10:00.000Z",
                 "handTimeEnd" : "2018-12-30T12:10:00.000Z",
                 "evaluationTimeEnd" : "2018-12-30T12:10:00.000Z",
+                "zone":0,     
                 "mode" : 0},
                 {"name" : "2",
                 "details" : "details",
+                "stageTimeBegin": "2018-12-20T12:10:00.000Z",
                 "handTimeEnd" : "2018-12-30T12:10:00.000Z",
                 "evaluationTimeEnd" : "2018-12-30T12:10:00.000Z",
+                "zone":0,     
                 "mode" : 0},
                 {"name" : "3",
                 "details" : "details",
+                "stageTimeBegin": "2018-12-20T12:10:00.000Z",
                 "handTimeEnd" : "2018-12-30T12:10:00.000Z",
                 "evaluationTimeEnd" : "2018-12-30T12:10:00.000Z",
+                "zone":0,     
                 "mode" : 0},
                 {"name" : "4",
                 "details" : "details",
+                "stageTimeBegin": "2018-12-20T12:10:00.000Z",
                 "handTimeEnd" : "2018-12-30T12:10:00.000Z",
                 "evaluationTimeEnd" : "2018-12-30T12:10:00.000Z",
+                "zone":0,     
                 "mode" : 0},
                 {"name" : "5",
                 "details" : "details",
+                "stageTimeBegin": "2018-12-20T12:10:00.000Z",
                 "handTimeEnd" : "2018-12-30T12:10:00.000Z",
                 "evaluationTimeEnd" : "2018-12-30T12:10:00.000Z",
+                "zone":0,     
                 "mode" : 0}]
         }
         response = self.c.post('/api/competition/create',json.dumps(comp_info),content_type="application/json")
@@ -1416,67 +1436,107 @@ class api_user_competiton_Test(TestCase):
         response_content = json.loads(response_content)
         self.assertEqual(response_content['msg'],"比赛不存在")
 
+    def test_super_setindex_successful(self):
+        user_info={
+            "username": "super_admin", 
+            "password": "ccp"            
+        }
+        response = self.c.post('/api/user/login',json.dumps(user_info),content_type="application/json")   
+        comp_info = {
+            "slider":[self.contestId_personal], 
+            "hot":[self.contestId_personal]
+        }
+        response = self.c.post('/api/super/setindex',json.dumps(comp_info),content_type="application/json") 
+        response_content = response.content.decode()
+        response_content = json.loads(response_content)
+        self.assertEqual(response_content['msg'],'')
 
-
-
-    
-
-
-
-
-        
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-    '''
-    def test_judgelist_successful(self):
+    def test_super_setindex_notsuperadmin(self):
         user_info={
             "username": "admin", 
             "password": "ccp"            
         }
-        response = self.c.post('/api/user/login',json.dumps(user_info),content_type="application/json")
+        response = self.c.post('/api/user/login',json.dumps(user_info),content_type="application/json")   
         comp_info = {
-            "contestid":self.contestId_personal,                   
+            "slider":[self.contestId_personal], 
+            "hot":[self.contestId_personal]
         }
-        response = self.c.post('/api/admin/judgelist',json.dumps(comp_info),content_type="application/json") 
+        response = self.c.post('/api/super/setindex',json.dumps(comp_info),content_type="application/json") 
         response_content = response.content.decode()
         response_content = json.loads(response_content)
-        self.assertEqual(response_content['msg'], '')
-    '''
+        self.assertEqual(response_content['msg'],'Authority denied.')  
 
-
-
-
-
-
+    def test_super_setindex_slidernotexist(self):
+        user_info={
+            "username": "super_admin", 
+            "password": "ccp"            
+        }
+        response = self.c.post('/api/user/login',json.dumps(user_info),content_type="application/json")   
+        comp_info = {
+            "slider":[self.contestId_group+1], 
+            "hot":[self.contestId_personal]
+        }
+        response = self.c.post('/api/super/setindex',json.dumps(comp_info),content_type="application/json") 
+        response_content = response.content.decode()
+        response_content = json.loads(response_content)
+        self.assertEqual(response_content['msg'],'比赛不存在')
     
+    def test_super_setindex_hotnotexist(self):
+        user_info={
+            "username": "super_admin", 
+            "password": "ccp"            
+        }
+        response = self.c.post('/api/user/login',json.dumps(user_info),content_type="application/json")   
+        comp_info = {
+            "slider":[self.contestId_personal], 
+            "hot":[self.contestId_group+1]
+        }
+        response = self.c.post('/api/super/setindex',json.dumps(comp_info),content_type="application/json") 
+        response_content = response.content.decode()
+        response_content = json.loads(response_content)
+        self.assertEqual(response_content['msg'],'比赛不存在')
 
+    def test_super_indexinfo_successful(self):
+        user_info={
+            "username": "super_admin", 
+            "password": "ccp"            
+        }
+        response = self.c.post('/api/user/login',json.dumps(user_info),content_type="application/json")   
+        comp_info = {
+            "slider":[self.contestId_personal], 
+            "hot":[self.contestId_personal]
+        }
+        response = self.c.post('/api/super/setindex',json.dumps(comp_info),content_type="application/json") 
+        response = self.c.post('/api/super/indexinfo')
+        response_content = response.content.decode()
+        response_content = json.loads(response_content)
+        self.assertEqual(response_content['msg'],'')
+        self.assertEqual(response_content['Contests'][0]["contestid"],self.contestId_personal)
+        self.assertEqual(response_content['Contests'][0]["is_slider"],1)
+        self.assertEqual(response_content['Contests'][0]["is_hot"],1)
+        self.assertEqual(response_content['Contests'][1]["contestid"],self.contestId_group)
+        self.assertEqual(response_content['Contests'][1]["is_slider"],0)
+        self.assertEqual(response_content['Contests'][1]["is_hot"],0)
 
-
-
-
-  
-
-
-       
-
-
-
-
-
-
+    def test_super_indexinfo_notsuperadmin(self):
+        user_info={
+            "username": "super_admin", 
+            "password": "ccp"            
+        }
+        response = self.c.post('/api/user/login',json.dumps(user_info),content_type="application/json")   
+        comp_info = {
+            "slider":[self.contestId_personal], 
+            "hot":[self.contestId_personal]
+        }
+        response = self.c.post('/api/super/setindex',json.dumps(comp_info),content_type="application/json") 
+        user_info={
+            "username": "admin", 
+            "password": "ccp"            
+        }
+        response = self.c.post('/api/user/login',json.dumps(user_info),content_type="application/json")   
+        response = self.c.post('/api/super/indexinfo')
+        response_content = response.content.decode()
+        response_content = json.loads(response_content)
+        self.assertEqual(response_content['msg'],'Authority denied.')
+        
 

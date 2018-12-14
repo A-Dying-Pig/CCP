@@ -1,3 +1,10 @@
+from django.test import TestCase
+from django.test import Client
+from .models import *
+import json
+from django.http import HttpRequest
+#import .api_user
+
 class api_user_competiton_Test(TestCase):
     def setUp(self):
         self.c=Client()
@@ -50,29 +57,39 @@ class api_user_competiton_Test(TestCase):
             "stageinfo":
                 [{"name" : "1",
                 "details" : "details",
+                "stageTimeBegin": "2018-12-20T12:10:00.000Z",
                 "handTimeEnd" : "2018-12-30T12:10:00.000Z",
                 "evaluationTimeEnd" : "2018-12-30T12:10:00.000Z",
+                "zone":0,
                 "mode" : 0},
                 {"name" : "2",
                 "details" : "details",
+                "stageTimeBegin": "2018-12-20T12:10:00.000Z",
                 "handTimeEnd" : "2018-12-30T12:10:00.000Z",
                 "evaluationTimeEnd" : "2018-12-30T12:10:00.000Z",
+                "zone":0,
                 "mode" : 0},
                 {"name" : "3",
                 "details" : "details",
+                "stageTimeBegin": "2018-12-20T12:10:00.000Z",
                 "handTimeEnd" : "2018-12-30T12:10:00.000Z",
                 "evaluationTimeEnd" : "2018-12-30T12:10:00.000Z",
+                "zone":0,
                 "mode" : 0},
                 {"name" : "4",
                 "details" : "details",
+                "stageTimeBegin": "2018-12-20T12:10:00.000Z",
                 "handTimeEnd" : "2018-12-30T12:10:00.000Z",
                 "evaluationTimeEnd" : "2018-12-30T12:10:00.000Z",
+                "zone":0,
                 "mode" : 0},
                 {"name" : "5",
                 "details" : "details",
+                "stageTimeBegin": "2018-12-20T12:10:00.000Z",
                 "handTimeEnd" : "2018-12-30T12:10:00.000Z",
                 "evaluationTimeEnd" : "2018-12-30T12:10:00.000Z",
-                "mode" : 0}]
+                "zone":0,
+                "mode":0}]
         }
         response = self.c.post('/api/competition/create',json.dumps(comp_info),content_type="application/json")
         contest = Contest.objects.filter()
@@ -96,28 +113,38 @@ class api_user_competiton_Test(TestCase):
             "stageinfo":
                 [{"name" : "1",
                 "details" : "details",
+                "stageTimeBegin": "2018-12-20T12:10:00.000Z",
                 "handTimeEnd" : "2018-12-30T12:10:00.000Z",
                 "evaluationTimeEnd" : "2018-12-30T12:10:00.000Z",
+                "zone":0,
                 "mode" : 0},
                 {"name" : "2",
                 "details" : "details",
+                "stageTimeBegin": "2018-12-20T12:10:00.000Z",
                 "handTimeEnd" : "2018-12-30T12:10:00.000Z",
                 "evaluationTimeEnd" : "2018-12-30T12:10:00.000Z",
+                "zone":0,
                 "mode" : 0},
                 {"name" : "3",
                 "details" : "details",
+                "stageTimeBegin": "2018-12-20T12:10:00.000Z",
                 "handTimeEnd" : "2018-12-30T12:10:00.000Z",
                 "evaluationTimeEnd" : "2018-12-30T12:10:00.000Z",
+                "zone":0,
                 "mode" : 0},
                 {"name" : "4",
                 "details" : "details",
+                "stageTimeBegin": "2018-12-20T12:10:00.000Z",
                 "handTimeEnd" : "2018-12-30T12:10:00.000Z",
                 "evaluationTimeEnd" : "2018-12-30T12:10:00.000Z",
+                "zone":0,
                 "mode" : 0},
                 {"name" : "5",
                 "details" : "details",
+                "stageTimeBegin": "2018-12-20T12:10:00.000Z",
                 "handTimeEnd" : "2018-12-30T12:10:00.000Z",
                 "evaluationTimeEnd" : "2018-12-30T12:10:00.000Z",
+                "zone":0,
                 "mode" : 0}]
         }
         response = self.c.post('/api/competition/create',json.dumps(comp_info),content_type="application/json")
@@ -322,27 +349,6 @@ class api_user_competiton_Test(TestCase):
         response_content = response.content.decode()
         response_content = json.loads(response_content)
         self.assertEqual(response_content['msg'], '您所要查找的信息不存在！')    
-
-    '''
-    def test_slider_1(self):
-        response = self.c.post('/api/competition/slider')     
-        response_content = response.content.decode()
-        response_content = json.loads(response_content)
-        self.assertEqual(len(response_content['array']), 1)
-
-    
-    def test_slider_4(self):
-        response = self.c.post('/api/competition/slider')     
-        response_content = response.content.decode()
-        response_content = json.loads(response_content)
-        self.assertEqual(len(response_content['array']), 1)    
-
-    def test_hot_1(self):
-        response = self.c.post('/api/competition/hot')     
-        response_content = response.content.decode()
-        response_content = json.loads(response_content)
-        self.assertEqual(len(response_content), 1)
-    '''
 
     def test_list_successful(self):
         comp_info = {
@@ -597,4 +603,193 @@ class api_user_competiton_Test(TestCase):
         response_content = response.content.decode()
         response_content = json.loads(response_content)
         self.assertEqual(response_content['msg'], "该比赛不是未审核状态")
+
+    def test_competition_enrollnum_admin(self):
+        user_info={      
+            "username": "admin2", 
+            "password": "ccp",
+            "email":"zyj2@126.com"
+        }
+        response = self.c.post('/api/user/register',json.dumps(user_info),content_type="application/json")
+        user_info={
+            "username": "admin2", 
+            "password": "ccp"            
+        }
+        response = self.c.post('/api/user/login',json.dumps(user_info),content_type="application/json")
+        comp_info = {
+            "contestid": self.contestId_personal,
+            "region":{
+                "province" : "北京",
+                "city" : "北京"                
+                },
+            "university" : "清华大学",
+            "groupuser" : [],
+            "custom_field" : ["1"],
+            "custom_value" : ['1'],
+            }            
+        response = self.c.post('/api/competition/enroll',json.dumps(comp_info),content_type="application/json")
+        user_info={
+            "username": "admin", 
+            "password": "ccp"            
+        }
+        response = self.c.post('/api/user/login',json.dumps(user_info),content_type="application/json")        
+        comp_info={
+            "contestid": self.contestId_personal
+        }
+        response = self.c.post('/api/competition/enrollnum',json.dumps(comp_info),content_type="application/json")
+        response_content = response.content.decode()
+        response_content = json.loads(response_content)
+        self.assertEqual(response_content['msg'], "")
+        self.assertEqual(response_content['enrollnum'],1)
+
+    def test_competition_enrollnum_player(self):
+        user_info={      
+            "username": "admin2", 
+            "password": "ccp",
+            "email":"zyj2@126.com"
+        }
+        response = self.c.post('/api/user/register',json.dumps(user_info),content_type="application/json")
+        user_info={
+            "username": "admin2", 
+            "password": "ccp"            
+        }
+        response = self.c.post('/api/user/login',json.dumps(user_info),content_type="application/json")
+        comp_info = {
+            "contestid": self.contestId_personal,
+            "region":{
+                "province" : "北京",
+                "city" : "北京"                
+                },
+            "university" : "清华大学",
+            "groupuser" : [],
+            "custom_field" : ["1"],
+            "custom_value" : ['1'],
+            }            
+        response = self.c.post('/api/competition/enroll',json.dumps(comp_info),content_type="application/json")
+        comp_info={
+            "contestid": self.contestId_personal
+        }
+        response = self.c.post('/api/competition/enrollnum',json.dumps(comp_info),content_type="application/json")
+        response_content = response.content.decode()
+        response_content = json.loads(response_content)
+        self.assertEqual(response_content['msg'], "")
+        self.assertEqual(response_content['enrollnum'],1)
+
+    def test_competition_enrollnum_user(self):
+        user_info={      
+            "username": "admin2", 
+            "password": "ccp",
+            "email":"zyj2@126.com"
+        }
+        response = self.c.post('/api/user/register',json.dumps(user_info),content_type="application/json")
+        user_info={
+            "username": "admin2", 
+            "password": "ccp"            
+        }
+        response = self.c.post('/api/user/login',json.dumps(user_info),content_type="application/json")
+        comp_info = {
+            "contestid": self.contestId_personal,
+            "region":{
+                "province" : "北京",
+                "city" : "北京"                
+                },
+            "university" : "清华大学",
+            "groupuser" : [],
+            "custom_field" : ["1"],
+            "custom_value" : ['1'],
+            }            
+        response = self.c.post('/api/competition/enroll',json.dumps(comp_info),content_type="application/json")
+        user_info={
+            "username": "admin3", 
+            "password": "ccp"            
+        }
+        response = self.c.post('/api/user/login',json.dumps(user_info),content_type="application/json")
+        comp_info={
+            "contestid": self.contestId_personal
+        }
+        response = self.c.post('/api/competition/enrollnum',json.dumps(comp_info),content_type="application/json")
+        response_content = response.content.decode()
+        response_content = json.loads(response_content)
+        self.assertEqual(response_content['msg'], "")
+        self.assertEqual(response_content['enrollnum'],1)
+
+    def test_competition_enrollnum_nobodyEnroll(self):
+        user_info={
+            "username": "admin", 
+            "password": "ccp"            
+        }
+        response = self.c.post('/api/user/login',json.dumps(user_info),content_type="application/json")        
+        comp_info={
+            "contestid": self.contestId_personal
+        }
+        response = self.c.post('/api/competition/enrollnum',json.dumps(comp_info),content_type="application/json")
+        response_content = response.content.decode()
+        response_content = json.loads(response_content)
+        self.assertEqual(response_content['msg'], "")
+        self.assertEqual(response_content['enrollnum'],0)
+
+    def test_competition_enrollnum_compNotexist(self):
+        user_info={
+            "username": "admin", 
+            "password": "ccp"            
+        }
+        response = self.c.post('/api/user/login',json.dumps(user_info),content_type="application/json")        
+        comp_info={
+            "contestid": self.contestId_group+1
+        }
+        response = self.c.post('/api/competition/enrollnum',json.dumps(comp_info),content_type="application/json")
+        response_content = response.content.decode()
+        response_content = json.loads(response_content)
+        self.assertEqual(response_content['msg'], "比赛不存在")
+
+    def test_slider_0(self):
+        response = self.c.post('/api/competition/slider')     
+        response_content = response.content.decode()
+        response_content = json.loads(response_content)
+        self.assertEqual(len(response_content['array']), 0)
+    
+    def test_slider_1(self):
+        user_info={
+            "username": "super_admin", 
+            "password": "ccp"            
+        }
+        response = self.c.post('/api/user/login',json.dumps(user_info),content_type="application/json")   
+        comp_info = {
+            "slider":[self.contestId_personal], 
+            "hot":[self.contestId_personal]
+        }
+        response = self.c.post('/api/super/setindex',json.dumps(comp_info),content_type="application/json") 
+        response = self.c.post('/api/competition/slider')     
+        response_content = response.content.decode()
+        response_content = json.loads(response_content)
+        self.assertEqual(len(response_content['array']), 1)    
+
+    def test_hot_0(self):
+        response = self.c.post('/api/competition/hot')     
+        response_content = response.content.decode()
+        response_content = json.loads(response_content)
+        self.assertEqual(len(response_content['array']), 0)
+
+    def test_hot_1(self):
+        user_info={
+            "username": "super_admin", 
+            "password": "ccp"            
+        }
+        response = self.c.post('/api/user/login',json.dumps(user_info),content_type="application/json")   
+        comp_info = {
+            "slider":[self.contestId_personal], 
+            "hot":[self.contestId_personal]
+        }
+        response = self.c.post('/api/super/setindex',json.dumps(comp_info),content_type="application/json") 
+        response = self.c.post('/api/competition/hot')     
+        response_content = response.content.decode()
+        response_content = json.loads(response_content)
+        self.assertEqual(len(response_content['array']), 1)
+
+
+
+
+
+
+
 
