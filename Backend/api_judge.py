@@ -4,7 +4,7 @@ from django.contrib.auth.decorators import login_required
 import json
 import os
 import random
-from .utils import ContestUtil,GeneralUtil
+from .utils import ContestUtil,GeneralUtil,RESOURCE_BASE_DIR
 
 def allot(contest_id, phase, timesperpiece):
     contest = Contest.objects.get(id=contest_id)
@@ -88,7 +88,7 @@ def getone(request):
     if participant_id == -1:
         # todo: get participant_id
         participant_id = 1
-    base_dir = "/resources/contests/" + str(contest_id) + '/playerFiles/' + str(participant_id)
+    base_dir = RESOURCE_BASE_DIR + "/resources/contests/" + str(contest_id) + '/playerFiles/' + str(participant_id)
     children = GeneralUtil.getChildren(base_dir)
     return JsonResponse({
         'msg': '',

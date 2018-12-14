@@ -231,8 +231,7 @@ def setjudge(request):
 
 
 def upload(request):
-    data = json.loads(request.body.decode('utf-8'))
-    contest_id = int(data['contestid'])
+    contest_id = int(request.POST['contestid'])
     try:
         contest = Contest.objects.get(id=contest_id)
     except:
@@ -249,7 +248,7 @@ def upload(request):
         return JsonResponse({'msg': 'File not found.'})
     else:
         # 打开特定的文件进行二进制的写操作;
-        with open("../resources/contests/" + str(contest_id) + '/contestFile/' + File.name, 'wb+') as f:
+        with open(RESOURCE_BASE_DIR + "/resources/contests/" + str(contest_id) + '/contestFile/' + File.name, 'wb+') as f:
             # 分块写入文件;
             for chunk in File.chunks():
                 f.write(chunk)

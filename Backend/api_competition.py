@@ -297,8 +297,7 @@ def enrollNum(request):
 
 def uploadImg(request):
     try:
-        data = json.loads(request.body.decode('utf-8'))
-        contest_id = int(data['contestid'])
+        contest_id = int(request.POST['contestid'])
         try:
             contest = Contest.objects.get(id=contest_id)
         except:
@@ -315,8 +314,8 @@ def uploadImg(request):
             return JsonResponse({'msg': 'File not found.'})
         else:
             # 先删掉原来的文件夹内的所有内容，再新建一个
-            shutil.rmtree('/resources/contests/' + str(contest_id))
-            os.mkdir('/resources/contests/' + str(contest_id))
+            shutil.rmtree(RESOURCE_BASE_DIR + '/resources/contests/' + str(contest_id))
+            os.mkdir(RESOURCE_BASE_DIR + '/resources/contests/' + str(contest_id))
             # 打开特定的文件进行二进制的写操作;
             with open(RESOURCE_BASE_DIR + "/resources/contests/" + str(contest_id) + '/img/' + File.name, 'wb+') as f:
                 # 分块写入文件;
