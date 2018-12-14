@@ -138,6 +138,7 @@ class ContestGrade(models.Model):
     grade = models.IntegerField(default=-1)  # 选手(小组)由当前评委打出的该阶段比赛的成绩
     pre_grade = models.IntegerField(default=-1)  # 上次成绩
     reason = models.CharField(max_length=128, null=True)  # 修改成绩的理由
+    work_name = models.CharField(max_length=32, default='work')  # 作品名
     class Meta:
         db_table = "ContestGrade"
 

@@ -103,6 +103,7 @@ def modify(request):
 
 def upload(request):
     contest_id = int(request.POST['contestid'])
+    name = request.POST['name']
     try:
         contest = Contest.objects.get(id=contest_id)
     except:
@@ -119,7 +120,7 @@ def upload(request):
     else:
         # 打开特定的文件进行二进制的写操作;
         try:
-            with open(RESOURCE_BASE_DIR + "/resources/contests/" + str(contest_id) + '/works/' + request.user.id + '/' + File.name, 'wb') as f:
+            with open(RESOURCE_BASE_DIR + "/resources/contests/" + str(contest_id) + '/playerFiles/' + str(request.user.id) + '/' + File.name, 'wb') as f:
                 # 分块写入文件;
                 for chunk in File.chunks():
                     f.write(chunk)
