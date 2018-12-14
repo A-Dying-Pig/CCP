@@ -77,7 +77,9 @@ def invite(request):
         decoded = jwt.decode(token, key, algorithms='HS256')
     except:
         return render(request, 'message.html', {'title': '#', 'msg': '邀请链接失效', 'musername': request.user.username, 'url': '/'})
-    if api_competition.addGroupUser(decoded['sender_id'], decoded['receiver_id'], decoded['contest_id']):
+    if request.user.id != decoded['receiver']:
+        return render(request, 'message.html', {'title': '#', 'msg': '邀请链接失效', 'musername': request.user.username, 'url': '/'})
+    if api_competition.addGroupUser(decoded['sender'], decoded['receiver'], decoded['contest']):
         return render(request, 'message.html', {'title': '#', 'msg': '加入成功', 'musername': request.user.username, url='/'})
     else:
         return render(request, 'message.html', {'title': '#', 'msg': '邀请链接失效', 'musername': request.user.username, 'url': '/'})

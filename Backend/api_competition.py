@@ -3,6 +3,7 @@ from .models import *
 from django.http import JsonResponse, Http404, HttpResponse
 from django.contrib.auth.decorators import login_required
 from django.db import transaction
+import api_mail
 import json
 import time
 import os
@@ -72,6 +73,7 @@ def enroll(request):
         index = 0
         while index < glen:
             setattr(contest_group, 'member' + str(index + 1) + '_id', groupuser[index])
+            send_invitation(userId, groupuser[index], contestid)
             index = index + 1
         index = 0
         while index < le:
@@ -347,6 +349,8 @@ def send_invitation(sender_id, receiver_id, contest_id):
     ntfuser.notification_id = msg_id
     ntfuser.user_id = receiver_id
     ntfuser.save()
+    email = CCPUser.objects.filter(id=receiver_id)[0].email
+    api_mail.send_mail(sender_name + '邀请你加入队伍', msg, email)
 
 
 def addGroupUser(leader_id, member_id, contest_id):
