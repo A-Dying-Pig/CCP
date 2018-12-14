@@ -379,17 +379,53 @@ def advanced(request):
     target = int(data['target'])
     res = {}
     res['msg'] = ''
+    res['already'] = 0
     participants = []
     phase = ContestUtil.getCurrentPhase(contestid)['phase']
-    result = ContestGrade.objects.filter(contest_id=contestid).values('leader_id').annotate(average_rating=Avg('grade'))
+    try:
+        Submitted.objects.get(contest_id=contestid, phase=phase+1, zone_id=target)
+    except:
+        res['already'] = 1
+    result = ContestGrade.objects.filter(contest_id=contestid).values('leader_id').annotate(average_rating=Avg('grade')).order_by('-average_rating')
     for row in result:
         dic = {}
-        dic['username'] = CCPUser.objects.filter(id=row.leader_id)[0].username
-        dic['university'] = CCPUser.objects.filter(id=row.leader_id)[0].university
+        user = CCPUser.objects.filter(id=row.leader_id)[0]
+        dic['username'] = user.username
+        dic['university'] = user.university
         dic['grade'] = row.average_rating
-        # default is 0
-        dic['advanced'] = 0
+        try:
+            oldgrade = OldGrade.objects.get(leader_id=user.id, contest_id=contestid, phase=phase)
+            dic['oldgrade'] = oldgrade.oldgrade
+            dic['reason'] = oldgrade.reason
+        except:
+            dic['oldgrade'] = -1
+            dic['reason'] = ''
         res['participants'].append(dic)
+    return JsonResponse(res)
+
+def setnewgrade(request):
+    data = json.loads(request.body.decode('utf-8'))
+    contestid = int(data['contestid'])
+    username = data['username']
+    userid = CCPUser.objects.filter(username=username)[0].id
+    grade = int(data['grade'])
+    reason = data['reason']
+    res = {}
+    res['msg'] = ''
+    phase = ContestUtil.getCurrentPhase(contestid)['phase']
+    grades = ContestGrade.objects.filter(contest_id=contestid, leader_id=userid, phase=phase)
+    l = len(grades)
+    sum = 0
+    for g in grades:
+        sum = sum + g.grade
+    avg = sum / l
+    oldgrade = OldGrade()
+    oldgrade.leader_id = userid
+    oldgrade.contest_id = contestid
+    oldgrade.phase = phase
+    oldgrade.oldgrade = avg
+    oldgrade.reason = reason
+    oldgrade.save()
     return JsonResponse(res)
 
 def setadvanced(request):
@@ -397,16 +433,24 @@ def setadvanced(request):
     data = json.loads(request.body.decode('utf-8'))
     contestid = int(data['contestid'])
     target = int(data['target'])
-    participants = data['participants']
+    advanced = int(data['advanced'])
     # need to be checked carefully
     phase = ContestUtil.getCurrentPhase(contestid)['phase']
-    for p in participants:
+
+    result = ContestGrade.objects.filter(contest_id=contestid).values('leader_id').annotate(average_rating=Avg('grade')).order_by('-average_rating')[:k]
+    for p in result:
         contestgrade = ContestGrade()
-        leader_id = CCPUser.objects.filter(username=p)[0].id
+        leader_id = p.leader_id
         contestgrade.leader_id = leader_id
         contestgrade.contest_id = contestid
         contestgrade.phase = phase
         contestgrade.save()
+    submit = Submitted()
+    submit.contest_id = contestid
+    submit.phase = phase + 1
+    submit.zone_id = target
+    submit.advanced = advanced
+    submit.save()
     res = {}
     res['msg'] = ''
     return res

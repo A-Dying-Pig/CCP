@@ -502,3 +502,7 @@ def discussionList(request):
     except Exception as e:
         traceback.print_exc()
         return JsonResponse({'msg': '未知错误'})
+
+
+def worksname():
+    pass
