@@ -6,6 +6,7 @@ from django.contrib.auth.hashers import make_password
 from django.contrib import auth
 import json
 import os
+from .utils import *
 
 def register(request):
     data = json.loads(request.body.decode('utf-8'))
@@ -102,7 +103,7 @@ def modify(request):
 
 def upload(request):
     data = json.loads(request.body.decode('utf-8'))
-    contest_id = data['contestid']
+    contest_id = int(data['contestid'])
     try:
         contest = Contest.objects.get(id=contest_id)
     except:
@@ -119,7 +120,7 @@ def upload(request):
     else:
         # 打开特定的文件进行二进制的写操作;
         try:
-            with open("/resources/contests/" + str(contest_id) + '/playerFiles/' + request.user.id + '/' + File.name, 'wb') as f:
+            with open(RESOURCE_BASE_DIR + "/resources/contests/" + str(contest_id) + '/works/' + request.user.id + '/' + File.name, 'wb') as f:
                 # 分块写入文件;
                 for chunk in File.chunks():
                     f.write(chunk)
@@ -127,4 +128,3 @@ def upload(request):
         except Exception as e:
             print(e)
             return JsonResponse({'msg': '未知错误'})
-

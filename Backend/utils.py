@@ -9,6 +9,10 @@ MAX_EXTRA = 4
 MAX_MEMBER = 5
 MAX_CONTEST_ONE_PAGE = 10
 MAX_PARTICIPANT_ONE_PAGE = 10
+MAX_POST_ONE_PAGE = 20
+MAX_REPLY_ONE_PAGE = 20
+
+RESOURCE_BASE_DIR = '/CCPResources'
 
 class ContestUtil:
     NON_REGION = 0
@@ -160,7 +164,7 @@ class ContestUtil:
         try:
             cur_phase = cls.getCurrentPhase(contestid)
             contest = Contest.objects.get(id=contestid)
-            mode = getattr(contest, 'phase_mode'+str(cur_phase['phase']))
+            mode = getattr(contest, 'phase_region_mode'+str(cur_phase['phase']))
             if mode is None:
                 return -1
             else:
