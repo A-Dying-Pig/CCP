@@ -124,7 +124,7 @@ def finished(request):
     res = {}
     res['msg'] = ''
     res['grades'] = []
-    result = ContestGrade.objects.filter(contest_id=contestid, judge_id=judge_id).exclude(grade=-1)
+    result = ContestGrade.objects.filter(contest_id=contest_id, judge_id=judge_id).exclude(grade=-1)
     for row in result:
         dic = {}
         dic['participantid'] = row.leader_id

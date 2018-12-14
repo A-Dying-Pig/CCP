@@ -2,7 +2,10 @@ from django.shortcuts import render
 from django.http import HttpResponseRedirect, HttpResponse
 from django.contrib.auth.decorators import login_required
 from django.contrib import auth
+from Backend import api_competition
 
+import jwt
+import json
 
 def index(request):
     if request.user.is_authenticated:
@@ -64,3 +67,19 @@ def about(request):
 def service(request):
     return render(request, 'message.html', {'title': '雷怡然征婚', 'msg': '雷怡然征婚，请加微信号：SJ11235813', 'musername':request.user.username if request.user.is_authenticated else '#undefined', 'url': '#'})
 
+@login_required(login_url='/login')
+def invite(request):
+    token = request.GET.get('token')
+    with open('config.json', 'r', encoding='utf8'):
+        d = json.load(f)
+        key = d['key']
+    try:
+        decoded = jwt.decode(token, key, algorithms='HS256')
+    except:
+        return render(request, 'message.html', {'title': '#', 'msg': '邀请链接失效', 'musername': request.user.username, 'url': '/'})
+    if request.user.id != decoded['receiver']:
+        return render(request, 'message.html', {'title': '#', 'msg': '邀请链接失效', 'musername': request.user.username, 'url': '/'})
+    if api_competition.addGroupUser(decoded['sender'], decoded['receiver'], decoded['contest']):
+        return render(request, 'message.html', {'title': '#', 'msg': '加入成功', 'musername': request.user.username, url: '/'})
+    else:
+        return render(request, 'message.html', {'title': '#', 'msg': '邀请链接失效', 'musername': request.user.username, 'url': '/'})

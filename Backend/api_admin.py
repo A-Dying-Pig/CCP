@@ -342,6 +342,7 @@ def judgelist(request):
     for region in zone['region']:
         zone_id[region] = cid
         cid = cid + 1
+    zone_id[''] = -1
     for judge in judges:
         dic = {}
         dic['username'] = CCPUser.objects.filter(id=judge.judge_id)[0].username

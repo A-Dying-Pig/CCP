@@ -207,6 +207,11 @@ class ContestGroupUtil:
         return result
 
     @classmethod
+    def addMember(cls, cg_obj, member):
+        # add a member to group(member is id)
+        pass
+
+    @classmethod
     def setMember(cls, cg_obj, index, member):
         pass
 
