@@ -12,6 +12,7 @@ import pytz
 from datetime import datetime
 import shutil
 import jwt
+from django.db.models import Q
 import traceback
 
 utctz=pytz.timezone('UTC')
@@ -38,8 +39,12 @@ def enroll(request):
     fields = data['custom_field']
     values = data['custom_value']
 
-    if ContestPlayer.objects.filter(player_id=userId, contest_id=contestid):
-        return JsonResponse({'msg': '不能重复报名'})
+    if contest.grouped == 0:  # 个人赛
+        if ContestPlayer.objects.filter(player_id=userId, contest_id=contestid):
+            return JsonResponse({'msg': '不能重复报名'})
+    else:
+        if ContestGroup.objects.filter(Q(contest_id=contestid) & (Q(leader_id=userId) | Q(member1_id=userId) | Q(member2_id=userId) | Q(member3_id=userId) | Q(member4_id=userId))):
+            return JsonResponse({'msg': '不能重复报名'})
 
     if ContestJudge.objects.filter(judge_id=userId, contest_id=contestid):
         return JsonResponse({'msg': '比赛评委不能报名成为比赛选手'})
@@ -230,6 +235,7 @@ def create(request):
         setattr(contest, 'phase_start_time' + str(index + 1), datetime.strptime(stageinfo[index]['stageTimeBegin'], "%Y-%m-%dT%H:%M:%S.000Z").replace(tzinfo=pytz.utc))
         setattr(contest, 'phase_hand_end_time' + str(index + 1), datetime.strptime(stageinfo[index]['handTimeEnd'],"%Y-%m-%dT%H:%M:%S.000Z").replace(tzinfo=pytz.utc))
         setattr(contest, 'phase_evaluate_end_time' + str(index + 1), datetime.strptime(stageinfo[index]['evaluationTimeEnd'],"%Y-%m-%dT%H:%M:%S.000Z").replace(tzinfo=pytz.utc))
+        setattr(contest, 'phase_region_mode' + str(index + 1), datetime.strptime(stageinfo[index]['zone'],"%Y-%m-%dT%H:%M:%S.000Z").replace(tzinfo=pytz.utc))
         index = index + 1
     contest.save()
     return JsonResponse({'code': 0, 'msg': ''})
@@ -331,14 +337,16 @@ def uploadImg(request):
             return JsonResponse({'msg': 'File not found.'})
         else:
             # 先删掉原来的文件夹内的所有内容，再新建一个
-            shutil.rmtree(RESOURCE_BASE_DIR + '/resources/contests/' + str(contest_id))
-            os.mkdir(RESOURCE_BASE_DIR + '/resources/contests/' + str(contest_id))
+            cur_dir = RESOURCE_BASE_DIR + '/resources/contests/' + str(contest_id) + '/img/'
+            if os.path.isdir(cur_dir):
+                shutil.rmtree(cur_dir)
+            os.mkdir(cur_dir)
             # 打开特定的文件进行二进制的写操作;
-            with open(RESOURCE_BASE_DIR + "/resources/contests/" + str(contest_id) + '/img/' + File.name, 'wb+') as f:
+            with open(cur_dir + File.name, 'wb+') as f:
                 # 分块写入文件;
                 for chunk in File.chunks():
                     f.write(chunk)
-            return JsonResponse({'msg': ''})
+            return JsonResponse({'msg': '', 'url': cur_dir[RESOURCE_BASE_DIR:] + File.name})
     except Exception as e:
         traceback.print_exc()
         return JsonResponse({'msg': '未知错误'})
@@ -396,7 +404,7 @@ def discussion(request):
         result['array'] = []
         for single_reply in replys:
             result['array'].append({
-                'imgurl': "/resources/user_images/" + str(single_reply.author_id) + '/',
+                'imgurl': "/resources/userImages/" + str(single_reply.author_id) + '/',
                 'username': single_reply.author,
                 'content': single_reply.content,
                 'time': (time.mktime(single_reply.time.timetuple()) + 8 * 60 * 60) * 1000

@@ -177,6 +177,7 @@ def modify(request):
         setattr(contest, 'phase_start_time' + str(index + 1), datetime.strptime(stageinfo[index]['stageTimeBegin'], "%Y-%m-%dT%H:%M:%S.000Z").replace(tzinfo=pytz.utc))
         setattr(contest, 'phase_hand_end_time' + str(index + 1), datetime.strptime(stageinfo[index]['handTimeEnd'],"%Y-%m-%dT%H:%M:%S.000Z").replace(tzinfo=pytz.utc))
         setattr(contest, 'phase_evaluate_end_time' + str(index + 1), datetime.strptime(stageinfo[index]['evaluationTimeEnd'],"%Y-%m-%dT%H:%M:%S.000Z").replace(tzinfo=pytz.utc))
+        setattr(contest, 'phase_region_mode' + str(index + 1), datetime.strptime(stageinfo[index]['zone'],"%Y-%m-%dT%H:%M:%S.000Z").replace(tzinfo=pytz.utc))
         index = index + 1
     contest.save()
     return JsonResponse({'msg': ''})

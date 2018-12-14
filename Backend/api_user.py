@@ -53,11 +53,11 @@ def profile(request):
         if not request.user.is_authenticated:
             return JsonResponse({'msg': '请先登录'})
         id = request.user.id
-        img_url = '/resources/user_images/' + str(id) + '/'
+        img_url = '/resources/userImages/' + str(id) + '/'
         if os.path.isdir(img_url):
             all_files = os.listdir(RESOURCE_BASE_DIR + img_url)
-            img_url = img_url + all_files[0]
-            #todo
+            if len(all_files) > 0:
+                img_url = img_url + all_files[0]
         competition = {}
         participated = ContestPlayer.objects.filter(player_id=id)
         competition['participated_competition'] = []
@@ -95,6 +95,29 @@ def profile(request):
         return JsonResponse(data)
     except:
         return JsonResponse({'msg': '未知错误！'})
+
+def uploadImg(request):
+    try:
+        if not request.user.is_authenticated:
+            return JsonResponse({'msg': '请先登录'})
+        File = request.FILES.get("file", None)
+        if File is None:
+            return JsonResponse({'msg': 'File not found.'})
+        else:
+            # 先删掉原来的文件夹内的所有内容，再新建一个
+            cur_dir = RESOURCE_BASE_DIR + '/resources/userImages/' + str(request.user.id) + '/'
+            if os.path.isdir(cur_dir):
+                shutil.rmtree(cur_dir)
+            os.mkdir(cur_dir)
+            # 打开特定的文件进行二进制的写操作;
+            with open(cur_dir + File.name, 'wb+') as f:
+                # 分块写入文件;
+                for chunk in File.chunks():
+                    f.write(chunk)
+            return JsonResponse({'msg': '', 'url': cur_dir[RESOURCE_BASE_DIR:] + File.name})
+    except Exception as e:
+        traceback.print_exc()
+        return JsonResponse({'msg': '未知错误'})
 
 def modify(request):
     try:
