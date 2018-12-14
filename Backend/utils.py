@@ -2,6 +2,7 @@
 from .models import *
 import time
 import os
+import traceback
 
 MAX_HOSTS = 4  # 最大主办方人数
 MAX_PHASE = 5

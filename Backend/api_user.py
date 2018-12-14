@@ -50,8 +50,14 @@ def check(request):
 
 def profile(request):
     try:
+        if not request.user.is_authenticated:
+            return JsonResponse({'msg': '请先登录'})
         id = request.user.id
-        img_url = '/resources/user_images/' + str(id) + '.jpg'
+        img_url = '/resources/user_images/' + str(id) + '/'
+        if os.path.isdir(img_url):
+            all_files = os.listdir(RESOURCE_BASE_DIR + img_url)
+            img_url = img_url + all_files[0]
+            #todo
         competition = {}
         participated = ContestPlayer.objects.filter(player_id=id)
         competition['participated_competition'] = []
