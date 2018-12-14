@@ -178,21 +178,6 @@
                             label:'提交作品'
                         });
                     }
-                    //let showadvance = false;
-                    let showadvance = true;
-                    begin = self.info.signupinfo.time[1];
-                    for(let stage of self.info.stageinfo){
-                        if((now>begin)&&(now<stage.stageTimeBegin)){
-                            showadvance = true;
-                        }
-                        begin = stage.evaluationTimeEnd;
-                    }
-                    if(showadvance){
-                        self.showlist.push({
-                            value:'advancedparticipants',
-                            label:'设置晋级选手名单'
-                        });
-                    }
                 }
                 else if(self.type===2){
                     //当不在评测阶段时，不可以评测作品
