@@ -1,7 +1,8 @@
 <template>
     <div class="advanced-participants">
-        <div class = "advanced-zone">
-            选择赛区: &nbsp; <el-select v-model="selected_zone" placeholder="请选择赛区" @change="ZoneChanged">
+        <el-card  class="advanced-header">
+            <div class = "advanced-zone">
+                选择赛区: &nbsp; <el-select v-model="selected_zone" placeholder="请选择赛区" @change="ZoneChanged">
                 <el-option
                     v-for="item in zone_menu"
                     :key="item.id"
@@ -9,8 +10,34 @@
                     :value="item.id"
                 >
                 </el-option>
-            </el-select>
-        </div>
+                </el-select>
+            </div>
+            <div class="advanced-number">
+                晋级规则:&nbsp;
+                前
+                <div v-if="already === -1" class="advanced-number-counter">
+                    <el-input-number :min="0"
+                                     :max="participants_number"
+                                     maxwidth="30px"
+                                     v-model="advanced_number"
+                                     controls-position="right"
+                                     size="small">
+                    </el-input-number>
+                </div>
+
+                <div v-else class="advanced-number-counter">
+                    <el-tag type="info">{{already}}</el-tag>
+                </div>
+                名晋级
+
+                <div class="advanced-number-btn" v-if="already === -1">
+                    <el-button type="success"
+                               @click="ConfirmSubmit"
+                    >设置</el-button>
+                </div>
+            </div>
+        </el-card>
+
 
         <el-card  class="advanced-selector">
             <div class="advanced-selector-btn">
@@ -30,54 +57,67 @@
         </el-card>
 
         <div class="advanced-selected">
-            <div >已选择晋级选手 {{select_count}}/{{participants_number}} 人</div>
+            <div > 选手共 {{participants_number}} 人</div>
         </div>
 
         <el-card>
-            <div>
-                <el-button @click="SelectCurrent" type="text"> 全选当前选手 </el-button>
-            </div>
             <el-table
                 :data="current_page_participants"
                 style="width: 100%">
 
                 <el-table-column
-                    min-width="2">
-                    <template slot="header" slot-scope="scope">
-                    <el-checkbox :indeterminate="select_all_participants_of_current_page" v-model="select_all_current" @change="SelectCurrentPage"></el-checkbox>
-                    全选页
-                    </template>
-
-                    <template slot-scope="scope">
-                        <el-checkbox v-model="current_page_participants[scope.$index].advanced" @change="SelectChange(scope.$index)"></el-checkbox>
-                    </template>
+                    min-width="1"
+                    prop="no"
+                    label="排名"
+                >
                 </el-table-column>
                 <el-table-column
                     prop="username"
                     label="选手名称"
-                    min-width="3"
+                    min-width="2"
                 >
                 </el-table-column>
+
                 <el-table-column
-                    prop="grade"
                     label="分数"
                     min-width="2"
                 >
                     <template slot="header" slot-scope="scope">
-                        分数<el-button type="text" icon="el-icon-arrow-down" @click="SortByGrade"></el-button>
+                        分数<el-button type="text" icon="el-icon-arrow-down" @click="SortCurrentParticipants"></el-button>
+                    </template>
+                    <template slot-scope="scope" >
+                        <span v-if="current_page_participants[scope.$index].grade !== -1">
+                            {{current_page_participants[scope.$index].grade}}
+                        </span>
+                        <el-button v-if="already === -1" type="text" icon="el-icon-edit" @click="ChangeGrade(scope.$index)"></el-button>
+                    </template>
+
+                </el-table-column>
+
+                <el-table-column
+                        label="原分数"
+                        min-width="1"
+                >
+                    <template slot-scope="scope" v-if="current_page_participants[scope.$index].oldgrade !== -1">
+                        {{current_page_participants[scope.$index].oldgrade}}
                     </template>
                 </el-table-column>
 
                 <el-table-column
+                        prop="reason"
+                        label="修改分数原因"
+                        min-width="3">
+                </el-table-column>
+
+
+                <el-table-column
                         prop="university"
                         label="大学"
-                        min-width="3">
+                        min-width="2">
                 </el-table-column>
 
             </el-table>
         </el-card>
-
-
 
         <el-pagination
                 layout="prev, pager, next"
@@ -89,10 +129,35 @@
                 class="advanced-page">
         </el-pagination>
 
-        <div class="submit-btn">
-            <el-button @click="SubmitParticipants" type="success"> 提交 </el-button>
-        </div>
+        <el-dialog
+                title="修改分数"
+                :visible.sync="new_grade_visible"
+                width="30%"
+                >
+            <div class="new-grade-item">
+            新分数:
+            <el-input-number
+                v-model="new_grade_mark"
+                size="small"
+                :min="0"
+                :max="100"
+                >
+            </el-input-number>
+            </div>
+            <div class="new-grade-item">
+            修改原因：
+            <el-input
+                v-model="new_grade_reason"
+                type="textarea"
+                :row="3">
+            </el-input>
+            </div>
 
+            <span slot="footer" class="new-grade-footer">
+                <el-button @click="NewGradeCancel">取消</el-button>
+                <el-button type="primary" @click="NewGradeConfirm">确定</el-button>
+            </span>
+        </el-dialog>
     </div>
 
 
@@ -116,7 +181,7 @@
         },
         data:function(){
           return {
-              zone_menu: [{id:-1,value:'全部选手'}],
+              zone_menu: [{id:-1,value:'比赛统一赛区'}],
               selected_zone: null,
 
               participants_per_page:8,
@@ -130,9 +195,12 @@
               total_page:0,
               username_search:'',
               university_search:'',
-              select_all_participants_of_current_page:true,
-              select_all_current:false,
-              select_count:0,
+              advanced_number:0,
+              already:-1,
+              new_grade_visible:false,
+              new_grade_mark:0,
+              new_grade_reason:'',
+              new_grade_index:0,
           }
         },
         mounted:function () {
@@ -142,20 +210,29 @@
                     if(response.data.msg === ''){
                         let len = response.data.list.length;
                         if (len === 0){
-                            vm.zone_menu.splice(0,1,{id:-1,value:'全部赛区'});
+                            vm.zone_menu.splice(0,1,{id:-1,value:'比赛统一赛区'});
                         }
                         else{
                             for (let i = 0 ; i < len; i++){
                                 vm.zone_menu.push(response.data.list[i]);
                             }
                         }
+                        //automatically select first zone
+                        vm.selected_zone = vm.zone_menu[0].id;
+                        vm.ZoneChanged();
                     }
                     else{
                         vm.$message({
                             message: `获取赛区信息失败! ${response.data.msg}`,
                             type: 'error'
                         });
+
                     }
+                })
+                .catch(error=>{
+                    //automatically select first zone
+                    vm.selected_zone = vm.zone_menu[0].id;
+                    vm.ZoneChanged();
                 });
         },
         methods:{
@@ -168,7 +245,6 @@
                 this.current_participants_number = 0;
                 this.current_page = 0;
                 this.total_page = 0;
-                this.select_count = 0;
 
                 let vm = this;
                 axios.post('/api/admin/advanced',{contestid:this.contestid,target:this.selected_zone})
@@ -176,11 +252,8 @@
                         if(response.data.msg === ''){
                             vm.participants_number = response.data.participants.length;
                             vm.participants = response.data.participants;
-                            for (let i = 0; i < vm.participants_number; i++){
-                                vm.participants[i].advanced = Boolean(vm.participants[i].advanced);
-                                if(vm.participants[i].advanced)
-                                    vm.select_count ++;
-                            }
+                            vm.already = response.data.already;
+                            vm.SortParticipants();
                              //default
                             vm.current_participants = [].concat(vm.participants);
                             vm.current_participants_number = vm.participants_number;
@@ -199,25 +272,22 @@
                     .catch(error=>{
                         console.log(error);
                         vm.participants = [
-                            {username:'1',grade:120,university:'ss',advanced:1},
-                            {username:'2',grade:12,university:'dss',advanced:0},
-                            {username:'3',grade:1122,university:'dss',advanced:0},
-                            {username:'4',grade:122,university:'dss',advanced:0},
-                            {username:'5',grade:112,university:'dss',advanced:1},
-                            {username:'6',grade:32,university:'dss',advanced:0},
-                            {username:'7',grade:2,university:'dss',advanced:0},
-                            {username:'8',grade:37,university:'dss',advanced:1},
-                            {username:'9',grade:23213,university:'dss',advanced:0},
-                            {username:'10',grade:3,university:'dss',advanced:0},
-                            {username:'11',grade:43,university:'dss',advanced:0},
-                            {username:'12',grade:17,university:'dss',advanced:0},
+                            {username:'1',grade:120,university:'ss',oldgrade:-1,reason:''},
+                            {username:'2',grade:12,university:'dss',oldgrade:-1,reason:''},
+                            {username:'3',grade:1122,university:'dss',oldgrade:-1,reason:''},
+                            {username:'4',grade:-1,university:'dss',oldgrade:-1,reason:''},
+                            {username:'5',grade:123,university:'dss',oldgrade:12,reason:'走后门打算打算的撒打算打算打算打算打算打算打算打算打算'},
+                            {username:'6',grade:32,university:'dss',oldgrade:-1,reason:''},
+                            {username:'7',grade:2,university:'dss',oldgrade:-1,reason:''},
+                            {username:'8',grade:37,university:'dss',oldgrade:-1,reason:''},
+                            {username:'9',grade:23213,university:'dss',oldgrade:-1,reason:''},
+                            {username:'10',grade:3,university:'dss',oldgrade:-1,reason:''},
+                            {username:'11',grade:43,university:'dss',oldgrade:-1,reason:''},
+                            {username:'12',grade:17,university:'dss',oldgrade:-1,reason:''},
                         ];
+                        vm.already = -1;
                         vm.participants_number = vm.participants.length;
-                        for (let i = 0; i < vm.participants_number; i++){
-                            vm.participants[i].advanced = Boolean(vm.participants[i].advanced);
-                            if(vm.participants[i].advanced)
-                                vm.select_count ++;
-                        }
+                        vm.SortParticipants();
                         //default
                         vm.current_participants = [].concat(vm.participants);
                         vm.current_participants_number = vm.participants_number;
@@ -225,7 +295,6 @@
                         if (vm.current_participants_number === 0 )
                             vm.total_page = 1;
                         vm.CurrentPageChange(1);
-
                     });
 
             },
@@ -240,24 +309,6 @@
                     this.current_page_participants.push(this.current_participants[offset + i]);
                 }
 
-                //select current page settings
-                let sum = 0;
-                for (let i = 0; i < this.current_page_participants_number; i++)
-                    if (this.current_page_participants[i].advanced)
-                        sum += 1;
-
-                if (sum > 0 && sum < this.current_page_participants_number) {
-                    this.select_all_participants_of_current_page = true;
-                }
-                else if (sum === 0) {
-                    this.select_all_participants_of_current_page = false;
-                    this.select_all_current = false;
-                }
-                else{
-                    this.select_all_participants_of_current_page = false;
-                    this.select_all_current = true;
-                }
-
             },
             PagePrevious:function (cur_page) {
                 this.CurrentPageChange(cur_page);
@@ -269,12 +320,7 @@
                 let temp = {};
                 temp.contestid = this.contestid;
                 temp.target = this.selected_zone;
-                temp.participants = [];
-                for (let i = 0; i < this.participants_number; i++){
-                    if (this.participants[i].advanced){
-                        temp.participants.push(this.participants[i].username);
-                    }
-                }
+                temp.advanced = this.advanced_number;
                 let vm = this;
                 axios.post('/api/admin/setadvanced',temp)
                     .then(response=>{
@@ -284,97 +330,28 @@
                                 type: 'error'
                             });
                         }
-                    })
+                        else{
+                            vm.$message({
+                                message: `设置晋级选手成功!`,
+                                type: 'success'
+                            });
+                            vm.already = 0;
+                        }
+                    });
             },
-            SelectChange:function (index) {
-                //current page participants
-                let ad = this.current_page_participants[index].advanced;
-                if (ad)
-                    this.select_count ++;
-                else
-                    this.select_count --;
-
-                let sum = 0;
-                for (let i = 0; i < this.current_page_participants_number; i++)
-                    if (this.current_page_participants[i].advanced)
-                        sum += 1;
-                //current participants
-                //this.current_participants[(this.current_page - 1) * this.participants_per_page + index].advanced = ad;
-                //participants
-                //for (let i = 0; i < this.participants_number; i++){
-                //    if (this.participants[i].username === this.current_page_participants[index].username){
-                //        this.participants[i].advanced = ad;
-                //    }
-                //}
-                //console.log(this.participants);
-
-                if (sum > 0 && sum < this.current_page_participants_number) {
-                    this.select_all_participants_of_current_page = true;
-                }
-                else if (sum === 0) {
-                    this.select_all_participants_of_current_page = false;
-                    this.select_all_current = false;
-                }
-                else{
-                    this.select_all_participants_of_current_page = false;
-                    this.select_all_current = true;
-                }
-
+            SortParticipants:function(){
+                this.participants.sort(function (a,b) {
+                    return b.grade - a.grade;
+                });
+                //no
+                for (let i = 0 ; i < this.participants_number; i++)
+                    this.participants[i].no = i + 1;
             },
-            SelectCurrentPage:function (all) {
-                this.select_all_participants_of_current_page = false;
-                //current page participants
-                for (let i = 0; i < this.current_page_participants_number; i++) {
-                    this.current_page_participants[i].advanced = all;
-                }
-
-                //current participants
-                //let offset = (this.current_page - 1) * this.participants_per_page;
-                //for (let i = 0; i < this.current_page_participants_number; i++) {
-                //    this.current_participants[offset + i].advanced = all;
-                //}
-                //participants
-                //for (let i = 0; i < this.participants_number; i++){
-                //    for (let j = 0; j < this.current_page_participants_number; j++){
-                //        if (this.participants[i].username === this.current_page_participants[j].username){
-                //            this.participants[i].advanced = all;
-                //            break;
-                //        }
-                //    }
-                //}
-                //console.log(this.participants);
-                this.GetCount();
-            },
-            SortByGrade:function () {
+            SortCurrentParticipants:function () {
                 this.current_participants.sort(function (a,b) {
                     return b.grade - a.grade;
                 });
-                if (this.total_page !== 0) {
-                    this.CurrentPageChange(1);
-                }
-            },
-            SelectCurrent:function () {
-                this.select_all_participants_of_current_page = false;
-                //current page participants
-                this.select_all_current = true;
-                //current participants
-                for (let i = 0 ; i < this.current_participants_number; i++)
-                    this.current_participants[i].advanced = true;
-                //participants
-                //for (let i = 0 ; i < this.participants_number; i++)
-                //    for (let j = 0; j < this.current_participants_number; j++)
-                //        if (this.participants[i].username === this.current_participants[j].username){
-                //            this.participants[i].advanced = true;
-                //        }
-                //console.log(this.participants);
-                this.GetCount();
-            },
-            GetCount:function () {
-                this.select_count = 0;
-                for (let i = 0 ; i < this.participants_number; i++)
-                        if (this.participants[i].advanced){
-                            this.select_count ++;
-                        }
+                this.CurrentPageChange(1);
             },
             AdvancedSearch:function () {
                 this.current_participants.splice(0);
@@ -405,6 +382,91 @@
                     this.total_page = 1;
 
                 this.CurrentPageChange(1);
+            },
+            ChangeGrade:function (index) {
+                this.new_grade_reason = '';
+                this.new_grade_mark = this.current_page_participants[index].grade;
+                this.new_grade_index = index;
+                this.new_grade_visible = true;
+            },
+            ConfirmSubmit:function () {
+                let vm = this;
+                this.$confirm('提交晋级名单后不可修改, 是否继续?', '提示', {
+                    confirmButtonText: '确定',
+                    cancelButtonText: '取消',
+                    type: 'warning'
+                }).then(() => {
+                    vm.SubmitParticipants();
+                }).catch(() => {
+                    vm.$message({
+                        type: 'info',
+                        message: '已取消'
+                    });
+                });
+            },
+            NewGradeConfirm:function () {
+                this.new_grade_visible = false;
+                this.SubmitNewGrade();
+
+            },
+            NewGradeCancel:function () {
+                this.new_grade_visible = false;
+            },
+            SubmitNewGrade:function () {
+                let vm = this;
+                if (this.new_grade_reason === ''){
+                    vm.$message({
+                        type: 'error',
+                        message: `修改分数的原因不能为空!`
+                    });
+                    return;
+                }
+
+                if (this.new_grade_mark === this.current_page_participants[this.new_grade_index].grade){
+                    vm.$message({
+                        type: 'error',
+                        message: `新分数和原分数不能一致!`
+                    });
+                    return;
+                }
+
+                axios.post('/api/admin/setnewgrade ',
+                    {
+                        contestid:this.contestid,
+                        username:this.username,
+                        grade:this.new_grade_mark,
+                        reason:this.new_grade_reason
+                    })
+                    .then(
+                        response=>{
+                            if(response.data.msg === ''){
+                                vm.$message({
+                                    type: 'success',
+                                    message: '修改分数成功'
+                                });
+                                if(vm.current_page_participants[vm.new_grade_index].oldgrade === -1)
+                                    vm.current_page_participants[vm.new_grade_index].oldgrade = vm.current_page_participants[vm.new_grade_index].grade;
+                                vm.current_page_participants[vm.new_grade_index].grade = vm.new_grade_mark;
+                                vm.current_page_participants[vm.new_grade_index].reason = vm.new_grade_reason;
+                                vm.SortParticipants();
+                                vm.SortCurrentParticipants();
+                            }
+                            else{
+                                vm.$message({
+                                    type: 'error',
+                                    message: `修改分数失败${response.data.msg}`
+                                });
+                            }
+                        }
+                    ).catch(error=>{
+                    if(vm.current_page_participants[vm.new_grade_index].oldgrade === -1)
+                        vm.current_page_participants[vm.new_grade_index].oldgrade = vm.current_page_participants[vm.new_grade_index].grade;
+                    vm.current_page_participants[vm.new_grade_index].grade = vm.new_grade_mark;
+                    vm.current_page_participants[vm.new_grade_index].reason = vm.new_grade_reason;
+                    vm.SortParticipants();
+                    vm.SortCurrentParticipants();
+                });
+
             }
         },
     }
@@ -420,11 +482,6 @@
     margin-bottom: 20px;
 }
 
-.submit-btn{
-    margin-top: 10px;
-    text-align: center;
-}
-
 .advanced-selector{
     margin-top: 20px;
     margin-bottom: 20px;
@@ -436,6 +493,25 @@
     font-size: 12px;
 }
 .advanced-selected{
+    margin-top: 10px;
+    margin-bottom: 10px;
+}
+
+.advanced-number{
+    margin-top: 20px;
+    margin-bottom: 20px;
+}
+
+.advanced-number-btn{
+    margin-left: 30px;
+    display: inline-block;
+}
+
+.advanced-number-counter{
+    display: inline-block;
+}
+.new-grade-item{
+    display: inline-block;
     margin-top: 10px;
     margin-bottom: 10px;
 }
