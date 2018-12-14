@@ -146,5 +146,5 @@ EMAIL_USE_TLS = True
 
 
 CRONJOBS = [
-    ('*/1 * * * *', 'Backend.cron.testCron')
+    ('*/1 * * * *', 'Backend.cron.allotCron')
 ]

@@ -87,8 +87,10 @@ def getone(request):
     contest_id = int(data['contestid'])
     participant_id = data['participantid']
     if participant_id == -1:
-        # todo: get participant_id
-        participant_id = 1
+        participant = ContestGrade.objects.filter(grade=-1, judge_id=judge_id, contest_id=contest_id, phase=ContestUtil.getCurrentPhase(contest_id))
+        if participant.count() == 0:
+            return JsonResponse({'msg': '已无待评作品'})
+        participant_id = participant[0].leader_id
     base_dir = RESOURCE_BASE_DIR + "/resources/contests/" + str(contest_id) + '/playerFiles/' + str(participant_id)
     children = GeneralUtil.getChildren(base_dir)
     return JsonResponse({

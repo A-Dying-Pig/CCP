@@ -127,6 +127,8 @@ def upload(request):
     cg = ContestGrade.objects.filter(leader_id=request.user.id, contest_id=contest_id, phase=cur_phase)
     if cg.count() == 0:  # 不存在，则创建新的
         cg = ContestGrade()
+    else:
+        cg = cg[0]
     cg.leader_id = request.user.id
     cg.work_name = name
     cg.phase = cur_phase

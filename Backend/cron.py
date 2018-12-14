@@ -9,5 +9,6 @@ from .utils import *
 import pytz
 from datetime import datetime
 
-def testCron():
-    print(time.strftime('%Y-%m-%d %H:%M:%S',time.localtime(time.time())))
+def allotCron():
+    # print(time.strftime('%Y-%m-%d %H:%M:%S', time.localtime(time.time())))
+    pass
