@@ -195,6 +195,8 @@ def setjudge(request):
         zone = zone['province'][zone_id]
     elif regionmode == 2: #region
         zone = zone['region'][zone_id]
+    else:
+        zone = ''
 
     try:
         contest = Contest.objects.get(id=contest_id)
@@ -343,11 +345,14 @@ def judgelist(request):
         zone_id[region] = cid
         cid = cid + 1
     zone_id[''] = -1
+    zone_id[None] = -1
     for judge in judges:
         dic = {}
         dic['username'] = CCPUser.objects.filter(id=judge.judge_id)[0].username
         print(dic['username'])
         print(phase)
+        if phase == 0:
+            phase = 1
         print(getattr(judge, 'phase_region'+str(phase)))
         dic['id'] = zone_id[getattr(judge, 'phase_region'+str(phase))]
         res['judges'].append(dic)

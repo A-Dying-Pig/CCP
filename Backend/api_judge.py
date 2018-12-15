@@ -85,9 +85,9 @@ def getone(request):
         return JsonResponse({'msg': '权限认证失败！'})
     data = json.loads(request.body.decode('utf-8'))
     contest_id = int(data['contestid'])
-    participant_id = data['participantid']
+    participant_id = int(data['participantid'])
     if participant_id == -1:
-        participant = ContestGrade.objects.filter(grade=-1, judge_id=judge_id, contest_id=contest_id, phase=ContestUtil.getCurrentPhase(contest_id))
+        participant = ContestGrade.objects.filter(grade=-1, judge_id=judge_id, contest_id=contest_id, phase=ContestUtil.getCurrentPhase(contest_id)['phase'])
         if participant.count() == 0:
             return JsonResponse({'msg': '已无待评作品'})
         participant_id = participant[0].leader_id
