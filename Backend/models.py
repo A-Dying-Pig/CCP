@@ -136,7 +136,7 @@ class ContestGrade(models.Model):
     phase = models.IntegerField(blank=True, null=True)  # 比赛阶段
     judge_id = models.IntegerField(default=-1, db_index=True)  # 评委id
     grade = models.IntegerField(default=-1)  # 选手(小组)由当前评委打出的该阶段比赛的成绩
-    work_name = models.CharField(max_length=32, default='work')  # 作品名
+    work_name = models.CharField(max_length=32, null=True, db_index=True)  # 作品名
     class Meta:
         db_table = "ContestGrade"
 
