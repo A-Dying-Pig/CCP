@@ -123,7 +123,7 @@ def uploadImg(request):
                 # 分块写入文件;
                 for chunk in File.chunks():
                     f.write(chunk)
-            return JsonResponse({'msg': '', 'url': cur_dir[RESOURCE_BASE_DIR:] + File.name})
+            return JsonResponse({'msg': '', 'url': cur_dir[len(RESOURCE_BASE_DIR):] + File.name})
     except Exception as e:
         traceback.print_exc()
         return JsonResponse({'msg': '未知错误'})
