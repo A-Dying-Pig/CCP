@@ -10,6 +10,7 @@ from .utils import *
 import shutil
 import traceback
 import datetime
+from zipfile import ZipFile, BadZipFile
 from django.db.models import Q
 
 def register(request):
@@ -26,7 +27,7 @@ def register(request):
         return JsonResponse({'msg': '邮箱地址已经被注册！'})
     else:
         new_user = CCPUser.objects.create(username=username, password=password, email=email)
-        os.mkdir(RESOURCE_BASE_DIR + '/resources/users/' + new_user.id)
+        os.mkdir(RESOURCE_BASE_DIR + '/resources/users/' + str(new_user.id))
         return JsonResponse({'msg': ''})
 
 def login(request):
@@ -60,6 +61,12 @@ def profile(request):
             all_files = os.listdir(RESOURCE_BASE_DIR + img_url)
             if len(all_files) > 0:
                 img_url = img_url + all_files[0]
+            else:
+                img_url = '/resources/default/user/'
+                all_files = os.listdir(RESOURCE_BASE_DIR + img_url)
+                img_url = img_url + all_files[0]
+        else:
+            return JsonResponse({'msg': '用户头像目录不存在'})
         competition = {}
         participated = ContestPlayer.objects.filter(player_id=id)
         competition['participated_competition'] = []
@@ -150,7 +157,7 @@ def upload(request):
     except:
         return JsonResponse({'msg': 'Contest does not exist.'})
     cur_phase = ContestUtil.getCurrentPhase(contest_id)['phase']
-    if not(getattr(contest, 'phase_start_time' + cur_phase) < datetime.datetime.utcnow() < getattr(contest, 'phase_hand_end_time' + cur_phase)):
+    if not(getattr(contest, 'phase_start_time' + str(cur_phase)) < datetime.datetime.now(datetime.timezone.utc) < getattr(contest, 'phase_hand_end_time' + str(cur_phase))):
         return JsonResponse({'msg': '比赛当前阶段的提交已经截止'})
     if contest.grouped == 0:  # 组队赛
         try:
@@ -178,14 +185,24 @@ def upload(request):
     else:
         # 先删除旧文件夹下所有内容，再打开特定的文件进行二进制的写操作;
         try:
-            cur_dir = RESOURCE_BASE_DIR + "/resources/contests/" + str(contest_id) + '/playerFiles/' + str(request.user.id)
-            if os.path.isdir(cur_dir):
-                shutil.rmtree(cur_dir)
-            os.mkdir(cur_dir)
-            with open(RESOURCE_BASE_DIR + "/resources/contests/" + str(contest_id) + '/playerFiles/' + str(request.user.id) + '/' + File.name, 'wb') as f:
+            cur_dir = RESOURCE_BASE_DIR + "/resources/contests/" + str(contest_id) + '/playerFiles/' + str(request.user.id) + '/compress'
+            dirs = os.listdir(cur_dir)
+            for dir in dirs:
+                if os.path.isfile(dir):  # 删掉原来的压缩文件
+                    os.remove(dir)
+            with open(cur_dir + File.name, 'wb') as f:
                 # 分块写入文件;
                 for chunk in File.chunks():
                     f.write(chunk)
+            # 解压缩
+            extract_dir = RESOURCE_BASE_DIR + "/resources/contests/" + str(contest_id) + '/playerFiles/' + str(request.user.id) + '/decompress'
+            GeneralUtil.del_dir(extract_dir)
+            try:
+                with ZipFile(cur_dir + File.name) as zfile:
+                    zfile.extractall(path=extract_dir)
+            except BadZipFile as e:
+                traceback.print_exc()
+                return JsonResponse({'msg': '文件解压缩出错！'})
             return JsonResponse({'msg': ''})
         except Exception as e:
             traceback.print_exc()

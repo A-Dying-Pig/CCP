@@ -9,7 +9,7 @@ import time
 import os
 from .utils import *
 import pytz
-from datetime import datetime
+from datetime import datetime, timezone
 import shutil
 import jwt
 from django.db.models import Q
@@ -24,8 +24,7 @@ def enroll(request):
     data = json.loads(request.body.decode('utf-8'))
     contestid = int(data['contestid'])
     userId = request.user.id
-    province = data['region']['province']
-    city = data['region']['city']
+    phone_number = data['phone_number']
     university = data['university']
 
     try:
@@ -66,6 +65,7 @@ def enroll(request):
             contest_player = ContestPlayer()
             contest_player.player_id = userId
             contest_player.contest_id = contestid
+            contest_player.phone_number = phone_number
             index = 0
             while index < le:
                 setattr(contest_player, 'extra_information' + str(index + 1), values[index])
@@ -92,12 +92,16 @@ def enroll(request):
             while index < le:
                 setattr(contest_group, 'extra_information' + str(index + 1), values[index])
                 index = index + 1
+            contest_group.phone_number = phone_number
             contest_group.save()
             contest_grade = ContestGrade()
             contest_grade.phase = 1
             contest_grade.contest_id = contestid
             contest_grade.leader_id = userId
             contest_grade.save()
+    os.mkdir(RESOURCE_BASE_DIR + '/resources/contests/' + str(contestid) + '/playerFiles/' + str(request.user.id))
+    os.mkdir(RESOURCE_BASE_DIR + '/resources/contests/' + str(contestid) + '/playerFiles/' + str(request.user.id) + '/decompress')
+    os.mkdir(RESOURCE_BASE_DIR + '/resources/contests/' + str(contestid) + '/playerFiles/' + str(request.user.id) + '/compress')
     return JsonResponse({'msg': ''})
 
 def list(request):
@@ -115,8 +119,12 @@ def list(request):
         d['contestid'] = c.id
         tmp_path = '/resources/contests/' + str(c.id) + '/img/'
         files = os.listdir(RESOURCE_BASE_DIR + tmp_path)
-        for file in files:
-            tmp_path = tmp_path + file
+        if len(files) > 0:
+            tmp_path = tmp_path + files[0]
+        else:
+            tmp_path = '/resources/default/contest/'
+            files = os.listdir(RESOURCE_BASE_DIR + tmp_path)
+            tmp_path = tmp_path + files[0]
         d['img_url'] = tmp_path
         array.append(d)
     total_page_num = (count - 1) // amount + 1
@@ -251,6 +259,9 @@ def create(request):
         setattr(contest, 'phase_region_mode' + str(index + 1), stageinfo[index]['zone'])
         index = index + 1
     contest.save()
+    os.mkdir(RESOURCE_BASE_DIR + '/resources/contests/' + str(contest.id))
+    os.mkdir(RESOURCE_BASE_DIR + '/resources/contests/' + str(contest.id) + '/img')
+    os.mkdir(RESOURCE_BASE_DIR + '/resources/contests/' + str(contest.id) + '/playerFiles')
     return JsonResponse({'code': 0, 'msg': ''})
 
 def detail(request):
@@ -380,7 +391,7 @@ def send_invitation(sender_id, receiver_id, contest_id):
     notification = Notification()
     notification.context = msg
     notification.title = sender_name + '邀请你加入队伍'
-    notification.time = datetime.now()
+    notification.time = datetime.now(timezone.utc)
     notification.save()
     msg_id = Notification.objects.last().id
     ntfuser = NotificationUser()
@@ -465,7 +476,6 @@ def discussionReply(request):
         contest_id = int(data['contestid'])
         post_id = int(data['discussionid'])
         content = data['content']
-        reply_time = data['replytime']
         try:
             with transaction.atomic():
                 try:
@@ -477,7 +487,7 @@ def discussionReply(request):
                 reply.author_id = request.user.id
                 reply.author = CCPUser.objects.get(id=request.user.id).username
                 reply.content = content
-                reply.time = datetime.strptime(reply_time, "%Y-%m-%dT%H:%M:%S.000Z").replace(tzinfo=pytz.utc)
+                reply.time = datetime.now(timezone.utc)
                 post.replies = post.replies + 1
                 post.last_reply_time = reply.time
                 reply.save()
