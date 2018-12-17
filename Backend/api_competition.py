@@ -531,5 +531,10 @@ def discussionList(request):
         return JsonResponse({'msg': '未知错误'})
 
 
-def worksname():
-    pass
+def worksname(request):
+    # todo
+    data = json.loads(request.body.decode('utf-8'))
+    contestid = data['contestid']
+    phase = ContestUtil.getCurrentPhase(contestid)['phase']
+    filename = 'test.zip'
+    return JsonResponse({'msg': '', 'filename': filename})
