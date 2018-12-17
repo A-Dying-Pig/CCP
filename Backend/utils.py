@@ -274,3 +274,14 @@ class GeneralUtil:
                     'data': {'src': full_path[len(RESOURCE_BASE_DIR):]}
                 })
         return result
+
+    @classmethod
+    def del_dir(cls, path):
+        if os.path.isdir(path):
+            for file in os.listdir(path):
+                full_path = path + file
+                if os.path.isfile(full_path):
+                    os.remove(full_path)
+                elif os.path.isdir(full_path):
+                    cls.del_dir(full_path)
+                    os.rmdir(full_path)
