@@ -5,6 +5,7 @@ from django.db.models import Avg
 import json
 from .utils import *
 from datetime import datetime
+import random
 import pytz
 import django.utils.timezone as tz
 
@@ -488,10 +489,10 @@ def allot_work(contest_id, phase, timesperpiece):
     mode = getattr(contest, 'phase_region_mode' + str(phase))
     if mode == ContestUtil.NON_REGION:
         array = ContestGrade.objects.filter(contest_id=contest_id, phase=phase)
-        leader_id = []
+        leader = []
         for row in array:
-            leader_id.append(row.leader_id)
-        leader_id = random.shuffle(leader_id)
+            leader.append({'id': row.leader_id, 'work': row.work_name})
+        random.shuffle(leader)
         ContestGrade.objects.filter(contest_id=contest_id, phase=phase).delete()
         judge_id = []
         array = ContestJudge.objects.filter(contest_id=contest_id)
@@ -500,10 +501,11 @@ def allot_work(contest_id, phase, timesperpiece):
         
         num = len(judge_id)
         i = 0
-        for j in range(len(leader_id)):
+        for j in range(len(leader)):
             for k in range(timesperpiece):
                 contestgrade = ContestGrade()
-                contestgrade.leader_id = leader_id[j]
+                contestgrade.leader_id = leader[j]['id']
+                contestgrade.work_name = leader[j]['work']
                 contestgrade.contest_id = contest_id
                 contestgrade.phase = phase
                 contestgrade.judge_id = judge_id[i]
@@ -517,10 +519,10 @@ def allot_work(contest_id, phase, timesperpiece):
         else:
             zonelist = d['province']
         array = ContestGrade.objects.filter(contest_id=contest_id, phase=phase)
-        leader_id = []
+        leader = []
         for row in array:
-            leader_id.append(row.leader_id)
-        leader_id = random.shuffle(leader_id)
+            leader.append({'id': row.leader_id, 'work': row.work_name})
+        random.shuffle(leader)
         ContestGrade.objects.filter(contest_id=contest_id, phase=phase).delete()
         judge_id = []
         array = ContestJudge.objects.filter(contest_id=contest_id)
@@ -529,11 +531,11 @@ def allot_work(contest_id, phase, timesperpiece):
         
         for zone in zonelist:
             playeridzone = []
-            for i in leader_id:
-                contestplayer = ContestPlayer.objects.get(player_id=i)
+            for l in leader:
+                contestplayer = ContestPlayer.objects.get(player_id=l['id'])
                 region = getattr(contestplayer, 'phase_region' + str(phase))
                 if zone == region:
-                    playeridzone.append(i)
+                    playeridzone.append(l)
             judgeidzone = []
             for i in judge_id:
                 contestjudge = ContestJudge.objects.get(judge_id=i)
@@ -546,7 +548,8 @@ def allot_work(contest_id, phase, timesperpiece):
             for j in range(len(playeridzone)):
                 for k in range(timesperpiece):
                     contestgrade = ContestGrade()
-                    contestgrade.leader_id = playeridzone[j]
+                    contestgrade.leader_id = playeridzone[j]['id']
+                    contestgrade.work_name = playeridzone[j]['work']
                     contestgrade.contest_id = contest_id
                     contestgrade.phase = phase
                     contestgrade.judge_id = judgeidzone[i]
@@ -554,9 +557,17 @@ def allot_work(contest_id, phase, timesperpiece):
                     contestgrade.save()
 
 def allot(request):
+    
     data = json.loads(request.body.decode('utf-8'))
-    contest_id = data['contestif']
+    contest_id = data['contestid']
     judgenum = data['judgenum']
     phase = ContestUtil.getCurrentPhase(contest_id)['phase']
+    contest = Contest.objects.filter(id=contest_id)[0]
+    if getattr(contest, 'phase_judge_start' + str(phase)):
+        return JsonResponse({'msg': 'already allotted.'})
     allot_work(contest_id, phase, judgenum)
+    setattr(contest, 'phase_judge_start' + str(phase), True)
+    contest.save()
+    return JsonResponse({'msg': ''})
+
 
