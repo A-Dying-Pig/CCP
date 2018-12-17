@@ -44,6 +44,7 @@
         },
         created:function () {
             let self = this;
+            self.fileList = [];
             axios.post('/api/competition/worksname',{
                 contestid:self.contestid
             }).then(function (response) {
@@ -54,7 +55,14 @@
                     });
                     return
                 }
-                self.fileList.push(response.data.filename);
+                if(response.data.filename !== ''){
+                    self.fileList.push(response.data.filename);
+                }
+            }).catch(function (error) {
+                self.$message({
+                    message:'获取上一个提交的作品失败！',
+                    type:'error'
+                });
             })
         }
     }

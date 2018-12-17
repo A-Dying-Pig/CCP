@@ -72,81 +72,6 @@
 
         created:function () {
             let self = this;
-            //get info
-
-            self.type = 3;
-            let now = Date.now();
-
-            self.showlist=[];
-            self.showlist.push({
-                value:'competitionfiles',
-                label:'比赛文件'
-            },{
-                value:'discussion',
-                label:'讨论区'
-            });
-            if(self.type===1){
-                //当不在提交阶段时，不可以提交作品
-                //let showsubmit = false;
-                let showsubmit = true;
-                let begin = self.info.signupinfo.time[1];
-                for(let stage of self.info.stageinfo){
-                    if((now>begin)&&(now<stage.handTimeEnd)){
-                        showsubmit = true;
-                    }
-                    begin = stage.evaluationTimeEnd;
-                }
-                //if(showsubmit){
-                    self.showlist.push({
-                        value:'submitwork',
-                        label:'提交作品'
-                    });
-                //}
-            }
-            else if(self.type===2){
-                //当不在评测阶段时，不可以评测作品
-                //let showgrade = false;
-                let showgrade = true;
-                for(let stage of self.info.stageinfo){
-                    if((now<stage.evaluationTimeEnd)&&(now>stage.handTimeEnd)){
-                        showgrade = true;
-                    }
-                }
-                if(showgrade){
-                    self.showlist.push({
-                        value:'gradework',
-                        label:'评委评分'
-                    },{
-                        value:'judgefinish',
-                        label:'查看过往评分'
-                    });
-                }
-            }
-            else if(self.type===3){
-                self.showlist.push({
-                    value:'infochange',
-                    label:'修改信息'
-                },{
-                    value:'participantstable',
-                    label:'队员信息'
-                },{
-                    value:'judgelist',
-                    label:'评委信息'
-                });
-                //let showprogress = false;
-                let showprogress = true;
-                for(let stage of self.info.stageinfo){
-                    if((now<stage.evaluationTimeEnd)&&(now>stage.handTimeEnd)){
-                        showprogress = true;
-                    }
-                }
-                if(showprogress){
-                    self.showlist.push({
-                        value:'judgeprogress',
-                        label:'查看评测进度'
-                    })
-                }
-            }
             console.log(self.contestid);
             axios.post('/api/competition/detail',{
                 contestid:self.contestid,
@@ -225,7 +150,7 @@
                             label: '设置晋级选手名单'
                         });
                     }
-                    if(self.info.basicinfo.judgebegin === false){
+                    //if(self.info.basicinfo.judgebegin === false){
                     let showjudgebegin = true;
                     for (let stage of self.info.stageinfo) {
                         if ((now > stage.handTimeEnd) && (now < stage.evaluationTimeEnd)) {
@@ -238,7 +163,7 @@
                     else {
                         self.info.basicinfo.beginjudgebutton = false;
                     }
-                    }
+                    //}
                 }
 
             }).catch(function (error) {

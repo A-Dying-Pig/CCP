@@ -4,7 +4,7 @@
 <el-tabs type="border-card" value="details">
     <el-tab-pane label="比赛详情" name="details"><slot name="details"></slot></el-tab-pane>
     <el-tab-pane v-for="item in showlist" :key="item.key" :label="item.label" :name="item.value">
-        <template v-if="item.value == 'gradework'">
+        <template v-if="item.value === 'gradework'">
             <GradeProject :contestid="contestid" :stageinfo="info.stageinfo" :readonly="false"></GradeProject>
         </template>
         <template v-else-if="item.value === 'submitwork'">
@@ -17,7 +17,7 @@
             <ParticipantsTable :contestid="contestid"></ParticipantsTable>
         </template>
         <template v-else-if="item.value === 'judgelist'">
-            <JudgeList :contestid="contestid"></JudgeList>
+            <JudgeList :contestid="contestid" :judgebeginbutton="info.basicinfo.beginjudgebutton"></JudgeList>
         </template>
         <template v-else-if="item.value === 'advancedparticipants'">
             <AdvancedParticipants :contestid="contestid"> </AdvancedParticipants>
@@ -64,6 +64,7 @@
         },
         mounted:function () {
             let self = this;
+            console.log(self.showlist)
             window.onresize = function resize(){
                 self.width = window.innerWidth*0.7;
             }

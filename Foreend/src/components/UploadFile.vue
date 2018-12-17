@@ -107,6 +107,9 @@
                 let fd = new FormData();
                 fd.append('file',fileobj);
                 fd.append('contestid',self.contestid);
+                if(self.needname === true){
+                    fd.append('name',self.uploadinfo.name)
+                }
                 axios.post(self.uploadurl,fd,{
                 }).then(function (response) {
                     let msg = response.data.msg;

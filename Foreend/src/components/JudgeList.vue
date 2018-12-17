@@ -1,5 +1,14 @@
 <template>
     <div class="judges">
+        <el-card class="allocjudge" v-if="judgebeginbutton">
+            <el-row>
+                每份作品被评测次数<el-input-number v-model="judgenum" :min="1" :max="10" label="每份作品被评测次数"></el-input-number>
+            </el-row>
+            <el-row>
+                <el-button @click="assignproject" type="primary">分配作品</el-button>
+            </el-row>
+        </el-card>
+
         <el-card class="add-judge">
             <el-form :inline="true" :model="new_judge">
                 <el-form-item label="添加评委">
@@ -119,6 +128,10 @@
         props:{
             contestid:{
                 default:-1
+            },
+            judgebeginbutton:{
+                Type:Boolean,
+                default:false
             }
         },
         data:function () {
@@ -139,6 +152,7 @@
                 total_page:0,
                 search_username:'',
                 search_zone: '',
+                judgenum:1,
             }
         },
         methods:{
@@ -382,6 +396,31 @@
                 if(this.total_page === 0)
                     this.total_page = 1;
                 this.CurrentPageChange(1);
+            },
+            assignproject:function () {
+                let self = this;
+                axios.post('/api/admin/allot',{
+                    contestid:self.contestid,
+                    judgenum:self.judgenum
+                }).then(function (response) {
+                    if(response.data.msg!==''){
+                        self.$message({
+                            message:response.data.msg,
+                            type:'error'
+                        })
+                    }
+                    else {
+                        self.$message({
+                            message:'评委分配成功！',
+                            type:'success'
+                        })
+                    }
+                }).catch(function (error) {
+                    self.$message({
+                        message:'评委分配失败！',
+                        type:'error'
+                    })
+                })
             }
         },
         mounted:function () {

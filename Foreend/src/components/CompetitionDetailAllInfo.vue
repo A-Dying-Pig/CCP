@@ -16,20 +16,26 @@
 
                     </el-row>
                     <p></p>
-                    <el-row :gutter="20">
-                        <el-steps :space="50" :active="getActivestage()" finish-status="success" simple style="height:80px;font-size:small">
-                            <el-step :title="timestamp2datestr(info.signupinfo.time[0]) + '报名开始'"></el-step>
-                            <el-step :title="timestamp2datestr(info.signupinfo.time[1]) + '报名结束'"></el-step>
-                            <template v-for="item in info.stageinfo">
-                                <el-step :title="timestamp2datestr(item.stageTimeBegin)+item.name+'开始'" :key="item.key"></el-step>
-                                <el-step :title="timestamp2datestr(item.handTimeEnd)+item.name+'提交截止'" :key="item.key"></el-step>
-                                <el-step :title="timestamp2datestr(item.evaluationTimeEnd)+item.name+'评测截止'" :key="item.key"></el-step>
-                            </template>
-                        </el-steps>
+                    <el-row :gutter="24">
+                        <el-col :span="5">
+                            <img src="http://img2.imgtn.bdimg.com/it/u=764856423,3994964277&fm=26&gp=0.jpg" style="width: 150px;"/>
+                        </el-col>
+                        <el-col :span="19">
+                            <el-steps :active="getActivestage()" style="float: bottom">
+                                <el-step :title="timestamp2datestr(info.signupinfo.time[0])" description="报名开始"></el-step>
+                                <el-step :title="timestamp2datestr(info.signupinfo.time[1])" description="报名结束"></el-step>
+                                <template v-for="item in info.stageinfo">
+                                    <el-step :title="timestamp2datestr(item.stageTimeBegin)" :description="item.name+'开始'" :key="item.key"></el-step>
+                                    <el-step :title="timestamp2datestr(item.handTimeEnd)" :description="item.name+'提交截止'" :key="item.key"></el-step>
+                                    <el-step :title="timestamp2datestr(item.evaluationTimeEnd)" :description="item.name+'评测截止'" :key="item.key"></el-step>
+                                </template>
+                            </el-steps>
+                        </el-col>
+
                     </el-row>
                     <el-row :gutter="20" v-if="info.basicinfo.beginjudgebutton">
                         <el-col>
-                            <p>比赛已经进入评测阶段，请点击<el-button @click="assignproject" type="primary">分配作品</el-button>自动为每位评委分配作品</p>
+                            <p>比赛已经进入评测阶段，请点击“评委信息”标签自动为每位评委分配作品</p>
                         </el-col>
                     </el-row>
                 </el-card>
