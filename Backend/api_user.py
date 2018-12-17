@@ -28,6 +28,7 @@ def register(request):
     else:
         new_user = CCPUser.objects.create(username=username, password=password, email=email)
         os.mkdir(RESOURCE_BASE_DIR + '/resources/users/' + str(new_user.id))
+        os.mkdir(RESOURCE_BASE_DIR + '/resources/users/' + str(new_user.id) + '/tmp')
         return JsonResponse({'msg': ''})
 
 def login(request):
@@ -35,7 +36,6 @@ def login(request):
         data = json.loads(request.body.decode('utf-8'))
         username = data['username']
         password = data['password']
-        # print(username, password)
         user = auth.authenticate(username=username, password=password)
         if user:
             auth.login(request, user)
@@ -120,11 +120,12 @@ def uploadImg(request):
         if File is None:
             return JsonResponse({'msg': 'File not found.'})
         else:
-            # 先删掉原来的文件夹内的所有内容，再新建一个
+            # 先删掉原来的文件夹内的头像，再新建一个
             cur_dir = RESOURCE_BASE_DIR + '/resources/users/' + str(request.user.id) + '/'
-            if os.path.isdir(cur_dir):
-                shutil.rmtree(cur_dir)
-            os.mkdir(cur_dir)
+            for file in os.listdir(cur_dir):
+                full_path = cur_dir + file
+                if os.path.isfile(full_path):
+                    os.remove(full_path)
             # 打开特定的文件进行二进制的写操作;
             with open(cur_dir + File.name, 'wb+') as f:
                 # 分块写入文件;
@@ -136,16 +137,13 @@ def uploadImg(request):
         return JsonResponse({'msg': '未知错误'})
 
 def modify(request):
-    try:
-        id = request.user.id
-    except:
-        return JsonResponse({'msg': '用户权限认证失败！'})
-    username = request.user.username
+    if not request.user.is_authenticated:
+        return JsonResponse({'msg': '请先登录'})
     data = json.loads(request.body.decode('utf-8'))
     university = data['university']
     province = data['region']['province']
     city = data['region']['city']
-    CCPUser.objects.filter(id=id).update(university=university, province=province, city=city)
+    CCPUser.objects.filter(id=request.user.id).update(university=university, province=province, city=city)
     return JsonResponse({'msg': ''})
 
 
