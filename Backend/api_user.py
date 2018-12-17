@@ -24,7 +24,8 @@ def register(request):
     elif email_unique:
         return JsonResponse({'msg': '邮箱地址已经被注册！'})
     else:
-        CCPUser.objects.create(username=username, password=password, email=email)
+        new_user = CCPUser.objects.create(username=username, password=password, email=email)
+        os.mkdir(RESOURCE_BASE_DIR + '/resources/users/' + new_user.id)
         return JsonResponse({'msg': ''})
 
 def login(request):

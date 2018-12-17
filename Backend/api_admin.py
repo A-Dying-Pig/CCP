@@ -32,10 +32,10 @@ def participants(request):
     result['mode'] = 1 - contest.grouped
     result['current_page_num'] = page_num
     cur_phase = ContestUtil.getCurrentPhase(contest_id)['phase']
-    if result['mode'] == 1: # 个人赛
+    if result['mode'] == 1:  # 个人赛
         participants= ContestGrade.objects.filter(contest_id=contest_id, phase=cur_phase)
         participant_number= participants.count()
-        if participant_number < 1: # 没数据
+        if participant_number < 1:  # 没数据
             result['total_page_num'] = 0
             result['array'] = []
             return JsonResponse(result)
