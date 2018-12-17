@@ -19,5 +19,6 @@ urlpatterns = [
     path(r'superadmin', Foreend.views.superadmin),
     path(r'about', Foreend.views.about),
     path(r'service', Foreend.views.service),
+    path(r'invite', Foreend.views.invite),
     re_path(r'^resources/', Files.views.download),
 ]

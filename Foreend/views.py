@@ -70,7 +70,7 @@ def service(request):
 @login_required(login_url='/login')
 def invite(request):
     token = request.GET.get('token')
-    with open('config.json', 'r', encoding='utf8'):
+    with open('config.json', 'r', encoding='utf8') as f:
         d = json.load(f)
         key = d['key']
     try:
