@@ -1070,6 +1070,57 @@ class api_user_competiton_Test(TestCase):
         response_content = json.loads(response_content)
         self.assertEqual(response_content['msg'], '要删除的评委信息有误')
 
+    def test_setjudge_add_adminBeJudge(self):
+        user_info={
+            "username": "admin", 
+            "password": "ccp"            
+        }
+        response = self.c.post('/api/user/login',json.dumps(user_info),content_type="application/json")
+        comp_info = {
+            "contestid":self.contestId_personal, 
+            "type":0,
+            "username": admin,
+            "id":'1'                 
+        }
+        response = self.c.post('/api/admin/setjudge',json.dumps(comp_info),content_type="application/json") 
+        response_content = response.content.decode()
+        response_content = json.loads(response_content)
+        self.assertEqual(response_content['msg'], '比赛管理员不能成为评审')
+
+    def test_setjudge_add_superBeJudge(self):
+        user_info={
+            "username": "super_admin", 
+            "password": "ccp"            
+        }
+        response = self.c.post('/api/user/login',json.dumps(user_info),content_type="application/json")
+        comp_info = {
+            "contestid":self.contestId_personal, 
+            "type":0,
+            "username": super_admin,
+            "id":'1'                 
+        }
+        response = self.c.post('/api/admin/setjudge',json.dumps(comp_info),content_type="application/json") 
+        response_content = response.content.decode()
+        response_content = json.loads(response_content)
+        self.assertEqual(response_content['msg'], '超级用户不能成为评审')
+
+    def test_setjudge_add_playerBeJudge(self):
+        user_info={
+            "username": "admin2", 
+            "password": "ccp"            
+        }
+        response = self.c.post('/api/user/login',json.dumps(user_info),content_type="application/json")
+        comp_info = {
+            "contestid":self.contestId_personal, 
+            "type":0,
+            "username": admin2,
+            "id":'1'                 
+        }
+        response = self.c.post('/api/admin/setjudge',json.dumps(comp_info),content_type="application/json") 
+        response_content = response.content.decode()
+        response_content = json.loads(response_content)
+        self.assertEqual(response_content['msg'], '参赛者不能成为评审')
+
     def test_judgelist_successful(self):
         user_info={      
             "username": "judge1", 
@@ -1539,7 +1590,6 @@ class api_user_competiton_Test(TestCase):
         response_content = json.loads(response_content)
         self.assertEqual(response_content['msg'],'Authority denied.')
 
-    '''
     def test_admin_getsubmitnum_successful(self):
         user_info={
             "username": "admin2", 
@@ -1707,6 +1757,175 @@ class api_user_competiton_Test(TestCase):
         response = self.c.post('/api/admin/getsubmitnum',json.dumps(submit_info),content_type="application/json")
         response_content = response.content.decode()
         response_content = json.loads(response_content)
-        self.assertEqual(response_content['msg'],'非管理员不能查看已提交作品总数')
-    '''
+        self.assertEqual(response_content['msg'],'当前用户不是本比赛管理员')
+
+    def test_admin_getsubmitnum_compNotexist(self):
+        user_info={
+            "username": "admin2", 
+            "password": "ccp"            
+        }
+        response = self.c.post('/api/user/login',json.dumps(user_info),content_type="application/json")   
+        submit_info={
+            "contestid":self.contestId_personal,
+            "file": "C:\\Users\\Administrator\\Desktop\\1.txt" 
+        }
+        response = self.c.post('/api/contestant/submit',json.dumps(submit_info),content_type="application/json")
+        user_info={
+            'username':"admin",
+            "password":"ccp"
+        }
+        response = self.c.post('/api/user/login',json.dumps(user_info),content_type="application/json")   
+        comp_info={
+            "contestid":self.contestId_group+1            
+        }
+        response = self.c.post('/api/admin/getsubmitnum',json.dumps(submit_info),content_type="application/json")
+        response_content = response.content.decode()
+        response_content = json.loads(response_content)
+        self.assertEqual(response_content['msg'],'比赛不存在')
+
+    def test_admin_setadvanced_successful(self):
+        user_info={
+            'username':"admin",
+            "password":"ccp"
+        }
+        response = self.c.post('/api/user/login',json.dumps(user_info),content_type="application/json")   
+        comp_info={
+            'contestid':self.contestId_personal,
+            "target":0,
+            "participants":['admin2']
+        }
+        response = self.c.post('/api/admin/setadvanced',json.dumps(comp_info),content_type="application/json")
+        response_content = response.content.decode()
+        response_content = json.loads(response_content)
+        self.assertEqual(response_content['msg'],'')
+
+    def test_admin_setadvanced_notadmin(self):
+        comp_info={
+            'contestid':self.contestId_personal,
+            "target":0,
+            "participants":['admin2']
+        }
+        response = self.c.post('/api/admin/setadvanced',json.dumps(comp_info),content_type="application/json")
+        response_content = response.content.decode()
+        response_content = json.loads(response_content)
+        self.assertEqual(response_content['msg'],'非管理员不能设置晋级选手名单')
+
+    def test_admin_setadvanced_compNotexist(self):
+        user_info={
+            'username':"admin",
+            "password":"ccp"
+        }
+        response = self.c.post('/api/user/login',json.dumps(user_info),content_type="application/json")   
+        comp_info={
+            'contestid':self.contestId_group+1,
+            "target":0,
+            "participants":['admin2']
+        }
+        response = self.c.post('/api/admin/setadvanced',json.dumps(comp_info),content_type="application/json")
+        response_content = response.content.decode()
+        response_content = json.loads(response_content)
+        self.assertEqual(response_content['msg'],'比赛不存在')
+
+    def test_admin_setadvanced_userNotexist(self):
+        user_info={
+            'username':"admin",
+            "password":"ccp"
+        }
+        response = self.c.post('/api/user/login',json.dumps(user_info),content_type="application/json")   
+        comp_info={
+            'contestid':self.contestId_personal,
+            "target":0,
+            "participants":['admin3']
+        }
+        response = self.c.post('/api/admin/setadvanced',json.dumps(comp_info),content_type="application/json")
+        response_content = response.content.decode()
+        response_content = json.loads(response_content)
+        self.assertEqual(response_content['msg'],'参赛选手不存在')
+
+    def test_admin_advanced_successful_noset(self):
+        user_info={
+            'username':"admin",
+            "password":"ccp"
+        }
+        response = self.c.post('/api/user/login',json.dumps(user_info),content_type="application/json")   
+        comp_info={
+            "contestid":self.contestId_personal,
+            "target": -1            
+        }
+        response = self.c.post('/api/admin/advanced',json.dumps(comp_info),content_type="application/json")
+        response_content = response.content.decode()
+        response_content = json.loads(response_content)
+        self.assertEqual(response_content['msg'],'')
+        self.assertEqual(len(response_content['participants']),1)
+        self.assertEqual(response_content['participants'][0]['username'],'admin2')
+        self.assertEqual(response_content['participants'][0]['advanced'],0)
+
+    def test_admin_advanced_Two(self):
+        user_info={
+            "username": "admin3", 
+            "password": "ccp"            
+        }
+        response = self.c.post('/api/user/login',json.dumps(user_info),content_type="application/json")
+        comp_info = {
+            "contestid": self.contestId_personal,
+            "region":{
+                "province" : "北京",
+                "city" : "北京"                
+                },
+            "university" : "清华大学",
+            "groupuser" : [],
+            "custom_field" : ["1"],
+            "custom_value" : ['1'],
+            }            
+        response = self.c.post('/api/competition/enroll',json.dumps(comp_info),content_type="application/json")
+        user_info={
+            'username':"admin",
+            "password":"ccp"
+        }
+        response = self.c.post('/api/user/login',json.dumps(user_info),content_type="application/json")   
+        comp_info={
+            'contestid':self.contestId_personal,
+            "target":0,
+            "participants":['admin3']
+        }
+        response = self.c.post('/api/admin/setadvanced',json.dumps(comp_info),content_type="application/json")
+        comp_info={
+            "contestid":self.contestId_personal,
+            "target": -1            
+        }
+        response = self.c.post('/api/admin/advanced',json.dumps(comp_info),content_type="application/json")
+        response_content = response.content.decode()
+        response_content = json.loads(response_content)
+        self.assertEqual(response_content['msg'],'')
+        self.assertEqual(len(response_content['participants']),2)
+        self.assertEqual(response_content['participants'][0]['username'],'admin2')
+        self.assertEqual(response_content['participants'][0]['advanced'],0)
+        self.assertEqual(response_content['participants'][1]['username'],'admin3')
+        self.assertEqual(response_content['participants'][1]['advanced'],1)
+
+    def test_admin_advanced_notadmin(self):
+        comp_info={
+            "contestid":self.contestId_personal,
+            "target": -1            
+        }
+        response = self.c.post('/api/admin/advanced',json.dumps(comp_info),content_type="application/json")
+        response_content = response.content.decode()
+        response_content = json.loads(response_content)
+        self.assertEqual(response_content['msg'],'非管理员不能获取选手名单')
+
+    def test_admin_advanced_compNotexist(self):
+        comp_info={
+            "contestid":self.contestId_group+1          
+        }
+        response = self.c.post('/api/admin/advanced',json.dumps(comp_info),content_type="application/json")
+        response_content = response.content.decode()
+        response_content = json.loads(response_content)
+        self.assertEqual(response_content['msg'],'比赛不存在')
+
+
+
+
+
+
+
 

@@ -635,7 +635,70 @@ class api_user_competiton_start_Test(TestCase):
         response = c.post('/api/competition/create',json.dumps(comp_info),content_type="application/json")
         response_content = response.content.decode()
         response_content = json.loads(response_content)
-        self.assertEqual(response_content['msg'], 'Too much fields.')
+        self.assertEqual(response_content['msg'], '填写的时间不全')
+
+        def test_createcompetition_group_Superuser(self):
+        c = Client()
+        user_info={
+            "username": "super_admin", 
+            "password": "ccp"            
+        }
+        response = c.post('/api/user/login',json.dumps(user_info),content_type="application/json")        
+        comp_info = {
+            "basicinfo": {
+                "name" : "快乐肥宅大赛",
+                "holders" : ["快乐肥宅","快乐肥宅1","快乐肥宅2","快乐肥宅3"],
+                "sponsors" : [],
+                "comtype" : "趣味比赛",
+                "details" : "hhhhhhhh"
+                },
+            "signupinfo": {
+                "time" : ["2018-12-30T12:10:00.000Z","2019-12-30T12:10:00.000Z"],
+                "mode" : 0,
+                "person" : [],
+                "group" : ["1","2","3","4"],
+            },
+            "stageinfo":
+                [{"name" : "1",
+                "details" : "details",
+                "stageTimeBegin": "2018-12-20T12:10:00.000Z",
+                "handTimeEnd" : "2018-12-30T12:10:00.000Z",
+                "evaluationTimeEnd" : "2018-12-30T12:10:00.000Z",
+                "zone":0,     
+                "mode" : 0},
+                {"name" : "2",
+                "details" : "details",
+                "stageTimeBegin": "2018-12-20T12:10:00.000Z",
+                "handTimeEnd" : "2018-12-30T12:10:00.000Z",
+                "evaluationTimeEnd" : "2018-12-30T12:10:00.000Z",
+                "zone":0,     
+                "mode" : 0},
+                {"name" : "3",
+                "details" : "details",
+                "stageTimeBegin": "2018-12-20T12:10:00.000Z",
+                "handTimeEnd" : "2018-12-30T12:10:00.000Z",
+                "evaluationTimeEnd" : "2018-12-30T12:10:00.000Z",
+                "zone":0,     
+                "mode" : 0},
+                {"name" : "4",
+                "details" : "details",
+                "stageTimeBegin": "2018-12-20T12:10:00.000Z",
+                "handTimeEnd" : "2018-12-30T12:10:00.000Z",
+                "evaluationTimeEnd" : "2018-12-30T12:10:00.000Z",
+                "zone":0,     
+                "mode" : 0},
+                {"name" : "5",
+                "details" : "details",
+                "stageTimeBegin": "2018-12-20T12:10:00.000Z",
+                "handTimeEnd" : "2018-12-30T12:10:00.000Z",
+                "evaluationTimeEnd" : "2018-12-30T12:10:00.000Z",
+                "zone":0,     
+                "mode" : 0}]
+        }
+        response = c.post('/api/competition/create',json.dumps(comp_info),content_type="application/json")
+        response_content = response.content.decode()
+        response_content = json.loads(response_content)
+        self.assertEqual(response_content['msg'], '超级用户不能创建比赛')
 
     def test_user_uploadimg(self):
     	c=Client()
@@ -657,8 +720,6 @@ class api_user_competiton_start_Test(TestCase):
         response_content = response.content.decode()
         response_content = json.loads(response_content)
         self.assertEqual(response_content['msg'], '')
-        self.assertEqual(response_content['url'],'')
-        ?????????????
 
     def test_user_uploadimg_imgnotexist(self):
     	c=Client()
@@ -679,9 +740,13 @@ class api_user_competiton_start_Test(TestCase):
         response = c.post('/api/user/uploadimg',json.dumps(user_info),content_type="application/json")
         response_content = response.content.decode()
         response_content = json.loads(response_content)
-        self.assertEqual(response_content['msg'], '')
-        self.assertEqual(response_content['url'],'')
-        ?????????????
+        self.assertEqual(response_content['msg'], 'File not found.')
+
+    def test_info_about(self):
+    	c=Client()
+        response = c.post('/api/info/about')
+        self.assertEqual(response.status_code,200)
+    
 
 
 
