@@ -254,7 +254,7 @@
         },
         data() {
             return{
-                img_url:require('../../assets/img/logo.png'),
+                img_url:'',
                 activeName: '1',
                 competition:{
                     participated_competition:[],
@@ -316,11 +316,23 @@
                   this.competition = response.data.competition;
                   this.person = response.data.person;
                   this.new_person = this.person;
+                })
+                .catch(function (error) {
+                    self.$message({
+                        message:'获取个人信息失败！',
+                        type:'error'
+                    });
                 });
             axios.post('/api/message/getall',{pageNum:this.message_list.current_page_num})
                 .then(response=>{
                     this.message_list = response.data;
+                })
+                .catch(function (error) {
+                self.$message({
+                    message:'获取消息失败！',
+                    type:'error'
                 });
+            });
         },
         methods:{
             UpdateMenu:function (index) {

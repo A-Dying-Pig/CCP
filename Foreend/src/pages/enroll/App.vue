@@ -16,25 +16,25 @@
 
         <el-row :gutter="0">
           <el-col :span="8" :offset="9">
-            <RegionPicker @new-region="UpdateRegion"></RegionPicker>
-          </el-col>
-        </el-row>
-
-        <el-row :gutter="0">
-          <el-col :span="8" :offset="9">
             <UniversityPicker @new-university="UpdateUniversity"></UniversityPicker>
           </el-col>
         </el-row>
 
+        <el-row :gutter="0">
+          <el-col :span="12" :offset="6">
+            <el-input type="text" v-model="phone_number" autocomplete="off">
+              <span slot="prepend">联系电话</span>
+            </el-input>
+          </el-col>
+        </el-row>
+
+
         <div v-if="enroll_table.comp_type === 0" class="group_enroll">
-
-          <el-row :gutter="0">
-            <div class="enroll-info-spliter"> -----组队赛信息-----</div>
-          </el-row>
-
           <el-row :gutter="0">
             <el-col :span="12" :offset="6">
-              <div>队伍名称<el-input type="text"  v-model="group_info.group_name" autocomplete="off"></el-input></div>
+              <el-input type="text"  v-model="group_info.group_name" autocomplete="off">
+                <span slot="prepend">队伍名称</span>
+              </el-input>
             </el-col>
           </el-row>
 
@@ -50,9 +50,9 @@
 
         <div v-else class="person_enroll">
 
-          <el-row :gutter="0" class="enroll-info-spliter">
-            <el-col :span="12" :offset="6"> -----个人赛信息-----</el-col>
-          </el-row>
+          <!-- <el-row :gutter="0" class="enroll-info-spliter"> -->
+          <!--  <el-col :span="12" :offset="6"> -----个人赛信息-----</el-col> -->
+          <!-- </el-row> -->
 
         </div>
 
@@ -64,7 +64,9 @@
         <div class="extra_info">
           <el-row :gutter="0" v-for="(item,index) in enroll_table.extra" :key="index">
             <el-col :span="12" :offset="6">
-              <div>{{item}}<el-input type="text"  v-model="extra_info[index]" autocomplete="off"></el-input></div>
+              <el-input type="text"  v-model="extra_info[index]" autocomplete="off">
+                <span slot="prepend">{{item}}</span>
+              </el-input>
             </el-col>
           </el-row>
         </div>
@@ -122,6 +124,7 @@
                     city:''
                 },
                 university:'',
+                phone_number:'',
                 //group info
                 group_info:{
                     group_name:'',
@@ -163,20 +166,29 @@
             SubmitEnroll:function () {
                 //Check Input
                 //essential info
-                //region
-                if(this.region.province.length === 0 || this.region.city.length === 0){
-                    this.$message({
-                        message: "详细地址不能为空!",
-                        type: 'error'
-                    });
-                    return;
-                }
                 if(this.university.length === 0){
                     this.$message({
                         message: "所在大学不能为空!",
                         type: 'error'
                     });
                     return;
+                }
+
+                if(this.phone_number.length === 0){
+                    this.$message({
+                        message: "联系电话不能为空!",
+                        type: 'error'
+                    });
+                    return;
+                }
+                else{
+                    if(! /\d{11}/.test(this.phone_number)){
+                        this.$message({
+                            message: "联系电话格式错误!",
+                            type: 'error'
+                        });
+                        return;
+                    }
                 }
 
                 //group info
@@ -226,8 +238,8 @@
                 enroll_info.custom_value = this.extra_info;
                 enroll_info.contestid = this.competition_id
                 enroll_info.username = this.m_username;
-                enroll_info.region = this.region;
                 enroll_info.university = this.university;
+                enroll_info.phone_number = this.phone_number;
                 console.log(enroll_info);
                 axios.post('/api/competition/enroll',enroll_info)
                     .then(response=>{
@@ -259,7 +271,7 @@
             },
             UpdateUniversity:function (data) {
                 this.university = data;
-            }
+            },
         }
     }
 </script>

@@ -37,7 +37,7 @@
             </div>
         </div>
 
-        <el-pagination
+        <el-pagination v-if="onedis.total_page_num > 0"
                     layout="prev, pager, next"
                     :current-page="onedis.current_page_num"
                     :page-count="onedis.total_page_num"
@@ -46,6 +46,10 @@
                     @next-click="PageNext"
                     class="discussion-page">
         </el-pagination>
+
+        <div class="no-reply-yet">
+            还没有回复，快来抢沙发~
+        </div>
 
         <div class="discussion-own-reply">
             <div class="discussion-reply-title">
@@ -166,7 +170,6 @@
                         contestid: this.contestid,
                         discussionid: this.showtype.discussionid,
                         content: this.the_reply,
-                        replytime: new Date()
                     })
                     .then(response => {
                         if (response.data.msg !== '') {
@@ -182,6 +185,7 @@
                                 message: `回帖成功`,
                                 type: 'success'
                             });
+                            vm.CurrentPageChange(this.onedis.current_page_num);
                         }
                     })
                     .catch(error => {
@@ -252,4 +256,13 @@
     margin-bottom: 20px;
     text-align: center;
 }
+
+.no-reply-yet{
+    margin-top: 20px;
+    color: gray;
+    margin-bottom: 20px;
+    text-align: center;
+
+}
+
 </style>

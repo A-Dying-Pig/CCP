@@ -7,8 +7,7 @@
         <div class="person-center-photo-btn">
             <el-upload
                     action=""
-                    :show-file-list="true"
-                    :on-success="UploadSuccess"
+                    :show-file-list="false"
                     :before-upload="BeforeUpload"
                     :http-request="SubmitUpload">
                 <el-button size="small" type="primary">点击上传头像</el-button>
@@ -33,12 +32,8 @@
                 default:'',
             },
             max_size:{
-                default:1,
+                default:2,
             },
-            uploadurl:{
-                default:'/api/user/uploadimg'
-            }
-
         },
         data:function(){
             return{
@@ -55,7 +50,7 @@
                         type: 'error'
                     });
                 }
-                if (isLtM){
+                if (!isLtM){
                     this.$message({
                         message: `上传头像图片大小不能超过 ${this.max_size} MB!`,
                         type: 'error'
@@ -63,15 +58,12 @@
                 }
                 return isTYPE && isLtM;
             },
-            UploadSuccess:function () {
-
-            },
             SubmitUpload:function (param) {
                 let fileobj = param.file;
                 let self = this;
                 let fd = new FormData();
                 fd.append('file',fileobj);
-                axios.post(self.uploadurl,fd,{
+                axios.post('/api/user/uploadimg',fd,{
                 }).then(function (response) {
                     let msg = response.data.msg;
                     if(msg !== ''){
@@ -81,7 +73,7 @@
                         });
                     }
                     else{
-                        this.$message({
+                        self.$message({
                             message: '上传图片成功',
                             type: 'success'
                         });

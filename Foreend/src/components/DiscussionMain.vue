@@ -1,6 +1,7 @@
 <template>
     <div>
-        <DiscussionList v-show="showtype.show === 0" :contestid="contestid" :showtype="showtype" :current_page_num="current_page_num" :total_page_num="total_page_num" :disdatap="disdata" :width="width" :onedis="onedis"></DiscussionList>
+        <DiscussionList v-show="showtype.show === 0" :contestid="contestid" :showtype="showtype" :current_page_num="current_page_num" :total_page_num="total_page_num" :disdatap="disdata" :width="width" :onedis="onedis"
+        @new-onedis="update_onedis"></DiscussionList>
         <DiscussionOnepage v-show="showtype.show === 1" :showtype="showtype" :contestid="contestid" :onedis="onedis"></DiscussionOnepage>
         <DiscussionWrite v-show="showtype.show === 2" :showtype="showtype" :contestid="contestid"></DiscussionWrite>
     </div>
@@ -64,6 +65,12 @@
         },
         mounted:function () {
             let self = this;
+        },
+        methods:{
+            update_onedis:function (data) {
+                this.onedis = data;
+            }
+
         }
     }
 </script>

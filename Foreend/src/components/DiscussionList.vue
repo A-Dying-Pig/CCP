@@ -74,10 +74,6 @@
                 Type:Array,
                 default:[]
             },
-            onedis:{
-                Type:Object,
-                default:{}
-            },
             contestid:{
                 Type:Number,
                 default:-1
@@ -95,7 +91,6 @@
                 this.isshowList.show = 1;
                 this.showtype.discussionid = row.discussionid;
                 //get one discussion
-                console.log(self.onedis.title);
                 axios.post('/api/competition/discussion',{
                     contestid:self.contestid,
                     discussionid:row.discussionid,
@@ -108,7 +103,8 @@
                         });
                         return
                     }
-                    self.onedis = response.data;
+                    //self.onedis = response.data;
+                    self.$emit('new-onedis',response.data);
                 }).catch(function (error) {
                     self.$message({
                         message:'获取帖子信息错误！',
@@ -120,7 +116,7 @@
                 this.isshowList.show = 2;
             },
             handleCurrentChange:function (pagenum) {
-                console.log(pagenum);
+                //console.log(pagenum);
                 this.getdata(pagenum);
             },
             timeformat:function (stamp) {

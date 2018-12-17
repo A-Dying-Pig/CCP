@@ -335,7 +335,7 @@
                                 message: `设置晋级选手成功!`,
                                 type: 'success'
                             });
-                            vm.already = 0;
+                            vm.already = vm.advanced_number;
                         }
                     });
             },
@@ -433,7 +433,7 @@
                 axios.post('/api/admin/setnewgrade ',
                     {
                         contestid:this.contestid,
-                        username:this.username,
+                        username:this.current_page_participants[this.new_grade_index].username,
                         grade:this.new_grade_mark,
                         reason:this.new_grade_reason
                     })
