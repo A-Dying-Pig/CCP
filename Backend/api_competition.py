@@ -277,6 +277,10 @@ def detail(request):
         basicinfo['sponsors'] = contest.organizers.split('\n')
         basicinfo['comtype'] = contest.category
         basicinfo['details'] = contest.information
+        phase = ContestUtil.getCurrentPhase(contest.id)['phase']
+        if phase == 0:
+            phase = 1
+        basicinfo['judgebegin'] = getattr(contest, 'phase_judge_start'+str(phase))
 
         info['signupinfo'] = {}
         signupinfo = info['signupinfo']

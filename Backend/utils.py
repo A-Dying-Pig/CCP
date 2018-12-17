@@ -177,6 +177,7 @@ class ContestUtil:
             traceback.print_exc()
             return -1
 
+
 class ContestPlayerUtil:
     @classmethod
     def getInfo(cls, cp_obj, index):
@@ -243,8 +244,11 @@ class ContestGradeUtil:
                     break
                 total_grade = total_grade + obj.grade
                 phase_judges = phase_judges + 1
-            phase_grade = total_grade / phase_judges
-            result.append(phase_grade)
+            if phase_judges == 0:
+                result.append(0)
+            else:
+                phase_grade = total_grade / phase_judges
+                result.append(phase_grade)
             index = index + 1
         return result
 
