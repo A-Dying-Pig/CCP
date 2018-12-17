@@ -45,6 +45,7 @@
                         sponsors:[''],
                         comtype:'',
                         details:"222",
+                        beginjudgebutton:false
                     },
                     signupinfo:{
                         time:[1542593167172,1542593267172],
@@ -197,32 +198,46 @@
                         });
                     }
                 }
-                else if(self.type===3){
+                else if(self.type===3) {
                     self.showlist.push({
-                        value:'infochange',
-                        label:'修改信息'
+                        value: 'infochange',
+                        label: '修改信息'
                     });
                     self.showlist.push({
-                        value:'participantstable',
-                        label:'选手信息'
+                        value: 'participantstable',
+                        label: '选手信息'
                     });
                     self.showlist.push({
-                        value:'judgelist',
-                        label:'评委信息'
+                        value: 'judgelist',
+                        label: '评委信息'
                     });
                     let showadvance = true;
                     let begin = self.info.signupinfo.time[1];
-                    for(let stage of self.info.stageinfo){
-                        if((now>begin)&&(now<stage.stageTimeBegin)){
+                    for (let stage of self.info.stageinfo) {
+                        if ((now > begin) && (now < stage.stageTimeBegin)) {
                             showadvance = true;
                         }
                         begin = stage.evaluationTimeEnd;
                     }
-                    if(showadvance){
+                    if (showadvance) {
                         self.showlist.push({
-                            value:'advancedparticipants',
-                            label:'设置晋级选手名单'
+                            value: 'advancedparticipants',
+                            label: '设置晋级选手名单'
                         });
+                    }
+                    if(self.info.basicinfo.judgebegin === false){
+                    let showjudgebegin = true;
+                    for (let stage of self.info.stageinfo) {
+                        if ((now > stage.handTimeEnd) && (now < stage.evaluationTimeEnd)) {
+                            showjudgebegin = true;
+                        }
+                    }
+                    if (showjudgebegin) {
+                        self.info.basicinfo.beginjudgebutton = true;
+                    }
+                    else {
+                        self.info.basicinfo.beginjudgebutton = false;
+                    }
                     }
                 }
 

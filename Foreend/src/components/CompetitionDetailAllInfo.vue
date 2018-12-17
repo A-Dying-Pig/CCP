@@ -27,6 +27,11 @@
                             </template>
                         </el-steps>
                     </el-row>
+                    <el-row :gutter="20" v-if="info.basicinfo.beginjudgebutton">
+                        <el-col>
+                            <p>比赛已经进入评测阶段，请点击<el-button @click="assignproject" type="primary">分配作品</el-button>自动为每位评委分配作品</p>
+                        </el-col>
+                    </el-row>
                 </el-card>
             </el-col>
         </el-row>
@@ -77,6 +82,30 @@
             },
             clicksign:function () {
                 location.href="/enroll?contestid="+this.contestid;
+            },
+            assignproject:function () {
+                let self = this;
+                axios.post('/api/admin/alloc',{
+                    contestid:self.contestid
+                }).then(function (response) {
+                    if(response.data.msg!==''){
+                        self.$message({
+                            message:response.data.msg,
+                            type:'error'
+                        })
+                    }
+                    else {
+                        self.$message({
+                            message:'评委分配成功！',
+                            type:'success'
+                        })
+                    }
+                }).catch(function (error) {
+                    self.$message({
+                        message:'评委分配失败！',
+                        type:'error'
+                    })
+                })
             }
         },
         created:function () {
