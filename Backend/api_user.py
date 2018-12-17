@@ -10,6 +10,7 @@ from .utils import *
 import shutil
 import traceback
 import datetime
+from django.db.models import Q
 
 def register(request):
     data = json.loads(request.body.decode('utf-8'))
@@ -55,13 +56,20 @@ def profile(request):
             return JsonResponse({'msg': '请先登录'})
         id = request.user.id
         img_url = '/resources/users/' + str(id) + '/'
-        if os.path.isdir(img_url):
+        if os.path.isdir(RESOURCE_BASE_DIR + img_url):
             all_files = os.listdir(RESOURCE_BASE_DIR + img_url)
             if len(all_files) > 0:
                 img_url = img_url + all_files[0]
         competition = {}
         participated = ContestPlayer.objects.filter(player_id=id)
         competition['participated_competition'] = []
+        for contest in participated:
+            competition['participated_competition'].append({
+                'title': Contest.objects.get(id=contest.contest_id).title,
+                'url': '/detail?contestid=' + str(contest.contest_id),
+            })
+        participated = ContestGroup.objects.filter(Q(leader_id=request.user.id) | Q(member1_id=request.user.id) |
+                              Q(member2_id=request.user.id) | Q(member3_id=request.user.id) | Q(member4_id=request.user.id))
         for contest in participated:
             competition['participated_competition'].append({
                 'title': Contest.objects.get(id=contest.contest_id).title,
