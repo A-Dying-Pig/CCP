@@ -61,6 +61,11 @@ class Contest(models.Model):
     phase_region_mode3 = models.IntegerField(default=0)
     phase_region_mode4 = models.IntegerField(default=0)
     phase_region_mode5 = models.IntegerField(default=0)
+    phase_judge_start1 = models.BooleanField(default=False)  # 是否开始评测
+    phase_judge_start2 = models.BooleanField(default=False)
+    phase_judge_start3 = models.BooleanField(default=False)
+    phase_judge_start4 = models.BooleanField(default=False)
+    phase_judge_start5 = models.BooleanField(default=False)
     admin_id = models.IntegerField()  # 比赛管理员User表里的id
     host1 = models.CharField(max_length=32)  # 主办方
     host2 = models.CharField(max_length=32, blank=True, null=True)

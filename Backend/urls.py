@@ -45,6 +45,8 @@ urlpatterns = [
     path('admin/setadvanced', admin.setadvanced),
     path('admin/judgelist', admin.judgelist),
     path('admin/getsubmitnum', admin.getSubmitNum),
+    path('admin/setnewgrade', admin.setnewgrade),
+    path('admin/allot', admin.allot),
     path('judge/getone', judge.getone),
     path('judge/submit', judge.submit),
     path('judge/finished', judge.finished),

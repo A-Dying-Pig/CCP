@@ -1,6 +1,7 @@
 from .models import *
 from django.http import HttpResponse,JsonResponse
 from django.contrib.auth.decorators import login_required
+from django.db.models import Avg
 import json
 from .utils import *
 from datetime import datetime
@@ -385,19 +386,19 @@ def advanced(request):
     res = {}
     res['msg'] = ''
     res['already'] = 0
-    participants = []
+    res['participants'] = []
     phase = ContestUtil.getCurrentPhase(contestid)['phase']
     try:
-        Submitted.objects.get(contest_id=contestid, phase=phase+1, zone_id=target)
+        res['already'] = Submitted.objects.get(contest_id=contestid, phase=phase+1, zone_id=target).advanced
     except:
-        res['already'] = 1
+        res['already'] = -1
     result = ContestGrade.objects.filter(contest_id=contestid).values('leader_id').annotate(average_rating=Avg('grade')).order_by('-average_rating')
     for row in result:
         dic = {}
-        user = CCPUser.objects.filter(id=row.leader_id)[0]
+        user = CCPUser.objects.filter(id=row['leader_id'])[0]
         dic['username'] = user.username
         dic['university'] = user.university
-        dic['grade'] = row.average_rating
+        dic['grade'] = row['average_rating']
         try:
             oldgrade = OldGrade.objects.get(leader_id=user.id, contest_id=contestid, phase=phase)
             dic['oldgrade'] = oldgrade.oldgrade
@@ -442,10 +443,10 @@ def setadvanced(request):
     # need to be checked carefully
     phase = ContestUtil.getCurrentPhase(contestid)['phase']
 
-    result = ContestGrade.objects.filter(contest_id=contestid).values('leader_id').annotate(average_rating=Avg('grade')).order_by('-average_rating')[:k]
+    result = ContestGrade.objects.filter(contest_id=contestid).values('leader_id').annotate(average_rating=Avg('grade')).order_by('-average_rating')[:advanced]
     for p in result:
         contestgrade = ContestGrade()
-        leader_id = p.leader_id
+        leader_id = p['leader_id']
         contestgrade.leader_id = leader_id
         contestgrade.contest_id = contestid
         contestgrade.phase = phase
@@ -458,7 +459,7 @@ def setadvanced(request):
     submit.save()
     res = {}
     res['msg'] = ''
-    return res
+    return JsonResponse(res)
 
 def getSubmitNum(request):
     try:
@@ -473,10 +474,88 @@ def getSubmitNum(request):
             return JsonResponse({'msg': '比赛不存在'})
         if contest.admin_id != request.user.id:
             return JsonResponse({'msg': '当前用户不是本比赛管理员'})
-        phase = ContestUtil.getCurrentPhase(contest_id)
+        phase = ContestUtil.getCurrentPhase(contest_id)['phase']
         result['submitnum'] = ContestGrade.objects.filter(contest_id=contest_id, phase=phase, work_name__isnull=False).count()
         result['allnum'] = ContestGrade.objects.filter(contest_id=contest_id, phase=phase).count()
         return JsonResponse(result)
     except:
         traceback.print_exc()
         return JsonResponse({'msg': '未知错误'})
+
+def allot_work(contest_id, phase, timesperpiece):
+    contest = Contest.objects.get(id=contest_id)
+    mode = getattr(contest, 'phase_region_mode' + str(phase))
+    if mode == ContestUtil.NON_REGION:
+        array = ContestGrade.objects.filter(contest_id=contest_id, phase=phase)
+        leader_id = []
+        for row in array:
+            leader_id.append(row.leader_id)
+        leader_id = random.shuffle(leader_id)
+        ContestGrade.objects.filter(contest_id=contest_id, phase=phase).delete()
+        judge_id = []
+        array = ContestJudge.objects.filter(contest_id=contest_id)
+        for row in array:
+            judge_id.append(row.judge_id)
+        
+        num = len(judge_id)
+        i = 0
+        for j in range(len(leader_id)):
+            for k in range(timesperpiece):
+                contestgrade = ContestGrade()
+                contestgrade.leader_id = leader_id[j]
+                contestgrade.contest_id = contest_id
+                contestgrade.phase = phase
+                contestgrade.judge_id = judge_id[i]
+                i = (i + 1) % num
+                contestgrade.save()
+    else:
+        with open('zone.json', 'r', encoding='utf8') as f:
+            d = json.load(f)
+        if mode == ContestUtil.BIG_REGION:
+            zonelist = d['region']
+        else:
+            zonelist = d['province']
+        array = ContestGrade.objects.filter(contest_id=contest_id, phase=phase)
+        leader_id = []
+        for row in array:
+            leader_id.append(row.leader_id)
+        leader_id = random.shuffle(leader_id)
+        ContestGrade.objects.filter(contest_id=contest_id, phase=phase).delete()
+        judge_id = []
+        array = ContestJudge.objects.filter(contest_id=contest_id)
+        for row in array:
+            judge_id.append(row.judge_id)
+        
+        for zone in zonelist:
+            playeridzone = []
+            for i in leader_id:
+                contestplayer = ContestPlayer.objects.get(player_id=i)
+                region = getattr(contestplayer, 'phase_region' + str(phase))
+                if zone == region:
+                    playeridzone.append(i)
+            judgeidzone = []
+            for i in judge_id:
+                contestjudge = ContestJudge.objects.get(judge_id=i)
+                region = getattr(contestjudge, 'phase_region' + str(phase))
+                if zone == region:
+                    judgeidzone.append(i)
+
+            num = len(judgeidzone)
+            i = 0
+            for j in range(len(playeridzone)):
+                for k in range(timesperpiece):
+                    contestgrade = ContestGrade()
+                    contestgrade.leader_id = playeridzone[j]
+                    contestgrade.contest_id = contest_id
+                    contestgrade.phase = phase
+                    contestgrade.judge_id = judgeidzone[i]
+                    i = (i + 1) % num
+                    contestgrade.save()
+
+def allot(request):
+    data = json.loads(request.body.decode('utf-8'))
+    contest_id = data['contestif']
+    judgenum = data['judgenum']
+    phase = ContestUtil.getCurrentPhase(contest_id)['phase']
+    allot_work(contest_id, phase, judgenum)
+
