@@ -41,18 +41,6 @@
                         author:'你好我叫雷怡然',
                         issuetime:1234567891234,
                         array:[
-                            {
-                                imgurl:require('../assets/img/logo.png'),
-                                username:'Flying Donut',
-                                content:"You are right",
-                                time:1234567891011,
-                            },
-                            {
-                                imgurl:require('../assets/img/logo.png'),
-                                username:'Flying Donut2',
-                                content:"You are right2",
-                                time:3234567891011,
-                            }
                         ]
                 }
             }

@@ -93,6 +93,7 @@
 .user-name{
     font-weight:bold;
     font-size:20px;
+    text-align: left;
 }
 .user-other{
     color:gray;

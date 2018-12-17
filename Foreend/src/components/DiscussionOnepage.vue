@@ -47,7 +47,7 @@
                     class="discussion-page">
         </el-pagination>
 
-        <div class="no-reply-yet">
+        <div v-else class="no-reply-yet">
             还没有回复，快来抢沙发~
         </div>
 
@@ -111,8 +111,10 @@
                 this.isshowList.show = 0;
             },
             CurrentPageChange:function (cur_page) {
+                console.log(cur_page);
                 this.onedis.current_page_num = cur_page;
                 let self = this;
+                console.log(self.onedis.current_page_num);
                 axios.post('/api/competition/discussion',{
                     contestid:self.contestid,
                     discussionid:self.showtype.discussionid,
@@ -179,13 +181,12 @@
                             });
                         }
                         else {
-                            vm.onedis = response.data;
                             vm.the_reply = '';
                             vm.$message({
                                 message: `回帖成功`,
                                 type: 'success'
                             });
-                            vm.CurrentPageChange(this.onedis.current_page_num);
+                            vm.CurrentPageChange(vm.onedis.current_page_num);
                         }
                     })
                     .catch(error => {
