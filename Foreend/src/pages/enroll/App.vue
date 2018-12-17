@@ -84,7 +84,6 @@
 
 <script>
     import NavigationBar from '../../components/NavigationBar'
-    import RegionPicker from '../../components/RegionPicker'
     import GroupUser from '../../components/GroupUser'
     import UniversityPicker from '../../components/UniversityPicker'
     import axios from 'axios'
@@ -141,7 +140,6 @@
         },
         components: {
             NavigationBar,
-            RegionPicker,
             GroupUser,
             UniversityPicker,
         },
