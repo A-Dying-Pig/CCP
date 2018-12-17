@@ -88,7 +88,7 @@
                     }
                 }
                 if(!flag) return;
-                //TODO put check here
+                //put check here
                 if(this.allinfo.basicinfo.img === ''){
                     alert('需要提交比赛图片！');
                     return

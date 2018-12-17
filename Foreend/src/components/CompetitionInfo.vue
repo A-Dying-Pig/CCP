@@ -73,7 +73,8 @@
                                 :action="'/api/competition/uploadimg'"
                                 :show-file-list="false"
                                 :on-success="handleAvatarSuccess"
-                                :before-upload="beforeAvatarUpload">
+                                :before-upload="beforeAvatarUpload"
+                                :http-request="Uploadimg">
                             <img v-if="info.img" :src="info.img" class="avatar">
                             <i v-else class="el-icon-plus avatar-uploader-icon"></i>
                         </el-upload>
@@ -97,7 +98,7 @@
             <el-row>
                 <el-col>
                 <el-form-item label="报名起止时间" prop="time">
-                    <el-date-picker :disabled="inputisable.signupinfo" v-model="info.time" type="datetimerange" start-placeholder="报名开始时间" end-placeholder="报名结束时间" :default-time="['00:00:00','23:59:59']"></el-date-picker>
+                    <el-date-picker :disabled="inputisable.signupinfo" v-model="info.time" type="datetimerange" start-placeholder="报名开始时间" end-placeholder="报名结束时间" :default-time="['00:00:00','01:00:00']"></el-date-picker>
                 </el-form-item>
                 </el-col>
             </el-row>
@@ -177,6 +178,13 @@
 import Vue from 'vue'
 import 'element-ui/lib/theme-chalk/index.css'
 import ElementUI from 'element-ui'
+import axios from 'axios'
+
+axios.defaults.xsrfHeaderName = "X-CSRFToken";
+axios.defaults.headers.common = {
+    'X-CSRFToken':document.querySelector('#csrf-token input').value,
+    'X-Requested-With': 'XMLHttpRequest'
+};
 Vue.use(ElementUI);
 
 import CompetitonStage from './CompetitonStage'
@@ -326,6 +334,34 @@ export default {
                 this.$message.error('上传头像图片大小不能超过 2MB!');
             }
             return isJPG && isLt2M;
+        },
+        Uploadimg:function(param){
+            let fileobj = param.file;
+            let self = this;
+            let fd = new FormData();
+            fd.append('file',fileobj);
+            axios.post('/api/competition/uploadimg',fd,{
+            }).then(function (response) {
+                let msg = response.data.msg;
+                if(msg!==''){
+                    self.$message({
+                        message:'上传'+fileobj.name+'失败！',
+                        type:'error'
+                    });
+                }
+                else {
+                    self.$message({
+                        message:'上传'+fileobj.name+'成功！',
+                        type:'success'
+                    });
+                    self.info.img = response.data.url;
+                }
+            }).catch(function (error) {
+                self.$message({
+                    message:'上传'+fileobj.name+'失败！',
+                    type:'error'
+                });
+            });
         }
     },
     created:function () {

@@ -5,7 +5,7 @@
         <el-table-column label="文件大小" prop="size"></el-table-column>
         <el-table-column>
             <template slot-scope="scope">
-                <a download="file.txt" :href="scope.row.url"><el-button size="mini">下载</el-button></a>
+                <a :download="scope.row.name" :href="scope.row.url"><el-button size="mini">下载</el-button></a>
             </template>
         </el-table-column>
 

@@ -2,6 +2,11 @@
     <div>
         <el-row type="flex" justify="center">
             <el-col>
+                本阶段共有{{ allnum }}组报名，已有{{ submitnum }}份提交。
+            </el-col>
+        </el-row>
+        <el-row type="flex" justify="center">
+            <el-col>
                 <el-table :data="tableinfo" border style="width: 100%;">
                     <el-table-column prop="name" label="名称" fixed></el-table-column>
                     <el-table-column v-if="mode == 1" prop="email" label="邮箱"></el-table-column>
@@ -45,6 +50,8 @@
                 total_page_num:-1,
                 tableinfo:[],
                 tableheader:[],
+                allnum:0,
+                submitnum:0,
             }
         },
         methods:{
@@ -149,7 +156,7 @@
                     name:'chengyuan1',
                     email:'1email'
                 }]
-            }]
+            }];
             self.tableheader=[];
             self.tableheader.push('名称');
             //self.tableheader.push('邮箱');
@@ -160,7 +167,25 @@
             self.tableheader.push('成员0邮箱');
             self.tableheader.push('成员1姓名');
             self.tableheader.push('成员1邮箱');
-
+            axios.post('/api/admin/getsubmitnum',{
+                contestid:self.contestid
+            }).then(function (response) {
+                if(response.data.msg!==''){
+                    self.$message({
+                        message:response.data.msg,
+                        type:'error'
+                    });
+                    return;
+                }
+                self.allnum = response.data.allnum;
+                self.submitnum = response.data.submitnum;
+            }).catch(function (error) {
+                self.$message({
+                    message:'获取报名情况错误！',
+                    type:'error'
+                });
+                return;
+            });
             axios.post('/api/admin/participants',{
                 contestid:self.contestid,
                 pageNum:1,
