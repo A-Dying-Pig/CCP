@@ -113,7 +113,11 @@ def list(request):
         d['title'] = c.title
         d['intro'] = c.brief_introduction
         d['contestid'] = c.id
-        d['img_url'] = '/static/img' + str(c.id) + '.jpg'
+        tmp_path = '/resources/contests/' + str(c.id) + '/img/'
+        files = os.listdir(RESOURCE_BASE_DIR + tmp_path)
+        for file in files:
+            tmp_path = tmp_path + file
+        d['img_url'] = tmp_path
         array.append(d)
     total_page_num = (count - 1) // amount + 1
     return JsonResponse({
@@ -128,8 +132,12 @@ def slider(request):
         context = []
         contests = Slider.objects.all()
         for contest in contests:
+            tmp_path = '/resources/contests/' + str(contest.id) + '/img/'
+            files = os.listdir(RESOURCE_BASE_DIR + tmp_path)
+            for file in files:
+                tmp_path = tmp_path + file
             context.append({'url': '/detail?contestid=' + str(contest.contest_id),
-                            'img_url': '/static/img/' + str(contest.contest_id) + '.jpg'})
+                            'img_url': tmp_path})
         result = {
             'array': context,
             'msg': ''
@@ -144,9 +152,14 @@ def hot(request):
         context = []
         contests = HotContest.objects.all()
         for contest in contests:
+            tmp_path = '/resources/contests/' + str(c.id) + '/img/'
+            files = os.listdir(RESOURCE_BASE_DIR + tmp_path)
+            for file in files:
+                tmp_path = tmp_path + file
+            d['img_url'] = tmp_path
             context.append({
                 'url': 'detail?contestid=' + str(contest.contest_id),
-                'img_url': '/static/img/' + str(contest.contest_id) + '.jpg',
+                'img_url': tmp_path,
                 'intro': contest.brief_introduction,
                 'title': contest.brief_introduction
             })
@@ -235,7 +248,7 @@ def create(request):
         setattr(contest, 'phase_start_time' + str(index + 1), datetime.strptime(stageinfo[index]['stageTimeBegin'], "%Y-%m-%dT%H:%M:%S.000Z").replace(tzinfo=pytz.utc))
         setattr(contest, 'phase_hand_end_time' + str(index + 1), datetime.strptime(stageinfo[index]['handTimeEnd'],"%Y-%m-%dT%H:%M:%S.000Z").replace(tzinfo=pytz.utc))
         setattr(contest, 'phase_evaluate_end_time' + str(index + 1), datetime.strptime(stageinfo[index]['evaluationTimeEnd'],"%Y-%m-%dT%H:%M:%S.000Z").replace(tzinfo=pytz.utc))
-        setattr(contest, 'phase_region_mode' + str(index + 1), datetime.strptime(stageinfo[index]['zone'],"%Y-%m-%dT%H:%M:%S.000Z").replace(tzinfo=pytz.utc))
+        setattr(contest, 'phase_region_mode' + str(index + 1), stageinfo[index]['zone'])
         index = index + 1
     contest.save()
     return JsonResponse({'code': 0, 'msg': ''})
@@ -404,7 +417,7 @@ def discussion(request):
         result['array'] = []
         for single_reply in replys:
             result['array'].append({
-                'imgurl': "/resources/userImages/" + str(single_reply.author_id) + '/',
+                'imgurl': "/resources/users/" + str(single_reply.author_id) + '/',
                 'username': single_reply.author,
                 'content': single_reply.content,
                 'time': (time.mktime(single_reply.time.timetuple()) + 8 * 60 * 60) * 1000

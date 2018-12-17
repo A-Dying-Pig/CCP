@@ -31,8 +31,9 @@ def participants(request):
 
     result['mode'] = 1 - contest.grouped
     result['current_page_num'] = page_num
+    cur_phase = ContestUtil.getCurrentPhase(contest_id)['phase']
     if result['mode'] == 1: # 个人赛
-        participants= ContestPlayer.objects.filter(contest_id=contest_id)
+        participants= ContestGrade.objects.filter(contest_id=contest_id, phase=cur_phase)
         participant_number= participants.count()
         if participant_number < 1: # 没数据
             result['total_page_num'] = 0
@@ -45,15 +46,15 @@ def participants(request):
         index = MAX_PARTICIPANT_ONE_PAGE * (page_num - 1)
         while index < min(MAX_PARTICIPANT_ONE_PAGE * page_num, participant_number):
             single_team = {}
-            single_team['userId'] = participants[index].player_id
-            player = CCPUser.objects.get(id=participants[index].player_id)
+            single_team['userId'] = participants[index].leader_id
+            player = CCPUser.objects.get(id=participants[index].leader_id)
             single_team['username'] = player.username
             single_team['email'] = player.email
             single_team['points'] = ContestGradeUtil.getGrade(leader_id=single_team['userId'], contest_id=contest_id)
             result['array'].append(single_team)
             index = index + 1
     else:  # 组队赛
-        participants = ContestGroup.objects.filter(contest_id=contest_id)
+        participants = ContestGrade.objects.filter(contest_id=contest_id, phase=cur_phase)
         participant_number = participants.count()
         if participant_number < 1:  # 没数据
             result['total_page_num'] = 0
@@ -66,8 +67,8 @@ def participants(request):
         index = MAX_PARTICIPANT_ONE_PAGE * (page_num - 1)
         while index < min(MAX_PARTICIPANT_ONE_PAGE * page_num, participant_number):
             single_team = {}
-            single_team['captainId'] = participants[index].player_id
-            player = CCPUser.objects.get(id=participants[index].player_id)
+            single_team['captainId'] = participants[index].leader_id
+            player = CCPUser.objects.get(id=participants[index].leader_id)
             single_team['captainName'] = player.username
             single_team['captainPoints'] = ContestGradeUtil.getGrade(leader_id=single_team['userId'], contest_id=contest_id)
             single_team['group'] = ContestGroupUtil.getMember(leader_id=single_team['userId'], contest_id=contest_id)
@@ -177,7 +178,7 @@ def modify(request):
         setattr(contest, 'phase_start_time' + str(index + 1), datetime.strptime(stageinfo[index]['stageTimeBegin'], "%Y-%m-%dT%H:%M:%S.000Z").replace(tzinfo=pytz.utc))
         setattr(contest, 'phase_hand_end_time' + str(index + 1), datetime.strptime(stageinfo[index]['handTimeEnd'],"%Y-%m-%dT%H:%M:%S.000Z").replace(tzinfo=pytz.utc))
         setattr(contest, 'phase_evaluate_end_time' + str(index + 1), datetime.strptime(stageinfo[index]['evaluationTimeEnd'],"%Y-%m-%dT%H:%M:%S.000Z").replace(tzinfo=pytz.utc))
-        setattr(contest, 'phase_region_mode' + str(index + 1), datetime.strptime(stageinfo[index]['zone'],"%Y-%m-%dT%H:%M:%S.000Z").replace(tzinfo=pytz.utc))
+        setattr(contest, 'phase_region_mode' + str(index + 1), stageinfo[index]['zone'])
         index = index + 1
     contest.save()
     return JsonResponse({'msg': ''})
@@ -473,7 +474,7 @@ def getSubmitNum(request):
             return JsonResponse({'msg': '比赛不存在'})
         if contest.admin_id != request.user.id:
             return JsonResponse({'msg': '当前用户不是本比赛管理员'})
-        phase = ContestUtil.getCurrentPhase(contest_id)
+        phase = ContestUtil.getCurrentPhase(contest_id)['phase']
         result['submitnum'] = ContestGrade.objects.filter(contest_id=contest_id, phase=phase, work_name__isnull=False).count()
         result['allnum'] = ContestGrade.objects.filter(contest_id=contest_id, phase=phase).count()
         return JsonResponse(result)

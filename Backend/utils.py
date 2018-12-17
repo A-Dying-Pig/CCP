@@ -124,7 +124,6 @@ class ContestUtil:
 
     @classmethod
     def getCurrentPhase(cls, contestid):
-        # todo
         # return current phase and status
         # phase 0 is the enroll stage
         # phase 1 is the first stage, 0 is submission, 1 is judging

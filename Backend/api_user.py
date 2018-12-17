@@ -53,7 +53,7 @@ def profile(request):
         if not request.user.is_authenticated:
             return JsonResponse({'msg': '请先登录'})
         id = request.user.id
-        img_url = '/resources/userImages/' + str(id) + '/'
+        img_url = '/resources/users/' + str(id) + '/'
         if os.path.isdir(img_url):
             all_files = os.listdir(RESOURCE_BASE_DIR + img_url)
             if len(all_files) > 0:
@@ -105,7 +105,7 @@ def uploadImg(request):
             return JsonResponse({'msg': 'File not found.'})
         else:
             # 先删掉原来的文件夹内的所有内容，再新建一个
-            cur_dir = RESOURCE_BASE_DIR + '/resources/userImages/' + str(request.user.id) + '/'
+            cur_dir = RESOURCE_BASE_DIR + '/resources/users/' + str(request.user.id) + '/'
             if os.path.isdir(cur_dir):
                 shutil.rmtree(cur_dir)
             os.mkdir(cur_dir)
@@ -140,7 +140,7 @@ def upload(request):
         contest = Contest.objects.get(id=contest_id)
     except:
         return JsonResponse({'msg': 'Contest does not exist.'})
-    cur_phase = ContestUtil.getCurrentPhase(contest_id)
+    cur_phase = ContestUtil.getCurrentPhase(contest_id)['phase']
     if not(getattr(contest, 'phase_start_time' + cur_phase) < datetime.datetime.utcnow() < getattr(contest, 'phase_hand_end_time' + cur_phase)):
         return JsonResponse({'msg': '比赛当前阶段的提交已经截止'})
     if contest.grouped == 0:  # 组队赛
