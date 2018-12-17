@@ -137,7 +137,7 @@ class api_judge_Test(TestCase):
         response = self.c.post('/api/user/login',json.dumps(user_info),content_type="application/json")   
         submit_info={
             "contestid":self.contestId_personal,
-            "file": "C:\Users\Administrator\Desktop\1.txt" 
+            "file": "C:\\Users\\Administrator\\Desktop\\1.txt" 
         }
         response = self.c.post('/api/contestant/submit',json.dumps(submit_info),content_type="application/json")
         response_content = response.content.decode()
@@ -152,7 +152,7 @@ class api_judge_Test(TestCase):
         response = self.c.post('/api/user/login',json.dumps(user_info),content_type="application/json")   
         submit_info={
             "contestid":self.contestId_personal+1,
-            "file": "C:\Users\Administrator\Desktop\1.txt" 
+            "file": "C:\\Users\\Administrator\\Desktop\\1.txt" 
         }
         response = self.c.post('/api/contestant/submit',json.dumps(submit_info),content_type="application/json")
         response_content = response.content.decode()
@@ -173,7 +173,7 @@ class api_judge_Test(TestCase):
         response = self.c.post('/api/user/login',json.dumps(user_info),content_type="application/json")
         submit_info={
             "contestid":self.contestId_personal,
-            "file": "C:\Users\Administrator\Desktop\1.txt" 
+            "file": "C:\\Users\\Administrator\\Desktop\\1.txt" 
         }
         response = self.c.post('/api/contestant/submit',json.dumps(submit_info),content_type="application/json")
         response_content = response.content.decode()
@@ -188,7 +188,7 @@ class api_judge_Test(TestCase):
         response = self.c.post('/api/user/login',json.dumps(user_info),content_type="application/json")   
         submit_info={
             "contestid":self.contestId_personal,
-            "file": "C:\Users\Administrator\Desktop\2.txt" 
+            "file": "C:\\Users\\Administrator\\Desktop\\2.txt" 
         }
         response = self.c.post('/api/contestant/submit',json.dumps(submit_info),content_type="application/json")
         response_content = response.content.decode()
@@ -203,7 +203,7 @@ class api_judge_Test(TestCase):
         response = self.c.post('/api/user/login',json.dumps(user_info),content_type="application/json")   
         submit_info={
             "contestid":self.contestId_personal,
-            "file": "C:\Users\Administrator\Desktop\1.txt" 
+            "file": "C:\\Users\\Administrator\\Desktop\\1.txt" 
         }
         response = self.c.post('/api/contestant/submit',json.dumps(submit_info),content_type="application/json")
         contestplayer = contestplayer.objects.filter()
@@ -231,7 +231,7 @@ class api_judge_Test(TestCase):
         response = self.c.post('/api/user/login',json.dumps(user_info),content_type="application/json")   
         submit_info={
             "contestid":self.contestId_personal,
-            "file": "C:\Users\Administrator\Desktop\1.txt" 
+            "file": "C:\\Users\\Administrator\\Desktop\\1.txt" 
         }
         response = self.c.post('/api/contestant/submit',json.dumps(submit_info),content_type="application/json")
         contestplayer = contestplayer.objects.filter()
@@ -253,7 +253,7 @@ class api_judge_Test(TestCase):
         response = self.c.post('/api/user/login',json.dumps(user_info),content_type="application/json")   
         submit_info={
             "contestid":self.contestId_personal,
-            "file": "C:\Users\Administrator\Desktop\1.txt" 
+            "file": "C:\\Users\\Administrator\\Desktop\\1.txt" 
         }
         response = self.c.post('/api/contestant/submit',json.dumps(submit_info),content_type="application/json")
         contestplayer = contestplayer.objects.filter()
@@ -280,9 +280,9 @@ class api_judge_Test(TestCase):
         response = self.c.post('/api/user/login',json.dumps(user_info),content_type="application/json")   
         submit_info={
             "contestid":self.contestId_personal,
-            "file": "C:\Users\Administrator\Desktop\1.txt" 
+            "file": "C:\\Users\\Administrator\\Desktop\\1.txt" 
         }
-        response = self.c.post('/api/contest/submit',json.dumps(submit_info),content_type="application/json")
+        response = self.c.post('/api/contestant/submit',json.dumps(submit_info),content_type="application/json")
         contestplayer = contestplayer.objects.filter()
         self.contestplayer_id = contestplayer[0].player_id
         user_info={
@@ -392,9 +392,9 @@ class api_judge_Test(TestCase):
         response = self.c.post('/api/user/login',json.dumps(user_info),content_type="application/json")   
         submit_info={
             "contestid":self.contestId_personal,
-            "file": "C:\Users\Administrator\Desktop\1.txt" 
+            "file": "C:\\Users\\Administrator\\Desktop\\1.txt" 
         }
-        response = self.c.post('/api/contest/submit',json.dumps(submit_info),content_type="application/json")
+        response = self.c.post('/api/contestant/submit',json.dumps(submit_info),content_type="application/json")
         user_info={
             "username": "judge1", 
             "password": "ccp"            
@@ -416,9 +416,9 @@ class api_judge_Test(TestCase):
         response = self.c.post('/api/user/login',json.dumps(user_info),content_type="application/json")   
         submit_info={
             "contestid":self.contestId_personal,
-            "file": "C:\Users\Administrator\Desktop\1.txt" 
+            "file": "C:\\Users\\Administrator\\Desktop\\1.txt" 
         }
-        response = self.c.post('/api/contest/submit',json.dumps(submit_info),content_type="application/json")
+        response = self.c.post('/api/contestant/submit',json.dumps(submit_info),content_type="application/json")
         user_info={
             "username": "judge1", 
             "password": "ccp"            

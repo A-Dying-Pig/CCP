@@ -637,3 +637,51 @@ class api_user_competiton_start_Test(TestCase):
         response_content = json.loads(response_content)
         self.assertEqual(response_content['msg'], 'Too much fields.')
 
+    def test_user_uploadimg(self):
+    	c=Client()
+        user_info={      
+            "username": "user", 
+            "password": "ccp",
+            "email":"zyj123@126.com"
+        }
+        response = c.post('/api/user/register',json.dumps(user_info),content_type="application/json")
+        user_info={
+            "username": "user", 
+            "password": "ccp"            
+        }
+        response = c.post('/api/user/login',json.dumps(user_info),content_type="application/json")
+        user_info={
+        	"file"="C:\\Users\\Administrator\\Desktop\\1.jpg"
+        }
+        response = c.post('/api/user/uploadimg',json.dumps(user_info),content_type="application/json")
+        response_content = response.content.decode()
+        response_content = json.loads(response_content)
+        self.assertEqual(response_content['msg'], '')
+        self.assertEqual(response_content['url'],'')
+        ?????????????
+
+    def test_user_uploadimg_imgnotexist(self):
+    	c=Client()
+        user_info={      
+            "username": "user", 
+            "password": "ccp",
+            "email":"zyj123@126.com"
+        }
+        response = c.post('/api/user/register',json.dumps(user_info),content_type="application/json")
+        user_info={
+            "username": "user", 
+            "password": "ccp"            
+        }
+        response = c.post('/api/user/login',json.dumps(user_info),content_type="application/json")
+        user_info={
+        	"file"="C:\\Users\\Administrator\\Desktop\\2.jpg"
+        }
+        response = c.post('/api/user/uploadimg',json.dumps(user_info),content_type="application/json")
+        response_content = response.content.decode()
+        response_content = json.loads(response_content)
+        self.assertEqual(response_content['msg'], '')
+        self.assertEqual(response_content['url'],'')
+        ?????????????
+
+
+

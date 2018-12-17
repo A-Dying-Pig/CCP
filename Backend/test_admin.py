@@ -1193,7 +1193,7 @@ class api_user_competiton_Test(TestCase):
         response = self.c.post('/api/user/login',json.dumps(user_info),content_type="application/json")
         comp_info = {
             "contestid":self.contestId_personal,
-            "file": "C:\Users\Administrator\Desktop\1.txt" 
+            "file": "C:\\Users\\Administrator\\Desktop\\1.txt" 
         }
         response = self.c.post('/api/admin/upload',json.dumps(comp_info),content_type="application/json") 
         user_info={
@@ -1231,7 +1231,7 @@ class api_user_competiton_Test(TestCase):
         response = self.c.post('/api/user/login',json.dumps(user_info),content_type="application/json")
         comp_info = {
             "contestid":self.contestId_personal,
-            "file": "C:\Users\Administrator\Desktop\1.txt" 
+            "file": "C:\\Users\\Administrator\\Desktop\\1.txt" 
         }
         response = self.c.post('/api/admin/upload',json.dumps(comp_info),content_type="application/json") 
         user_info={
@@ -1255,7 +1255,7 @@ class api_user_competiton_Test(TestCase):
         response = self.c.post('/api/user/login',json.dumps(user_info),content_type="application/json")
         comp_info = {
             "contestid":self.contestId_personal,
-            "file": "C:\Users\Administrator\Desktop\1.txt" 
+            "file": "C:\\Users\\Administrator\\Desktop\\1.txt" 
         }
         response = self.c.post('/api/admin/upload',json.dumps(comp_info),content_type="application/json") 
         user_info={
@@ -1279,7 +1279,7 @@ class api_user_competiton_Test(TestCase):
         response = self.c.post('/api/user/login',json.dumps(user_info),content_type="application/json")   
         submit_info={
             "contestid":self.contestId_personal,
-            "file": "C:\Users\Administrator\Desktop\1.txt" 
+            "file": "C:\\Users\\Administrator\\Desktop\\1.txt" 
         }
         response = self.c.post('/api/contest/submit',json.dumps(submit_info),content_type="application/json")
         user_info={      
@@ -1337,7 +1337,7 @@ class api_user_competiton_Test(TestCase):
         response = self.c.post('/api/user/login',json.dumps(user_info),content_type="application/json")   
         submit_info={
             "contestid":self.contestId_personal,
-            "file": "C:\Users\Administrator\Desktop\1.txt" 
+            "file": "C:\\Users\\Administrator\\Desktop\\1.txt" 
         }
         response = self.c.post('/api/contest/submit',json.dumps(submit_info),content_type="application/json")
         user_info={      
@@ -1388,7 +1388,7 @@ class api_user_competiton_Test(TestCase):
         response = self.c.post('/api/user/login',json.dumps(user_info),content_type="application/json")   
         submit_info={
             "contestid":self.contestId_personal,
-            "file": "C:\Users\Administrator\Desktop\1.txt" 
+            "file": "C:\\Users\\Administrator\\Desktop\\1.txt" 
         }
         response = self.c.post('/api/contest/submit',json.dumps(submit_info),content_type="application/json")
         user_info={      
@@ -1538,5 +1538,175 @@ class api_user_competiton_Test(TestCase):
         response_content = response.content.decode()
         response_content = json.loads(response_content)
         self.assertEqual(response_content['msg'],'Authority denied.')
-        
+
+    '''
+    def test_admin_getsubmitnum_successful(self):
+        user_info={
+            "username": "admin2", 
+            "password": "ccp"            
+        }
+        response = self.c.post('/api/user/login',json.dumps(user_info),content_type="application/json")   
+        submit_info={
+            "contestid":self.contestId_personal,
+            "file": "C:\\Users\\Administrator\\Desktop\\1.txt" 
+        }
+        response = self.c.post('/api/contestant/submit',json.dumps(submit_info),content_type="application/json")
+        user_info={
+            'username':"admin",
+            "password":"ccp"
+        }
+        response = self.c.post('/api/user/login',json.dumps(user_info),content_type="application/json")   
+        comp_info={
+            "contestid":self.contestId_personal            
+        }
+        response = self.c.post('/api/admin/getsubmitnum',json.dumps(submit_info),content_type="application/json")
+        response_content = response.content.decode()
+        response_content = json.loads(response_content)
+        self.assertEqual(response_content['msg'],'')
+        self.assertEqual(response_content['submitnum'],1)
+        self.assertEqual(response_content['allnum'],1)
+
+    def test_admin_getsubmitnum_onePlayerRepeatSubmit(self):
+        user_info={
+            "username": "admin2", 
+            "password": "ccp"            
+        }
+        response = self.c.post('/api/user/login',json.dumps(user_info),content_type="application/json")   
+        submit_info={
+            "contestid":self.contestId_personal,
+            "file": "C:\\Users\\Administrator\\Desktop\\1.txt" 
+        }
+        response = self.c.post('/api/contestant/submit',json.dumps(submit_info),content_type="application/json")
+        submit_info={
+            "contestid":self.contestId_personal,
+            "file": "C:\\Users\\Administrator\\Desktop\\1.jpg" 
+        }
+        response = self.c.post('/api/contestant/submit',json.dumps(submit_info),content_type="application/json")
+        user_info={
+            'username':"admin",
+            "password":"ccp"
+        }
+        response = self.c.post('/api/user/login',json.dumps(user_info),content_type="application/json")   
+        comp_info={
+            "contestid":self.contestId_personal            
+        }
+        response = self.c.post('/api/admin/getsubmitnum',json.dumps(submit_info),content_type="application/json")
+        response_content = response.content.decode()
+        response_content = json.loads(response_content)
+        self.assertEqual(response_content['msg'],'')
+        self.assertEqual(response_content['submitnum'],1)
+        self.assertEqual(response_content['allnum'],1) 
+
+    def test_admin_getsubmitnum_twoplayerOnesubmit(self):
+        user_info={
+            "username": "admin2", 
+            "password": "ccp"            
+        }
+        response = self.c.post('/api/user/login',json.dumps(user_info),content_type="application/json")   
+        submit_info={
+            "contestid":self.contestId_personal,
+            "file": "C:\\Users\\Administrator\\Desktop\\1.txt" 
+        }
+        response = self.c.post('/api/contestant/submit',json.dumps(submit_info),content_type="application/json")
+        #个人报名
+        user_info={
+            "username": "admin3", 
+            "password": "ccp"            
+        }
+        response = self.c.post('/api/user/login',json.dumps(user_info),content_type="application/json")
+        comp_info = {
+            "contestid": self.contestId_personal,
+            "region":{
+                "province" : "北京",
+                "city" : "北京"                
+                },
+            "university" : "清华大学",
+            "groupuser" : [],
+            "custom_field" : ["1"],
+            "custom_value" : ['1'],
+            }            
+        response = self.c.post('/api/competition/enroll',json.dumps(comp_info),content_type="application/json")
+        user_info={
+            'username':"admin",
+            "password":"ccp"
+        }
+        response = self.c.post('/api/user/login',json.dumps(user_info),content_type="application/json")   
+        comp_info={
+            "contestid":self.contestId_personal            
+        }
+        response = self.c.post('/api/admin/getsubmitnum',json.dumps(submit_info),content_type="application/json")
+        response_content = response.content.decode()
+        response_content = json.loads(response_content)
+        self.assertEqual(response_content['msg'],'')
+        self.assertEqual(response_content['submitnum'],1)
+        self.assertEqual(response_content['allnum'],2)
+
+    def test_admin_getsubmitnum_twoplayerTwosubmit(self):
+        user_info={
+            "username": "admin2", 
+            "password": "ccp"            
+        }
+        response = self.c.post('/api/user/login',json.dumps(user_info),content_type="application/json")   
+        submit_info={
+            "contestid":self.contestId_personal,
+            "file": "C:\\Users\\Administrator\\Desktop\\1.txt" 
+        }
+        response = self.c.post('/api/contestant/submit',json.dumps(submit_info),content_type="application/json")
+        #个人报名
+        user_info={
+            "username": "admin3", 
+            "password": "ccp"            
+        }
+        response = self.c.post('/api/user/login',json.dumps(user_info),content_type="application/json")
+        comp_info = {
+            "contestid": self.contestId_personal,
+            "region":{
+                "province" : "北京",
+                "city" : "北京"                
+                },
+            "university" : "清华大学",
+            "groupuser" : [],
+            "custom_field" : ["1"],
+            "custom_value" : ['1'],
+            }            
+        response = self.c.post('/api/competition/enroll',json.dumps(comp_info),content_type="application/json")
+        submit_info={
+            "contestid":self.contestId_personal,
+            "file": "C:\\Users\\Administrator\\Desktop\\1.txt" 
+        }
+        response = self.c.post('/api/contestant/submit',json.dumps(submit_info),content_type="application/json")
+        user_info={
+            'username':"admin",
+            "password":"ccp"
+        }
+        response = self.c.post('/api/user/login',json.dumps(user_info),content_type="application/json")   
+        comp_info={
+            "contestid":self.contestId_personal            
+        }
+        response = self.c.post('/api/admin/getsubmitnum',json.dumps(submit_info),content_type="application/json")
+        response_content = response.content.decode()
+        response_content = json.loads(response_content)
+        self.assertEqual(response_content['msg'],'')
+        self.assertEqual(response_content['submitnum'],2)
+        self.assertEqual(response_content['allnum'],2)
+
+    def test_admin_getsubmitnum_notadmin(self):
+        user_info={
+            "username": "admin2", 
+            "password": "ccp"            
+        }
+        response = self.c.post('/api/user/login',json.dumps(user_info),content_type="application/json")   
+        submit_info={
+            "contestid":self.contestId_personal,
+            "file": "C:\\Users\\Administrator\\Desktop\\1.txt" 
+        }
+        response = self.c.post('/api/contestant/submit',json.dumps(submit_info),content_type="application/json")
+        comp_info={
+            "contestid":self.contestId_personal            
+        }
+        response = self.c.post('/api/admin/getsubmitnum',json.dumps(submit_info),content_type="application/json")
+        response_content = response.content.decode()
+        response_content = json.loads(response_content)
+        self.assertEqual(response_content['msg'],'非管理员不能查看已提交作品总数')
+    '''
 

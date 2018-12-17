@@ -1,4 +1,4 @@
-from django.test import TransactionTestCase
+from django.test import TransactionTestCase,TestCase
 from django.test import Client
 from .models import *
 import json
@@ -1336,6 +1336,42 @@ class api_user_competiton_Test(TransactionTestCase):
         response_content = response.content.decode()
         response_content = json.loads(response_content)
         self.assertEqual(response_content['msg'], '主题帖不存在')
+
+    '''
+    def test_competition_worksname(self):
+        user_info={
+            "username": "admin2", 
+            "password": "ccp"            
+        }
+        response = self.c.post('/api/user/login',json.dumps(user_info),content_type="application/json")           
+        comp_info = {
+            "contestid": self.contestId_personal,
+            "region":{
+                "province" : "北京",
+                "city" : "北京"                
+                },
+            "university" : "清华大学",
+            "groupuser" : [],            
+            "custom_field" : ["1"],
+            "custom_value" : ['1'],
+            }            
+        response = self.c.post('/api/competition/enroll',json.dumps(comp_info),content_type="application/json")
+        submit_info={
+            "contestid":self.contestId_personal,
+            "file": "C:\\Users\\Administrator\\Desktop\\1.txt" 
+        }
+        response = self.c.post('/api/contestant/submit',json.dumps(submit_info),content_type="application/json")
+        comp_info = {
+            "contestid": self.contestId_personal
+        }
+        response = self.c.post('/api/competition/worksname',json.dumps(comp_info),content_type="application/json")
+        response_content = response.content.decode()
+        response_content = json.loads(response_content)
+        self.assertEqual(response_content['msg'], '')
+        self.assertEqual(response_content['filename'])
+    '''
+
+
 
 
 
