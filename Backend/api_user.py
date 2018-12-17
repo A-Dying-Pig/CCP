@@ -60,6 +60,8 @@ def profile(request):
             all_files = os.listdir(RESOURCE_BASE_DIR + img_url)
             if len(all_files) > 0:
                 img_url = img_url + all_files[0]
+            else:
+                img_url = '/resources/default/'
         competition = {}
         participated = ContestPlayer.objects.filter(player_id=id)
         competition['participated_competition'] = []
