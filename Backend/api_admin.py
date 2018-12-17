@@ -459,3 +459,24 @@ def setadvanced(request):
     res = {}
     res['msg'] = ''
     return res
+
+def getSubmitNum(request):
+    try:
+        if not request.user.is_authenticated:
+            return JsonResponse({'msg': '请先登录'})
+        data = json.loads(request.body.decode('utf-8'))
+        contest_id = data['contestid']
+        result = {'msg': ''}
+        try:
+            contest = Contest.objects.get(id=contest_id)
+        except:
+            return JsonResponse({'msg': '比赛不存在'})
+        if contest.admin_id != request.user.id:
+            return JsonResponse({'msg': '当前用户不是本比赛管理员'})
+        phase = ContestUtil.getCurrentPhase(contest_id)
+        result['submitnum'] = ContestGrade.objects.filter(contest_id=contest_id, phase=phase, work_name__isnull=False).count()
+        result['allnum'] = ContestGrade.objects.filter(contest_id=contest_id, phase=phase).count()
+        return JsonResponse(result)
+    except:
+        traceback.print_exc()
+        return JsonResponse({'msg': '未知错误'})
