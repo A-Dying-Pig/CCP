@@ -10,6 +10,7 @@ from .utils import *
 import shutil
 import traceback
 import datetime
+from django.db.models import Q
 
 def register(request):
     data = json.loads(request.body.decode('utf-8'))
@@ -24,7 +25,8 @@ def register(request):
     elif email_unique:
         return JsonResponse({'msg': '邮箱地址已经被注册！'})
     else:
-        CCPUser.objects.create(username=username, password=password, email=email)
+        new_user = CCPUser.objects.create(username=username, password=password, email=email)
+        os.mkdir(RESOURCE_BASE_DIR + '/resources/users/' + new_user.id)
         return JsonResponse({'msg': ''})
 
 def login(request):
@@ -53,14 +55,21 @@ def profile(request):
         if not request.user.is_authenticated:
             return JsonResponse({'msg': '请先登录'})
         id = request.user.id
-        img_url = '/resources/userImages/' + str(id) + '/'
-        if os.path.isdir(img_url):
+        img_url = '/resources/users/' + str(id) + '/'
+        if os.path.isdir(RESOURCE_BASE_DIR + img_url):
             all_files = os.listdir(RESOURCE_BASE_DIR + img_url)
             if len(all_files) > 0:
                 img_url = img_url + all_files[0]
         competition = {}
         participated = ContestPlayer.objects.filter(player_id=id)
         competition['participated_competition'] = []
+        for contest in participated:
+            competition['participated_competition'].append({
+                'title': Contest.objects.get(id=contest.contest_id).title,
+                'url': '/detail?contestid=' + str(contest.contest_id),
+            })
+        participated = ContestGroup.objects.filter(Q(leader_id=request.user.id) | Q(member1_id=request.user.id) |
+                              Q(member2_id=request.user.id) | Q(member3_id=request.user.id) | Q(member4_id=request.user.id))
         for contest in participated:
             competition['participated_competition'].append({
                 'title': Contest.objects.get(id=contest.contest_id).title,
@@ -105,7 +114,7 @@ def uploadImg(request):
             return JsonResponse({'msg': 'File not found.'})
         else:
             # 先删掉原来的文件夹内的所有内容，再新建一个
-            cur_dir = RESOURCE_BASE_DIR + '/resources/userImages/' + str(request.user.id) + '/'
+            cur_dir = RESOURCE_BASE_DIR + '/resources/users/' + str(request.user.id) + '/'
             if os.path.isdir(cur_dir):
                 shutil.rmtree(cur_dir)
             os.mkdir(cur_dir)
@@ -114,7 +123,7 @@ def uploadImg(request):
                 # 分块写入文件;
                 for chunk in File.chunks():
                     f.write(chunk)
-            return JsonResponse({'msg': '', 'url': cur_dir[RESOURCE_BASE_DIR:] + File.name})
+            return JsonResponse({'msg': '', 'url': cur_dir[len(RESOURCE_BASE_DIR):] + File.name})
     except Exception as e:
         traceback.print_exc()
         return JsonResponse({'msg': '未知错误'})
@@ -140,7 +149,7 @@ def upload(request):
         contest = Contest.objects.get(id=contest_id)
     except:
         return JsonResponse({'msg': 'Contest does not exist.'})
-    cur_phase = ContestUtil.getCurrentPhase(contest_id)
+    cur_phase = ContestUtil.getCurrentPhase(contest_id)['phase']
     if not(getattr(contest, 'phase_start_time' + cur_phase) < datetime.datetime.utcnow() < getattr(contest, 'phase_hand_end_time' + cur_phase)):
         return JsonResponse({'msg': '比赛当前阶段的提交已经截止'})
     if contest.grouped == 0:  # 组队赛

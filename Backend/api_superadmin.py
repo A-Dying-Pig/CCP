@@ -26,12 +26,16 @@ def contests(request):
     index = MAX_CONTEST_ONE_PAGE * (page_number - 1)
     while index < min(MAX_CONTEST_ONE_PAGE * page_number, contests_number):
         target = Contest.objects.filter(checked=-1)[index]
+        tmp_path = '/resources/contests/' + str(target.id) + '/img/'
+        files = os.listdir(RESOURCE_BASE_DIR + tmp_path)
+        for file in files:
+            tmp_path = tmp_path + file
         response['array'].append({
             'contestid': target.id,
             'title': target.title,
             'holders': ContestUtil.getHost(target),
             'sponsors': target.organizers.split('\n')[1:],
-            'img_url': '/static/img' + str(target.id) + '.jpg',  # todo:多种格式
+            'img_url': tmp_path,
             'details': target.information
         })
         index = index + 1
