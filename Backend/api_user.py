@@ -56,7 +56,7 @@ def profile(request):
         if not request.user.is_authenticated:
             return JsonResponse({'msg': '请先登录'})
         id = request.user.id
-        img_url = '/resources/users/' + str(id) + '/img'
+        img_url = '/resources/users/' + str(id) + '/img/'
         if os.path.isdir(RESOURCE_BASE_DIR + img_url):
             all_files = os.listdir(RESOURCE_BASE_DIR + img_url)
             if len(all_files) > 0:
@@ -121,7 +121,7 @@ def uploadImg(request):
             return JsonResponse({'msg': 'File not found.'})
         else:
             # 先删掉原来的文件夹内的头像，再新建一个
-            cur_dir = RESOURCE_BASE_DIR + '/resources/users/' + str(request.user.id) + '/'
+            cur_dir = RESOURCE_BASE_DIR + '/resources/users/' + str(request.user.id) + '/img/'
             for file in os.listdir(cur_dir):
                 full_path = cur_dir + file
                 if os.path.isfile(full_path):

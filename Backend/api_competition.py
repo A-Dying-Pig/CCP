@@ -160,11 +160,10 @@ def hot(request):
         context = []
         contests = HotContest.objects.all()
         for contest in contests:
-            tmp_path = '/resources/contests/' + str(c.id) + '/img/'
+            tmp_path = '/resources/contests/' + str(contest.id) + '/img/'
             files = os.listdir(RESOURCE_BASE_DIR + tmp_path)
             for file in files:
                 tmp_path = tmp_path + file
-            d['img_url'] = tmp_path
             context.append({
                 'url': 'detail?contestid=' + str(contest.contest_id),
                 'img_url': tmp_path,
