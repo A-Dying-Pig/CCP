@@ -56,7 +56,7 @@ def profile(request):
         if not request.user.is_authenticated:
             return JsonResponse({'msg': '请先登录'})
         id = request.user.id
-        img_url = '/resources/users/' + str(id) + '/'
+        img_url = '/resources/users/' + str(id) + '/img'
         if os.path.isdir(RESOURCE_BASE_DIR + img_url):
             all_files = os.listdir(RESOURCE_BASE_DIR + img_url)
             if len(all_files) > 0:
