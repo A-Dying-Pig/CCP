@@ -1,11 +1,10 @@
-import hello from '../../src/components/hello.vue'
-require('babel-register')();
-require('chai')
-require('@vue/test-utils')
-describe('hello.vue', () => {
-  it('increments count when button is clicked', () => {
-    const wrapper = shallowMount(hello)
+import { shallowMount } from '@vue/test-utils'
+import Counter from '../../src/components/Counter.vue'
+
+describe('Counter.vue', () => {
+  it('计数器在点击按钮时自增', () => {
+    const wrapper = shallowMount(Counter)
     wrapper.find('button').trigger('click')
-    expect(wrapper.find('div').text()).contains('1')
+    expect(wrapper.find('div').text()).toMatch('1')
   })
 })
