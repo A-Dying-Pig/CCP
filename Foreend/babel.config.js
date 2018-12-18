@@ -1,5 +1,8 @@
 module.exports = {
   presets: [
-    '@vue/app'
+    '@vue/app',
+	["env", {
+      "targets": {"node": "6"}
+    }]
   ]
 }
