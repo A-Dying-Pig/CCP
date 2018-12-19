@@ -29,7 +29,7 @@ def register(request):
         new_user = CCPUser.objects.create(username=username, password=password, email=email)
         os.mkdir(RESOURCE_BASE_DIR + '/resources/users/' + str(new_user.id))
         os.mkdir(RESOURCE_BASE_DIR + '/resources/users/' + str(new_user.id) + '/tmp')
-        os.mkdir(RESOURCE_BASE_DIR + '/resources/users' + str(new_user.id) + '/img')
+        os.mkdir(RESOURCE_BASE_DIR + '/resources/users/' + str(new_user.id) + '/img')
         return JsonResponse({'msg': ''})
 
 def login(request):
