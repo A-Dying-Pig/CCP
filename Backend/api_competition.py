@@ -533,11 +533,11 @@ def worksname(request):
     contestid = data['contestid']
     userid = request.user.id
     try:
-        dirs = os.listdir('resources/contests/' + str(contestid) + '/playerFiles/' + str(userid))
+        dirs = os.listdir(RESOURCE_BASE_DIR + '/resources/contests/' + str(contestid) + '/playerFiles/' + str(userid) + '/compress/')
     except:
         return JsonResponse({'msg': '', 'filename': ''})
     for d in dirs:
-        if os.path.isfile('resources/contests/' + str(contestid) + '/playerFiles/' + str(userid) + '/' + d):
+        if os.path.isfile(RESOURCE_BASE_DIR + '/resources/contests/' + str(contestid) + '/playerFiles/' + str(userid) + '/compress/' + d):
             filename = d
             break
     return JsonResponse({'msg': '', 'filename': filename})

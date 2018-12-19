@@ -183,7 +183,7 @@ def upload(request):
     else:
         # 先删除旧文件夹下所有内容，再打开特定的文件进行二进制的写操作;
         try:
-            cur_dir = RESOURCE_BASE_DIR + "/resources/contests/" + str(contest_id) + '/playerFiles/' + str(request.user.id) + '/compress'
+            cur_dir = RESOURCE_BASE_DIR + "/resources/contests/" + str(contest_id) + '/playerFiles/' + str(request.user.id) + '/compress/'
             dirs = os.listdir(cur_dir)
             for dir in dirs:
                 if os.path.isfile(dir):  # 删掉原来的压缩文件
@@ -193,7 +193,7 @@ def upload(request):
                 for chunk in File.chunks():
                     f.write(chunk)
             # 解压缩
-            extract_dir = RESOURCE_BASE_DIR + "/resources/contests/" + str(contest_id) + '/playerFiles/' + str(request.user.id) + '/decompress'
+            extract_dir = RESOURCE_BASE_DIR + "/resources/contests/" + str(contest_id) + '/playerFiles/' + str(request.user.id) + '/decompress/'
             GeneralUtil.del_dir(extract_dir)
             try:
                 with ZipFile(cur_dir + File.name) as zfile:
