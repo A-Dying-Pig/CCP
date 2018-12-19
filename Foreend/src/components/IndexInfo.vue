@@ -61,7 +61,9 @@
         props: {},
         data:function () {
             return{
-                contests:[]
+                contests:[],
+                hot_number:0,
+                max_hot:4,
             }
         },
         mounted:function () {
@@ -70,6 +72,13 @@
                 .then(response=>{
                     if (response.data.msg === ''){
                         vm.contests = response.data.contests;
+                        vm.hot_number = 0;
+                        let len = vm.contests.length;
+                        for (let  i = 0 ; i < len; i++){
+                            if(vm.contests[i].is_hot === 1){
+                                vm.hot_number += 1;
+                            }
+                        }
                     }
                     else{
                         vm.$message({
@@ -85,7 +94,17 @@
                         {contestid:2,is_slider:0,is_hot:1,title:'测试比赛2'},
                         {contestid:3,is_slider:1,is_hot:1,title:'测试比赛3'},
                         {contestid:4,is_slider:0,is_hot:0,title:'测试比赛4'},
-                    ]
+                        {contestid:5,is_slider:0,is_hot:1,title:'测试比赛5'},
+                        {contestid:6,is_slider:1,is_hot:1,title:'测试比赛6'},
+                        {contestid:7,is_slider:0,is_hot:0,title:'测试比赛7'},
+                    ];
+                    vm.hot_number = 0;
+                    let len = vm.contests.length;
+                    for (let  i = 0 ; i < len; i++){
+                        if(vm.contests[i].is_hot === 1){
+                            vm.hot_number += 1;
+                        }
+                    }
                 });
         },
         methods:{
@@ -124,10 +143,21 @@
                 this.contests[index].is_slider = 0;
             },
             Hot_Yes:function (index) {
-                this.contests[index].is_hot = 1;
+                if(this.hot_number < this.max_hot){
+                    this.contests[index].is_hot = 1;
+                    this.hot_number += 1;
+                }
+                else{
+                    this.$message({
+                        message:`最多设置${this.max_hot}个热门比赛!`,
+                        type:'error'
+                    });
+                }
+
             },
             Hot_No:function (index) {
                 this.contests[index].is_hot = 0;
+                this.hot_number -= 1 ;
             }
         }
     }

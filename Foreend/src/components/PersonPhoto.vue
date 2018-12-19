@@ -104,7 +104,7 @@
         border: 1px solid lightgray;
         margin-left: 10%;
         margin-top: 20px;
-        margin-bottom: 60px;
+        margin-bottom: 30px;
         height: 200px;
 
     }
@@ -114,6 +114,7 @@
     }
     .person-center-photo-btn{
         text-align: center;
+        margin-bottom: 20px;
     }
 
 </style>

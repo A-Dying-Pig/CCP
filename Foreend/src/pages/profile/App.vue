@@ -387,8 +387,8 @@
                 this.message_switch = 0;
             },
             SendMessageClicked:function (contest_id,index) {
+                console.log(contest_id);
                 this.send_message_contest = contest_id;
-                /*
                 let len = this.competition.created_competition[index].list.length;
                 if (len !== 0){
                     this.$set(this.send_message_menu, 1, {value:-1,label:'赛区',children: []});
@@ -403,7 +403,6 @@
                 else{
                     this.send_message_menu.splice(1,1);
                 }
-                */
                 this.send_message_switch = 1;
             },
             SendMessageBack:function () {

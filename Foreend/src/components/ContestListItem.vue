@@ -7,10 +7,13 @@
 
             <div class="super-check-contest-item-info">
                 <div class="info-item"><span class="title">比赛标题:</span> <span class="content">{{title}}</span></div>
-                <div class="info-item"><span class="title">比赛简介:</span> <span class="content">{{intro}}</span></div>
+                <div class="info-item"><p class="title">比赛简介:</p> <p class="content">{{intro}}</p></div>
             </div>
             <div class="super-button">
                 <el-button style="padding: 10px 5px" @click="$emit('new-contest-detail',contestid)">查看详情</el-button>
+                <div class="super-button-text">
+                    已报名<span class="super-button-number">{{enroll_number}}</span>人
+                </div>
             </div>
         </el-card>
 
@@ -31,6 +34,9 @@
             },
             img_url:{
                 default:require('../assets/img/logo.png'),
+            },
+            enroll_number:{
+                default:0
             }
         },
         data:function () {
@@ -43,9 +49,10 @@
 
 <style>
     .super-check-contest-item-image{
-        height:130px;
-        width:130px;
+        height:120px;
+        width:120px;
         float: left;
+        margin-bottom: 20px;
     }
     .image{
         height:130px;
@@ -73,7 +80,17 @@
     }
     .super-button{
         float: right;
-        margin-top: 30px;
+        margin-top: 20px;
     }
 
+    .super-button-number{
+        font-family: PingFang SC;
+        color: deepskyblue;
+        font-size: 15px;
+    }
+    .super-button-text{
+        margin-top: 10px;
+        font-family: PingFang SC;
+        font-size: 12px;
+    }
 </style>

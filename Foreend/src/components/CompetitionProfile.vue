@@ -1,6 +1,6 @@
 <template>
     <el-card :body-style="{ padding: '0px' }" shadow="hover">
-        <a :href="competition_profile.url"><img :src="competition_profile.img" class="card_image"></a>
+        <a :href="competition_profile.url"><img :src="competition_profile.img_url" class="card_image"></a>
         <div style="padding: 14px;" class="card_text">
             <div class="card_title">{{competition_profile.title}}</div>
             <div class="card_intro"> {{competition_profile.intro}}</div>
@@ -14,7 +14,7 @@
             competition_profile:{
                 type:Object,
                 default:function () {
-                    return {url:'',img:'',title:'',intro:''}
+                    return {url:'',img_url:'',title:'',intro:''}
                 }
             }
         },

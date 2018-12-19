@@ -103,5 +103,7 @@
 .content{
     margin-top: 60px;
     margin-left:100px;
+    word-wrap: break-word;
+
 }
 </style>

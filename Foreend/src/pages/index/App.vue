@@ -61,12 +61,8 @@
         name: 'app',
         data() {
             return {
-                slider_info:[{url:'/index',img_url:require('../../assets/img/comp1.jpg')},
-                    {url:'/index',img_url:require('../../assets/img/comp2.jpg')}],//{url: img_url}
-                hot_info:[{url:'/index',img:require('../../assets/img/logo.png'),title:'比赛示例1',intro:'比赛介绍1'},
-                    {url:'/index',img:require('../../assets/img/logo.png'),title:'比赛示例2',intro:'比赛介绍2'},
-                    {url:'/index',img:require('../../assets/img/logo.png'),title:'比赛示例3',intro:'比赛介绍3'},
-                    {url:'/index',img:require('../../assets/img/logo.png'),title:'比赛示例4',intro:'比赛介绍4'}],  //{url: img_url: title: intro:}
+                slider_info:[],//{url: img_url}
+                hot_info:[],  //{url: img_url: title: intro:}
             }
         },
         components: {
@@ -79,11 +75,11 @@
             let vm = this;
             axios.get('/api/competition/slider')
                 .then(response=>{
-                    vm.slider_info = response.data;
+                    vm.slider_info = response.data.array;
                 });
             axios.get('/api/competition/hot')
                 .then(response=>{
-                    vm.hot_info = response.data;
+                    vm.hot_info = response.data.array;
                 })
         }
     }

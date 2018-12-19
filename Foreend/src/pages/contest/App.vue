@@ -25,6 +25,7 @@
                             :intro="item.intro"
                             :img_url="item.img_url"
                             :title="item.title"
+                            :enroll_number="item.enroll_number"
                             @new-contest-detail="ShowContestDetail"></ContestListItem>
                 </el-col>
             </el-row>
@@ -75,29 +76,39 @@
             }
         },
         mounted:function () {
+            let vm = this;
             axios.post('/api/competition/list',{pageNum:1,type:'all'})
                 .then(response=>{
-                    this.contest_list = response.data;
+                    if(response.data.msg ==='')
+                        vm.contest_list = response.data;
+                    else {
+                        vm.$message({
+                            message: `获取信息失败`,
+                            type: 'error'
+                        });
+                    }
                 });
         },
         methods:{
             CurrentPageChange:function (cur_page) {
-                axios.post('/api/competition/list',{pageNum:cur_page,type:'all'})
+                let vm = this;
+                axios.post('/api/competition/list',{pageNum:cur_page,type:this.the_type})
                     .then(response=>{
-                        this.contest_list = response.data;
+                        if(response.data.msg ==='')
+                            vm.contest_list = response.data;
+                        else {
+                            vm.$message({
+                                message: `获取信息失败`,
+                                type: 'error'
+                            });
+                        }
                     })
             },
             PagePrevious:function (cur_page) {
-                axios.post('/api/competition/list',{pageNum:cur_page,type:'all'})
-                    .then(response=>{
-                        this.contest_list = response.data;
-                    })
+                this.CurrentPageChange(cur_page);
             },
             PageNext:function (cur_page) {
-                axios.post('/api/competition/list',{pageNum:cur_page,type:'all'})
-                    .then(response=>{
-                        this.contest_list = response.data;
-                    })
+                this.CurrentPageChange(cur_page);
             },
             ShowContestDetail:function (id) {
                 window.location.href = `/detail?contestid=${id}`;
