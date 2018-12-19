@@ -254,7 +254,7 @@ def upload(request):
         return JsonResponse({'msg': 'File not found.'})
     else:
         # 打开特定的文件进行二进制的写操作;
-        with open(RESOURCE_BASE_DIR + "/resources/contests/" + str(contest_id) + '/contestFile/' + File.name, 'wb+') as f:
+        with open(RESOURCE_BASE_DIR + "/resources/contests/" + str(contest_id) + '/contestFiles/' + File.name, 'wb+') as f:
             # 分块写入文件;
             for chunk in File.chunks():
                 f.write(chunk)

@@ -10,10 +10,10 @@ MAX_EXTRA = 4
 MAX_MEMBER = 5
 MAX_CONTEST_ONE_PAGE = 10
 MAX_PARTICIPANT_ONE_PAGE = 10
-MAX_POST_ONE_PAGE = 20
-MAX_REPLY_ONE_PAGE = 20
+MAX_POST_ONE_PAGE = 8
+MAX_REPLY_ONE_PAGE = 8
 
-RESOURCE_BASE_DIR = 'E:/workspace/CCP'
+RESOURCE_BASE_DIR = 'D:/CCP'
 
 class ContestUtil:
     NON_REGION = 0
@@ -22,7 +22,7 @@ class ContestUtil:
     @classmethod
     def getStage(cls, contest):
         result = []
-        for i in range(0,5):
+        for i in range(0, 5):
             if getattr(contest, 'phase_name'+str(i+1)) is not None:
                 tmp_dict = {}
                 tmp_dict['name'] = getattr(contest, 'phase_name'+str(i+1))

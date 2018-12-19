@@ -11,31 +11,30 @@ import traceback
                 
 
 def getone(request):
-    try:
-        judge_id = request.user.id
-    except:
-        return JsonResponse({'msg': '权限认证失败！'})
+    if not request.user.is_authenticated:
+        return JsonResponse({'msg': '请先登录'})
+    judge_id = request.user.id
     data = json.loads(request.body.decode('utf-8'))
     contest_id = int(data['contestid'])
     participant_id = int(data['participantid'])
+    result = {}
     if participant_id == -1:
         participant = ContestGrade.objects.filter(grade=-1, judge_id=judge_id, contest_id=contest_id, phase=ContestUtil.getCurrentPhase(contest_id)['phase'])
         if participant.count() == 0:
             return JsonResponse({'msg': '已无待评作品'})
         participant_id = participant[0].leader_id
+        result['participantid'] = participant_id
     base_dir = RESOURCE_BASE_DIR + "/resources/contests/" + str(contest_id) + '/playerFiles/' + str(participant_id)
     children = GeneralUtil.getChildren(base_dir)
-    return JsonResponse({
-        'msg': '',
-        'files': children
-    })
+    result['msg'] = ''
+    result['files'] = children
+    return JsonResponse(result)
 
 def submit(request):
     data = json.loads(request.body.decode('utf-8'))
-    try:
-        judge_id = request.user.id
-    except:
-        return JsonResponse({'msg': '权限认证失败！'})
+    if not request.user.is_authenticated:
+        return JsonResponse({'msg': '请先登录'})
+    judge_id = request.user.id
     contest_id = int(data['contestid'])
     user_id = data['userId']
     grade = data['grade']
@@ -50,10 +49,9 @@ def submit(request):
     return JsonResponse({'msg': ''})
 
 def finished(request):
-    try:
-        judge_id = request.user.id
-    except:
-        return JsonResponse({'msg': 'Unauthorized'})
+    if not request.user.is_authenticated:
+        return JsonResponse({'msg': '请先登录'})
+    judge_id = request.user.id
     data = json.loads(request.body.decode('utf-8'))
     contest_id = int(data['contestid'])
     res = {}

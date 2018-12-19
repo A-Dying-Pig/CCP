@@ -160,11 +160,10 @@ def hot(request):
         context = []
         contests = HotContest.objects.all()
         for contest in contests:
-            tmp_path = '/resources/contests/' + str(c.id) + '/img/'
+            tmp_path = '/resources/contests/' + str(contest.id) + '/img/'
             files = os.listdir(RESOURCE_BASE_DIR + tmp_path)
             for file in files:
                 tmp_path = tmp_path + file
-            d['img_url'] = tmp_path
             context.append({
                 'url': 'detail?contestid=' + str(contest.contest_id),
                 'img_url': tmp_path,
@@ -210,6 +209,7 @@ def create(request):
     sponsors = basicinfo['sponsors']
     comtype = basicinfo['comtype']
     details = basicinfo['details']
+    img_url = basicinfo['img']
 
     signupinfo = data['signupinfo']
     time = signupinfo['time']
@@ -262,6 +262,14 @@ def create(request):
     os.mkdir(RESOURCE_BASE_DIR + '/resources/contests/' + str(contest.id))
     os.mkdir(RESOURCE_BASE_DIR + '/resources/contests/' + str(contest.id) + '/img')
     os.mkdir(RESOURCE_BASE_DIR + '/resources/contests/' + str(contest.id) + '/playerFiles')
+    # 将用户目录下的比赛图片的临时文件放到文件系统规定好的位置
+    source_dir = RESOURCE_BASE_DIR + img_url
+    filename = source_dir[(1 + source_dir.rfind('/')):]
+    dest_dir = RESOURCE_BASE_DIR + '/resources/contests/' + str(contest.id) + '/img' + filename
+    with open(source_dir, 'rb') as fs:
+        # 分块写入文件;
+        with open(dest_dir, 'wb+') as fd:
+            fd.write(fs.read())
     return JsonResponse({'code': 0, 'msg': ''})
 
 def detail(request):
@@ -312,7 +320,7 @@ def fileList(request):
     try:
         data = json.loads(request.body.decode('utf-8'))
         contest_id = int(data['contestid'])
-        contest_path = RESOURCE_BASE_DIR + "/resources/contests/" + str(contest_id) + "/contestFile"
+        contest_path = RESOURCE_BASE_DIR + "/resources/contests/" + str(contest_id) + "/contestFiles"
         files = os.listdir(contest_path)
         result = []
         for file in files:
@@ -348,26 +356,14 @@ def enrollNum(request):
 
 def uploadImg(request):
     try:
-        contest_id = int(request.POST['contestid'])
-        try:
-            contest = Contest.objects.get(id=contest_id)
-        except:
-            return JsonResponse({'msg': 'Contest does not exist.'})
-
-        try:
-            if contest.admin_id != request.user.id:  # 当前用户不是管理员
-                return JsonResponse({'msg': 'Current user is not the admin of this contest'})
-        except:
-            return JsonResponse({'msg': 'Current user is not the admin of this contest'})
-
+        if not request.user.is_authenticated:
+            return JsonResponse({'msg': '请先登录'})
         File = request.FILES.get("file", None)
         if File is None:
             return JsonResponse({'msg': 'File not found.'})
         else:
-            # 先删掉原来的文件夹内的所有内容，再新建一个
-            cur_dir = RESOURCE_BASE_DIR + '/resources/contests/' + str(contest_id) + '/img/'
-            if os.path.isdir(cur_dir):
-                shutil.rmtree(cur_dir)
+            # 暂存临时文件
+            cur_dir = RESOURCE_BASE_DIR + '/resources/users/' + str(request.user.id) + '/tmp/' + str(time.time())
             os.mkdir(cur_dir)
             # 打开特定的文件进行二进制的写操作;
             with open(cur_dir + File.name, 'wb+') as f:
