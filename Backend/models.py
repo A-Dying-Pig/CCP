@@ -13,7 +13,7 @@ class CCPUser(AbstractUser):
 
 # 比赛信息总表
 class Contest(models.Model):
-    title = models.CharField(max_length=32)  # 比赛名称
+    title = models.CharField(max_length=32, unique=True)  # 比赛名称
     category = models.CharField(max_length=32)  # 比赛类别
     grouped = models.BooleanField(default=False)  # 是否需要组队参赛
     group_min_number = models.IntegerField(blank=True, null=True)  # 组队最小人数

@@ -29,6 +29,7 @@ def register(request):
         new_user = CCPUser.objects.create(username=username, password=password, email=email)
         os.mkdir(RESOURCE_BASE_DIR + '/resources/users/' + str(new_user.id))
         os.mkdir(RESOURCE_BASE_DIR + '/resources/users/' + str(new_user.id) + '/tmp')
+        os.mkdir(RESOURCE_BASE_DIR + '/resources/users' + str(new_user.id) + '/img')
         return JsonResponse({'msg': ''})
 
 def login(request):
@@ -77,6 +78,7 @@ def profile(request):
         competition['created_competition'] = []
         for contest in created:
             competition['created_competition'].append({
+                'id': contest.id,
                 'title': Contest.objects.get(id=contest.id).title,
                 'url': '/detail?contestid=' + str(contest.id),
             })

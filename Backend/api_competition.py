@@ -9,7 +9,7 @@ import time
 import os
 from .utils import *
 import pytz
-from datetime import datetime, timezone
+from datetime import datetime, timezone, timedelta
 import shutil
 import jwt
 from django.db.models import Q
@@ -443,8 +443,8 @@ def addDiscussion(request):
         post.author = CCPUser.objects.get(id=request.user.id).username
         post.title = title
         post.content = content
-        post.time = datetime.utcnow()
-        post.last_reply_time = datetime.utcnow()
+        post.time = datetime.now(tz=utctz)
+        post.last_reply_time = datetime.now(tz=utctz)
         post.save()
         return JsonResponse({'msg': ''})
     except Exception as e:

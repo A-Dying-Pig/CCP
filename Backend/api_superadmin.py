@@ -4,6 +4,8 @@ from django.contrib.auth.decorators import login_required
 import json
 from .utils import *
 import traceback
+import datetime
+from dateutil import tz
 
 def contests(request):
     try:
@@ -99,31 +101,26 @@ def indexInfo(request):
     if not user.is_superuser: # 是超级用户
         return JsonResponse({'msg': 'Authority denied.'})
     try:
-        contests = []
+        cur_time = datetime.datetime.now(tz=datetime.timezone.utc)
+        all_contests = Contest.objects.filter(enroll_start__lte=cur_time, enroll_end__gte=cur_time)
         hot_contests = HotContest.objects.all()
-        for single_contest in hot_contests:
+        slider = Slider.objects.all()
+        contests = []
+        for single_contest in all_contests:
+            is_slider = 0
+            for single_slider in slider:
+                if single_slider.contest_id == single_contest.id:
+                    is_slider = 1
+            is_hot = 0
+            for single_hot in hot_contests:
+                if single_hot.contest_id == single_contest.id:
+                    is_hot = 1
             contests.append({
-                'contestid': single_contest.contest_id,
-                'is_slider': 0,
-                'is_hot': 1,
+                'contestid': single_contest.id,
+                'is_slider': is_slider,
+                'is_hot': is_hot,
                 'title': single_contest.title
             })
-
-        slider = Slider.objects.all()
-        for single_contest in slider:
-            in_list = False
-            for contest in contests:
-                if contest['contestid'] == single_contest.contest_id:
-                    contest['is_slider'] = 1
-                    in_list = True
-                    break
-            if not in_list:
-                contests.append({
-                    'contestid': single_contest.contest_id,
-                    'is_slider': 1,
-                    'is_hot': 0,
-                    'title': single_contest.title
-                })
         return JsonResponse({'msg': '',
                              'contests': contests})
     except Exception as e:
