@@ -535,6 +535,13 @@ def worksname(request):
     # todo
     data = json.loads(request.body.decode('utf-8'))
     contestid = data['contestid']
-    phase = ContestUtil.getCurrentPhase(contestid)['phase']
-    filename = 'test.zip'
+    userid = request.user.id
+    try:
+        dirs = os.listdir('resources/contests/' + str(contestid) + '/playerFiles/' + str(userid))
+    except:
+        return JsonResponse({'msg': '', 'filename': ''})
+    for d in dirs:
+        if os.path.isfile('resources/contests/' + str(contestid) + '/playerFiles/' + str(userid) + '/' + d):
+            filename = d
+            break
     return JsonResponse({'msg': '', 'filename': filename})
