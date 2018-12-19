@@ -73,6 +73,12 @@
         props:['contestid','stageinfo','readonly','participantid','participantgrade'],
         data:function () {
             let defaultgrade = this.participantgrade?this.participantgrade:0;
+            let validateGrade = function (rule, value, callback){
+                if ((value<0)||(value>100)) {
+                    return callback(new Error('分数在0-100之间！'))
+                }
+                return callback();
+            };
             return{
                 nodes:[],
                 selectnode:{
@@ -87,7 +93,7 @@
                     grade:[{required:true,message:'请给选手打分',trigger:'blur'},{
                         type:'number',message:'分数必须为数字',trigger:'blur'
                     },{
-                        min:0,max:100,message:'分数必须在0-100之间',trigger:'blur'
+                        validator: validateGrade,message:'分数必须在0-100之间',trigger:'blur'
                     }],
                 },
             }
