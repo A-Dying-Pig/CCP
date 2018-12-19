@@ -118,14 +118,7 @@ def list(request):
         d['intro'] = c.brief_introduction
         d['contestid'] = c.id
         tmp_path = '/resources/contests/' + str(c.id) + '/img/'
-        files = os.listdir(RESOURCE_BASE_DIR + tmp_path)
-        if len(files) > 0:
-            tmp_path = tmp_path + files[0]
-        else:
-            tmp_path = '/resources/default/contest/'
-            files = os.listdir(RESOURCE_BASE_DIR + tmp_path)
-            tmp_path = tmp_path + files[0]
-        d['img_url'] = tmp_path
+        d['img_url'] = GeneralUtil.find_first_img(tmp_path, 'contest')
         array.append(d)
     total_page_num = (count - 1) // amount + 1
     return JsonResponse({
@@ -141,11 +134,8 @@ def slider(request):
         contests = Slider.objects.all()
         for contest in contests:
             tmp_path = '/resources/contests/' + str(contest.id) + '/img/'
-            files = os.listdir(RESOURCE_BASE_DIR + tmp_path)
-            for file in files:
-                tmp_path = tmp_path + file
             context.append({'url': '/detail?contestid=' + str(contest.contest_id),
-                            'img_url': tmp_path})
+                            'img_url': GeneralUtil.find_first_img(tmp_path, 'contest')})
         result = {
             'array': context,
             'msg': ''
@@ -161,14 +151,11 @@ def hot(request):
         contests = HotContest.objects.all()
         for contest in contests:
             tmp_path = '/resources/contests/' + str(contest.id) + '/img/'
-            files = os.listdir(RESOURCE_BASE_DIR + tmp_path)
-            for file in files:
-                tmp_path = tmp_path + file
             context.append({
                 'url': 'detail?contestid=' + str(contest.contest_id),
-                'img_url': tmp_path,
+                'img_url': GeneralUtil.find_first_img(tmp_path, 'contest'),
                 'intro': contest.brief_introduction,
-                'title': contest.brief_introduction
+                'title': contest.title
             })
         result = {
             'array': context,
@@ -190,7 +177,7 @@ def neededinfo(request):
         group_min_number = target.group_min_number
         group_max_number = target.group_max_number
         context = {
-            'comp_type': 1 if comp_type else 0,
+            'comp_type': 0 if comp_type else 1,
             'extra': extra,
             'group_min_number': group_min_number,
             'group_max_number': group_max_number,
@@ -265,7 +252,7 @@ def create(request):
     # 将用户目录下的比赛图片的临时文件放到文件系统规定好的位置
     source_dir = RESOURCE_BASE_DIR + img_url
     filename = source_dir[(1 + source_dir.rfind('/')):]
-    dest_dir = RESOURCE_BASE_DIR + '/resources/contests/' + str(contest.id) + '/img' + filename
+    dest_dir = RESOURCE_BASE_DIR + '/resources/contests/' + str(contest.id) + '/img/' + filename
     with open(source_dir, 'rb') as fs:
         # 分块写入文件;
         with open(dest_dir, 'wb+') as fd:
@@ -370,7 +357,7 @@ def uploadImg(request):
                 # 分块写入文件;
                 for chunk in File.chunks():
                     f.write(chunk)
-            return JsonResponse({'msg': '', 'url': cur_dir[RESOURCE_BASE_DIR:] + File.name})
+            return JsonResponse({'msg': '', 'url': cur_dir[len(RESOURCE_BASE_DIR):] + File.name})
     except Exception as e:
         traceback.print_exc()
         return JsonResponse({'msg': '未知错误'})
@@ -428,7 +415,7 @@ def discussion(request):
         result['array'] = []
         for single_reply in replys:
             result['array'].append({
-                'imgurl': "/resources/users/" + str(single_reply.author_id) + '/',
+                'imgurl': GeneralUtil.find_first_img('/resources/users/' + str(single_reply.author_id) + '/img/', 'user'),
                 'username': single_reply.author,
                 'content': single_reply.content,
                 'time': (time.mktime(single_reply.time.timetuple()) + 8 * 60 * 60) * 1000

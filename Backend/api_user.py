@@ -57,16 +57,7 @@ def profile(request):
             return JsonResponse({'msg': '请先登录'})
         id = request.user.id
         img_url = '/resources/users/' + str(id) + '/img/'
-        if os.path.isdir(RESOURCE_BASE_DIR + img_url):
-            all_files = os.listdir(RESOURCE_BASE_DIR + img_url)
-            if len(all_files) > 0:
-                img_url = img_url + all_files[0]
-            else:
-                img_url = '/resources/default/user/'
-                all_files = os.listdir(RESOURCE_BASE_DIR + img_url)
-                img_url = img_url + all_files[0]
-        else:
-            return JsonResponse({'msg': '用户头像目录不存在'})
+        img_url = GeneralUtil.find_first_img(img_url, 'user')
         competition = {}
         participated = ContestPlayer.objects.filter(player_id=id)
         competition['participated_competition'] = []
@@ -183,7 +174,7 @@ def upload(request):
     else:
         # 先删除旧文件夹下所有内容，再打开特定的文件进行二进制的写操作;
         try:
-            cur_dir = RESOURCE_BASE_DIR + "/resources/contests/" + str(contest_id) + '/playerFiles/' + str(request.user.id) + '/compress'
+            cur_dir = RESOURCE_BASE_DIR + "/resources/contests/" + str(contest_id) + '/playerFiles/' + str(request.user.id) + '/compress/'
             dirs = os.listdir(cur_dir)
             for dir in dirs:
                 if os.path.isfile(dir):  # 删掉原来的压缩文件
@@ -193,7 +184,7 @@ def upload(request):
                 for chunk in File.chunks():
                     f.write(chunk)
             # 解压缩
-            extract_dir = RESOURCE_BASE_DIR + "/resources/contests/" + str(contest_id) + '/playerFiles/' + str(request.user.id) + '/decompress'
+            extract_dir = RESOURCE_BASE_DIR + "/resources/contests/" + str(contest_id) + '/playerFiles/' + str(request.user.id) + '/decompress/'
             GeneralUtil.del_dir(extract_dir)
             try:
                 with ZipFile(cur_dir + File.name) as zfile:

@@ -254,6 +254,7 @@ class ContestGradeUtil:
 
 
 class GeneralUtil:
+    IMG_TYPE = ['.jpg', '.JPG', '.png', '.PNG', '.jpeg']
     @classmethod
     def getChildren(cls, basedir):  # api/judge/getone接口遍历得到文件夹结构的递归函数
         targets = os.listdir(basedir)
@@ -285,3 +286,17 @@ class GeneralUtil:
                 elif os.path.isdir(full_path):
                     cls.del_dir(full_path)
                     os.rmdir(full_path)
+
+    @classmethod
+    def find_first_img(cls, path, mode=''):
+        path = RESOURCE_BASE_DIR + path
+        for file in os.listdir(path):
+            full_path = path + file
+            if os.path.isfile(full_path):
+                if file[str(file).rfind('.'):] in cls.IMG_TYPE:  # 是支持的图片格式
+                    return full_path[len(RESOURCE_BASE_DIR):]
+        if mode == 'contest':
+            return cls.find_first_img('/resources/default/contest/')
+        elif mode == 'user':
+            return cls.find_first_img('/resources/default/user/')
+        raise Exception('mode Error:' + mode)
