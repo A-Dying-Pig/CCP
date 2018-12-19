@@ -163,7 +163,7 @@ def setIndex(request):
             h = HotContest()
             h.contest_id = single_hot['id']
             h.title = single_hot['title']
-            h.brief_introduction = single_hot['introduction']
+            h.brief_introduction = single_hot['brief_introduction']
             h.save()
         return JsonResponse({'msg': ''})
     except Exception as e:

@@ -109,8 +109,17 @@ def list(request):
     data = json.loads(request.body.decode('utf-8'))
     page = int(data['pageNum'])
     type = data['type']
-    count = Contest.objects.filter(checked=1).count()
-    contests = Contest.objects.filter(checked=1)[(page - 1) * amount: page * amount]
+    if type == 'all':
+        count = Contest.objects.filter(checked=1).count()
+        contests = Contest.objects.filter(checked=1)[(page - 1) * amount: page * amount]
+    elif type == 'web':
+        count = Contest.objects.filter(checked=1, category='web开发').count()
+        contests = Contest.objects.filter(checked=1, category='web开发')[(page - 1) * amount: page * amount]
+    elif type == 'weixin':
+        count = Contest.objects.filter(checked=1, category='微信小程序').count()
+        contests = Contest.objects.filter(checked=1, category='微信小程序')[(page - 1) * amount: page * amount]
+    else:
+        return JsonResponse({'msg': '不存在的比赛类型'})
     array = []
     for c in contests:
         d = {}
@@ -119,6 +128,7 @@ def list(request):
         d['contestid'] = c.id
         tmp_path = '/resources/contests/' + str(c.id) + '/img/'
         d['img_url'] = GeneralUtil.find_first_img(tmp_path, 'contest')
+        d['enroll_number'] = ContestGroup.objects.filter(contest_id=c.id).count() if c.grouped == 1 else ContestPlayer.objects.filter(contest_id=c.id).count()
         array.append(d)
     total_page_num = (count - 1) // amount + 1
     return JsonResponse({
@@ -133,7 +143,7 @@ def slider(request):
         context = []
         contests = Slider.objects.all()
         for contest in contests:
-            tmp_path = '/resources/contests/' + str(contest.id) + '/img/'
+            tmp_path = '/resources/contests/' + str(contest.contest_id) + '/img/'
             context.append({'url': '/detail?contestid=' + str(contest.contest_id),
                             'img_url': GeneralUtil.find_first_img(tmp_path, 'contest')})
         result = {
@@ -150,9 +160,9 @@ def hot(request):
         context = []
         contests = HotContest.objects.all()
         for contest in contests:
-            tmp_path = '/resources/contests/' + str(contest.id) + '/img/'
+            tmp_path = '/resources/contests/' + str(contest.contest_id) + '/img/'
             context.append({
-                'url': 'detail?contestid=' + str(contest.contest_id),
+                'url': '/detail?contestid=' + str(contest.contest_id),
                 'img_url': GeneralUtil.find_first_img(tmp_path, 'contest'),
                 'intro': contest.brief_introduction,
                 'title': contest.title
@@ -197,6 +207,7 @@ def create(request):
     comtype = basicinfo['comtype']
     details = basicinfo['details']
     img_url = basicinfo['img']
+    brief_introduction = basicinfo['briefintroduction']
 
     signupinfo = data['signupinfo']
     time = signupinfo['time']
@@ -224,6 +235,7 @@ def create(request):
         index = index + 1
     contest.category = comtype
     contest.information = details
+    contest.brief_introduction = brief_introduction
     contest.enroll_start = datetime.strptime(time[0],"%Y-%m-%dT%H:%M:%S.000Z").replace(tzinfo=pytz.utc)
     contest.enroll_end = datetime.strptime(time[1],"%Y-%m-%dT%H:%M:%S.000Z").replace(tzinfo=pytz.utc)
     contest.grouped = 1 if mode == 0 else 0
@@ -239,16 +251,16 @@ def create(request):
     while index < len(stageinfo):
         setattr(contest, 'phase_name' + str(index + 1), stageinfo[index]['name'])
         setattr(contest, 'phase_information' + str(index + 1), stageinfo[index]['details'])
-        setattr(contest, 'phase_mode' + str(index + 1), stageinfo[index]['mode'])
+        # setattr(contest, 'phase_mode' + str(index + 1), stageinfo[index]['mode'])
         setattr(contest, 'phase_start_time' + str(index + 1), datetime.strptime(stageinfo[index]['stageTimeBegin'], "%Y-%m-%dT%H:%M:%S.000Z").replace(tzinfo=pytz.utc))
         setattr(contest, 'phase_hand_end_time' + str(index + 1), datetime.strptime(stageinfo[index]['handTimeEnd'],"%Y-%m-%dT%H:%M:%S.000Z").replace(tzinfo=pytz.utc))
         setattr(contest, 'phase_evaluate_end_time' + str(index + 1), datetime.strptime(stageinfo[index]['evaluationTimeEnd'],"%Y-%m-%dT%H:%M:%S.000Z").replace(tzinfo=pytz.utc))
         setattr(contest, 'phase_region_mode' + str(index + 1), stageinfo[index]['zone'])
         index = index + 1
-    contest.save()
     os.mkdir(RESOURCE_BASE_DIR + '/resources/contests/' + str(contest.id))
     os.mkdir(RESOURCE_BASE_DIR + '/resources/contests/' + str(contest.id) + '/img')
     os.mkdir(RESOURCE_BASE_DIR + '/resources/contests/' + str(contest.id) + '/playerFiles')
+    os.mkdir(RESOURCE_BASE_DIR + '/resources/contests/' + str(contest.id) + '/contestFiles')
     # 将用户目录下的比赛图片的临时文件放到文件系统规定好的位置
     source_dir = RESOURCE_BASE_DIR + img_url
     filename = source_dir[(1 + source_dir.rfind('/')):]
@@ -257,6 +269,7 @@ def create(request):
         # 分块写入文件;
         with open(dest_dir, 'wb+') as fd:
             fd.write(fs.read())
+    contest.save()
     return JsonResponse({'code': 0, 'msg': ''})
 
 def detail(request):
@@ -280,9 +293,10 @@ def detail(request):
         basicinfo = info['basicinfo']
         basicinfo['name'] = contest.title
         basicinfo['holders'] = ContestUtil.getHost(contest)
-        basicinfo['sponsors'] = contest.organizers.split('\n')
+        basicinfo['sponsors'] = contest.organizers.split('\n')[1:]
         basicinfo['comtype'] = contest.category
         basicinfo['details'] = contest.information
+        basicinfo['briefintroduction'] = contest.brief_introduction
         phase = ContestUtil.getCurrentPhase(contest.id)['phase']
         if phase == 0:
             phase = 1
@@ -316,7 +330,7 @@ def fileList(request):
                 result.append({
                     'name': file,
                     'url': entire_dir[len(RESOURCE_BASE_DIR):],
-                    'size': os.path.getsize(entire_dir)
+                    'size': str((os.path.getsize(entire_dir) - 1) // 1024 + 1) + 'KB'
                 })
         return JsonResponse({'msg': '',
                              'files': result})
@@ -350,7 +364,7 @@ def uploadImg(request):
             return JsonResponse({'msg': 'File not found.'})
         else:
             # 暂存临时文件
-            cur_dir = RESOURCE_BASE_DIR + '/resources/users/' + str(request.user.id) + '/tmp/' + str(time.time())
+            cur_dir = RESOURCE_BASE_DIR + '/resources/users/' + str(request.user.id) + '/tmp/' + str(time.time()) + '/'
             os.mkdir(cur_dir)
             # 打开特定的文件进行二进制的写操作;
             with open(cur_dir + File.name, 'wb+') as f:
