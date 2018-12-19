@@ -61,9 +61,6 @@
             },
             fileList:{
                 type:Array,
-                default:function () {
-                    return []
-                }
             }
         },
         data() {
@@ -150,6 +147,9 @@
                 return isLt;
             }
         },
+        created:function () {
+            console.log(this.fileList)
+        }
     }
 
 

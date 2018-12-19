@@ -56,7 +56,8 @@
                     return
                 }
                 if(response.data.filename !== ''){
-                    self.fileList.push(response.data.filename);
+                    self.fileList.push({name:response.data.filename});
+                    console.log(self.fileList)
                 }
             }).catch(function (error) {
                 self.$message({

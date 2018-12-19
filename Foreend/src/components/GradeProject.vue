@@ -96,29 +96,21 @@
                         validator: validateGrade,message:'分数必须在0-100之间',trigger:'blur'
                     }],
                 },
+                participantid:-1
             }
         },
         methods:{
             getfiles:function(){
                 console.log('getting file');
                 //this.files=[];
-                var self=this;
+                let self=this;
                 self.nodes = [];
-                self.nodes = [
-                    {title: '1.jpg', isLeaf: true, data:{src:'https://ss0.bdstatic.com/94oJfD_bAAcT8t7mm9GUKT-xh_/timg?image&quality=100&size=b4000_4000&sec=1543562262&di=07276496cd2ad6274f8d1767c94b4f19&src=http://imgsrc.baidu.com/imgad/pic/item/9e3df8dcd100baa1f437f36f4d10b912c9fc2ece.jpg'}},
-                    {title: '2.jpg', isLeaf: true, data: { src:'https://ss1.bdstatic.com/70cFvXSh_Q1YnxGkpoWK1HF6hhy/it/u=3390961998,1154407883&fm=200&gp=0.jpg' }},
-                    {
-                        title: 'Folder1', children: [
-                            {title: '3.pdf', isLeaf: true, data:{src:'https://cdn.filestackcontent.com/wcrjf9qPTCKXV3hMXDwK'}},
-                            {title: '4.txt', isLeaf: true, data:{src:'https://www.ietf.org/rfc/rfc959.txt'}}
-                        ]
-                    }
-                ]
                 axios.post('/api/judge/getone',{
                     contestid:self.contestid,
                     participantid:(this.readonly?this.participantid:-1),
                 }).then(function (response) {
                         self.nodes = response.data.files;
+                        self.participantid = response.data.participantid;
                     }).catch(function (error) {
                         console.log(error);
                     });
@@ -142,7 +134,7 @@
                         }
                         axios.post('/api/judge/submit',{
                             contestid:self.contestid,
-                            userId:self.userid,
+                            userId:self.participantid,
                             grade:self.gradeinfo.grade,
                             phase:phase
                         }).then(function (response) {

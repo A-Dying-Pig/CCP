@@ -82,9 +82,18 @@
                 </el-col>
             </el-row>
 
+            <el-row>
+                <el-col>
+                    <el-form-item label="比赛介绍（简略）" prop="briefintroduction" label-width="100">
+                        <el-input :disabled="inputisable.basicinfo" type="textarea" :rows="4" placeholder="请输入详细信息" v-model="info.briefintroduction">
+                        </el-input>
+                    </el-form-item>
+                </el-col>
+            </el-row>
+
         <el-row>
             <el-col>
-                <el-form-item label="详细信息" prop="details" label-width="100">
+                <el-form-item label="比赛介绍（详细）" prop="details" label-width="100">
                     <el-input :disabled="inputisable.basicinfo" type="textarea" :rows="10" placeholder="请输入详细信息" v-model="info.details">
                     </el-input>
                 </el-form-item>
@@ -138,7 +147,23 @@
             <template v-if="info.mode === '组队赛'">
                 <el-row>
                     <el-col>
-                        <el-form-item label="需要的队伍信息" label-width="100" required>
+                        <el-form-item label="队伍人数选择" label-width="100" prop="teamnum" required>
+                                                <el-slider
+                                                        v-model="info.teamnum"
+                                                        range
+                                                        show-stops
+                                                        :min="1"
+                                                        :max="10">
+                                                </el-slider>
+                                    </el-form-item>
+                    </el-col>
+                </el-row>
+            </template>
+
+            <template v-if="info.mode === '组队赛'">
+                <el-row>
+                    <el-col>
+                        <el-form-item label="需要填写的队伍信息" label-width="100" required>
                             <el-row v-for="(item,index) in info.group" :key="item.key">
                                 <el-col>
                                     <el-form-item   prop="group">
@@ -243,6 +268,8 @@ export default {
                 comtype:[{required:true, message:'必须指定一种比赛类型',trigger:'change'}],
                 details:[{required:true, message:'请输入比赛详细信息',trigger:'blur'},
                     {min:5,max:1000,message:'长度在5到1000个字符之间',trigger:'blur'}],
+                briefintroduction:[{required:true, message:'请输入比赛信息',trigger:'blur'},
+                    {min:5,max:100,message:'长度在5到100个字符之间',trigger:'blur'}]
             },
             signuprules:{
                 time:[{required:true,message:'请输入报名日期！',trigger:'change'},
@@ -252,6 +279,7 @@ export default {
                 mode:[{required:true,message:'请输入报名形式！',trigger:'change'}],
                 group:[{type:'array',validator:signupVali,trigger:'blur'},
                     {type:'array',max:10,message:'需要的队伍信息条数不超过10个',trigger:'blur'}],
+                teamnum:[{required:true,message:'请选择队伍人数！',trigger:'change'}]
             },
             comtypes:[
                 {label:'微信小程序',name:'type',value:'weixin'},
@@ -324,16 +352,16 @@ export default {
             this.imageUrl = URL.createObjectURL(file.raw);
         },
         beforeAvatarUpload(file) {
-            const isJPG = file.type === 'image/jpeg';
+            const isTYPE = /\.(jpg|jpeg|png|JPG|PNG)$/.test(file.name);
             const isLt2M = file.size / 1024 / 1024 < 2;
 
-            if (!isJPG) {
+            if (!isTYPE) {
                 this.$message.error('上传头像图片只能是 JPG 格式!');
             }
             if (!isLt2M) {
                 this.$message.error('上传头像图片大小不能超过 2MB!');
             }
-            return isJPG && isLt2M;
+            return isTYPE && isLt2M;
         },
         Uploadimg:function(param){
             let fileobj = param.file;

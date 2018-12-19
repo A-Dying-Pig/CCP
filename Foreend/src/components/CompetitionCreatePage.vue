@@ -48,7 +48,8 @@
                             sponsors:[],
                             comtype:'',
                             details:"",
-                            img:''
+                            img:'',
+                            briefintroduction:'',
                         },
                         signupinfo:{
                             time:[],
@@ -57,7 +58,10 @@
                                 ''
                             ],
                             group:[
-                            ]
+                            ],
+                            teamnum:[3,
+                                5
+                            ],
                         },
                         stageinfo:[{
                             name:'',
@@ -79,6 +83,7 @@
                 var self = this;
                 let res=[];
                 var flag=true;
+                console.log(self.allinfo)
                 res.push(this.$refs.basic.validate());
                 res.push(this.$refs.signup.validate());
                 res.push(this.$refs.stage.validate());
@@ -145,7 +150,6 @@
                         stage.zone = 2;
                     }
                 }
-                console.log(this.allinfo);
                 if(flag){
                     if(self.change){
                         self.allinfo['contestid']=self.contestid;
