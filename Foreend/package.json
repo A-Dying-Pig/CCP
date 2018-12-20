@@ -30,6 +30,7 @@
     "@vue/test-utils": "^1.0.0-beta.27",
     "axios": "^0.18.0",
     "babel-eslint": "^10.0.1",
+    "babel-plugin-istanbul": "^5.1.0",
     "babel-register": "^6.26.0",
     "chai": "^4.2.0",
     "cross-env": "^5.2.0",
@@ -40,6 +41,7 @@
     "extract-text-webpack-plugin": "^4.0.0-alpha.0",
     "html-webpack-plugin": "^3.2.0",
     "ignore-styles": "^5.0.1",
+    "istanbul-instrumenter-loader": "^3.0.1",
     "jsdom": "^13.1.0",
     "jsdom-global": "^3.0.2",
     "mocha": "^5.2.0",
@@ -87,10 +89,27 @@
   },
   "nyc": {
     "include": [
-      "src/**/*.(js|vue)"
+      "src/components/*.(js|vue)",
+      "src/pages/*.(js|vue)"
     ],
     "instrument": false,
-    "sourceMap": false
+    "sourceMap": false,
+    "check-coverage": true,
+    "per-file": true,
+    "lines": 90,
+    "statements": 90,
+    "functions": 90,
+    "branches": 90,
+    "reporter": [
+      "lcov",
+      "text",
+      "text-summary"
+    ],
+    "extension": [
+      ".js"
+    ],
+    "cache": true,
+    "all": true
   },
   "browserslist": [
     "> 1%",
