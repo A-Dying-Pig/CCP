@@ -242,8 +242,10 @@ def create(request):
         contest.grouped = 1
         contest.group_min_number = signupinfo['teamnum'][0]
         contest.group_max_number = signupinfo['teamnum'][1]
-    else:
+    elif mode == 1:
         contest.grouped = 0
+    else:
+        return JsonResponse({'msg': '不支持的比赛模式'})
     index = 0
     while index < len(person):
         setattr(contest, 'extra_title' + str(index + 1), person[index])
@@ -539,9 +541,8 @@ def worksname(request):
     data = json.loads(request.body.decode('utf-8'))
     contestid = data['contestid']
     userid = request.user.id
-    try:
-        dirs = os.listdir(RESOURCE_BASE_DIR + '/resources/contests/' + str(contestid) + '/playerFiles/' + str(userid) + '/compress/')
-    except:
+    dirs = os.listdir(RESOURCE_BASE_DIR + '/resources/contests/' + str(contestid) + '/playerFiles/' + str(userid) + '/compress/')
+    if not dirs:
         return JsonResponse({'msg': '', 'filename': ''})
     for d in dirs:
         if os.path.isfile(RESOURCE_BASE_DIR + '/resources/contests/' + str(contestid) + '/playerFiles/' + str(userid) + '/compress/' + d):

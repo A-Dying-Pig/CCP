@@ -34,6 +34,9 @@ def participants(request):
     result['mode'] = 1 - contest.grouped
     result['current_page_num'] = page_num
     cur_phase = ContestUtil.getCurrentPhase(contest_id)['phase']
+    #todo htx delete test code
+    cur_phase=1
+    #todo htx
     if result['mode'] == 1:  # 个人赛
         participants= ContestGrade.objects.filter(contest_id=contest_id, phase=cur_phase)
         participant_number= participants.count()
