@@ -14,6 +14,8 @@ import shutil
 import jwt
 from django.db.models import Q
 import traceback
+import csv
+import pickle
 
 utctz=pytz.timezone('UTC')
 chinatz=pytz.timezone('Asia/Shanghai')
@@ -59,6 +61,18 @@ def enroll(request):
     if le < 0 or le > 4:
         return JsonResponse({'msg': '额外信息数目超出限制'})
 
+    if os.path.exists('university.pkl'):
+        with open('university.pkl', 'rb') as f:
+            uni_dic = pickle.load(f)
+    else:
+        uni_dic = {}
+        with open('university.csv') as f:
+            r = csv.DictReader(f)
+            for row in r:
+                uni_dic[row['University']] = {'province': row['Province'], 'region': row['Region']}
+        with open('university.pkl', 'wb') as fw:
+            pickle.dump(uni_dic, fw)
+
     # need to modify database, add fileds to Contestplayer
     if comp_type == 0:  # 个人赛
         with transaction.atomic():
@@ -66,6 +80,24 @@ def enroll(request):
             contest_player.player_id = userId
             contest_player.contest_id = contestid
             contest_player.phone_number = phone_number
+            phase_num = ContestUtil.phaseNum(contestid)
+            contest = Contest.objects.filter(id=contestid)[0]
+            for i in (1, phase_num+1):
+                mode = getattr(contest, 'phase_region_mode' + str(i))
+                if mode == 0:
+                    setattr(contest_player, 'phase_region' + str(i), '')
+                elif mode == 1:
+                    try:
+                        zone = uni_dic[university]['province']
+                    except:
+                        zone = '其他'
+                    setattr(contest_player, 'phase_region' + str(i), zone)
+                elif mode == 2:
+                    try:
+                        zone = uni_dic[university]['region']
+                    except:
+                        zone = '其他'
+                    setattr(contest_player, 'phase_region' + str(i), zone)
             index = 0
             while index < le:
                 setattr(contest_player, 'extra_information' + str(index + 1), values[index])
@@ -93,6 +125,25 @@ def enroll(request):
                 setattr(contest_group, 'extra_information' + str(index + 1), values[index])
                 index = index + 1
             contest_group.phone_number = phone_number
+
+            phase_num = ContestUtil.phaseNum(contestid)
+            contest = Contest.objects.filter(id=contestid)[0]
+            for i in (1, phase_num+1):
+                mode = getattr(contest, 'phase_region_mode' + str(i))
+                if mode == 0:
+                    setattr(contest_group, 'phase_region' + str(i), '')
+                elif mode == 1:
+                    try:
+                        zone = uni_dic[university]['province']
+                    except:
+                        zone = '其他'
+                    setattr(contest_group, 'phase_region' + str(i), zone)
+                elif mode == 2:
+                    try:
+                        zone = uni_dic[university]['region']
+                    except:
+                        zone = '其他'
+                    setattr(contest_group, 'phase_region' + str(i), zone)
             contest_group.save()
             contest_grade = ContestGrade()
             contest_grade.phase = 1
@@ -532,6 +583,7 @@ def worksname(request):
     data = json.loads(request.body.decode('utf-8'))
     contestid = data['contestid']
     userid = request.user.id
+    filename = ''
     try:
         dirs = os.listdir(RESOURCE_BASE_DIR + '/resources/contests/' + str(contestid) + '/playerFiles/' + str(userid) + '/compress/')
     except:

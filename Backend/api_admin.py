@@ -280,10 +280,12 @@ def broadcast(request):
         players = ContestPlayer.objects.filter(contest_id=contestid)
     else:
         d = ContestUtil.getCurrentRegionMode(contestid)
+        if d == 0:
+            d = 1
         with open('zone.json', 'r', encoding='utf8') as f:
             zone = json.load(f)
         if d == 0: #all
-            pass
+            zone = ''
         elif d == 1: #province
             zone = zone['province'][target_id]
         elif d == 2: #region

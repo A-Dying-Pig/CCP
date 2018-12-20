@@ -6,3 +6,5 @@ resources
 *.sqlite3
 Foreend/static
 Foreend/templates
+*.pkl
+
