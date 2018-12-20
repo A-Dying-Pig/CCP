@@ -114,6 +114,11 @@ class ContestGroup(models.Model):
     contest_id = models.IntegerField(db_index=True)  # 比赛id
     group_name = models.CharField(max_length=32)  # 组名
     phone_number = models.CharField(max_length=16, null=True)  # 联系电话
+    phase_region1 = models.CharField(max_length=32, blank=True, null=True)  # 选手在每个阶段的赛区
+    phase_region2 = models.CharField(max_length=32, blank=True, null=True)
+    phase_region3 = models.CharField(max_length=32, blank=True, null=True)
+    phase_region4 = models.CharField(max_length=32, blank=True, null=True)
+    phase_region5 = models.CharField(max_length=32, blank=True, null=True)
     extra_information1 = models.CharField(max_length=64, blank=True, null=True)  # 每个比赛特需的组队数据
     extra_information2 = models.CharField(max_length=64, blank=True, null=True)
     extra_information3 = models.CharField(max_length=64, blank=True, null=True)
