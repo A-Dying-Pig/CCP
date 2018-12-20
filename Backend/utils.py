@@ -25,6 +25,7 @@ class ContestUtil:
         for i in range(0, 5):
             if getattr(contest, 'phase_name'+str(i+1)) is None:
                 return i
+        return 5
 
     @classmethod
     def getStage(cls, contest):
