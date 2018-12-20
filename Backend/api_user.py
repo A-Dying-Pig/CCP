@@ -29,6 +29,7 @@ def register(request):
         new_user = CCPUser.objects.create(username=username, password=password, email=email)
         os.mkdir(RESOURCE_BASE_DIR + '/resources/users/' + str(new_user.id))
         os.mkdir(RESOURCE_BASE_DIR + '/resources/users/' + str(new_user.id) + '/tmp')
+        os.mkdir(RESOURCE_BASE_DIR + '/resources/users/' + str(new_user.id) + '/img')
         return JsonResponse({'msg': ''})
 
 def login(request):
@@ -57,16 +58,7 @@ def profile(request):
             return JsonResponse({'msg': '请先登录'})
         id = request.user.id
         img_url = '/resources/users/' + str(id) + '/img/'
-        if os.path.isdir(RESOURCE_BASE_DIR + img_url):
-            all_files = os.listdir(RESOURCE_BASE_DIR + img_url)
-            if len(all_files) > 0:
-                img_url = img_url + all_files[0]
-            else:
-                img_url = '/resources/default/user/'
-                all_files = os.listdir(RESOURCE_BASE_DIR + img_url)
-                img_url = img_url + all_files[0]
-        else:
-            return JsonResponse({'msg': '用户头像目录不存在'})
+        img_url = GeneralUtil.find_first_img(img_url, 'user')
         competition = {}
         participated = ContestPlayer.objects.filter(player_id=id)
         competition['participated_competition'] = []
@@ -86,6 +78,7 @@ def profile(request):
         competition['created_competition'] = []
         for contest in created:
             competition['created_competition'].append({
+                'id': contest.id,
                 'title': Contest.objects.get(id=contest.id).title,
                 'url': '/detail?contestid=' + str(contest.id),
             })

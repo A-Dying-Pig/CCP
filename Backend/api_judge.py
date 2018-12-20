@@ -7,9 +7,6 @@ import random
 from .utils import ContestUtil,GeneralUtil,RESOURCE_BASE_DIR
 import traceback
 
-
-                
-
 def getone(request):
     if not request.user.is_authenticated:
         return JsonResponse({'msg': '请先登录'})

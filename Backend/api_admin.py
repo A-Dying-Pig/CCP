@@ -126,6 +126,7 @@ def modify(request):
     sponsors = basicinfo['sponsors']
     comtype = basicinfo['comtype']
     details = basicinfo['details']
+    brief_introduction = basicinfo['briefintroduction']
 
     signupinfo = data['signupinfo']
     time = signupinfo['time']
@@ -176,7 +177,7 @@ def modify(request):
     while index < len(stageinfo):
         setattr(contest, 'phase_name' + str(index + 1), stageinfo[index]['name'])
         setattr(contest, 'phase_information' + str(index + 1), stageinfo[index]['details'])
-        setattr(contest, 'phase_mode' + str(index + 1), stageinfo[index]['mode'])
+        # setattr(contest, 'phase_mode' + str(index + 1), stageinfo[index]['mode'])
         setattr(contest, 'phase_start_time' + str(index + 1), datetime.strptime(stageinfo[index]['stageTimeBegin'], "%Y-%m-%dT%H:%M:%S.000Z").replace(tzinfo=pytz.utc))
         setattr(contest, 'phase_hand_end_time' + str(index + 1), datetime.strptime(stageinfo[index]['handTimeEnd'],"%Y-%m-%dT%H:%M:%S.000Z").replace(tzinfo=pytz.utc))
         setattr(contest, 'phase_evaluate_end_time' + str(index + 1), datetime.strptime(stageinfo[index]['evaluationTimeEnd'],"%Y-%m-%dT%H:%M:%S.000Z").replace(tzinfo=pytz.utc))
@@ -253,8 +254,10 @@ def upload(request):
     if File is None:
         return JsonResponse({'msg': 'File not found.'})
     else:
+        target_dir = '/resources/contests/' + str(contest_id) + '/contestFiles/'
+        GeneralUtil.del_dir(RESOURCE_BASE_DIR + target_dir)
         # 打开特定的文件进行二进制的写操作;
-        with open(RESOURCE_BASE_DIR + "/resources/contests/" + str(contest_id) + '/contestFiles/' + File.name, 'wb+') as f:
+        with open(RESOURCE_BASE_DIR + target_dir + File.name, 'wb+') as f:
             # 分块写入文件;
             for chunk in File.chunks():
                 f.write(chunk)

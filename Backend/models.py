@@ -13,15 +13,15 @@ class CCPUser(AbstractUser):
 
 # 比赛信息总表
 class Contest(models.Model):
-    title = models.CharField(max_length=32)  # 比赛名称
-    category = models.CharField(max_length=32)  # 比赛类别
-    grouped = models.BooleanField(default=False)  # 是否需要组队参赛
+    title = models.CharField(max_length=32, unique=True)  # 比赛名称
+    category = models.CharField(max_length=32, db_index=True)  # 比赛类别
+    grouped = models.BooleanField(default=False, db_index=True)  # 是否需要组队参赛
     group_min_number = models.IntegerField(blank=True, null=True)  # 组队最小人数
     group_max_number = models.IntegerField(blank=True, null=True)  # 组队最大人数
     # start_time = models.DateTimeField()  # 比赛开始时间
     # end_time = models.DateTimeField()  # 比赛结束时间
-    enroll_start = models.DateTimeField()  # 报名开始时间
-    enroll_end = models.DateTimeField()  # 报名结束时间
+    enroll_start = models.DateTimeField(db_index=True)  # 报名开始时间
+    enroll_end = models.DateTimeField(db_index=True)  # 报名结束时间
     information = models.TextField()  # 比赛详情
     brief_introduction = models.CharField(max_length=128)  # 比赛简介
     # phase = models.CharField(max_length=512, blank=True)  # 比赛阶段
@@ -51,11 +51,11 @@ class Contest(models.Model):
     phase_information3 = models.CharField(max_length=128, blank=True, null=True)
     phase_information4 = models.CharField(max_length=128, blank=True, null=True)
     phase_information5 = models.CharField(max_length=128, blank=True, null=True)
-    phase_mode1 = models.CharField(max_length=16, blank=True, null=True)  # 各阶段评测方式
-    phase_mode2 = models.CharField(max_length=16, blank=True, null=True)
-    phase_mode3 = models.CharField(max_length=16, blank=True, null=True)
-    phase_mode4 = models.CharField(max_length=16, blank=True, null=True)
-    phase_mode5 = models.CharField(max_length=16, blank=True, null=True)
+    # phase_mode1 = models.CharField(max_length=16, blank=True, null=True)  # 各阶段评测方式
+    # phase_mode2 = models.CharField(max_length=16, blank=True, null=True)
+    # phase_mode3 = models.CharField(max_length=16, blank=True, null=True)
+    # phase_mode4 = models.CharField(max_length=16, blank=True, null=True)
+    # phase_mode5 = models.CharField(max_length=16, blank=True, null=True)
     phase_region_mode1 = models.IntegerField(default=0)  # 各阶段划分赛区的方式
     phase_region_mode2 = models.IntegerField(default=0)
     phase_region_mode3 = models.IntegerField(default=0)
@@ -66,7 +66,7 @@ class Contest(models.Model):
     phase_judge_start3 = models.BooleanField(default=False)
     phase_judge_start4 = models.BooleanField(default=False)
     phase_judge_start5 = models.BooleanField(default=False)
-    admin_id = models.IntegerField()  # 比赛管理员User表里的id
+    admin_id = models.IntegerField(db_index=True)  # 比赛管理员User表里的id
     host1 = models.CharField(max_length=32)  # 主办方
     host2 = models.CharField(max_length=32, blank=True, null=True)
     host3 = models.CharField(max_length=32, blank=True, null=True)

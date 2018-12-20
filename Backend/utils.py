@@ -13,12 +13,21 @@ MAX_PARTICIPANT_ONE_PAGE = 10
 MAX_POST_ONE_PAGE = 8
 MAX_REPLY_ONE_PAGE = 8
 
+
 RESOURCE_BASE_DIR = 'E:/Workspace/CCP'
 
 class ContestUtil:
     NON_REGION = 0
     BIG_REGION = 1
     PROVINCE_REGION = 2
+    @classmethod
+    def phaseNum(cls, contest_id):
+        contest = Contest.objects.get(id=contest_id)
+        for i in range(0, 5):
+            if getattr(contest, 'phase_name'+str(i+1)) is None:
+                return i
+        return 5
+
     @classmethod
     def getStage(cls, contest):
         result = []
@@ -31,7 +40,7 @@ class ContestUtil:
                 tmp_dict['stageTimeBegin'] = (time.mktime(getattr(contest, 'phase_start_time' + str(i+1)).timetuple()) + 8 * 60 * 60) * 1000
                 tmp_dict['handTimeEnd'] = (time.mktime(getattr(contest, 'phase_hand_end_time'+str(i+1)).timetuple()) + 8 * 60 * 60) * 1000
                 tmp_dict['evaluationTimeEnd'] = (time.mktime(getattr(contest, 'phase_evaluate_end_time' + str(i+1)).timetuple()) + 8 * 60 * 60) * 1000
-                tmp_dict['mode'] = getattr(contest, 'phase_mode' + str(i+1))
+                # tmp_dict['mode'] = getattr(contest, 'phase_mode' + str(i+1))
                 tmp_dict['zone'] = getattr(contest, 'phase_region_mode' + str(i+1))
                 result.append(tmp_dict)
             else:
@@ -254,6 +263,7 @@ class ContestGradeUtil:
 
 
 class GeneralUtil:
+    IMG_TYPE = ['.jpg', '.JPG', '.png', '.PNG', '.jpeg']
     @classmethod
     def getChildren(cls, basedir):  # api/judge/getone接口遍历得到文件夹结构的递归函数
         targets = os.listdir(basedir)
@@ -285,3 +295,17 @@ class GeneralUtil:
                 elif os.path.isdir(full_path):
                     cls.del_dir(full_path)
                     os.rmdir(full_path)
+
+    @classmethod
+    def find_first_img(cls, path, mode=''):
+        path = RESOURCE_BASE_DIR + path
+        for file in os.listdir(path):
+            full_path = path + file
+            if os.path.isfile(full_path):
+                if file[str(file).rfind('.'):] in cls.IMG_TYPE:  # 是支持的图片格式
+                    return full_path[len(RESOURCE_BASE_DIR):]
+        if mode == 'contest':
+            return cls.find_first_img('/resources/default/contest/')
+        elif mode == 'user':
+            return cls.find_first_img('/resources/default/user/')
+        raise Exception('mode Error:' + mode)
