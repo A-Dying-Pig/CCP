@@ -21,7 +21,7 @@
 
     axios.defaults.xsrfHeaderName = "X-CSRFToken";
     axios.defaults.headers.common = {
-        //'X-CSRFToken':document.querySelector('#csrf-token input').value,
+        'X-CSRFToken':document.querySelector('#csrf-token input').value,
         'X-Requested-With': 'XMLHttpRequest'
     };
     
@@ -53,7 +53,7 @@
                         },
                         signupinfo:{
                             time:[],
-                            mode:'个人赛',
+                            mode:'1',
                             person:[
                                 ''
                             ],

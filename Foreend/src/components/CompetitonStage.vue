@@ -72,7 +72,7 @@ export default {
         props:['tinfo','index','change','stagebegintime'],
         data:function () {
             let hourVali=function (rule, value, callback) {
-                let date = value;
+                let date = new Date(value);
                 if(date.getMinutes()||date.getSeconds()){
                     callback(new Error("必须为整小时数"));
                 }

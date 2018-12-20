@@ -137,14 +137,14 @@
                 <el-col>
                     <el-form-item label="报名形式" prop="mode">
                         <el-radio-group v-model="info.mode">
-                            <el-radio-button :disabled="inputisable.signupinfo" label="个人赛"></el-radio-button>
-                            <el-radio-button :disabled="inputisable.signupinfo" label="组队赛"></el-radio-button>
+                            <el-radio-button :disabled="inputisable.signupinfo" label="1">个人赛</el-radio-button>
+                            <el-radio-button :disabled="inputisable.signupinfo" label="0">组队赛</el-radio-button>
                         </el-radio-group>
                     </el-form-item>
                 </el-col>
             </el-row>
 
-            <template v-if="info.mode === '组队赛'">
+            <template v-if="info.mode === '0'">
                 <el-row>
                     <el-col>
                         <el-form-item label="队伍人数选择" label-width="100" prop="teamnum" required>
@@ -160,7 +160,7 @@
                 </el-row>
             </template>
 
-            <template v-if="info.mode === '组队赛'">
+            <template v-if="info.mode === '0'">
                 <el-row>
                     <el-col>
                         <el-form-item label="需要填写的队伍信息" label-width="100" required>
@@ -207,7 +207,7 @@ import axios from 'axios'
 
 axios.defaults.xsrfHeaderName = "X-CSRFToken";
 axios.defaults.headers.common = {
-    //'X-CSRFToken':document.querySelector('#csrf-token input').value,
+    'X-CSRFToken':document.querySelector('#csrf-token input').value,
     'X-Requested-With': 'XMLHttpRequest'
 };
 Vue.use(ElementUI);
@@ -251,7 +251,10 @@ export default {
             callback();
         };
         let timeVali = function (rule, value, callback) {
-            if(value[0].getMinutes()||value[0].getSeconds()||value[1].getMinutes()||value[1].getSeconds()){
+            let v0 = new Date(value[0]);
+            let v1 = new Date(value[1]);
+
+            if(v0.getMinutes()||v0.getSeconds()||v1.getMinutes()||v1.getSeconds()){
                 callback(new Error("必须为整小时数！"));
             }
             callback();
