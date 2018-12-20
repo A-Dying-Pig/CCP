@@ -20,7 +20,8 @@ def getone(request):
         if participant.count() == 0:
             return JsonResponse({'msg': '已无待评作品'})
         participant_id = participant[0].leader_id
-        result['participantid'] = participant_id
+
+    result['participantid'] = participant_id
     base_dir = RESOURCE_BASE_DIR + "/resources/contests/" + str(contest_id) + '/playerFiles/' + str(participant_id)
     children = GeneralUtil.getChildren(base_dir)
     result['msg'] = ''

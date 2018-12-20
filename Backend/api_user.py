@@ -53,57 +53,54 @@ def check(request):
     return JsonResponse({'ok': 1, 'msg': ''})
 
 def profile(request):
-    try:
-        if not request.user.is_authenticated:
-            return JsonResponse({'msg': '请先登录'})
-        id = request.user.id
-        img_url = '/resources/users/' + str(id) + '/img/'
-        img_url = GeneralUtil.find_first_img(img_url, 'user')
-        competition = {}
-        participated = ContestPlayer.objects.filter(player_id=id)
-        competition['participated_competition'] = []
-        for contest in participated:
-            competition['participated_competition'].append({
-                'title': Contest.objects.get(id=contest.contest_id).title,
-                'url': '/detail?contestid=' + str(contest.contest_id),
-            })
-        participated = ContestGroup.objects.filter(Q(leader_id=request.user.id) | Q(member1_id=request.user.id) |
-                              Q(member2_id=request.user.id) | Q(member3_id=request.user.id) | Q(member4_id=request.user.id))
-        for contest in participated:
-            competition['participated_competition'].append({
-                'title': Contest.objects.get(id=contest.contest_id).title,
-                'url': '/detail?contestid=' + str(contest.contest_id),
-            })
-        created = Contest.objects.filter(admin_id=id)
-        competition['created_competition'] = []
-        for contest in created:
-            competition['created_competition'].append({
-                'id': contest.id,
-                'title': Contest.objects.get(id=contest.id).title,
-                'url': '/detail?contestid=' + str(contest.id),
-            })
+    if not request.user.is_authenticated:
+        return JsonResponse({'msg': '请先登录'})
+    id = request.user.id
+    img_url = '/resources/users/' + str(id) + '/img/'
+    img_url = GeneralUtil.find_first_img(img_url, 'user')
+    competition = {}
+    participated = ContestPlayer.objects.filter(player_id=id)
+    competition['participated_competition'] = []
+    for contest in participated:
+        competition['participated_competition'].append({
+            'title': Contest.objects.get(id=contest.contest_id).title,
+            'url': '/detail?contestid=' + str(contest.contest_id),
+        })
+    participated = ContestGroup.objects.filter(Q(leader_id=request.user.id) | Q(member1_id=request.user.id) |
+                            Q(member2_id=request.user.id) | Q(member3_id=request.user.id) | Q(member4_id=request.user.id))
+    for contest in participated:
+        competition['participated_competition'].append({
+            'title': Contest.objects.get(id=contest.contest_id).title,
+            'url': '/detail?contestid=' + str(contest.contest_id),
+        })
+    created = Contest.objects.filter(admin_id=id)
+    competition['created_competition'] = []
+    for contest in created:
+        competition['created_competition'].append({
+            'id': contest.id,
+            'title': Contest.objects.get(id=contest.id).title,
+            'url': '/detail?contestid=' + str(contest.id),
+        })
 
-        rated = ContestJudge.objects.filter(judge_id=id)
-        competition['rated_competition'] = []
-        for contest in rated:
-            competition['rated_competition'].append({
-                'title': Contest.objects.get(id=contest.contest_id).title,
-                'url': '/detail?contestid=' + str(contest.contest_id),
-            })
+    rated = ContestJudge.objects.filter(judge_id=id)
+    competition['rated_competition'] = []
+    for contest in rated:
+        competition['rated_competition'].append({
+            'title': Contest.objects.get(id=contest.contest_id).title,
+            'url': '/detail?contestid=' + str(contest.contest_id),
+        })
 
-        user = CCPUser.objects.get(id=id)
-        person = {}
-        person['university'] = user.university
-        person['region'] = {}
-        person['region']['province'] = user.province
-        person['region']['city'] = user.city
-        data = {'msg': ''}
-        data['img_url'] = img_url
-        data['competition'] = competition
-        data['person'] = person
-        return JsonResponse(data)
-    except:
-        return JsonResponse({'msg': '未知错误！'})
+    user = CCPUser.objects.get(id=id)
+    person = {}
+    person['university'] = user.university
+    person['region'] = {}
+    person['region']['province'] = user.province
+    person['region']['city'] = user.city
+    data = {'msg': ''}
+    data['img_url'] = img_url
+    data['competition'] = competition
+    data['person'] = person
+    return JsonResponse(data)
 
 def uploadImg(request):
     try:
