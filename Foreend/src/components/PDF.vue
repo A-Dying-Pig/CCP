@@ -17,8 +17,8 @@
 </template>
 
 <script>
-    import PDFUploader from './PDFReader/components/PDFUploader'
-    import PDFViewer from './PDFReader/components/PDFViewer'
+    import PDFUploader from './PDFReader/components/PDFUploader.vue'
+    import PDFViewer from './PDFReader/components/PDFViewer.vue'
 
     export default {
         name: 'PDF',

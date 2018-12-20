@@ -212,7 +212,7 @@ axios.defaults.headers.common = {
 };
 Vue.use(ElementUI);
 
-import CompetitonStage from './CompetitonStage'
+import CompetitonStage from './CompetitonStage.vue'
 export default {
     components:{
         CompetitonStage,

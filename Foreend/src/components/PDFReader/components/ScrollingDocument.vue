@@ -24,7 +24,7 @@
 import bottom from '../directives/bottom';
 import scroll from '../directives/scroll';
 
-import ScrollingPage from './ScrollingPage';
+import ScrollingPage from './ScrollingPage.vue';
 
 export default {
   components: {

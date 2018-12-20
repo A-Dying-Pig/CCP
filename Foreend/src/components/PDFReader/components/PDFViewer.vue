@@ -53,11 +53,11 @@
 <script>
 import PreviewIcon from '../assets/icon-preview.svg';
 
-import PDFDocument from './PDFDocument';
-import PDFData from './PDFData';
-import PDFPaginator from './PDFPaginator';
-import PDFPreview from './PDFPreview';
-import PDFZoom from './PDFZoom';
+import PDFDocument from './PDFDocument.vue';
+import PDFData from './PDFData.vue';
+import PDFPaginator from './PDFPaginator.vue';
+import PDFPreview from './PDFPreview.vue';
+import PDFZoom from './PDFZoom.vue';
 
 function floor(value, precision) {
   const multiplier = Math.pow(10, precision || 0);

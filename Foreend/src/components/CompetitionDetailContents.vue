@@ -41,16 +41,16 @@
 </template>
 
 <script>
-    import GradeProject from './GradeProject'
-    import ParticipantsTable from  './ParticipantsTable'
-    import CompetitionCreatePage from './CompetitionCreatePage'
-    import JudgeList from './JudgeList'
-    import AdvancedParticipants from './AdvancedParticipants'
-    import JudgeFinish from './JudgeFinish'
-    import CompetitionFiles from './CompetitionFiles'
-    import JudgeProgress from './JudgeProgress'
-    import DiscussionMain from './DiscussionMain'
-    import ParticipantUpload from './ParticipantUpload'
+    import GradeProject from './GradeProject.vue'
+    import ParticipantsTable from  './ParticipantsTable.vue'
+    import CompetitionCreatePage from './CompetitionCreatePage.vue'
+    import JudgeList from './JudgeList.vue'
+    import AdvancedParticipants from './AdvancedParticipants.vue'
+    import JudgeFinish from './JudgeFinish.vue'
+    import CompetitionFiles from './CompetitionFiles.vue'
+    import JudgeProgress from './JudgeProgress.vue'
+    import DiscussionMain from './DiscussionMain.vue'
+    import ParticipantUpload from './ParticipantUpload.vue'
     export default {
         components:{
             ParticipantUpload,

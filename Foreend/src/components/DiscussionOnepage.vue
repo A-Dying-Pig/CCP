@@ -72,7 +72,7 @@
 </template>
 
 <script>
-    import DiscussionReply from './DiscussionReply'
+    import DiscussionReply from './DiscussionReply.vue'
     import axios from 'axios'
     axios.defaults.xsrfHeaderName = "X-CSRFToken";
     axios.defaults.headers.common = {

@@ -27,8 +27,8 @@ import {PIXEL_RATIO, VIEWPORT_RATIO} from '../utils/constants';
 
 import resize from '../directives/resize';
 
-import ScrollingDocument from './ScrollingDocument';
-import PDFPage from './PDFPage';
+import ScrollingDocument from './ScrollingDocument.vue';
+import PDFPage from './PDFPage.vue';
 
 export default {
   name: 'PDFDocument',

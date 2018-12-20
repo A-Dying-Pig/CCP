@@ -8,9 +8,9 @@
 </template>
 
 <script>
-    import DiscussionList from './DiscussionList'
-    import DiscussionOnepage from './DiscussionOnepage'
-    import DiscussionWrite from './DiscussionWrite'
+    import DiscussionList from './DiscussionList.vue'
+    import DiscussionOnepage from './DiscussionOnepage.vue'
+    import DiscussionWrite from './DiscussionWrite.vue'
     export default {
         name: "DiscussionMain",
         components:{DiscussionWrite, DiscussionList, DiscussionOnepage},

@@ -10,7 +10,7 @@
                         <el-col :span="2" :offset="14">
                             <p style="font-size: 12px">已报名<span style="color: #3a8ee6">{{ enrollnum }}</span>人</p>
                         </el-col>
-                        <el-col v-if="showbutton" :span="3" >
+                        <el-col v-if="((type === 0)&&(Date.now()>info.signupinfo.time[0])&&(Date.now()<info.signupinfo.time[1]))" :span="3" >
                             <el-button @click="clicksign" type="primary">报名参赛！</el-button>
                         </el-col>
 
@@ -116,6 +116,8 @@
         },
         created:function () {
             let self = this;
+            console.log(self.type,Date.now()>self.info.signupinfo.time[0],Date.now()<self.info.signupinfo.time[1]);
+            console.log(Date.now(),self.info.signupinfo.time);
             self.showbutton = ((self.type === 0)&&(Date.now()>self.info.signupinfo.time[0])&&(Date.now()<self.info.signupinfo.time[1]));
             axios.post('/api/competition/enrollnum',{
                 contestid:self.contestid

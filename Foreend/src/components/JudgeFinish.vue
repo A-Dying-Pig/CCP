@@ -24,7 +24,7 @@
 </template>
 
 <script>
-    import GradeProject from './GradeProject'
+    import GradeProject from './GradeProject.vue'
     import axios from 'axios'
     axios.defaults.xsrfHeaderName = "X-CSRFToken";
     axios.defaults.headers.common = {

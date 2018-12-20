@@ -16,8 +16,8 @@
 </template>
 
 <script>
-import ScrollingDocument from './ScrollingDocument';
-import PDFThumbnail from './PDFThumbnail';
+import ScrollingDocument from './ScrollingDocument.vue';
+import PDFThumbnail from './PDFThumbnail.vue';
 
 export default {
   name: 'PDFPreview',

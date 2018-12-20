@@ -12,7 +12,8 @@ module.exports = {
   resolve: {
     alias: {
       'vue$': 'vue/dist/vue.esm.js',
-      '@': path.resolve(__dirname, 'src')
+      '@': path.resolve(__dirname, 'src'),
+        'pdf': 'react-pdf/build/entry.noworker'
     }
   },
   mode:'development',
@@ -21,9 +22,17 @@ module.exports = {
   ],
   module: {
     rules: [
+        // {
+        //     test: /\.vue$/,
+        //     //loader: 'vue-loader'
+        //     loader: 'remove-hashbag-loader',
+        //     include: [ path.resolve(__dirname, '') ],
+        // },
       {
         test: /\.vue$/,
-        loader: 'vue-loader'
+        loader:'vue-loader',
+          exclude: /node_modules/,
+          include: [ path.resolve(__dirname, '') ],
       },
       {
         test: /\.js$/,
@@ -35,10 +44,16 @@ module.exports = {
         loader: 'file-loader',
         options: {
           name: '[name].[ext]?[hash]'
-        }
-      }
+        },
+      },
+        { test: /\.(s)?css$/, loader: 'null-loader',exclude: /node_modules/ }
     ]
   },
+    resolveLoader: {
+        alias: {
+            "remove-hashbag-loader": path.join(__dirname, "remove-hashbag-loader")
+        }
+    },
   devServer: {
     historyApiFallback: true,
     noInfo: true

@@ -16,7 +16,7 @@
 
 <script>
     import axios from 'axios'
-    import UploadFile from './UploadFile'
+    import UploadFile from './UploadFile.vue'
     axios.defaults.xsrfHeaderName = "X-CSRFToken";
     axios.defaults.headers.common = {
         'X-CSRFToken':document.querySelector('#csrf-token input').value,

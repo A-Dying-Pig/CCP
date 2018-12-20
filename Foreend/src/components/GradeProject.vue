@@ -58,7 +58,7 @@
 <script>
     import axios from 'axios'
     import slVueTree from 'sl-vue-tree'
-    import PDF from './PDF'
+    import PDF from './PDF.vue'
     axios.defaults.xsrfHeaderName = "X-CSRFToken";
     axios.defaults.headers.common = {
         'X-CSRFToken':document.querySelector('#csrf-token input').value,
@@ -96,7 +96,6 @@
                         validator: validateGrade,message:'分数必须在0-100之间',trigger:'blur'
                     }],
                 },
-                participantid:-1
             }
         },
         methods:{
@@ -188,7 +187,7 @@
     }
 </script>
 
-<style scoped>
+<style scoped >
 #slvuetree{
     background-color: rgb(245,247,250);
     border: white;

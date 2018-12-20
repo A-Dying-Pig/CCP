@@ -16,7 +16,7 @@
 </template>
 
 <script>
-    import CompetitionInfo from './CompetitionInfo'
+    import CompetitionInfo from './CompetitionInfo.vue'
     import axios from 'axios'
 
     axios.defaults.xsrfHeaderName = "X-CSRFToken";
