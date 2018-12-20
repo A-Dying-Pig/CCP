@@ -21,7 +21,7 @@
     import axios from 'axios'
     axios.defaults.xsrfHeaderName = "X-CSRFToken";
     axios.defaults.headers.common = {
-        'X-CSRFToken':document.querySelector('#csrf-token input').value,
+        //'X-CSRFToken':document.querySelector('#csrf-token input').value,
         'X-Requested-With': 'XMLHttpRequest'
     };
 
@@ -79,7 +79,6 @@
                     self.allinfo=[];
                     self.allinfo = response.data.info;
                     self.type = response.data.type;
-                    console.log(self.allinfo)
                     let now = Date.now();
                     self.showlist=[];
                     self.showlist.push({
@@ -165,7 +164,6 @@
                             self.allinfo.basicinfo.beginjudgebutton = false;
                         }
                         //}
-                        console.log(self.allinfo)
 
                     }
 
@@ -176,7 +174,6 @@
         },
         created:function () {
             let self = this;
-            console.log(self.contestid);
             self.getInfo();
         }
     }

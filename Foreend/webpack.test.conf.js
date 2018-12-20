@@ -46,7 +46,7 @@ module.exports = {
           name: '[name].[ext]?[hash]'
         },
       },
-        { test: /\.(s)?css$/, loader: 'null-loader',exclude: /node_modules/ }
+        { test: /\.(s)?css$/, loader: 'null-loader'}
     ]
   },
     resolveLoader: {

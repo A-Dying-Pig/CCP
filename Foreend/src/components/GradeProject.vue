@@ -58,16 +58,16 @@
 <script>
     import axios from 'axios'
     import slVueTree from 'sl-vue-tree'
-    import PDF from './PDF.vue'
+    //import PDF from './PDF.vue'
     axios.defaults.xsrfHeaderName = "X-CSRFToken";
     axios.defaults.headers.common = {
-        'X-CSRFToken':document.querySelector('#csrf-token input').value,
+        //'X-CSRFToken':document.querySelector('#csrf-token input').value,
         'X-Requested-With': 'XMLHttpRequest'
     };
     export default {
         components:{
             slVueTree,
-            PDF
+            //PDF
         },
         name: "GradeProject",
         props:['contestid','stageinfo','readonly','participantid','participantgrade'],
@@ -198,5 +198,5 @@
     color: black;
 }
 </style>
-<style src="sl-vue-tree/dist/sl-vue-tree-dark.css"></style>
+<style src="../../node_modules/sl-vue-tree/dist/sl-vue-tree-dark.css"></style>
 <style src="../assets/fonts/fileico/style.css"></style>
