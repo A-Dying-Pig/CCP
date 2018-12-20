@@ -439,8 +439,8 @@ def send_invitation(sender_id, receiver_id, contest_id):
         d = json.load(f)
         key = d['key']
         domain = d['domain']
-    encoded = jwt.encode({'sender': sender_id, 'receiver': receiver_id, 'contest': contest_id}, key, algorithms='HS256')
-    link = domain + '/invite?token=' + encoded
+    encoded = jwt.encode({'sender': sender_id, 'receiver': receiver_id, 'contest': contest_id}, key, algorithm='HS256')
+    link = domain + '/invite?token=' + encoded.decode('utf8')
     msg = sender_name + '邀请你加入队伍，点击链接' + link
     notification = Notification()
     notification.context = msg

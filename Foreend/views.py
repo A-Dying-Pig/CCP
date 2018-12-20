@@ -74,7 +74,7 @@ def invite(request):
         d = json.load(f)
         key = d['key']
     try:
-        decoded = jwt.decode(token, key, algorithms='HS256')
+        decoded = jwt.decode(token, key, algorithm='HS256')
     except:
         return render(request, 'message.html', {'title': '#', 'msg': '邀请链接失效', 'musername': request.user.username, 'url': '/'})
     if request.user.id != decoded['receiver']:
