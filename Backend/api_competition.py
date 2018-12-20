@@ -238,7 +238,12 @@ def create(request):
     contest.brief_introduction = brief_introduction
     contest.enroll_start = datetime.strptime(time[0],"%Y-%m-%dT%H:%M:%S.000Z").replace(tzinfo=pytz.utc)
     contest.enroll_end = datetime.strptime(time[1],"%Y-%m-%dT%H:%M:%S.000Z").replace(tzinfo=pytz.utc)
-    contest.grouped = 1 if mode == 0 else 0
+    if mode == 0:
+        contest.grouped = 1
+        contest.group_min_number = signupinfo['teamnum'][0]
+        contest.group_max_number = signupinfo['teamnum'][1]
+    else:
+        contest.grouped = 0
     index = 0
     while index < len(person):
         setattr(contest, 'extra_title' + str(index + 1), person[index])
@@ -257,6 +262,7 @@ def create(request):
         setattr(contest, 'phase_evaluate_end_time' + str(index + 1), datetime.strptime(stageinfo[index]['evaluationTimeEnd'],"%Y-%m-%dT%H:%M:%S.000Z").replace(tzinfo=pytz.utc))
         setattr(contest, 'phase_region_mode' + str(index + 1), stageinfo[index]['zone'])
         index = index + 1
+    contest.save()
     os.mkdir(RESOURCE_BASE_DIR + '/resources/contests/' + str(contest.id))
     os.mkdir(RESOURCE_BASE_DIR + '/resources/contests/' + str(contest.id) + '/img')
     os.mkdir(RESOURCE_BASE_DIR + '/resources/contests/' + str(contest.id) + '/playerFiles')
@@ -269,7 +275,6 @@ def create(request):
         # 分块写入文件;
         with open(dest_dir, 'wb+') as fd:
             fd.write(fs.read())
-    contest.save()
     return JsonResponse({'code': 0, 'msg': ''})
 
 def detail(request):
@@ -297,6 +302,7 @@ def detail(request):
         basicinfo['comtype'] = contest.category
         basicinfo['details'] = contest.information
         basicinfo['briefintroduction'] = contest.brief_introduction
+        basicinfo['img'] = GeneralUtil.find_first_img('/resources/contests/' + str(contest_id) + '/img/')
         phase = ContestUtil.getCurrentPhase(contest.id)['phase']
         if phase == 0:
             phase = 1

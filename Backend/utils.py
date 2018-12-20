@@ -20,6 +20,13 @@ class ContestUtil:
     BIG_REGION = 1
     PROVINCE_REGION = 2
     @classmethod
+    def phaseNum(cls, contest_id):
+        contest = Contest.objects.get(id=contest_id)
+        for i in range(0, 5):
+            if getattr(contest, 'phase_name'+str(i+1)) is None:
+                return i
+
+    @classmethod
     def getStage(cls, contest):
         result = []
         for i in range(0, 5):
