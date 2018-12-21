@@ -77,11 +77,37 @@ def profile(request):
             })
         created = Contest.objects.filter(admin_id=id)
         competition['created_competition'] = []
+        with open('zone.json', 'r', encoding='utf8') as f:
+            zone = json.load(f)
+        cid = 0
+        provincelist = []
+        regionlist = []
+        for province in zone['province']:
+            dic = {}
+            dic['id'] = cid
+            dic['value'] = province
+            provincelist.append(dic)
+            cid = cid + 1
+        cid = 0
+        for region in zone['region']:
+            dic = {}
+            dic['id'] = cid
+            dic['value'] = region
+            regionlist.append(dic)
+            cid = cid + 1
         for contest in created:
+            regionmode = ContestUtil.getCurrentRegionMode(contest.id)
+            if regionmode == 0:
+                reslist = []
+            elif regionmode == 1:
+                reslist = provincelist
+            elif regionmode == 2:
+                reslist = regionlist
             competition['created_competition'].append({
                 'id': contest.id,
                 'title': Contest.objects.get(id=contest.id).title,
                 'url': '/detail?contestid=' + str(contest.id),
+                'list': reslist
             })
 
         rated = ContestJudge.objects.filter(judge_id=id)
@@ -92,17 +118,17 @@ def profile(request):
                 'url': '/detail?contestid=' + str(contest.contest_id),
             })
 
-            user = CCPUser.objects.get(id=id)
-            person = {}
-            person['university'] = user.university
-            person['region'] = {}
-            person['region']['province'] = user.province
-            person['region']['city'] = user.city
-            data = {'msg': ''}
-            data['img_url'] = img_url
-            data['competition'] = competition
-            data['person'] = person
-            return JsonResponse(data)
+        user = CCPUser.objects.get(id=id)
+        person = {}
+        person['university'] = user.university
+        person['region'] = {}
+        person['region']['province'] = user.province
+        person['region']['city'] = user.city
+        data = {'msg': ''}
+        data['img_url'] = img_url
+        data['competition'] = competition
+        data['person'] = person
+        return JsonResponse(data)
     except:
         traceback.print_exc()
         return JsonResponse({'msg': '未知错误！'})

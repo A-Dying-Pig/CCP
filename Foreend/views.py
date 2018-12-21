@@ -52,6 +52,10 @@ def profile(request):
     return render(request, 'profile.html', {'musername': request.user.username})
 
 @login_required(login_url='/login')
+def message(request):
+    return render(request, 'profile.html', {'musername': request.user.username, 'index': '3'})
+
+@login_required(login_url='/login')
 def addContest(request):
     return render(request, 'addContest.html', {'musername': request.user.username})
 

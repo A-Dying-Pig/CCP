@@ -5,6 +5,7 @@ from Backend import api_superadmin as superadmin
 from Backend import api_admin as admin
 from Backend import api_judge as judge
 from Backend import api_message as message
+from Backend import api_info as info
 
 urlpatterns = [
     path('user/register', user.register),
@@ -54,4 +55,5 @@ urlpatterns = [
     path('message/getnew', message.getnew),
     path('message/getall', message.getall),
     path('message/detail', message.detail),
+    path('info/about', info.about),
 ]
