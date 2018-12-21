@@ -120,8 +120,8 @@
                 let vm = this;
                 axios.post('/api/user/check',{username:this.ruleForm.curr_user,contestid:this.competition_id})
                     .then((response)=>{
-                            if(response.data !== ''){
-                                vm.input_error = response.data;
+                            if(response.data.msg !== ''){
+                                vm.input_error = response.data.msg;
                             }
                             else{
                                 vm.$set(vm.group_user,vm.member_number,{name:vm.ruleForm.curr_user});
