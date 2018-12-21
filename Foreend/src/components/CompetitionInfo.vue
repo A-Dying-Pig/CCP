@@ -207,7 +207,7 @@ import axios from 'axios'
 
 axios.defaults.xsrfHeaderName = "X-CSRFToken";
 axios.defaults.headers.common = {
-    //'X-CSRFToken':document.querySelector('#csrf-token input').value,
+    'X-CSRFToken':document.querySelector('#csrf-token input').value,
     'X-Requested-With': 'XMLHttpRequest'
 };
 Vue.use(ElementUI);
@@ -275,8 +275,7 @@ export default {
                     {min:5,max:100,message:'长度在5到100个字符之间',trigger:'blur'}]
             },
             signuprules:{
-                time:[{required:true,message:'请输入报名日期！',trigger:'change'},
-                    {validator:timeVali,message:"时间必须为整小时数",trigger:'change'}],
+                time:[{required:true,message:'请输入报名日期！',trigger:'change'}],
                 person:[{type:'array',validator:signupVali,trigger:'blur'},
                     {type:'array',max:10,message:'需要选手填写的个人信息条数不超过10个',trigger:'blur'}],
                 mode:[{required:true,message:'请输入报名形式！',trigger:'change'}],

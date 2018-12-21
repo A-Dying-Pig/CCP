@@ -53,7 +53,7 @@ module.exports = {
         },
         { test: /\.(s)?css$/, loader: 'null-loader'},
         {
-            test: /\.(js|ts)/,
+            test: /\.(vue$)/,
             include: path.resolve('src'), // instrument only testing sources with Istanbul, after ts-loader runs
             loader: 'istanbul-instrumenter-loader',
             exclude: /(node_modules)/,

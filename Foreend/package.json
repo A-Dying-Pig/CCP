@@ -63,7 +63,8 @@
   "babel": {
     "presets": [
       "@vue/app"
-    ]
+    ],
+    "plugins": ["babel-plugin-istanbul"]
   },
   "eslintConfig": {
     "root": true,
