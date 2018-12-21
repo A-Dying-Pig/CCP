@@ -4,38 +4,45 @@
             <el-col :offset="3" :span="18">
                 <el-card shadow="always">
                     <el-row :gutter="24">
-                        <el-col class="title" :span="5">
-                            <b>{{ info.basicinfo.name }}</b>
+                        <el-col :span="4">
+                            <img :src="info.basicinfo.img" style="width: 150px;"/>
                         </el-col>
-                        <el-col :span="2" :offset="14">
-                            <p style="font-size: 12px">已报名<span style="color: #3a8ee6">{{ enrollnum }}</span>人</p>
-                        </el-col>
-                        <el-col v-if="((type === 0)&&(Date.now()>info.signupinfo.time[0])&&(Date.now()<info.signupinfo.time[1]))" :span="3" >
-                            <el-button @click="clicksign" type="primary">报名参赛！</el-button>
-                        </el-col>
+                        <el-col :span="20">
+                            <el-row :gutter="24">
+                                <el-col :span="4" class="title">
+                                    <b>{{ info.basicinfo.name }}</b>
+                                </el-col>
+                                <el-col :span="6" :offset="14">
+                                    <p style="font-size: 12px">已报名<span style="color: #3a8ee6">{{ enrollnum }}</span>人</p>
+                                </el-col>
+                            </el-row>
 
-                    </el-row>
-                    <p></p>
-                    <el-row :gutter="24">
-                        <el-col :span="5">
-                            <img src="http://img2.imgtn.bdimg.com/it/u=764856423,3994964277&fm=26&gp=0.jpg" style="width: 150px;"/>
-                        </el-col>
-                        <el-col :span="19">
-                            <el-steps :active="getActivestage()" style="float: bottom">
-                                <el-step :title="timestamp2datestr(info.signupinfo.time[0])" description="报名开始"></el-step>
-                                <el-step :title="timestamp2datestr(info.signupinfo.time[1])" description="报名结束"></el-step>
-                                <template v-for="item in info.stageinfo">
-                                    <el-step :title="timestamp2datestr(item.stageTimeBegin)" :description="item.name+'开始'" :key="item.key"></el-step>
-                                    <el-step :title="timestamp2datestr(item.handTimeEnd)" :description="item.name+'提交截止'" :key="item.key"></el-step>
-                                    <el-step :title="timestamp2datestr(item.evaluationTimeEnd)" :description="item.name+'评测截止'" :key="item.key"></el-step>
-                                </template>
-                            </el-steps>
-                        </el-col>
+                            <el-row :gutter="24">
+                                <el-col :span="24">
+                                    <p style="font-size: 12px">{{ info.basicinfo.briefintroduction }}</p>
+                                </el-col>
+                            </el-row>
 
-                    </el-row>
-                    <el-row :gutter="20" v-if="info.basicinfo.beginjudgebutton">
-                        <el-col>
-                            <p>比赛已经进入评测阶段，请点击“评委信息”标签自动为每位评委分配作品</p>
+                            <el-row :gutter="24">
+                                <el-col :span="18">
+                                    <el-steps :active="getActivestage()" style="float: bottom">
+                                        <el-step :title="timestamp2datestr(info.signupinfo.time[0])" description="报名"></el-step>
+                                        <template v-for="item in info.stageinfo">
+                                            <el-step :title="timestamp2datestr(item.stageTimeBegin)" :description="item.name" :key="item.key"></el-step>
+                                        </template>
+                                        <el-step :title="timestamp2datestr(info.stageinfo[info.stageinfo.length-1].evaluationTimeEnd)" description="结束"></el-step>
+                                    </el-steps>
+                                </el-col>
+                                <el-col v-if="((type === 0)&&(Date.now()>info.signupinfo.time[0])&&(Date.now()<info.signupinfo.time[1]))" :span="6" >
+                                    <el-button @click="clicksign" type="primary">报名参赛！</el-button>
+                                </el-col>
+                            </el-row>
+
+                            <el-row :gutter="20" v-if="info.basicinfo.beginjudgebutton">
+                                <el-col :span="16" class="title" style="border-left-color: #3a8ee6">
+                                    <p>比赛已经进入评测阶段，请点击“评委信息”标签自动为每位评委分配作品</p>
+                                </el-col>
+                            </el-row>
                         </el-col>
                     </el-row>
                 </el-card>
@@ -63,7 +70,7 @@
         methods:{
           timestamp2datestr:function (stamp) {
               let date = new Date(stamp);
-              return (Number(date.getMonth())+1)+'月'+date.getDate()+'日'+date.getHours()+'时';
+              return (Number(date.getMonth())+1)+'月'+date.getDate()+'日';
           },
             getActivestage:function () {
                 let now = Date.now();
@@ -75,16 +82,10 @@
                 }
                 for(let idx in this.info.stageinfo){
                     if(now<this.info.stageinfo[idx].stageTimeBegin){
-                        return idx*3+2;
-                    }
-                    if(now<this.info.stageinfo[idx].handTimeEnd){
-                        return idx*3+3;
-                    }
-                    if(now<this.info.stageinfo[idx].handTimeEnd){
-                        return idx*3+4;
+                        return idx+1;
                     }
                 }
-                return this.info.stageinfo.length*3+2;
+                return this.info.stageinfo.length+2;
             },
             clicksign:function () {
                 location.href="/enroll?contestid="+this.contestid;
@@ -141,8 +142,13 @@
 </script>
 
 <style>
-.title{
-    text-align: left;
-    font-size: 40px;
-}
+    .title{
+        text-align: left;
+        font-size: 40px;
+    }
+    .brief{
+        border-left: 2px;
+        border-left-color: #3a8ee6;
+        background-color: lightgrey;
+    }
 </style>

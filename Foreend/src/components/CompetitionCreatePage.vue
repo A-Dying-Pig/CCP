@@ -168,7 +168,13 @@
                     else {
                         axios.post('/api/competition/create',self.allinfo)
                             .then(function (response) {
-                                console.log(response);
+                                if(response.data.msg!==''){
+                                    self.$message({
+                                        message: response.data.msg,
+                                        type: 'error'
+                                    });
+                                    return
+                                }
                                 self.$message({
                                     message: '操作成功!',
                                     type: 'success'
@@ -176,7 +182,10 @@
                                 location.href = "/";
                             })
                             .catch(function (error) {
-                                console.log(error);
+                                self.$message({
+                                    message: '操作失败!',
+                                    type: 'error'
+                                });
                             });
                     }
 

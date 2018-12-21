@@ -46,7 +46,19 @@ module.exports = {
           name: '[name].[ext]?[hash]'
         },
       },
-        { test: /\.(s)?css$/, loader: 'null-loader'}
+        {
+            test: /\.ts$/,
+            exclude: /(node_modules|bower_components)/,
+            loader: 'ts-loader'
+        },
+        { test: /\.(s)?css$/, loader: 'null-loader'},
+        {
+            test: /\.(vue$)/,
+            include: path.resolve('src'), // instrument only testing sources with Istanbul, after ts-loader runs
+            loader: 'istanbul-instrumenter-loader',
+            exclude: /(node_modules)/,
+            query: { esModules: true }
+        },
     ]
   },
     resolveLoader: {

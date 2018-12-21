@@ -83,14 +83,11 @@ export default {
                 rules:{
                     name:[{required:true,message:'请输入阶段名称',trigger:'blur'},
                         {max:10,message:'长度不超过10个字符',trigger:'blur'}],
-                    handTimeEnd:[{required:true,message:'请指定提交截止时间',trigger:'change'},
-                        {validator:hourVali,message:"时间必须为整小时数",trigger:'change'}],
-                    evaluationTimeEnd:[{required:true,message:'请指定评测截止时间',trigger:'change'},
-                        {validator:hourVali,message:"时间必须为整小时数",trigger:'change'}],
+                    handTimeEnd:[{required:true,message:'请指定提交截止时间',trigger:'change'}],
+                    evaluationTimeEnd:[{required:true,message:'请指定评测截止时间',trigger:'change'}],
                     zone:[{required:true,message:'请指定赛区划分方式',trigger:'change'}],
                     detail:[{required:true,message:'请输入阶段信息',trigger:'blur'}],
-                    stageTimeBegin:[{required:true,message:'请指定阶段开始时间',trigger:'change'},
-                        {validator:hourVali,message:"时间必须为整小时数",trigger:'change'}],
+                    stageTimeBegin:[{required:true,message:'请指定阶段开始时间',trigger:'change'}],
                 },
                 editableinput:{
                     name:false,
