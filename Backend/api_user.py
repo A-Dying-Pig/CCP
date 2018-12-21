@@ -69,7 +69,7 @@ def profile(request):
                 'url': '/detail?contestid=' + str(contest.contest_id),
             })
         participated = ContestGroup.objects.filter(Q(leader_id=request.user.id) | Q(member1_id=request.user.id) |
-                              Q(member2_id=request.user.id) | Q(member3_id=request.user.id) | Q(member4_id=request.user.id))
+                                Q(member2_id=request.user.id) | Q(member3_id=request.user.id) | Q(member4_id=request.user.id))
         for contest in participated:
             competition['participated_competition'].append({
                 'title': Contest.objects.get(id=contest.contest_id).title,
@@ -92,17 +92,17 @@ def profile(request):
                 'url': '/detail?contestid=' + str(contest.contest_id),
             })
 
-        user = CCPUser.objects.get(id=id)
-        person = {}
-        person['university'] = user.university
-        person['region'] = {}
-        person['region']['province'] = user.province
-        person['region']['city'] = user.city
-        data = {'msg': ''}
-        data['img_url'] = img_url
-        data['competition'] = competition
-        data['person'] = person
-        return JsonResponse(data)
+            user = CCPUser.objects.get(id=id)
+            person = {}
+            person['university'] = user.university
+            person['region'] = {}
+            person['region']['province'] = user.province
+            person['region']['city'] = user.city
+            data = {'msg': ''}
+            data['img_url'] = img_url
+            data['competition'] = competition
+            data['person'] = person
+            return JsonResponse(data)
     except:
         traceback.print_exc()
         return JsonResponse({'msg': '未知错误！'})
