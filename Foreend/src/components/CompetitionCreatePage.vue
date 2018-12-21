@@ -139,17 +139,6 @@
                     begin = stage.evaluationTimeEnd;
                 }
                 //
-                for(let stage of self.allinfo.stageinfo){
-                    if(stage.zone === '统一赛区'){
-                        stage.zone = 0;
-                    }
-                    else if(stage.zone === '按省划分'){
-                        stage.zone = 1;
-                    }
-                    else if(stage.zone === '按地区划分'){
-                        stage.zone = 2;
-                    }
-                }
                 if(flag){
                     if(self.change){
                         self.allinfo['contestid']=self.contestid;

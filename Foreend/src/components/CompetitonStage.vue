@@ -47,9 +47,9 @@
             <el-col>
                 <el-form-item label="赛区划分" prop="zone" class="region-select">
                     <el-radio-group v-model="info.zone" :disabled="editableinput.zone">
-                        <el-radio-button label="统一赛区"></el-radio-button>
-                        <el-radio-button label="按省划分"></el-radio-button>
-                        <el-radio-button label="按地区划分"></el-radio-button>
+                        <el-radio-button :label="0">统一赛区</el-radio-button>
+                        <el-radio-button :label="1">按省划分</el-radio-button>
+                        <el-radio-button :label="2">按地区划分</el-radio-button>
                     </el-radio-group>
                 </el-form-item>
             </el-col>

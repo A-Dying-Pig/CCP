@@ -57,7 +57,7 @@
                         person:[
                             ''
                         ],
-                        group:[
+                        group:[''
                         ]
                     },
                     stageinfo:[{

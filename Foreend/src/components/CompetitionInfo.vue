@@ -125,26 +125,25 @@
             </el-row>
 
             <template v-if="info.mode === '1'">
-            <el-row>
-                <el-col>
-                    <el-form-item label="需要选手填的个人信息" label-width="100" required class="contest-person-info">
-                        <el-row v-for="(item,index) in info.person" :key="item.key">
-                            <el-col>
-                                <el-form-item  prop="person">
-                                    <el-input :disabled="inputisable.signupinfo" v-model="info.person[index]"></el-input>
-                                </el-form-item>
-                            </el-col>
-                        </el-row>
-                    </el-form-item>
-                </el-col>
-            </el-row>
-            <el-row>
-                <el-col>
-                    <el-button class="person-info-plus" :disabled="inputisable.signupinfo" type="primary" size="mini" icon="el-icon-plus" circle v-on:click="info.person.push('')"></el-button>
-                    <el-button class="person-info-minus" :disabled="inputisable.signupinfo" type="danger" size="mini" icon="el-icon-minus" circle v-on:click="info.person.pop()"></el-button>
-                </el-col>
-            </el-row>
-            <p></p>
+                <el-row>
+                    <el-col>
+                        <el-form-item label="需要填写的个人信息" label-width="100" required class="contest-person-info">
+                            <el-row v-for="(item,index) in info.person" :key="item.key">
+                                <el-col>
+                                    <el-form-item   prop="person">
+                                        <el-input v-model="info.person[index]"></el-input>
+                                    </el-form-item>
+                                </el-col>
+                            </el-row>
+                        </el-form-item>
+                    </el-col>
+                </el-row>
+                <el-row>
+                    <el-col>
+                        <el-button class="person-info-plus" type="primary" size="mini" icon="el-icon-plus" circle v-on:click="info.person.push('')"></el-button>
+                        <el-button class="person-info-minus" type="danger" size="mini" icon="el-icon-minus" circle v-on:click="info.person.pop()"></el-button>
+                    </el-col>
+                </el-row>
             </template>
 
             <template v-if="info.mode === '0'">
