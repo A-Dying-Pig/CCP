@@ -48,9 +48,6 @@ def login(request):
         return JsonResponse({'msg': '未知错误！'})
 
 def check(request):
-    username = request.POST.get('username')
-    contest_id = request.POST('competition_id')
-    #todo: do some check
     return JsonResponse({'ok': 1, 'msg': ''})
 
 def profile(request):
