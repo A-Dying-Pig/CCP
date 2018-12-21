@@ -47,7 +47,8 @@
                         sponsors:[''],
                         comtype:'',
                         details:"222",
-                        beginjudgebutton:false
+                        beginjudgebutton:false,
+                        briefintroduction:'本次智能营销科技大赛由平安金融壹账通联合科赛举办，致力于发掘 AI 时代最有创意和趣味的AI 营销产品方案。大赛围绕将已有的 AI 模型应用到生活中的具体营销场景，让技术真正落地。不论你是 AI 技术人才还是营销产品人才，都可以来一决高下！'
                     },
                     signupinfo:{
                         time:[1542593167172,1542593267172],
@@ -59,7 +60,7 @@
                         ]
                     },
                     stageinfo:[{
-                        name:'',
+                        name:'初赛',
                         details:'',
                         stageTimeBegin:1544827739311,
                         handTimeEnd:1544838739311,
