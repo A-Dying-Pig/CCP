@@ -74,7 +74,7 @@ def enroll(request):
             pickle.dump(uni_dic, fw)
 
     # need to modify database, add fileds to Contestplayer
-    if comp_type == 0:  # 个人赛
+    if comp_type == 1:  # 个人赛
         with transaction.atomic():
             contest_player = ContestPlayer()
             contest_player.player_id = userId
@@ -108,9 +108,10 @@ def enroll(request):
             contest_grade.contest_id = contestid
             contest_grade.phase = 1
             contest_grade.save()
-    elif comp_type == 1:  # 组队赛
+    elif comp_type == 0:  # 组队赛
         with transaction.atomic():
             contest_group = ContestGroup()
+            contest_group.contest_id = contestid
             contest_group.leader_id = request.user.id
             glen = len(groupuser)
             if glen < 0 or glen > 4:
@@ -233,12 +234,12 @@ def neededinfo(request):
     contest = Contest.objects.filter(id=contest_id)
     if len(contest) != 0:
         target = contest[0]
-        comp_type = not target.grouped
+        comp_type = 1 - target.grouped
         extra = ContestUtil.getTitle(target)
         group_min_number = target.group_min_number
         group_max_number = target.group_max_number
         context = {
-            'comp_type': 0 if comp_type else 1,
+            'comp_type': comp_type,
             'extra': extra,
             'group_min_number': group_min_number,
             'group_max_number': group_max_number,
@@ -262,7 +263,7 @@ def create(request):
 
     signupinfo = data['signupinfo']
     time = signupinfo['time']
-    mode = signupinfo['mode']
+    mode = int(signupinfo['mode'])
     person = signupinfo['person']
     group = signupinfo['group']
 

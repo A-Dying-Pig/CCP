@@ -48,9 +48,6 @@ def login(request):
         return JsonResponse({'msg': '未知错误！'})
 
 def check(request):
-    username = request.POST.get('username')
-    contest_id = request.POST('competition_id')
-    #todo: do some check
     return JsonResponse({'ok': 1, 'msg': ''})
 
 def profile(request):
@@ -92,17 +89,17 @@ def profile(request):
                 'url': '/detail?contestid=' + str(contest.contest_id),
             })
 
-            user = CCPUser.objects.get(id=id)
-            person = {}
-            person['university'] = user.university
-            person['region'] = {}
-            person['region']['province'] = user.province
-            person['region']['city'] = user.city
-            data = {'msg': ''}
-            data['img_url'] = img_url
-            data['competition'] = competition
-            data['person'] = person
-            return JsonResponse(data)
+        user = CCPUser.objects.get(id=id)
+        person = {}
+        person['university'] = user.university
+        person['region'] = {}
+        person['region']['province'] = user.province
+        person['region']['city'] = user.city
+        data = {'msg': ''}
+        data['img_url'] = img_url
+        data['competition'] = competition
+        data['person'] = person
+        return JsonResponse(data)
     except:
         traceback.print_exc()
         return JsonResponse({'msg': '未知错误！'})
