@@ -267,6 +267,7 @@
   .info-item{
     margin-top: 5px;
     margin-bottom: 5px;
+    word-wrap: break-word;
   }
 
   .stage-info{

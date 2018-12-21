@@ -28,8 +28,8 @@
         </el-row>
         <el-row>
             <el-col>
-                <el-button :disabled="inputisable.basicinfo" type="primary" size="mini" icon="el-icon-plus" circle v-on:click="info.holders.push('')"></el-button>
-                <el-button :disabled="inputisable.basicinfo" type="danger" size="mini" icon="el-icon-minus" circle v-on:click="info.holders.pop()"></el-button>
+                <el-button class="holders-plus"  :disabled="inputisable.basicinfo" type="primary" size="mini" icon="el-icon-plus" circle v-on:click="info.holders.push('')"></el-button>
+                <el-button class="holders-minus" :disabled="inputisable.basicinfo" type="danger" size="mini" icon="el-icon-minus" circle v-on:click="info.holders.pop()"></el-button>
             </el-col>
         </el-row>
         <p></p>
@@ -49,8 +49,8 @@
         </el-row>
         <el-row>
             <el-col>
-                <el-button :disabled="inputisable.basicinfo" type="primary" size="mini" icon="el-icon-plus" circle v-on:click="info.sponsors.push('')"></el-button>
-                <el-button :disabled="inputisable.basicinfo" type="danger" size="mini" icon="el-icon-minus" circle v-on:click="info.sponsors.pop()"></el-button>
+                <el-button class="sponsors-plus" :disabled="inputisable.basicinfo" type="primary" size="mini" icon="el-icon-plus" circle v-on:click="info.sponsors.push('')"></el-button>
+                <el-button class="sponsors-minus" :disabled="inputisable.basicinfo" type="danger" size="mini" icon="el-icon-minus" circle v-on:click="info.sponsors.pop()"></el-button>
             </el-col>
         </el-row>
         <p></p>
@@ -58,7 +58,7 @@
         <el-row>
             <el-col>
         <el-form-item label="比赛类型" prop="comtype" label-width="100">
-            <el-radio-group v-model="info.comtype">
+            <el-radio-group class="contest-type" v-model="info.comtype">
                 <el-radio :disabled="inputisable.basicinfo" v-for="item in comtypes" v-bind:label="item.label" v-bind:value="item.value" :key="item.key" label-width="80"></el-radio>
             </el-radio-group>
         </el-form-item>
@@ -106,7 +106,7 @@
         <el-form v-bind:model="info" :rules="signuprules" ref="info" label-width="100px" label-position="top">
             <el-row>
                 <el-col>
-                <el-form-item label="报名起止时间" prop="time" class="contest-enroll-start">
+                <el-form-item label="报名起止时间" prop="time" class="contest-enroll-time">
                     <el-date-picker :disabled="inputisable.signupinfo" v-model="info.time" type="datetimerange" start-placeholder="报名开始时间" end-placeholder="报名结束时间" :default-time="['00:00:00','01:00:00']"></el-date-picker>
                 </el-form-item>
                 </el-col>
@@ -114,10 +114,10 @@
 
             <el-row>
                 <el-col>
-                    <el-form-item label="需要选手填的个人信息" label-width="100" required class="contest-needed-info">
+                    <el-form-item label="需要选手填的个人信息" label-width="100" required class="contest-person-info">
                         <el-row v-for="(item,index) in info.person" :key="item.key">
                             <el-col>
-                                <el-form-item   prop="person">
+                                <el-form-item  prop="person">
                                     <el-input :disabled="inputisable.signupinfo" v-model="info.person[index]"></el-input>
                                 </el-form-item>
                             </el-col>
@@ -127,15 +127,15 @@
             </el-row>
             <el-row>
                 <el-col>
-                    <el-button :disabled="inputisable.signupinfo" type="primary" size="mini" icon="el-icon-plus" circle v-on:click="info.person.push('')"></el-button>
-                    <el-button :disabled="inputisable.signupinfo" type="danger" size="mini" icon="el-icon-minus" circle v-on:click="info.person.pop()"></el-button>
+                    <el-button class="person-info-plus" :disabled="inputisable.signupinfo" type="primary" size="mini" icon="el-icon-plus" circle v-on:click="info.person.push('')"></el-button>
+                    <el-button class="person-info-minus" :disabled="inputisable.signupinfo" type="danger" size="mini" icon="el-icon-minus" circle v-on:click="info.person.pop()"></el-button>
                 </el-col>
             </el-row>
             <p></p>
 
             <el-row>
                 <el-col>
-                    <el-form-item label="报名形式" prop="mode">
+                    <el-form-item label="报名形式" prop="mode" class="enroll-type">
                         <el-radio-group v-model="info.mode">
                             <el-radio-button :disabled="inputisable.signupinfo" label="1">个人赛</el-radio-button>
                             <el-radio-button :disabled="inputisable.signupinfo" label="0">组队赛</el-radio-button>
@@ -163,7 +163,7 @@
             <template v-if="info.mode === '0'">
                 <el-row>
                     <el-col>
-                        <el-form-item label="需要填写的队伍信息" label-width="100" required class="contest-needed-info">
+                        <el-form-item label="需要填写的队伍信息" label-width="100" required class="contest-group-info">
                             <el-row v-for="(item,index) in info.group" :key="item.key">
                                 <el-col>
                                     <el-form-item   prop="group">
@@ -176,8 +176,8 @@
                 </el-row>
                 <el-row>
                     <el-col>
-                        <el-button type="primary" size="mini" icon="el-icon-plus" circle v-on:click="info.group.push('')"></el-button>
-                        <el-button type="danger" size="mini" icon="el-icon-minus" circle v-on:click="info.group.pop()"></el-button>
+                        <el-button class="group-info-plus" type="primary" size="mini" icon="el-icon-plus" circle v-on:click="info.group.push('')"></el-button>
+                        <el-button class="group-info-minus" type="danger" size="mini" icon="el-icon-minus" circle v-on:click="info.group.pop()"></el-button>
                     </el-col>
                 </el-row>
             </template>
@@ -191,8 +191,8 @@
         </el-row>
             <el-row>
                 <el-col>
-                    <el-button type="primary"  v-on:click="addStage()">添加阶段</el-button>
-                    <el-button type="primary"  v-on:click="deleteStage()" :disabled="deletestagenotok">删除阶段</el-button>
+                    <el-button class="stage-plus" type="primary"  v-on:click="addStage()">添加阶段</el-button>
+                    <el-button class="stage-minus" type="primary"  v-on:click="deleteStage()" :disabled="deletestagenotok">删除阶段</el-button>
                 </el-col>
             </el-row>
         </template>
