@@ -168,7 +168,7 @@
                                 }
                                 else{
                                     //失败
-                                    vm.error_msg = response.data;
+                                    vm.error_msg = response.data.msg;
                                 }
                             });
 

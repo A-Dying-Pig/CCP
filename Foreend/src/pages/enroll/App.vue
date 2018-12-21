@@ -198,9 +198,9 @@
                         });
                         return;
                     }
-                    if (this.group_info.group_member_number < this.enroll_table.group_min_number) {
+                    if (this.group_info.group_member_number < this.enroll_table.group_min_number - 1) {
                         this.$message({
-                            message: `队伍至少需要${this.enroll_table.group_min_number}名队员!`,
+                            message: `队伍至少需要${this.enroll_table.group_min_number - 1}名队员!`,
                             type: 'error'
                         });
                         return;

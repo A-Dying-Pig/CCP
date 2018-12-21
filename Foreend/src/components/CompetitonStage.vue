@@ -4,15 +4,15 @@
     <el-form v-bind:model="info" :rules="rules" ref="info" label-width="100px" label-position="top">
         <el-row>
             <el-col>
-                <el-form-item label="阶段名称" prop="name" label-width="100">
-                    <el-input v-model="info.name" :disabled="editableinput.name"></el-input>
+                <el-form-item label="阶段名称" prop="name" label-width="100" class="stage-name">
+                    <el-input  v-model="info.name" :disabled="editableinput.name"></el-input>
                 </el-form-item>
             </el-col>
         </el-row>
 
         <el-row>
             <el-col>
-                <el-form-item label="阶段详细信息" prop="details" label-width="100">
+                <el-form-item label="阶段详细信息" prop="details" label-width="100" class="stage-info">
                 <el-input type="textarea" :rows="5" placeholder="请输入详细信息" v-model="info.details" :disabled="editableinput.details">
                 </el-input>
             </el-form-item>
@@ -21,7 +21,7 @@
 
         <el-row>
             <el-col>
-                <el-form-item label="阶段开始时间" prop="stageTimeBegin">
+                <el-form-item label="阶段开始时间" prop="stageTimeBegin" class="stage-start-time">
                     <el-date-picker v-model="info.stageTimeBegin" type="datetime" placeholder="选择日期时间" :disabled="editableinput.stageTimeBegin"></el-date-picker>
                 </el-form-item>
             </el-col>
@@ -29,7 +29,7 @@
 
         <el-row>
             <el-col>
-                <el-form-item label="选手提交截止时间（开始时间为阶段开始时间）" prop="handTimeEnd">
+                <el-form-item label="选手提交截止时间（开始时间为阶段开始时间）" prop="handTimeEnd" class="stage-submit-end-time">
                     <el-date-picker v-model="info.handTimeEnd" type="datetime" placeholder="选择日期时间" :disabled="editableinput.handTimeEnd"></el-date-picker>
                 </el-form-item>
             </el-col>
@@ -37,7 +37,7 @@
 
         <el-row>
             <el-col>
-                <el-form-item label="评测截止时间（开始时间承接选手提交截止时间）" prop="evaluationTimeEnd">
+                <el-form-item label="评测截止时间（开始时间承接选手提交截止时间）" prop="evaluationTimeEnd" class="stage-judge-end-time">
                     <el-date-picker v-model="info.evaluationTimeEnd" type="datetime" placeholder="选择日期时间" :disabled="editableinput.evaluationTimeEnd"></el-date-picker>
                 </el-form-item>
             </el-col>
@@ -45,7 +45,7 @@
 
         <el-row>
             <el-col>
-                <el-form-item label="赛区划分" prop="zone">
+                <el-form-item label="赛区划分" prop="zone" class="region-select">
                     <el-radio-group v-model="info.zone" :disabled="editableinput.zone">
                         <el-radio-button label="统一赛区"></el-radio-button>
                         <el-radio-button label="按省划分"></el-radio-button>
