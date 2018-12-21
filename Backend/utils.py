@@ -14,7 +14,7 @@ MAX_POST_ONE_PAGE = 8
 MAX_REPLY_ONE_PAGE = 8
 
 
-RESOURCE_BASE_DIR = 'E:/Workspace/CCP'
+RESOURCE_BASE_DIR = 'D:/CCP'
 
 class ContestUtil:
     NON_REGION = 0
@@ -23,10 +23,10 @@ class ContestUtil:
     @classmethod
     def phaseNum(cls, contest_id):
         contest = Contest.objects.get(id=contest_id)
-        for i in range(0, 5):
+        for i in range(0, MAX_PHASE):
             if getattr(contest, 'phase_name'+str(i+1)) is None:
                 return i
-        return 5
+        return MAX_PHASE
 
     @classmethod
     def getStage(cls, contest):

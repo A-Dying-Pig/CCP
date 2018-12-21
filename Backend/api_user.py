@@ -44,6 +44,7 @@ def login(request):
         else:
             return JsonResponse({'msg': '用户名或密码错误'})
     except:
+        traceback.print_exc()
         return JsonResponse({'msg': '未知错误！'})
 
 def check(request):
@@ -149,18 +150,10 @@ def upload(request):
     except:
         return JsonResponse({'msg': 'Contest does not exist.'})
     cur_phase = ContestUtil.getCurrentPhase(contest_id)['phase']
-    # todo:del test code
-    cur_phase = 1
-    print('=======================================')
-    print('phasestart1=',getattr(contest, 'phase_start_time' + str(cur_phase)))
-    print('phasestart1=', getattr(contest, 'phase_hand_end_time' + str(cur_phase)))
-    print('datetime.utcnow=',datetime.datetime.now(datetime.timezone.utc))
-    #todo
     if cur_phase == 0:
         return JsonResponse({'msg': '当前比赛仍在报名阶段，不能提交作品'})
-    #todo 恢复注释为代码
-    #if not(getattr(contest, 'phase_start_time' + str(cur_phase)) < datetime.datetime.now(datetime.timezone.utc) < getattr(contest, 'phase_hand_end_time' + str(cur_phase))):
-    #    return JsonResponse({'msg': '比赛当前阶段的提交已经截止'})
+    if not(getattr(contest, 'phase_start_time' + str(cur_phase)) < datetime.datetime.now(datetime.timezone.utc) < getattr(contest, 'phase_hand_end_time' + str(cur_phase))):
+        return JsonResponse({'msg': '比赛当前阶段的提交已经截止'})
     if contest.grouped == 0:  # 组队赛
         try:
             ContestPlayer.objects.get(contest_id=contest_id, player_id=request.user.id)

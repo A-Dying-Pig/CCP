@@ -16,13 +16,7 @@ def getone(request):
     participant_id = int(data['participantid'])
     result = {}
     if participant_id == -1:
-        #todo htx
-        phase = 1
-        #todo htx
-        # participant = ContestGrade.objects.filter(grade=-1, judge_id=judge_id, contest_id=contest_id, phase=ContestUtil.getCurrentPhase(contest_id)['phase'])
-        participant = ContestGrade.objects.filter(grade=-1, judge_id=judge_id, contest_id=contest_id,
-                                                  phase=1)
-        #todo htx
+        participant = ContestGrade.objects.filter(grade=-1, judge_id=judge_id, contest_id=contest_id, phase=ContestUtil.getCurrentPhase(contest_id)['phase'])
         if participant.count() == 0:
             return JsonResponse({'msg': '已无待评作品'})
         participant_id = participant[0].leader_id

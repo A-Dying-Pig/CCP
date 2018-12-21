@@ -82,7 +82,7 @@ def enroll(request):
             contest_player.phone_number = phone_number
             phase_num = ContestUtil.phaseNum(contestid)
             contest = Contest.objects.filter(id=contestid)[0]
-            for i in (1, phase_num+1):
+            for i in range(1, phase_num+1):
                 mode = getattr(contest, 'phase_region_mode' + str(i))
                 if mode == 0:
                     setattr(contest_player, 'phase_region' + str(i), '')
@@ -128,7 +128,7 @@ def enroll(request):
 
             phase_num = ContestUtil.phaseNum(contestid)
             contest = Contest.objects.filter(id=contestid)[0]
-            for i in (1, phase_num+1):
+            for i in range(1, phase_num+1):
                 mode = getattr(contest, 'phase_region_mode' + str(i))
                 if mode == 0:
                     setattr(contest_group, 'phase_region' + str(i), '')
@@ -588,7 +588,6 @@ def discussionList(request):
 
 
 def worksname(request):
-    # todo
     data = json.loads(request.body.decode('utf-8'))
     contestid = data['contestid']
     userid = request.user.id
