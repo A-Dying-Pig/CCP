@@ -111,6 +111,19 @@ class ContestUtil:
         return result
 
     @classmethod
+    def getGroupTitle(cls, contest):
+        result = []
+        if contest.extra_group_title1 is not None:
+            result.append(contest.extra_group_title1)
+            if contest.extra_group_title2 is not None:
+                result.append(contest.extra_group_title2)
+                if contest.extra_group_title3 is not None:
+                    result.append(contest.extra_group_title3)
+                    if contest.extra_group_title4 is not None:
+                        result.append(contest.extra_group_title4)
+        return result
+
+    @classmethod
     def setTitle(cls, contest, index, title):
         pass
 

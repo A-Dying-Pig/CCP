@@ -34,8 +34,8 @@ def enroll(request):
     except:
         return JsonResponse({'msg': '比赛不存在'})
 
-    comp_type = contest.grouped
-    if comp_type == 1:
+    comp_type = 1 - contest.grouped
+    if comp_type == 0:
         groupuser = data['groupuser']
     fields = data['custom_field']
     values = data['custom_value']
@@ -118,8 +118,9 @@ def enroll(request):
                 return JsonResponse({'msg': '队员人数超出限制'})
             index = 0
             while index < glen:
-                setattr(contest_group, 'member' + str(index + 1) + '_id', groupuser[index])
-                send_invitation(userId, groupuser[index], contestid)
+                gid = CCPUser.objects.get(username=groupuser[index]).id
+                setattr(contest_group, 'member' + str(index + 1) + '_id', gid)
+                send_invitation(userId, gid, contestid)
                 index = index + 1
             index = 0
             while index < le:
@@ -235,10 +236,11 @@ def neededinfo(request):
     if len(contest) != 0:
         target = contest[0]
         comp_type = 1 - target.grouped
-        extra = ContestUtil.getTitle(target)
+        extra = ContestUtil.getTitle(target) if comp_type else ContestUtil.getGroupTitle(target)
         group_min_number = target.group_min_number
         group_max_number = target.group_max_number
         context = {
+            'comp_type': comp_type,
             'comp_type': comp_type,
             'extra': extra,
             'group_min_number': group_min_number,
@@ -456,7 +458,7 @@ def send_invitation(sender_id, receiver_id, contest_id):
     ntfuser.user_id = receiver_id
     ntfuser.save()
     email = CCPUser.objects.filter(id=receiver_id)[0].email
-    api_mail.send_mail(sender_name + '邀请你加入队伍', msg, email)
+    api_mail.sendmail(sender_name + '邀请你加入队伍', msg, email)
 
 
 def addGroupUser(leader_id, member_id, contest_id):
