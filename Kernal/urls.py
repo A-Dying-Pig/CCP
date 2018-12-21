@@ -20,5 +20,6 @@ urlpatterns = [
     path(r'about', Foreend.views.about),
     path(r'service', Foreend.views.service),
     path(r'invite', Foreend.views.invite),
+    path(r'message', Foreend.views.message),
     re_path(r'^resources/', Files.views.download),
 ]

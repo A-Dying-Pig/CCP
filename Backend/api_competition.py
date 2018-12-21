@@ -253,6 +253,7 @@ def neededinfo(request):
 
 def create(request):
     data = json.loads(request.body.decode('utf-8'))
+    print(data)
 
     basicinfo = data['basicinfo']
     name = basicinfo['name']
