@@ -18,28 +18,35 @@
                             </el-row>
 
                             <el-row :gutter="24">
-                                <el-col :span="24">
-                                    <p style="font-size: 12px">{{ info.basicinfo.briefintroduction }}</p>
+                                <el-col :span="20">
+                                    <div class="brief"> <p style="font-size: 12px">{{ info.basicinfo.briefintroduction }}</p></div>
                                 </el-col>
                             </el-row>
 
                             <el-row :gutter="24">
                                 <el-col :span="18">
-                                    <el-steps :active="getActivestage()" style="float: bottom">
-                                        <el-step :title="timestamp2datestr(info.signupinfo.time[0])" description="报名"></el-step>
+                                    <el-popover
+                                            placement="top-start"
+                                            :title="gethovertitle()"
+                                            width="200"
+                                            trigger="hover"
+                                            :content="gethovercontent()">
+                                    <el-steps :active="getActivestage()" style="float: bottom" slot="reference">
+                                        <el-step title="报名" :description="timestamp2datestr(info.signupinfo.time[0],false)"></el-step>
                                         <template v-for="item in info.stageinfo">
-                                            <el-step :title="timestamp2datestr(item.stageTimeBegin)" :description="item.name" :key="item.key"></el-step>
+                                            <el-step :title="item.name" :description="timestamp2datestr(item.stageTimeBegin,false)" :key="item.key"></el-step>
                                         </template>
-                                        <el-step :title="timestamp2datestr(info.stageinfo[info.stageinfo.length-1].evaluationTimeEnd)" description="结束"></el-step>
+                                        <el-step title="结束" :description="timestamp2datestr(info.stageinfo[info.stageinfo.length-1].evaluationTimeEnd,false)"></el-step>
                                     </el-steps>
+                                    </el-popover>
                                 </el-col>
-                                <el-col v-if="((type === 0)&&(Date.now()>info.signupinfo.time[0])&&(Date.now()<info.signupinfo.time[1]))" :span="6" >
+                                <el-col v-if="true||((type === 0)&&(Date.now()>info.signupinfo.time[0])&&(Date.now()<info.signupinfo.time[1]))" :span="6" >
                                     <el-button @click="clicksign" type="primary">报名参赛！</el-button>
                                 </el-col>
                             </el-row>
 
                             <el-row :gutter="20" v-if="info.basicinfo.beginjudgebutton">
-                                <el-col :span="16" class="title" style="border-left-color: #3a8ee6">
+                                <el-col :span="16">
                                     <p>比赛已经进入评测阶段，请点击“评委信息”标签自动为每位评委分配作品</p>
                                 </el-col>
                             </el-row>
@@ -68,8 +75,13 @@
             }
         },
         methods:{
-          timestamp2datestr:function (stamp) {
+          timestamp2datestr:function (stamp,showdetail) {
               let date = new Date(stamp);
+              let hour = date.getHours()<10?'0'+date.getHours().toString():date.getHours().toString();
+              let minite = date.getMinutes()<10?'0'+date.getMinutes().toString():date.getMinutes().toString();
+              if(showdetail === true){
+                  return (Number(date.getMonth())+1)+'月'+date.getDate()+'日' + hour+'时'+minite+'分';
+              }
               return (Number(date.getMonth())+1)+'月'+date.getDate()+'日';
           },
             getActivestage:function () {
@@ -84,6 +96,9 @@
                     if(now<this.info.stageinfo[idx].stageTimeBegin){
                         return idx+1;
                     }
+                }
+                if(now<this.info.stageinfo[this.info.stageinfo.length-1].evaluationTimeEnd){
+                    return this.info.stageinfo.length+1;
                 }
                 return this.info.stageinfo.length+2;
             },
@@ -113,6 +128,39 @@
                         type:'error'
                     })
                 })
+            },
+            gethovertitle:function () {
+                let status = this.getActivestage();
+                if(status===0){
+                    return '报名未开始'
+                }
+                else if(status === 1){
+                    return '报名进行中'
+                }
+                else if(status === this.info.stageinfo.length+2){
+                    return '比赛已结束'
+                }
+                else {
+                    return this.info.stageinfo[status-2].name;
+                }
+            },
+            gethovercontent:function () {
+                let status = this.getActivestage();
+                if(status===0){
+                    return ''
+                }
+                else if(status === 1){
+                    return '报名开始时间:'+this.timestamp2datestr(this.info.signupinfo.time[0],true)+'\n报名结束时间:'
+                        +this.timestamp2datestr(this.info.signupinfo.time[1],true)
+                }
+                else if(status === this.info.stageinfo.length+2){
+                    return ''
+                }
+                else {
+                    return '开始时间:'+this.timestamp2datestr(this.info.stageinfo[status-2].stageTimeBegin,true)+'\n提交截止时间:'
+                    +this.timestamp2datestr(this.info.stageinfo[status-2].handTimeEnd,true)+'\n评测截止时间:'
+                    +this.timestamp2datestr(this.info.stageinfo[status-2].evaluationTimeEnd,true)
+                }
             }
         },
         created:function () {
@@ -144,11 +192,10 @@
 <style>
     .title{
         text-align: left;
-        font-size: 40px;
+        font-size: 50px;
     }
     .brief{
-        border-left: 2px;
-        border-left-color: #3a8ee6;
-        background-color: lightgrey;
+        border-left: 2px #4da9fe solid;
+        background-color: #f9fafa;
     }
 </style>

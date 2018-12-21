@@ -111,7 +111,20 @@
                 </el-form-item>
                 </el-col>
             </el-row>
+            <p></p>
 
+            <el-row>
+                <el-col>
+                    <el-form-item label="报名形式" prop="mode" class="enroll-type">
+                        <el-radio-group v-model="info.mode">
+                            <el-radio-button :disabled="inputisable.signupinfo" label="1">个人赛</el-radio-button>
+                            <el-radio-button :disabled="inputisable.signupinfo" label="0">组队赛</el-radio-button>
+                        </el-radio-group>
+                    </el-form-item>
+                </el-col>
+            </el-row>
+
+            <template v-if="info.mode === '1'">
             <el-row>
                 <el-col>
                     <el-form-item label="需要选手填的个人信息" label-width="100" required class="contest-person-info">
@@ -132,17 +145,7 @@
                 </el-col>
             </el-row>
             <p></p>
-
-            <el-row>
-                <el-col>
-                    <el-form-item label="报名形式" prop="mode" class="enroll-type">
-                        <el-radio-group v-model="info.mode">
-                            <el-radio-button :disabled="inputisable.signupinfo" label="1">个人赛</el-radio-button>
-                            <el-radio-button :disabled="inputisable.signupinfo" label="0">组队赛</el-radio-button>
-                        </el-radio-group>
-                    </el-form-item>
-                </el-col>
-            </el-row>
+            </template>
 
             <template v-if="info.mode === '0'">
                 <el-row>
