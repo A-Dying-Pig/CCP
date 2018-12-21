@@ -4,10 +4,10 @@
             <el-col :span=24><div class="title">-----<slot></slot>-----</div></el-col>
         </el-row>
     <template v-if="typeid == 1">
-        <el-form v-bind:model="info" :rules="basicrules" ref="info" label-width="1000px" label-position="top">
+        <el-form v-bind:model="info" id="contest-info" :rules="basicrules" ref="info" label-width="1000px" label-position="top">
         <el-row>
             <el-col>
-        <el-form-item label="比赛名称" prop="name" label-width="100">
+        <el-form-item label="比赛名称" prop="name" label-width="100" class="contest-name">
             <el-input v-model="info.name" :disabled="inputisable.basicinfo"></el-input>
         </el-form-item>
             </el-col>
@@ -18,7 +18,7 @@
         <el-form-item label="主办方" required label-width="100">
             <el-row v-for="(item,index) in info.holders" :key="item.key">
             <el-col>
-            <el-form-item  prop="holders">
+            <el-form-item  prop="holders" class="contest-holders">
                 <el-input v-model="info.holders[index]" :disabled="inputisable.basicinfo"></el-input>
             </el-form-item>
             </el-col>
@@ -39,7 +39,7 @@
         <el-form-item label="承办方" label-width="100">
             <el-row v-for="(item,index) in info.sponsors" :key="item.key">
             <el-col>
-                <el-form-item   prop="sponsors">
+                <el-form-item   prop="sponsors" class="contest-sponsors">
                     <el-input :disabled="inputisable.basicinfo" v-model="info.sponsors[index]"></el-input>
                 </el-form-item>
             </el-col>
@@ -84,7 +84,7 @@
 
             <el-row>
                 <el-col>
-                    <el-form-item label="比赛介绍（简略）" prop="briefintroduction" label-width="100">
+                    <el-form-item label="比赛介绍（简略）" prop="briefintroduction" class="contest-brief-intro" label-width="100">
                         <el-input :disabled="inputisable.basicinfo" type="textarea" :rows="4" placeholder="请输入详细信息" v-model="info.briefintroduction">
                         </el-input>
                     </el-form-item>
@@ -93,7 +93,7 @@
 
         <el-row>
             <el-col>
-                <el-form-item label="比赛介绍（详细）" prop="details" label-width="100">
+                <el-form-item label="比赛介绍（详细）" prop="details" class="contest-detail-intro" label-width="100">
                     <el-input :disabled="inputisable.basicinfo" type="textarea" :rows="10" placeholder="请输入详细信息" v-model="info.details">
                     </el-input>
                 </el-form-item>
@@ -106,7 +106,7 @@
         <el-form v-bind:model="info" :rules="signuprules" ref="info" label-width="100px" label-position="top">
             <el-row>
                 <el-col>
-                <el-form-item label="报名起止时间" prop="time">
+                <el-form-item label="报名起止时间" prop="time" class="contest-enroll-start">
                     <el-date-picker :disabled="inputisable.signupinfo" v-model="info.time" type="datetimerange" start-placeholder="报名开始时间" end-placeholder="报名结束时间" :default-time="['00:00:00','01:00:00']"></el-date-picker>
                 </el-form-item>
                 </el-col>
@@ -114,7 +114,7 @@
 
             <el-row>
                 <el-col>
-                    <el-form-item label="需要选手填的个人信息" label-width="100" required>
+                    <el-form-item label="需要选手填的个人信息" label-width="100" required class="contest-needed-info">
                         <el-row v-for="(item,index) in info.person" :key="item.key">
                             <el-col>
                                 <el-form-item   prop="person">
@@ -147,7 +147,7 @@
             <template v-if="info.mode === '0'">
                 <el-row>
                     <el-col>
-                        <el-form-item label="队伍人数选择" label-width="100" prop="teamnum" required>
+                        <el-form-item label="队伍人数选择" label-width="100" prop="teamnum" required class="contest-group-number">
                                                 <el-slider
                                                         v-model="info.teamnum"
                                                         range
@@ -163,7 +163,7 @@
             <template v-if="info.mode === '0'">
                 <el-row>
                     <el-col>
-                        <el-form-item label="需要填写的队伍信息" label-width="100" required>
+                        <el-form-item label="需要填写的队伍信息" label-width="100" required class="contest-needed-info">
                             <el-row v-for="(item,index) in info.group" :key="item.key">
                                 <el-col>
                                     <el-form-item   prop="group">

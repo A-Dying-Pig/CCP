@@ -287,6 +287,9 @@
                         }
                         else{
                             vm.judges = response.data.judges;
+                            console.log('JUDGES');
+                            console.log(response.data.judges);
+                            console.log(vm.judges);
                             vm.judges_number = vm.judges.length;
                             for (let i = 0; i < vm.judges_number; i++){
                                  let the_zone = vm.zone_menu.filter(function (element) {
