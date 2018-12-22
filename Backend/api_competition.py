@@ -119,7 +119,7 @@ def enroll(request):
             index = 0
             while index < glen:
                 gid = CCPUser.objects.get(username=groupuser[index]).id
-                setattr(contest_group, 'member' + str(index + 1) + '_id', gid)
+                #setattr(contest_group, 'member' + str(index + 1) + '_id', gid)
                 send_invitation(userId, gid, contestid)
                 index = index + 1
             index = 0
@@ -344,6 +344,8 @@ def detail(request):
         contest = Contest.objects.get(id=contest_id)
         result['type'] = 0
         if ContestPlayer.objects.filter(player_id=user_id, contest_id=contest_id).count() == 1:
+            result['type'] = 1
+        elif ContestGroup.objects.filter(Q(contest_id=contest_id) & (Q(leader_id=user_id) | Q(member1_id=user_id) | Q(member2_id=user_id) | Q(member3_id=user_id) | Q(member4_id=user_id))):
             result['type'] = 1
         elif ContestJudge.objects.filter(judge_id=user_id, contest_id=contest_id).count() == 1:
             result['type'] = 2

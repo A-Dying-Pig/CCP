@@ -187,12 +187,12 @@ def upload(request):
         return JsonResponse({'msg': '当前比赛仍在报名阶段，不能提交作品'})
     if not(getattr(contest, 'phase_start_time' + str(cur_phase)) < datetime.datetime.now(datetime.timezone.utc) < getattr(contest, 'phase_hand_end_time' + str(cur_phase))):
         return JsonResponse({'msg': '比赛当前阶段的提交已经截止'})
-    if contest.grouped == 0:  # 组队赛
+    if contest.grouped == 0:
         try:
             ContestPlayer.objects.get(contest_id=contest_id, player_id=request.user.id)
         except:
             return JsonResponse({'msg': 'Current user did not attend this contest'})
-    else:  #个人赛
+    else:
         try:
             ContestGroup.objects.get(contest_id=contest_id, leader_id=request.user.id)
         except:
@@ -200,6 +200,7 @@ def upload(request):
     cg = ContestGrade.objects.filter(leader_id=request.user.id, contest_id=contest_id, phase=cur_phase)
     if cg.count() == 0:  # 不存在，则创建新的
         cg = ContestGrade()
+        cg.contest_id = contest_id
     else:
         cg = cg[0]
     cg.leader_id = request.user.id

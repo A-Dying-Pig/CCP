@@ -281,7 +281,15 @@ def broadcast(request):
     msg_id = Notification.objects.last().id
 
     if target_id == -1:
-        players = ContestPlayer.objects.filter(contest_id=contestid)
+        players = []
+        plist = ContestPlayer.objects.filter(contest_id=contestid)
+        for p in plist:
+            players.append(p.player_id)
+        plist = ContestGroup.objects.filter(contest_id=contestid)
+        for p in plist:
+            members = getMember(p.leader_id, contestid)
+            for m in members:
+                players.append(m['userId'])
     else:
         d = ContestUtil.getCurrentRegionMode(contestid)
         if d == 0:
@@ -297,8 +305,7 @@ def broadcast(request):
         modelcriteria = {'contest_id': contestid, 'phase_region'+str(d): zone}
         players = ContestPlayer.objects.filter(**modelcriteria)
 
-    for player in players:
-        pid = player.player_id
+    for pid in players:
         notificationuser = NotificationUser()
         notificationuser.notification_id = msg_id
         notificationuser.user_id = pid
@@ -538,10 +545,16 @@ def allot_work(contest_id, phase, timesperpiece):
         for zone in zonelist:
             playeridzone = []
             for l in leader:
-                contestplayer = ContestPlayer.objects.get(player_id=l['id'])
-                region = getattr(contestplayer, 'phase_region' + str(phase))
-                if zone == region:
-                    playeridzone.append(l)
+                try:
+                    contestplayer = ContestPlayer.objects.get(player_id=l['id'])
+                    region = getattr(contestplayer, 'phase_region' + str(phase))
+                    if zone == region:
+                        playeridzone.append(l)
+                except:
+                    contestgroup = ContestGroup.objects.get(leader_id=l['id'])
+                    region = getattr(contestgroup, 'phase_region' + str(phase))
+                    if zone == region:
+                        playeridzone.append(l)
             judgeidzone = []
             for i in judge_id:
                 contestjudge = ContestJudge.objects.get(judge_id=i)

@@ -49,7 +49,7 @@ def enroll(request):
 
 @login_required(login_url='/login')
 def profile(request):
-    return render(request, 'profile.html', {'musername': request.user.username})
+    return render(request, 'profile.html', {'musername': request.user.username, 'index': '1'})
 
 @login_required(login_url='/login')
 def message(request):
