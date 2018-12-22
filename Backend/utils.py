@@ -14,7 +14,7 @@ MAX_POST_ONE_PAGE = 8
 MAX_REPLY_ONE_PAGE = 8
 
 
-RESOURCE_BASE_DIR = 'E:/Workspace/CCP'
+RESOURCE_BASE_DIR = 'D:/CCP'
 
 class ContestUtil:
     NON_REGION = 0
@@ -213,7 +213,7 @@ class ContestGroupUtil:
     @classmethod
     def getMember(cls, leader_id, contest_id):
         result = []
-        group = ContestGroup.objects.filter(leader_id=leader_id, contest_id=contest_id)
+        group = ContestGroup.objects.get(leader_id=leader_id, contest_id=contest_id)
         member = CCPUser.objects.get(id=leader_id)
         result.append({
             'userId': leader_id,
