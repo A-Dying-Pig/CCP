@@ -42,7 +42,7 @@ def submit(request):
         target = ContestGrade.objects.get(contest_id=contest_id, leader_id=user_id, phase=phase, judge_id=judge_id)
     except:
         return JsonResponse({'msg': '相关信息不存在！'})
-    target.grade = grade
+    setattr(target, 'grade', grade)
     target.save()
 
     return JsonResponse({'msg': ''})
