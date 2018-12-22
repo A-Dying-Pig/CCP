@@ -94,7 +94,7 @@
                 }
                 for(let idx in this.info.stageinfo){
                     if(now<this.info.stageinfo[idx].stageTimeBegin){
-                        return idx+1;
+                        return Number(idx)+1;
                     }
                 }
                 if(now<this.info.stageinfo[this.info.stageinfo.length-1].evaluationTimeEnd){

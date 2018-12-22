@@ -135,7 +135,7 @@
                             contestid:self.contestid,
                             userId:self.participantid,
                             grade:self.gradeinfo.grade,
-                            phase:phase
+                            phase:phase+1
                         }).then(function (response) {
                             if(response.data.msg===''){
                                 self.$message.success('提交成功！');
