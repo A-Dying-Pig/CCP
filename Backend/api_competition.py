@@ -359,7 +359,7 @@ def detail(request):
         basicinfo['comtype'] = contest.category
         basicinfo['details'] = contest.information
         basicinfo['briefintroduction'] = contest.brief_introduction
-        basicinfo['img'] = GeneralUtil.find_first_img('/resources/contests/' + str(contest_id) + '/img/')
+        basicinfo['img'] = GeneralUtil.find_first_img('/resources/contests/' + str(contest_id) + '/img/', 'contest')
         phase = ContestUtil.getCurrentPhase(contest.id)['phase']
         if phase == 0:
             phase = 1

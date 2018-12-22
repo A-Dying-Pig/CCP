@@ -34,6 +34,8 @@ def participants(request):
     result['mode'] = 1 - contest.grouped
     result['current_page_num'] = page_num
     cur_phase = ContestUtil.getCurrentPhase(contest_id)['phase']
+    if cur_phase == 0:
+        cur_phase = 1
     if result['mode'] == 1:  # 个人赛
         participants= ContestGrade.objects.filter(contest_id=contest_id, phase=cur_phase)
         participant_number= participants.count()
@@ -72,8 +74,8 @@ def participants(request):
             single_team['captainId'] = participants[index].leader_id
             player = CCPUser.objects.get(id=participants[index].leader_id)
             single_team['captainName'] = player.username
-            single_team['captainPoints'] = ContestGradeUtil.getGrade(leader_id=single_team['userId'], contest_id=contest_id)
-            single_team['group'] = ContestGroupUtil.getMember(leader_id=single_team['userId'], contest_id=contest_id)
+            single_team['captainPoints'] = ContestGradeUtil.getGrade(leader_id=participants[index].leader_id, contest_id=contest_id)
+            single_team['group'] = ContestGroupUtil.getMember(leader_id=participants[index].leader_id, contest_id=contest_id)
             result['array'].append(single_team)
             index = index + 1
     return JsonResponse(result)
