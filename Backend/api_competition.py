@@ -119,7 +119,7 @@ def enroll(request):
             index = 0
             while index < glen:
                 gid = CCPUser.objects.get(username=groupuser[index]).id
-                setattr(contest_group, 'member' + str(index + 1) + '_id', gid)
+                #setattr(contest_group, 'member' + str(index + 1) + '_id', gid)
                 send_invitation(userId, gid, contestid)
                 index = index + 1
             index = 0
