@@ -14,7 +14,7 @@ MAX_POST_ONE_PAGE = 8
 MAX_REPLY_ONE_PAGE = 8
 
 
-RESOURCE_BASE_DIR = 'D:/CCP'
+RESOURCE_BASE_DIR = 'E:/Workspace/CCP'
 
 class ContestUtil:
     NON_REGION = 0
