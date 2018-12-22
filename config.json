@@ -6,5 +6,5 @@
         "EMAIL_PORT": 25
     },
 	"key": "i3Qum7OVSUkETHA%JeIXY6#N8^rHyAt5",
-	"domain": "http://127.0.0.1"
+	"domain": "http://127.0.0.1:8000"
 }

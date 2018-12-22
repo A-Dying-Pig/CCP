@@ -345,6 +345,8 @@ def detail(request):
         result['type'] = 0
         if ContestPlayer.objects.filter(player_id=user_id, contest_id=contest_id).count() == 1:
             result['type'] = 1
+        elif ContestGroup.objects.filter(Q(contest_id=contest_id) & (Q(leader_id=user_id) | Q(member1_id=user_id) | Q(member2_id=user_id) | Q(member3_id=user_id) | Q(member4_id=user_id))):
+            result['type'] = 1
         elif ContestJudge.objects.filter(judge_id=user_id, contest_id=contest_id).count() == 1:
             result['type'] = 2
         elif contest.admin_id == user_id:
