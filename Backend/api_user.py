@@ -48,7 +48,17 @@ def login(request):
         return JsonResponse({'msg': '未知错误！'})
 
 def check(request):
-    return JsonResponse({'ok': 1, 'msg': ''})
+    try:
+        data = json.loads(request.body.decode('utf-8'))
+        username = data['username']
+        contest_id = data['contestid']
+        user = CCPUser.objects.get(username=username)
+        contest = Contest.objects.get(id=contest_id)
+        #todo
+        return JsonResponse({'msg': ''})
+    except:
+        traceback.print_exc()
+        return JsonResponse({'msg': '未知错误'})
 
 def profile(request):
     try:

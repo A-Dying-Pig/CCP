@@ -14,7 +14,7 @@ MAX_POST_ONE_PAGE = 8
 MAX_REPLY_ONE_PAGE = 8
 
 
-RESOURCE_BASE_DIR = 'E:/Workspace/CCP'
+RESOURCE_BASE_DIR = 'D:/CCP'
 
 class ContestUtil:
     NON_REGION = 0
@@ -108,6 +108,19 @@ class ContestUtil:
                     result.append(contest.extra_title3)
                     if contest.extra_title4 is not None:
                         result.append(contest.extra_title4)
+        return result
+
+    @classmethod
+    def getGroupTitle(cls, contest):
+        result = []
+        if contest.extra_group_title1 is not None:
+            result.append(contest.extra_group_title1)
+            if contest.extra_group_title2 is not None:
+                result.append(contest.extra_group_title2)
+                if contest.extra_group_title3 is not None:
+                    result.append(contest.extra_group_title3)
+                    if contest.extra_group_title4 is not None:
+                        result.append(contest.extra_group_title4)
         return result
 
     @classmethod
