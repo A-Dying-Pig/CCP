@@ -457,7 +457,7 @@ def send_invitation(sender_id, receiver_id, contest_id):
     ntfuser.user_id = receiver_id
     ntfuser.save()
     email = CCPUser.objects.filter(id=receiver_id)[0].email
-    api_mail.send_mail(sender_name + '邀请你加入队伍', msg, email)
+    api_mail.sendmail(sender_name + '邀请你加入队伍', msg, email)
 
 
 def addGroupUser(leader_id, member_id, contest_id):

@@ -29,8 +29,9 @@ def getall(request):
         array = []
         for n in ntf:
             d = {}
-            d['messageId'] = n.id
-            d['context'] = Notification.objects.get(id=n.id).title
+            print(n.notification_id)
+            d['messageId'] = n.notification_id
+            d['context'] = Notification.objects.get(id=n.notification_id).title
             d['read'] = 1 if n.read else 0
             array.append(d)
 
