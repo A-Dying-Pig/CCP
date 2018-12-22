@@ -43,6 +43,7 @@ def submit(request):
     except:
         return JsonResponse({'msg': '相关信息不存在！'})
     target.grade = grade
+    target.save()
 
     return JsonResponse({'msg': ''})
 

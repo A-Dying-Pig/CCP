@@ -18,8 +18,8 @@ RESOURCE_BASE_DIR = 'E:/Workspace/CCP'
 
 class ContestUtil:
     NON_REGION = 0
-    BIG_REGION = 1
-    PROVINCE_REGION = 2
+    BIG_REGION = 2
+    PROVINCE_REGION = 1
     @classmethod
     def phaseNum(cls, contest_id):
         contest = Contest.objects.get(id=contest_id)
