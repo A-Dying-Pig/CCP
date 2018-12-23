@@ -566,7 +566,7 @@ def allot_work(contest_id, phase, timesperpiece):
                         playeridzone.append(l)
             judgeidzone = []
             for i in judge_id:
-                contestjudge = ContestJudge.objects.get(judge_id=i)
+                contestjudge = ContestJudge.objects.get(judge_id=i, contest_id=contest_id)
                 region = getattr(contestjudge, 'phase_region' + str(phase))
                 if zone == region:
                     judgeidzone.append(i)
