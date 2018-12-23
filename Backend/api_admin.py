@@ -555,12 +555,12 @@ def allot_work(contest_id, phase, timesperpiece):
             playeridzone = []
             for l in leader:
                 try:
-                    contestplayer = ContestPlayer.objects.get(player_id=l['id'])
+                    contestplayer = ContestPlayer.objects.get(player_id=l['id'], contest_id=contest_id)
                     region = getattr(contestplayer, 'phase_region' + str(phase))
                     if zone == region:
                         playeridzone.append(l)
                 except:
-                    contestgroup = ContestGroup.objects.get(leader_id=l['id'])
+                    contestgroup = ContestGroup.objects.get(leader_id=l['id'], contest_id=contest_id)
                     region = getattr(contestgroup, 'phase_region' + str(phase))
                     if zone == region:
                         playeridzone.append(l)
