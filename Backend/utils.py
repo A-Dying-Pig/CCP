@@ -17,6 +17,20 @@ MAX_REPLY_ONE_PAGE = 8
 
 RESOURCE_BASE_DIR = 'D:/CCP'
 
+with open('zone.json', 'r', encoding='utf8') as f:
+    zone = json.load(f)
+zone_id = {}
+cid = 0
+for province in zone['province']:
+    zone_id[province] = cid
+    cid = cid + 1
+cid = 0
+for region in zone['region']:
+    zone_id[region] = cid
+    cid = cid + 1
+zone_id[''] = -1
+zone_id[None] = -1
+
 class ContestUtil:
     NON_REGION = 0
     BIG_REGION = 2
@@ -339,17 +353,4 @@ class GeneralUtil:
 
     @classmethod
     def get_zone_id_by_name(cls, zone_name):
-        with open('zone.json', 'r', encoding='utf8') as f:
-            zone = json.load(f)
-        zone_id = {}
-        cid = 0
-        for province in zone['province']:
-            zone_id[province] = cid
-            cid = cid + 1
-        cid = 0
-        for region in zone['region']:
-            zone_id[region] = cid
-            cid = cid + 1
-        zone_id[''] = -1
-        zone_id[None] = -1
         return zone_id[zone_name]

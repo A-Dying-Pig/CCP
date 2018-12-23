@@ -612,7 +612,9 @@ def worksname(request):
     contest = Contest.objects.get(id=contestid)
     for d in dirs:
         if os.path.isfile(base_dir + d):
-            if getattr(contest, 'phase_start_time' + ContestUtil.getCurrentPhase(contestid)['phase']) < os.path.getmtime(base_dir + d):  # 是在当前阶段开始之后才提交的
+            print(getattr(contest, 'phase_start_time' + str(ContestUtil.getCurrentPhase(contestid)['phase'])))
+            print(os.path.getmtime(base_dir + d) - 8 * 60 * 60)
+            if time.mktime(getattr(contest, 'phase_start_time' + str(ContestUtil.getCurrentPhase(contestid)['phase'])).timetuple()) < os.path.getmtime(base_dir + d) - 8 * 60 * 60:  # 是在当前阶段开始之后才提交的
                 filename = d
             else:
                 filename = ''
