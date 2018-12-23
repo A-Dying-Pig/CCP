@@ -516,6 +516,10 @@ def addDiscussion(request):
         contest_id = int(data['contestid'])
         title = data['title']
         content = data['content']
+        if len(title) == 0:
+            return JsonResponse({'msg': '发帖主题不能为空！'})
+        if len(content) == 0:
+            return JsonResponse({'msg': '发帖内容不能为空！'})
         post = Post()
         post.contest_id = contest_id
         post.author_id = request.user.id
@@ -538,6 +542,8 @@ def discussionReply(request):
         contest_id = int(data['contestid'])
         post_id = int(data['discussionid'])
         content = data['content']
+        if len(content) == 0:
+            return JsonResponse({'msg': '发帖内容不能为空！'})
         try:
             with transaction.atomic():
                 try:
