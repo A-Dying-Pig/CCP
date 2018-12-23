@@ -40,7 +40,7 @@
                                     </el-steps>
                                     </el-popover>
                                 </el-col>
-                                <el-col v-if="true||((type === 0)&&(Date.now()>info.signupinfo.time[0])&&(Date.now()<info.signupinfo.time[1]))" :span="6" >
+                                <el-col v-if="((type === 0)&&(Date.now()>info.signupinfo.time[0])&&(Date.now()<info.signupinfo.time[1]))" :span="6" >
                                     <el-button @click="clicksign" type="primary">报名参赛！</el-button>
                                 </el-col>
                             </el-row>

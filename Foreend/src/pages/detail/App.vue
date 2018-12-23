@@ -92,7 +92,7 @@
                     });
                     if(self.type===1){
                         //当不在提交阶段时，不可以提交作品
-                        let showsubmit = true;
+                        let showsubmit = false;
                         let begin = self.allinfo.signupinfo.time[1];
                         for(let stage of self.allinfo.stageinfo){
                             if((now>begin)&&(now<stage.handTimeEnd)){
@@ -109,7 +109,7 @@
                     }
                     else if(self.type===2){
                         //当不在评测阶段时，不可以评测作品
-                        let showgrade = true;
+                        let showgrade = false;
                         for(let stage of self.allinfo.stageinfo){
                             if((now<stage.evaluationTimeEnd)&&(now>stage.handTimeEnd)){
                                 showgrade = true;
@@ -138,7 +138,7 @@
                             value: 'judgelist',
                             label: '评委信息'
                         });
-                        let showadvance = true;
+                        let showadvance = false;
                         let begin = self.allinfo.signupinfo.time[1];
                         for (let stage of self.allinfo.stageinfo) {
                             if ((now > begin) && (now < stage.stageTimeBegin)) {
@@ -152,7 +152,7 @@
                                 label: '设置晋级选手名单'
                             });
                         }
-                        //if(self.allinfo.basicinfo.judgebegin === false){
+                        if(self.allinfo.basicinfo.judgebegin === false){
                         let showjudgebegin = true;
                         for (let stage of self.allinfo.stageinfo) {
                             if ((now > stage.handTimeEnd) && (now < stage.evaluationTimeEnd)) {
@@ -165,7 +165,7 @@
                         else {
                             self.allinfo.basicinfo.beginjudgebutton = false;
                         }
-                        //}
+                        }
 
                     }
 

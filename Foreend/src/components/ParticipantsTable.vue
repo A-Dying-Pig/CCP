@@ -2,7 +2,7 @@
     <div>
         <el-row type="flex" justify="center">
             <el-col>
-                本阶段共有{{ allnum }}组报名，已有{{ submitnum }}份提交。
+                本阶段共有{{ allnum }}组晋级，已有{{ submitnum }}份提交。
             </el-col>
         </el-row>
         <el-row type="flex" justify="center">
@@ -198,6 +198,25 @@
             }).catch(function (error) {
                 console.log(error)
             });
+
+            axios.post('/api/admin/getsubmitnum',{
+                contestid:self.contestid
+            }).then(function (response) {
+                if(response.data.msg!==''){
+                    self.$message({
+                        message:response.data.msg,
+                        type:'error'
+                    });
+                    return
+                }
+                self.allnum = response.data.allnum;
+                self.submitnum = response.data.submitnum;
+            }).catch(function () {
+                self.$message({
+                    message:'获取提交作品数量错误！',
+                    type:'error'
+                });
+            })
         }
     }
 </script>
