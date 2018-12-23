@@ -12,26 +12,30 @@ import traceback
 import datetime
 from zipfile import ZipFile, BadZipFile
 from django.db.models import Q
-import tarfile
+import rarfile
 
 def register(request):
-    data = json.loads(request.body.decode('utf-8'))
-    username = data['username']
-    email = data['email']
-    password = data['password']
-    password = make_password(password)
-    name_unique = CCPUser.objects.filter(username=username)
-    email_unique = CCPUser.objects.filter(email=email)
-    if name_unique:
-        return JsonResponse({'msg': '用户名已存在！'})
-    elif email_unique:
-        return JsonResponse({'msg': '邮箱地址已经被注册！'})
-    else:
-        new_user = CCPUser.objects.create(username=username, password=password, email=email)
-        os.mkdir(RESOURCE_BASE_DIR + '/resources/users/' + str(new_user.id))
-        os.mkdir(RESOURCE_BASE_DIR + '/resources/users/' + str(new_user.id) + '/tmp')
-        os.mkdir(RESOURCE_BASE_DIR + '/resources/users/' + str(new_user.id) + '/img')
-        return JsonResponse({'msg': ''})
+    try:
+        data = json.loads(request.body.decode('utf-8'))
+        username = data['username']
+        email = data['email']
+        password = data['password']
+        password = make_password(password)
+        name_unique = CCPUser.objects.filter(username=username)
+        email_unique = CCPUser.objects.filter(email=email)
+        if name_unique:
+            return JsonResponse({'msg': '用户名已存在！'})
+        elif email_unique:
+            return JsonResponse({'msg': '邮箱地址已经被注册！'})
+        else:
+            new_user = CCPUser.objects.create(username=username, password=password, email=email)
+            os.mkdir(RESOURCE_BASE_DIR + '/resources/users/' + str(new_user.id))
+            os.mkdir(RESOURCE_BASE_DIR + '/resources/users/' + str(new_user.id) + '/tmp')
+            os.mkdir(RESOURCE_BASE_DIR + '/resources/users/' + str(new_user.id) + '/img')
+            return JsonResponse({'msg': ''})
+    except:
+        traceback.print_exc()
+        return JsonResponse({'msg': '未知错误'})
 
 def login(request):
     try:
@@ -55,7 +59,17 @@ def check(request):
         contest_id = data['contestid']
         user = CCPUser.objects.get(username=username)
         contest = Contest.objects.get(id=contest_id)
-        #todo
+        if contest.grouped == 1:
+            # 组队赛
+            if ContestGroup.objects.filter(Q(contest_id=contest_id) & (Q(leader_id=user.id) | Q(member1_id=user.id)
+                                    | Q(member2_id=user.id) | Q(member3_id=user.id) | Q(member4_id=user.id))):
+                return JsonResponse({'msg': '不能重复报名'})
+        else:
+            # 个人赛
+            if ContestPlayer.objects.filter(contest_id=contest_id, player_id=user.id):
+                return JsonResponse({'msg': '不能重复报名'})
+        if ContestJudge.objects.filter(contest_id=contest_id, judge_id=user.id):
+            return JsonResponse({'msg': '评委不能报名'})
         return JsonResponse({'msg': ''})
     except:
         traceback.print_exc()
@@ -213,8 +227,8 @@ def upload(request):
     if File is None:
         return JsonResponse({'msg': 'File not found.'})
     dot_pos = File.name.rfind('.')
-    if dot_pos == -1 or File.name[dot_pos:] not in ['.tar', '.zip']:
-        return JsonResponse({'msg': '只支持上传tar或zip格式的压缩文件'})
+    if dot_pos == -1 or File.name[dot_pos:] not in ['.rar', '.zip']:
+        return JsonResponse({'msg': '只支持上传rar或zip格式的压缩文件'})
     else:
         # 先删除旧文件夹下所有内容，再打开特定的文件进行二进制的写操作;
         try:
@@ -230,15 +244,22 @@ def upload(request):
             # 解压缩
             extract_dir = RESOURCE_BASE_DIR + "/resources/contests/" + str(contest_id) + '/playerFiles/' + str(request.user.id) + '/decompress/'
             GeneralUtil.del_dir(extract_dir)
-#            if File.name[dot_pos:] == '.tar':
-                #todo htx
-
-            try:
-                with ZipFile(cur_dir + File.name) as zfile:
-                    zfile.extractall(path=extract_dir)
-            except BadZipFile as e:
-                traceback.print_exc()
-                return JsonResponse({'msg': '文件解压缩出错！'})
+            if File.name[dot_pos:] == '.rar':
+                # rar文件
+                try:
+                    with rarfile.RarFile(cur_dir + File.name) as rfile:
+                        rfile.extractall(path=extract_dir)
+                        rfile.close()
+                except:
+                    traceback.print_exc()
+                    return JsonResponse({'msg': '文件解压缩出错'})
+            else:
+                try:
+                    with ZipFile(cur_dir + File.name) as zfile:
+                        zfile.extractall(path=extract_dir)
+                except BadZipFile as e:
+                    traceback.print_exc()
+                    return JsonResponse({'msg': '文件解压缩出错！'})
             return JsonResponse({'msg': ''})
         except Exception as e:
             traceback.print_exc()

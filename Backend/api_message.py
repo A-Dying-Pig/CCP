@@ -6,6 +6,8 @@ import traceback
 
 def getnew(request):
     try:
+        if not request.user.is_authenticated:
+            return JsonResponse({'msg': '请先登录'})
         num = NotificationUser.objects.filter(user_id=request.user.id, read=False).count()
         return JsonResponse({
             'num': num,
@@ -17,6 +19,8 @@ def getnew(request):
 
 def getall(request):
     try:
+        if not request.user.is_authenticated:
+            return JsonResponse({'msg': '请先登录'})
         amount = 8
         data = json.loads(request.body.decode('utf-8'))
         try:
@@ -46,6 +50,8 @@ def getall(request):
 
 def detail(request):
     try:
+        if not request.user.is_authenticated:
+            return JsonResponse({'msg': '请先登录'})
         data = json.loads(request.body.decode('utf-8'))
         mId = data['messageId']
         try:
