@@ -138,7 +138,8 @@
                     }
                     begin = stage.evaluationTimeEnd;
                 }
-                //
+                //change teamnum format
+                let teamnumtmp = self.allinfo.signupinfo.teamnum;
                 if(flag){
                     if(self.change){
                         self.allinfo['contestid']=self.contestid;

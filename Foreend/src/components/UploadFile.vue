@@ -135,13 +135,13 @@
                 if(!isLt){
                     this.$message.error(`上传文件大小不能超过 ${this.file_max_size} MB!`);
                     this.is_wrong = true;
-                    return;
+                    return false;
                 }
                 if(self.accept === 'zip'){
                     if((!file.name.endsWith('zip'))&&(!file.name.endsWith('rar'))){
                         this.$message.error(`只支持rar或者zip格式文件的上传!`);
                         this.is_wrong = true;
-                        return;
+                        return false;
                     }
                 }
                 return isLt;

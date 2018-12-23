@@ -165,8 +165,6 @@
         },
         created:function () {
             let self = this;
-            console.log(self.type,Date.now()>self.info.signupinfo.time[0],Date.now()<self.info.signupinfo.time[1]);
-            console.log(Date.now(),self.info.signupinfo.time);
             self.showbutton = ((self.type === 0)&&(Date.now()>self.info.signupinfo.time[0])&&(Date.now()<self.info.signupinfo.time[1]));
             axios.post('/api/competition/enrollnum',{
                 contestid:self.contestid
