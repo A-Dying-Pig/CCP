@@ -308,8 +308,8 @@ def create(request):
         contest.enroll_end = datetime.strptime(time[1],"%Y-%m-%dT%H:%M:%S.000Z").replace(tzinfo=pytz.utc)
         if mode == 0:
             contest.grouped = 1
-            contest.group_min_number = signupinfo['teamnum'][0]
-            contest.group_max_number = signupinfo['teamnum'][1]
+            contest.group_min_number = 1
+            contest.group_max_number = int(signupinfo['teamnum'])
         elif mode == 1:
             contest.grouped = 0
         else:
