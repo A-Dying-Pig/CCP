@@ -14,6 +14,8 @@ def getone(request):
         judge_id = request.user.id
         data = json.loads(request.body.decode('utf-8'))
         contest_id = int(data['contestid'])
+        if not ContestJudge.objects.filter(contest_id=contest_id, judge_id=judge_id):
+            return JsonResponse({'msg': '当前用户不是该比赛评委'})
         participant_id = int(data['participantid'])
         result = {}
         if participant_id == -1:
@@ -42,7 +44,8 @@ def submit(request):
         user_id = data['userId']
         grade = data['grade']
         phase = data['phase']
-
+        if not ContestJudge.objects.filter(contest_id=contest_id, judge_id=judge_id):
+            return JsonResponse({'msg': '当前用户不是该比赛评委'})
         try:
             target = ContestGrade.objects.get(contest_id=contest_id, leader_id=user_id, phase=phase, judge_id=judge_id)
         except:
@@ -62,6 +65,8 @@ def finished(request):
         judge_id = request.user.id
         data = json.loads(request.body.decode('utf-8'))
         contest_id = int(data['contestid'])
+        if not ContestJudge.objects.filter(contest_id=contest_id, judge_id=judge_id):
+            return JsonResponse({'msg': '当前用户不是该比赛评委'})
         res = {}
         res['msg'] = ''
         res['grades'] = []
