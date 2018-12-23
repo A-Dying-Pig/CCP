@@ -12,6 +12,7 @@ import traceback
 import datetime
 from zipfile import ZipFile, BadZipFile
 from django.db.models import Q
+import tarfile
 
 def register(request):
     data = json.loads(request.body.decode('utf-8'))
@@ -211,6 +212,9 @@ def upload(request):
     File = request.FILES.get("file", None)
     if File is None:
         return JsonResponse({'msg': 'File not found.'})
+    dot_pos = File.name.rfind('.')
+    if dot_pos == -1 or File.name[dot_pos:] not in ['.tar', '.zip']:
+        return JsonResponse({'msg': '只支持上传tar或zip格式的压缩文件'})
     else:
         # 先删除旧文件夹下所有内容，再打开特定的文件进行二进制的写操作;
         try:
@@ -226,6 +230,9 @@ def upload(request):
             # 解压缩
             extract_dir = RESOURCE_BASE_DIR + "/resources/contests/" + str(contest_id) + '/playerFiles/' + str(request.user.id) + '/decompress/'
             GeneralUtil.del_dir(extract_dir)
+#            if File.name[dot_pos:] == '.tar':
+                #todo htx
+
             try:
                 with ZipFile(cur_dir + File.name) as zfile:
                     zfile.extractall(path=extract_dir)

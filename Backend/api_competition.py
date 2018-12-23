@@ -601,15 +601,20 @@ def discussionList(request):
 
 def worksname(request):
     data = json.loads(request.body.decode('utf-8'))
-    contestid = data['contestid']
+    contestid = int(data['contestid'])
     userid = request.user.id
     filename = ''
+    base_dir = RESOURCE_BASE_DIR + '/resources/contests/' + str(contestid) + '/playerFiles/' + str(userid) + '/compress/'
     try:
-        dirs = os.listdir(RESOURCE_BASE_DIR + '/resources/contests/' + str(contestid) + '/playerFiles/' + str(userid) + '/compress/')
+        dirs = os.listdir(base_dir)
     except:
         return JsonResponse({'msg': '', 'filename': ''})
+    contest = Contest.objects.get(id=contestid)
     for d in dirs:
-        if os.path.isfile(RESOURCE_BASE_DIR + '/resources/contests/' + str(contestid) + '/playerFiles/' + str(userid) + '/compress/' + d):
-            filename = d
+        if os.path.isfile(base_dir + d):
+            if getattr(contest, 'phase_start_time' + ContestUtil.getCurrentPhase(contestid)['phase']) < os.path.getmtime(base_dir + d):  # 是在当前阶段开始之后才提交的
+                filename = d
+            else:
+                filename = ''
             break
     return JsonResponse({'msg': '', 'filename': filename})
