@@ -217,8 +217,8 @@ def upload(request):
             cur_dir = RESOURCE_BASE_DIR + "/resources/contests/" + str(contest_id) + '/playerFiles/' + str(request.user.id) + '/compress/'
             dirs = os.listdir(cur_dir)
             for dir in dirs:
-                if os.path.isfile(dir):  # 删掉原来的压缩文件
-                    os.remove(dir)
+                if os.path.isfile(cur_dir + dir):  # 删掉原来的压缩文件
+                    os.remove(cur_dir + dir)
             with open(cur_dir + File.name, 'wb') as f:
                 # 分块写入文件;
                 for chunk in File.chunks():

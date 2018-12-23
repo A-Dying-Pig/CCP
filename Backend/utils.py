@@ -307,7 +307,7 @@ class GeneralUtil:
                 if os.path.isfile(full_path):
                     os.remove(full_path)
                 elif os.path.isdir(full_path):
-                    cls.del_dir(full_path)
+                    cls.del_dir(full_path + '/')
                     os.rmdir(full_path)
 
     @classmethod
