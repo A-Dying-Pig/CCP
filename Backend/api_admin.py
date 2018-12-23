@@ -407,8 +407,15 @@ def advanced(request):
         res['already'] = Submitted.objects.get(contest_id=contestid, phase=phase+1, zone_id=target).advanced
     except:
         res['already'] = -1
+    cg = ContestGrade.objects.filter(contest_id=contestid).annotate(average_rating=Avg('grade')).order_by('-average_rating')
     result = ContestGrade.objects.filter(contest_id=contestid).values('leader_id').annotate(average_rating=Avg('grade')).order_by('-average_rating')
-    for row in result:
+    #todo htx 提高效率 现在效率太低了
+    index = 0
+    len_res = len(result)
+    while index < len_res:
+        if target != -1 and GeneralUtil.get_zone_id(cg[index].contest_id, phase, cg[index].leader_id) != target:
+            continue
+        row = result[index]
         dic = {}
         user = CCPUser.objects.filter(id=row['leader_id'])[0]
         dic['username'] = user.username
@@ -422,6 +429,7 @@ def advanced(request):
             dic['oldgrade'] = -1
             dic['reason'] = ''
         res['participants'].append(dic)
+        index = index + 1
     return JsonResponse(res)
 
 def setnewgrade(request):
@@ -457,14 +465,15 @@ def setadvanced(request):
     advanced = int(data['advanced'])
     # need to be checked carefully
     phase = ContestUtil.getCurrentPhase(contestid)['phase']
-
+    if Submitted.objects.filter(contest_id=contestid, phase=phase+1, zone_id=target).count() > 0:
+        return JsonResponse({'msg': '不能重复提交晋级名单'})
     result = ContestGrade.objects.filter(contest_id=contestid).values('leader_id').annotate(average_rating=Avg('grade')).order_by('-average_rating')[:advanced]
     for p in result:
         contestgrade = ContestGrade()
         leader_id = p['leader_id']
         contestgrade.leader_id = leader_id
         contestgrade.contest_id = contestid
-        contestgrade.phase = phase
+        contestgrade.phase = phase + 1
         contestgrade.save()
     submit = Submitted()
     submit.contest_id = contestid

@@ -3,6 +3,7 @@ from .models import *
 import time
 import os
 import traceback
+import json
 
 MAX_HOSTS = 4  # 最大主办方人数
 MAX_PHASE = 5
@@ -322,3 +323,33 @@ class GeneralUtil:
         elif mode == 'user':
             return cls.find_first_img('/resources/default/user/')
         raise Exception('mode Error:' + mode)
+
+    @classmethod
+    def get_zone_id(cls, contest_id, phase, leader_id):
+        contest = Contest.objects.get(id=contest_id)
+        if contest.grouped == 1:
+            # 组队赛
+            cg = ContestGroup.objects.get(contest_id=contest_id, leader_id=leader_id)
+            zone_name = getattr(cg, 'phase_region' + str(phase))
+        else:
+            # 个人赛
+            cp = ContestPlayer.objects.get(contest_id=contest_id, player_id=leader_id)
+            zone_name = getattr(cp, 'phase_region' + str(phase))
+        return cls.get_zone_id_by_name(zone_name)
+
+    @classmethod
+    def get_zone_id_by_name(cls, zone_name):
+        with open('zone.json', 'r', encoding='utf8') as f:
+            zone = json.load(f)
+        zone_id = {}
+        cid = 0
+        for province in zone['province']:
+            zone_id[province] = cid
+            cid = cid + 1
+        cid = 0
+        for region in zone['region']:
+            zone_id[region] = cid
+            cid = cid + 1
+        zone_id[''] = -1
+        zone_id[None] = -1
+        return zone_id[zone_name]
