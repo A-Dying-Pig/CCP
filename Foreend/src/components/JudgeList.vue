@@ -305,30 +305,6 @@
                     })
                     .catch(error=>{
                         console.log(error);
-                        vm.judges = [
-                            {username:'1',id:1},
-                            {username:'2',id:1},
-                            {username:'3',id:1},
-                            {username:'4',id:1},
-                            {username:'5',id:1},
-                            {username:'6',id:1},
-                            {username:'7',id:1},
-                            {username:'8',id:1},
-                            {username:'9',id:1},
-                            {username:'10',id:1},
-                            {username:'11',id:1},
-                            {username:'12',id:1},
-                            ];
-                        vm.judges_number = vm.judges.length;
-                        for (let i = 0; i < vm.judges_number; i++){
-                            let the_zone = vm.zone_menu.filter(function (element) {
-                                return element.id === vm.judges[i].id;
-                            });
-                            vm.judges[i].value = the_zone[0].value;
-                        }
-                        //default
-                        vm.DefaultDisplay();
-                        vm.CurrentPageChange(1);
                     });
             },
             DefaultDisplay:function(){
@@ -450,11 +426,6 @@
                 })
                 .catch(error=>{
                     console.log(error);
-                    vm.zone_menu = [
-                            {id:0,value:'北京'},
-                            {id:1,value:'上海'},
-                            {id:2,value:'重庆'},
-                        ];
                 });
             this.UpdateJudgeList();
         }

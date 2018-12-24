@@ -26,16 +26,16 @@
                 default:0,
             },
             title:{
-                default:'我不想写了比赛了',
+                default:'',
             },
             holders:{
-                default:['可爱的林克','哥布林'],
+                default:[],
             },
             sponsors:{
-                default:["lyr","233"],
+                default:[],
             },
             img_url:{
-                default:require('../assets/img/logo.png'),
+                default:'',
             }
         },
         data:function () {

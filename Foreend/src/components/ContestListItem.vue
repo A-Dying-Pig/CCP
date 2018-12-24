@@ -33,7 +33,7 @@
                 default:'我爱你',
             },
             img_url:{
-                default:require('../assets/img/logo.png'),
+                default:'',
             },
             enroll_number:{
                 default:0

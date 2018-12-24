@@ -27,7 +27,7 @@
     export default{
         props:{
             img_url:{
-                default:require('../assets/img/logo.png')
+                default:''
             },
             username:{
                 default:'leiyiran',
