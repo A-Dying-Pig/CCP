@@ -106,6 +106,7 @@
                     //self.onedis = response.data;
                     self.$emit('new-onedis',response.data);
                 }).catch(function (error) {
+                    console.log(error)
                     self.$message({
                         message:'获取帖子信息错误！',
                         type:'error'
@@ -162,39 +163,22 @@
                     self.current_page_num = response.data.current_page_num;
                     self.total_page_num = response.data.total_page_num;
                     self.disdata = response.data.array;
+                    for(let onedata of self.disdata){
+                        onedata.fmissuetime = self.timeformat(onedata.issuetime);
+                        onedata.fmlasttime = self.timeformat(onedata.lasttime);
+                    }
+                    console.log(self.disdata)
                 }).catch(function (error) {
                     self.$message({
                         message:'获取讨论区列表失败！',
                         type:'error'
                     });
                 });
-                for(let onedata of self.disdata){
-                    onedata.fmissuetime = self.timeformat(onedata.issuetime);
-                    onedata.fmlasttime = self.timeformat(onedata.lasttime);
-                }
             }
         },
         created:function () {
             let self = this;
             self.disdata = [
-                {
-                    discussionid:1,
-                    title:'竞赛答疑专用贴！！',
-                    author:'小程序竞赛举办方',
-                    issuetime:1544308970429,
-                    replynum:20,
-                    lasttime:1544508970429,
-                    viewnum:100
-                },
-                {
-                    discussionid:2,
-                    title:'求组队！！',
-                    author:'萌新',
-                    issuetime:1544308970429,
-                    replynum:30,
-                    lasttime:1544508970429,
-                    viewnum:1000
-                }
             ];
             self.getdata(1);
         }

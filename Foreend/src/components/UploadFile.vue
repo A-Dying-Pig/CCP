@@ -7,6 +7,7 @@
             :on-remove="handleRemove"
             :before-remove="beforeRemove"
             :before-upload="beforeFileUpload"
+            :on-success="loadok"
             multiple
             :limit="file_max_number"
             :on-exceed="handleExceed"
@@ -61,6 +62,14 @@
             },
             fileList:{
                 type:Array,
+            },
+            loadok:{
+                type:Function,
+                default:function () {
+                    return function (response, file, fileList) {
+                        console.log('nono')
+                    };
+                }
             }
         },
         data() {
@@ -121,6 +130,7 @@
                             message:'上传'+fileobj.name+'成功！',
                             type:'success'
                         });
+                        self.loadok();
                     }
                 }).catch(function (error) {
                     self.$message({
@@ -149,6 +159,9 @@
         },
         created:function () {
             console.log(this.fileList)
+        },
+        mounted:function () {
+            this.loadok();
         }
     }
 

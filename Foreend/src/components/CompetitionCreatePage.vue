@@ -59,9 +59,7 @@
                             ],
                             group:[
                             ],
-                            teamnum:[3,
-                                5
-                            ],
+                            teamnum:5
                         },
                         stageinfo:[{
                             name:'',
@@ -139,7 +137,7 @@
                     begin = stage.evaluationTimeEnd;
                 }
                 //change teamnum format
-                let teamnumtmp = self.allinfo.signupinfo.teamnum;
+               // let teamnumtmp = self.allinfo.signupinfo.teamnum;
                 if(flag){
                     if(self.change){
                         self.allinfo['contestid']=self.contestid;
