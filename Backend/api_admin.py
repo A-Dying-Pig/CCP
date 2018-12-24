@@ -240,7 +240,7 @@ def setjudge(request):
             setattr(contest_judge, 'phase_region'+str(phase), zone)
             contest_judge.save()
         elif type == 1:
-            ContestJudge.objects.filter(judge_id=judge_id).delete()
+            ContestJudge.objects.filter(contest_id=contest_id, judge_id=judge_id).delete()
             contest_judge = ContestJudge()
             contest_judge.judge_id = judge_id
             contest_judge.contest_id = contest_id
@@ -294,27 +294,11 @@ def broadcast(request):
         title = data['title']
         content = data['content']
         target_id = data['target']['id']
-        target_type = int(data['target']['type'])
-        phase = ContestUtil.getCurrentPhase(contestid)['phase']
         notification = Notification()
         notification.context = content
         notification.title = title
         notification.save()
         msg_id = Notification.objects.last().id
-        if target_type != 0:
-            # 先看一下当前阶段主办方是否提交了晋级名单
-            if not Submitted.objects.filter(contest_id=contestid, phase=phase+1, zone_id=target_id):
-                # 还未提交
-                return JsonResponse({'msg': '当前阶段还没有设置晋级和淘汰选手'})
-            else:
-                if target_type == 1:
-                    # 当前阶段晋级到下一阶段的选手
-                    # todo htx
-                    pass
-                else:
-                    # 当前阶段被淘汰的选手
-                    #todo htx
-                    pass
         if target_id == -1:
             players = []
             plist = ContestPlayer.objects.filter(contest_id=contestid)
