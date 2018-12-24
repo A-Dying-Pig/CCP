@@ -29,16 +29,6 @@
         data:function () {
             return{
                 files:[
-                    {
-                        name:'1.pdf',
-                        url:'http://math.sjtu.edu.cn/faculty/chengwang/files/2015fall/ch1.pdf',
-                        size:'1b',
-                    },
-                    {
-                        name:'2.jpg',
-                        url:'https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1543949343531&di=b7cc03cd964bb52e6ce10ea1aed433c8&imgtype=0&src=http%3A%2F%2Fimgsrc.baidu.com%2Fimage%2Fc0%253Dshijue1%252C0%252C0%252C294%252C40%2Fsign%3D8a953b1817950a7b6138468762b808ac%2F03087bf40ad162d9344e02321bdfa9ec8a13cd78.jpg',
-                        size:'2b'
-                    }
                 ],
                 fileList:[],
             }
@@ -56,19 +46,26 @@
                 },
             handlePreview(file) {
                     console.log(file);
-                }
+                },
+            loadok(response, file, fileList){
+                this.getfile();
+                console.log('loadok')
+            },
+            getfile(){
+                let self = this;
+                axios.post('/api/competition/filelist',{
+                    contestid:self.contestid,
+                }).then(function (response) {
+                    self.files = [];
+                    self.files = response.data.files;
+                    console.log(self.files);
+                }).catch(function (error) {
+                    console.log(error);
+                })
+            }
         },
         created:function () {
-            let self = this;
-            axios.post('/api/competition/filelist',{
-                contestid:self.contestid,
-            }).then(function (response) {
-                self.files = [];
-                self.files = response.data.files;
-                console.log(self.files);
-            }).catch(function (error) {
-                console.log(error);
-            })
+            this.getfile();
         }
     }
 </script>

@@ -1,6 +1,6 @@
 <template>
     <div>
-        <el-row :gutter="24">
+        <el-row :gutter="24" v-if="nodes.length>0">
             <el-col :span="6">
                 <slVueTree v-model="nodes" :allow-multiselect="false" @select="nodeSelected" id="slvuetree">
                     <template slot="title" slot-scope="{ node }">
@@ -50,6 +50,11 @@
                         </el-form>
                     </el-col>
                 </el-row>
+            </el-col>
+        </el-row>
+        <el-row :gutter="24" v-else>
+            <el-col>
+                已无待评测作品
             </el-col>
         </el-row>
     </div>
@@ -108,11 +113,19 @@
                     contestid:self.contestid,
                     participantid:(this.readonly?this.participantid:-1),
                 }).then(function (response) {
+                    if(response.data.msg===''){
                         self.nodes = response.data.files;
                         self.participantid = response.data.participantid;
+                        console.log(self.participantid)
+                    }
+                    else{
+                            self.nodes = [];
+                        }
+
                     }).catch(function (error) {
                         console.log(error);
                     });
+                console.log(self.nodes)
             },
             downloadfile:function(){
 
@@ -131,6 +144,7 @@
                             }
                             phase++;
                         }
+                        console.log(phase);
                         axios.post('/api/judge/submit',{
                             contestid:self.contestid,
                             userId:self.participantid,
@@ -139,6 +153,8 @@
                         }).then(function (response) {
                             if(response.data.msg===''){
                                 self.$message.success('提交成功！');
+                                self.nodes = [];
+                                self.getfiles();
                             }
                             else {
                                 self.$message.error('提交失败！服务器返回错误！');
@@ -147,7 +163,6 @@
                             self.$message.error('提交失败！');
                         })
                         //getnext
-                        this.getfiles();
                         return true;
                     } else {
                         return false;

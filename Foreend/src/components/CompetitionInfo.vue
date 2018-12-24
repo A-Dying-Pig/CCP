@@ -152,7 +152,6 @@
                         <el-form-item label="队伍人数选择" label-width="100" prop="teamnum" required class="contest-group-number">
                                                 <el-slider
                                                         v-model="info.teamnum"
-                                                        range
                                                         show-stops
                                                         :min="1"
                                                         :max="10">

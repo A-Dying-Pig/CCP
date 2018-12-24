@@ -153,7 +153,7 @@
                             });
                         }
                         if(self.allinfo.basicinfo.judgebegin === false){
-                        let showjudgebegin = true;
+                        let showjudgebegin = false;
                         for (let stage of self.allinfo.stageinfo) {
                             if ((now > stage.handTimeEnd) && (now < stage.evaluationTimeEnd)) {
                                 showjudgebegin = true;
