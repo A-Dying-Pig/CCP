@@ -244,10 +244,10 @@ class api_user_competiton_Test(TestCase):
         response = self.c.post('/api/admin/participants',json.dumps(comp_info),content_type="application/json") 
         response_content = response.content.decode()
         response_content = json.loads(response_content)
-        print(response_content)
+        #print(response_content)
         self.assertEqual(response_content['mode'], 1)  
         self.assertEqual(len(response_content['array']),1)
-        self.assertEqual(response_content['array'][0]['username'],'admin')
+        self.assertEqual(response_content['array'][0]['username'],'admin2')
 
     def test_participants_group(self):   
         user_info={
@@ -264,7 +264,10 @@ class api_user_competiton_Test(TestCase):
         response_content = json.loads(response_content)
         self.assertEqual(response_content['mode'], 0)  
         self.assertEqual(len(response_content['array']),1)
-        self.assertEqual(response_content['array']['captainName'],'admin2')
+        self.assertEqual(response_content['array'][0]['captainName'],'admin3')
+        print('---group----')
+        print(response_content['array'][0]['group'])
+        print('------')
         self.assertEqual(len(response_content['array'][0]['group']),2)
 
     def test_participants_notadmin(self):
@@ -295,7 +298,7 @@ class api_user_competiton_Test(TestCase):
         response = self.c.post('/api/admin/participants',json.dumps(comp_info),content_type="application/json") 
         response_content = response.content.decode()
         response_content = json.loads(response_content)
-        self.assertEqual(response_content['mode'], 0)  
+        self.assertEqual(response_content['mode'], 1)  
         self.assertEqual(len(response_content['array']),0)
         self.assertEqual(response_content['current_page_num'],2)
 
@@ -326,8 +329,8 @@ class api_user_competiton_Test(TestCase):
         response = self.c.post('/api/admin/detail',json.dumps(comp_info),content_type="application/json") 
         response_content = response.content.decode()
         response_content = json.loads(response_content)
-        self.assertEqual(response_content['basicinfo']['name'], "快乐肥宅大赛")  
-        self.assertEqual(response_content['basicinfo']['comtype'],1)
+        self.assertEqual(response_content['basicinfo']['name'], "快乐肥宅大赛-个人")  
+        self.assertEqual(response_content['basicinfo']['comtype'],'web开发')
 
     def test_detail_group(self):
         user_info={
@@ -341,8 +344,8 @@ class api_user_competiton_Test(TestCase):
         response = self.c.post('/api/admin/detail',json.dumps(comp_info),content_type="application/json") 
         response_content = response.content.decode()
         response_content = json.loads(response_content)
-        self.assertEqual(response_content['basicinfo']['name'], "快乐肥宅大赛")  
-        self.assertEqual(response_content['basicinfo']['comtype'],0)
+        self.assertEqual(response_content['basicinfo']['name'], "快乐肥宅大赛-组队")  
+        self.assertEqual(response_content['basicinfo']['comtype'],'web开发')
 
     def test_detail_notexist(self):
         user_info={
@@ -868,8 +871,8 @@ class api_user_competiton_Test(TestCase):
             "title":"初赛时间",
             "content":"hhhhhh",
             "target":{
-                id:-1,
-                type:0
+                "id":-1,
+                "type":0
             }           
         }
         response = self.c.post('/api/admin/broadcast',json.dumps(comp_info),content_type="application/json") 
@@ -888,8 +891,8 @@ class api_user_competiton_Test(TestCase):
             "title":"初赛时间",
             "content":"hhhhhh",
             "target":{
-                id:-1,
-                type:0
+                "id":-1,
+                "type":0
             }           
         }
         response = self.c.post('/api/admin/broadcast',json.dumps(comp_info),content_type="application/json") 
@@ -908,8 +911,8 @@ class api_user_competiton_Test(TestCase):
             "title":"初赛时间",
             "content":"hhhhhh",
             "target":{
-                id:-1,
-                type:0
+                "id":-1,
+                "type":0
             }           
         }
         response = self.c.post('/api/admin/broadcast',json.dumps(comp_info),content_type="application/json") 
@@ -1211,9 +1214,10 @@ class api_user_competiton_Test(TestCase):
         response_content = json.loads(response_content)
         self.assertEqual(response_content['msg'], '比赛管理员不能成为评审')
 
+    '''
     def test_setjudge_add_superBeJudge(self):
         user_info={
-            "username": "super_admin", 
+            "username": "admin", 
             "password": "ccp"            
         }
         response = self.c.post('/api/user/login',json.dumps(user_info),content_type="application/json")
@@ -1227,10 +1231,11 @@ class api_user_competiton_Test(TestCase):
         response_content = response.content.decode()
         response_content = json.loads(response_content)
         self.assertEqual(response_content['msg'], '超级用户不能成为评审')
+    '''
 
     def test_setjudge_add_playerBeJudge(self):
         user_info={
-            "username": "admin2", 
+            "username": "admin", 
             "password": "ccp"            
         }
         response = self.c.post('/api/user/login',json.dumps(user_info),content_type="application/json")
@@ -1376,7 +1381,7 @@ class api_user_competiton_Test(TestCase):
         comp_info={
             "contestid":self.contestId_personal
         }
-        response = self.c.post('/api/competiton/filelist',json.dumps(comp_info),content_type="application/json") 
+        response = self.c.post('/api/competition/filelist',json.dumps(comp_info),content_type="application/json") 
         response_content = response.content.decode()
         response_content = json.loads(response_content)
         self.assertEqual(len(response_content['files']),1)
@@ -1390,12 +1395,15 @@ class api_user_competiton_Test(TestCase):
         comp_info={
             "contestid":self.contestId_personal
         }
-        response = self.c.post('/api/competiton/filelist',json.dumps(comp_info),content_type="application/json") 
+        response = self.c.post('/api/competition/filelist',json.dumps(comp_info),content_type="application/json") 
         response_content = response.content.decode()
+        print('-----filelist-------')
+        print(response_content)
+        print('--------------------')
         response_content = json.loads(response_content)
         self.assertEqual(len(response_content['files']),0)
 
-    def test_competition_filelist_playernotexist(self):
+    def test_competition_filelist_notadmin(self):
         user_info={
             "username": "admin", 
             "password": "ccp"            
@@ -1411,8 +1419,11 @@ class api_user_competiton_Test(TestCase):
         comp_info={
             "contestid":self.contestId_personal
         }
-        response = self.c.post('/api/competiton/filelist',json.dumps(comp_info),content_type="application/json") 
+        response = self.c.post('/api/competition/filelist',json.dumps(comp_info),content_type="application/json") 
         response_content = response.content.decode()
+        print('-----filelist-------')
+        print(response_content)
+        print('--------------------')        
         response_content = json.loads(response_content)
         self.assertEqual(response_content['msg'],'未知错误！')
 
@@ -1432,568 +1443,7 @@ class api_user_competiton_Test(TestCase):
         comp_info={
             "contestid":self.contestId_personal+10
         }
-        response = self.c.post('/api/competiton/filelist',json.dumps(comp_info),content_type="application/json") 
+        response = self.c.post('/api/competition/filelist',json.dumps(comp_info),content_type="application/json") 
         response_content = response.content.decode()
         response_content = json.loads(response_content)
         self.assertEqual(response_content['msg'],'未知错误！')
-
-    def test_judgeprogress_successful(self):
-        user_info={
-            "username": "admin2", 
-            "password": "ccp"            
-        }
-        response = self.c.post('/api/user/login',json.dumps(user_info),content_type="application/json")   
-        with open("C:\\Users\\Administrator\\Desktop\\1.zip", 'rb') as f:
-            response=self.c.post('/api/contestant/submit',{"contestid":self.contestId_personal,'file': f})
-        user_info={      
-            "username": "judge1", 
-            "password": "ccp",
-            "email":"judge1@126.com"
-        }
-        response = self.c.post('/api/user/register',json.dumps(user_info),content_type="application/json")
-        user_info={
-            "username": "admin", 
-            "password": "ccp"            
-        }
-        response = self.c.post('/api/user/login',json.dumps(user_info),content_type="application/json")
-        comp_info = {
-            "contestid":self.contestId_personal, 
-            "type":0,
-            "username": 'judge1',
-            "id":'1'                 
-        }
-        response = self.c.post('/api/admin/setjudge',json.dumps(comp_info),content_type="application/json") 
-        user_info={
-            "username": "judge1", 
-            "password": "ccp"            
-        }
-        response = self.c.post('/api/user/login',json.dumps(user_info),content_type="application/json")
-        contestplayer = contestplayer.objects.filter()
-        self.contestplayer_id = contestplayer[0].player_id
-        submit_info={
-            "contestid":self.contestId_personal,
-            "userId":self.contestplayer_id,
-            "grade":95,
-            "phase":"hhhhhhh"            
-        }
-        response = self.c.post('/api/judge/submit',json.dumps(submit_info),content_type="application/json")
-        user_info={
-            "username": "admin", 
-            "password": "ccp"            
-        }
-        response = self.c.post('/api/user/login',json.dumps(user_info),content_type="application/json")
-        comp_info={
-            "contestid":self.contestId_personal                      
-        }
-        response = self.c.post('/api/admin/judgeprogress',json.dumps(comp_info),content_type="application/json")
-        response_content = response.content.decode()
-        response_content = json.loads(response_content)
-        self.assertEqual(len(response_content['judges']),1)
-        self.assertEqual(response_content['judges'][0]['name'],"judge1")
-        self.assertEqual(response_content['judges'][0]['finish'],1)
-
-    def test_judgeprogress_notadmin(self):
-        user_info={
-            "username": "admin2", 
-            "password": "ccp"            
-        }
-        response = self.c.post('/api/user/login',json.dumps(user_info),content_type="application/json")   
-        with open("C:\\Users\\Administrator\\Desktop\\1.zip", 'rb') as f:
-            response=self.c.post('/api/contestant/submit',{"contestid":self.contestId_personal,'file': f})
-        user_info={      
-            "username": "judge1", 
-            "password": "ccp",
-            "email":"judge1@126.com"
-        }
-        response = self.c.post('/api/user/register',json.dumps(user_info),content_type="application/json")
-        user_info={
-            "username": "admin", 
-            "password": "ccp"            
-        }
-        response = self.c.post('/api/user/login',json.dumps(user_info),content_type="application/json")
-        comp_info = {
-            "contestid":self.contestId_personal, 
-            "type":0,
-            "username": "judge1",
-            "id":'1'                 
-        }
-        response = self.c.post('/api/admin/setjudge',json.dumps(comp_info),content_type="application/json") 
-        user_info={
-            "username": "judge1", 
-            "password": "ccp"            
-        }
-        response = self.c.post('/api/user/login',json.dumps(user_info),content_type="application/json")
-        contestplayer = contestplayer.objects.filter()
-        self.contestplayer_id = contestplayer[0].player_id
-        submit_info={
-            "contestid":self.contestId_personal,
-            "userId":self.contestplayer_id,
-            "grade":95,
-            "phase":"hhhhhhh"            
-        }
-        response = self.c.post('/api/judge/submit',json.dumps(submit_info),content_type="application/json")
-        comp_info={
-            "contestid":self.contestId_personal                      
-        }
-        response = self.c.post('/api/admin/judgeprogress',json.dumps(comp_info),content_type="application/json")
-        response_content = response.content.decode()
-        response_content = json.loads(response_content)
-        self.assertEqual(response_content['msg'],"非管理员不能查看评测进度")
-
-    def test_judgeprogress_compnotExist(self):
-        user_info={
-            "username": "admin2", 
-            "password": "ccp"            
-        }
-        response = self.c.post('/api/user/login',json.dumps(user_info),content_type="application/json")   
-        with open("C:\\Users\\Administrator\\Desktop\\1.zip", 'rb') as f:
-            response=self.c.post('/api/contestant/submit',{"contestid":self.contestId_personal,'file': f})
-        user_info={      
-            "username": "judge1", 
-            "password": "ccp",
-            "email":"judge1@126.com"
-        }
-        response = self.c.post('/api/user/register',json.dumps(user_info),content_type="application/json")
-        user_info={
-            "username": "admin", 
-            "password": "ccp"            
-        }
-        response = self.c.post('/api/user/login',json.dumps(user_info),content_type="application/json")
-        comp_info = {
-            "contestid":self.contestId_personal, 
-            "type":0,
-            "username": "judge1",
-            "id":'1'                 
-        }
-        response = self.c.post('/api/admin/setjudge',json.dumps(comp_info),content_type="application/json") 
-        user_info={
-            "username": "judge1", 
-            "password": "ccp"            
-        }
-        response = self.c.post('/api/user/login',json.dumps(user_info),content_type="application/json")
-        contestplayer = contestplayer.objects.filter()
-        self.contestplayer_id = contestplayer[0].player_id
-        submit_info={
-            "contestid":self.contestId_personal,
-            "userId":self.contestplayer_id,
-            "grade":95,
-            "phase":"hhhhhhh"            
-        }
-        response = self.c.post('/api/judge/submit',json.dumps(submit_info),content_type="application/json")
-        user_info={
-            "username": "admin", 
-            "password": "ccp"            
-        }
-        response = self.c.post('/api/user/login',json.dumps(user_info),content_type="application/json")
-        comp_info={
-            "contestid":self.contestId_group+1                      
-        }
-        response = self.c.post('/api/admin/judgeprogress',json.dumps(comp_info),content_type="application/json")
-        response_content = response.content.decode()
-        response_content = json.loads(response_content)
-        self.assertEqual(response_content['msg'],"比赛不存在")
-
-    def test_super_setindex_successful(self):
-        user_info={
-            "username": "super_admin", 
-            "password": "ccp"            
-        }
-        response = self.c.post('/api/user/login',json.dumps(user_info),content_type="application/json")   
-        comp_info = {
-            "slider":[self.contestId_personal], 
-            "hot":[self.contestId_personal]
-        }
-        response = self.c.post('/api/super/setindex',json.dumps(comp_info),content_type="application/json") 
-        response_content = response.content.decode()
-        response_content = json.loads(response_content)
-        self.assertEqual(response_content['msg'],'')
-
-    def test_super_setindex_notsuperadmin(self):
-        user_info={
-            "username": "admin", 
-            "password": "ccp"            
-        }
-        response = self.c.post('/api/user/login',json.dumps(user_info),content_type="application/json")   
-        comp_info = {
-            "slider":[self.contestId_personal], 
-            "hot":[self.contestId_personal]
-        }
-        response = self.c.post('/api/super/setindex',json.dumps(comp_info),content_type="application/json") 
-        response_content = response.content.decode()
-        response_content = json.loads(response_content)
-        self.assertEqual(response_content['msg'],'Authority denied.')  
-
-    def test_super_setindex_slidernotexist(self):
-        user_info={
-            "username": "super_admin", 
-            "password": "ccp"            
-        }
-        response = self.c.post('/api/user/login',json.dumps(user_info),content_type="application/json")   
-        comp_info = {
-            "slider":[self.contestId_group+1], 
-            "hot":[self.contestId_personal]
-        }
-        response = self.c.post('/api/super/setindex',json.dumps(comp_info),content_type="application/json") 
-        response_content = response.content.decode()
-        response_content = json.loads(response_content)
-        self.assertEqual(response_content['msg'],'比赛不存在')
-    
-    def test_super_setindex_hotnotexist(self):
-        user_info={
-            "username": "super_admin", 
-            "password": "ccp"            
-        }
-        response = self.c.post('/api/user/login',json.dumps(user_info),content_type="application/json")   
-        comp_info = {
-            "slider":[self.contestId_personal], 
-            "hot":[self.contestId_group+1]
-        }
-        response = self.c.post('/api/super/setindex',json.dumps(comp_info),content_type="application/json") 
-        response_content = response.content.decode()
-        response_content = json.loads(response_content)
-        self.assertEqual(response_content['msg'],'比赛不存在')
-
-    def test_super_indexinfo_successful(self):
-        user_info={
-            "username": "super_admin", 
-            "password": "ccp"            
-        }
-        response = self.c.post('/api/user/login',json.dumps(user_info),content_type="application/json")   
-        comp_info = {
-            "slider":[self.contestId_personal], 
-            "hot":[self.contestId_personal]
-        }
-        response = self.c.post('/api/super/setindex',json.dumps(comp_info),content_type="application/json") 
-        response = self.c.post('/api/super/indexinfo')
-        response_content = response.content.decode()
-        response_content = json.loads(response_content)
-        self.assertEqual(response_content['msg'],'')
-        self.assertEqual(response_content['Contests'][0]["contestid"],self.contestId_personal)
-        self.assertEqual(response_content['Contests'][0]["is_slider"],1)
-        self.assertEqual(response_content['Contests'][0]["is_hot"],1)
-        self.assertEqual(response_content['Contests'][1]["contestid"],self.contestId_group)
-        self.assertEqual(response_content['Contests'][1]["is_slider"],0)
-        self.assertEqual(response_content['Contests'][1]["is_hot"],0)
-
-    def test_super_indexinfo_notsuperadmin(self):
-        user_info={
-            "username": "super_admin", 
-            "password": "ccp"            
-        }
-        response = self.c.post('/api/user/login',json.dumps(user_info),content_type="application/json")   
-        comp_info = {
-            "slider":[self.contestId_personal], 
-            "hot":[self.contestId_personal]
-        }
-        response = self.c.post('/api/super/setindex',json.dumps(comp_info),content_type="application/json") 
-        user_info={
-            "username": "admin", 
-            "password": "ccp"            
-        }
-        response = self.c.post('/api/user/login',json.dumps(user_info),content_type="application/json")   
-        response = self.c.post('/api/super/indexinfo')
-        response_content = response.content.decode()
-        response_content = json.loads(response_content)
-        self.assertEqual(response_content['msg'],'Authority denied.')
-
-    def test_admin_getsubmitnum_successful(self):
-        user_info={
-            "username": "admin2", 
-            "password": "ccp"            
-        }
-        response = self.c.post('/api/user/login',json.dumps(user_info),content_type="application/json")   
-        with open("C:\\Users\\Administrator\\Desktop\\1.zip", 'rb') as f:
-            response=self.c.post('/api/contestant/submit',{"contestid":self.contestId_personal,'file': f})
-        user_info={
-            'username':"admin",
-            "password":"ccp"
-        }
-        response = self.c.post('/api/user/login',json.dumps(user_info),content_type="application/json")   
-        comp_info={
-            "contestid":self.contestId_personal            
-        }
-        response = self.c.post('/api/admin/getsubmitnum',json.dumps(submit_info),content_type="application/json")
-        response_content = response.content.decode()
-        response_content = json.loads(response_content)
-        self.assertEqual(response_content['msg'],'')
-        self.assertEqual(response_content['submitnum'],1)
-        self.assertEqual(response_content['allnum'],1)
-
-    def test_admin_getsubmitnum_onePlayerRepeatSubmit(self):
-        user_info={
-            "username": "admin2", 
-            "password": "ccp"            
-        }
-        response = self.c.post('/api/user/login',json.dumps(user_info),content_type="application/json")   
-        with open("C:\\Users\\Administrator\\Desktop\\1.zip", 'rb') as f:
-            response=self.c.post('/api/contestant/submit',{"contestid":self.contestId_personal,'file': f})
-        submit_info={
-            "contestid":self.contestId_personal,
-            "file": "C:\\Users\\Administrator\\Desktop\\1.jpg" 
-        }
-        response = self.c.post('/api/contestant/submit',json.dumps(submit_info),content_type="application/json")
-        user_info={
-            'username':"admin",
-            "password":"ccp"
-        }
-        response = self.c.post('/api/user/login',json.dumps(user_info),content_type="application/json")   
-        comp_info={
-            "contestid":self.contestId_personal            
-        }
-        response = self.c.post('/api/admin/getsubmitnum',json.dumps(submit_info),content_type="application/json")
-        response_content = response.content.decode()
-        response_content = json.loads(response_content)
-        self.assertEqual(response_content['msg'],'')
-        self.assertEqual(response_content['submitnum'],1)
-        self.assertEqual(response_content['allnum'],1) 
-
-    def test_admin_getsubmitnum_twoplayerOnesubmit(self):
-        user_info={
-            "username": "admin2", 
-            "password": "ccp"            
-        }
-        response = self.c.post('/api/user/login',json.dumps(user_info),content_type="application/json")   
-        with open("C:\\Users\\Administrator\\Desktop\\1.zip", 'rb') as f:
-            response=self.c.post('/api/contestant/submit',{"contestid":self.contestId_personal,'file': f})
-        #个人报名
-        user_info={
-            "username": "admin3", 
-            "password": "ccp"            
-        }
-        response = self.c.post('/api/user/login',json.dumps(user_info),content_type="application/json")
-        comp_info = {
-            "contestid": self.contestId_personal,
-            "phone_number":18001136323,
-            "university" : "清华大学",
-            "groupuser" : [],
-            "custom_field" : ["1"],
-            "custom_value" : ['1'],
-            }            
-        response = self.c.post('/api/competition/enroll',json.dumps(comp_info),content_type="application/json")
-        user_info={
-            'username':"admin",
-            "password":"ccp"
-        }
-        response = self.c.post('/api/user/login',json.dumps(user_info),content_type="application/json")   
-        comp_info={
-            "contestid":self.contestId_personal            
-        }
-        response = self.c.post('/api/admin/getsubmitnum',json.dumps(submit_info),content_type="application/json")
-        response_content = response.content.decode()
-        response_content = json.loads(response_content)
-        self.assertEqual(response_content['msg'],'')
-        self.assertEqual(response_content['submitnum'],1)
-        self.assertEqual(response_content['allnum'],2)
-
-    def test_admin_getsubmitnum_twoplayerTwosubmit(self):
-        user_info={
-            "username": "admin2", 
-            "password": "ccp"            
-        }
-        response = self.c.post('/api/user/login',json.dumps(user_info),content_type="application/json")   
-        with open("C:\\Users\\Administrator\\Desktop\\1.zip", 'rb') as f:
-            response=self.c.post('/api/contestant/submit',{"contestid":self.contestId_personal,'file': f})
-        #个人报名
-        user_info={
-            "username": "admin3", 
-            "password": "ccp"            
-        }
-        response = self.c.post('/api/user/login',json.dumps(user_info),content_type="application/json")
-        comp_info = {
-            "contestid": self.contestId_personal,
-            "phone_number":18001136323,
-            "university" : "清华大学",
-            "groupuser" : [],
-            "custom_field" : ["1"],
-            "custom_value" : ['1'],
-            }            
-        response = self.c.post('/api/competition/enroll',json.dumps(comp_info),content_type="application/json")
-        with open("C:\\Users\\Administrator\\Desktop\\1.zip", 'rb') as f:
-            response=self.c.post('/api/contestant/submit',{"contestid":self.contestId_personal,'file': f})
-        user_info={
-            'username':"admin",
-            "password":"ccp"
-        }
-        response = self.c.post('/api/user/login',json.dumps(user_info),content_type="application/json")   
-        comp_info={
-            "contestid":self.contestId_personal            
-        }
-        response = self.c.post('/api/admin/getsubmitnum',json.dumps(submit_info),content_type="application/json")
-        response_content = response.content.decode()
-        response_content = json.loads(response_content)
-        self.assertEqual(response_content['msg'],'')
-        self.assertEqual(response_content['submitnum'],2)
-        self.assertEqual(response_content['allnum'],2)
-
-    def test_admin_getsubmitnum_notadmin(self):
-        user_info={
-            "username": "admin2", 
-            "password": "ccp"            
-        }
-        response = self.c.post('/api/user/login',json.dumps(user_info),content_type="application/json")   
-        with open("C:\\Users\\Administrator\\Desktop\\1.zip", 'rb') as f:
-            response=self.c.post('/api/contestant/submit',{"contestid":self.contestId_personal,'file': f})
-        comp_info={
-            "contestid":self.contestId_personal            
-        }
-        response = self.c.post('/api/admin/getsubmitnum',json.dumps(submit_info),content_type="application/json")
-        response_content = response.content.decode()
-        response_content = json.loads(response_content)
-        self.assertEqual(response_content['msg'],'当前用户不是本比赛管理员')
-
-    def test_admin_getsubmitnum_compNotexist(self):
-        user_info={
-            "username": "admin2", 
-            "password": "ccp"            
-        }
-        response = self.c.post('/api/user/login',json.dumps(user_info),content_type="application/json")   
-        with open("C:\\Users\\Administrator\\Desktop\\1.zip", 'rb') as f:
-            response=self.c.post('/api/contestant/submit',{"contestid":self.contestId_personal,'file': f})
-        user_info={
-            'username':"admin",
-            "password":"ccp"
-        }
-        response = self.c.post('/api/user/login',json.dumps(user_info),content_type="application/json")   
-        comp_info={
-            "contestid":self.contestId_group+1            
-        }
-        response = self.c.post('/api/admin/getsubmitnum',json.dumps(submit_info),content_type="application/json")
-        response_content = response.content.decode()
-        response_content = json.loads(response_content)
-        self.assertEqual(response_content['msg'],'比赛不存在')
-
-    def test_admin_setadvanced_successful(self):
-        user_info={
-            'username':"admin",
-            "password":"ccp"
-        }
-        response = self.c.post('/api/user/login',json.dumps(user_info),content_type="application/json")   
-        comp_info={
-            'contestid':self.contestId_personal,
-            "target":0,
-            "advanced":1
-        }
-        response = self.c.post('/api/admin/setadvanced',json.dumps(comp_info),content_type="application/json")
-        response_content = response.content.decode()
-        response_content = json.loads(response_content)
-        self.assertEqual(response_content['msg'],'')
-
-    def test_admin_setadvanced_notadmin(self):
-        comp_info={
-            'contestid':self.contestId_personal,
-            "target":0,
-            "advanced":1
-        }
-        response = self.c.post('/api/admin/setadvanced',json.dumps(comp_info),content_type="application/json")
-        response_content = response.content.decode()
-        response_content = json.loads(response_content)
-        self.assertEqual(response_content['msg'],'非管理员不能设置晋级选手名单')
-
-    def test_admin_setadvanced_compNotexist(self):
-        user_info={
-            'username':"admin",
-            "password":"ccp"
-        }
-        response = self.c.post('/api/user/login',json.dumps(user_info),content_type="application/json")   
-        comp_info={
-            'contestid':self.contestId_group+1,
-            "target":0,
-            "advanced":1
-        }
-        response = self.c.post('/api/admin/setadvanced',json.dumps(comp_info),content_type="application/json")
-        response_content = response.content.decode()
-        response_content = json.loads(response_content)
-        self.assertEqual(response_content['msg'],'比赛不存在')
-
-    def test_admin_setadvanced_useroverflow(self):
-        user_info={
-            'username':"admin",
-            "password":"ccp"
-        }
-        response = self.c.post('/api/user/login',json.dumps(user_info),content_type="application/json")   
-        comp_info={
-            'contestid':self.contestId_personal,
-            "target":0,
-            "advanced":2
-        }
-        response = self.c.post('/api/admin/setadvanced',json.dumps(comp_info),content_type="application/json")
-        response_content = response.content.decode()
-        response_content = json.loads(response_content)
-        self.assertEqual(response_content['msg'],'')
-
-    def test_admin_advanced_successful_noset(self):
-        user_info={
-            'username':"admin",
-            "password":"ccp"
-        }
-        response = self.c.post('/api/user/login',json.dumps(user_info),content_type="application/json")   
-        comp_info={
-            "contestid":self.contestId_personal,
-            "target": -1            
-        }
-        response = self.c.post('/api/admin/advanced',json.dumps(comp_info),content_type="application/json")
-        response_content = response.content.decode()
-        response_content = json.loads(response_content)
-        self.assertEqual(response_content['msg'],'')
-        self.assertEqual(len(response_content['participants']),1)
-        self.assertEqual(response_content['participants'][0]['username'],'admin2')
-        self.assertEqual(response_content['participants'][0]['advanced'],0)
-
-    def test_admin_advanced_Two(self):
-        user_info={
-            "username": "admin3", 
-            "password": "ccp"            
-        }
-        response = self.c.post('/api/user/login',json.dumps(user_info),content_type="application/json")
-        comp_info = {
-            "contestid": self.contestId_personal,
-            "phone_number": 18001136323,
-            "university" : "清华大学",
-            "groupuser" : [],
-            "custom_field" : ["1"],
-            "custom_value" : ['1'],
-            }            
-        response = self.c.post('/api/competition/enroll',json.dumps(comp_info),content_type="application/json")
-        user_info={
-            'username':"admin",
-            "password":"ccp"
-        }
-        response = self.c.post('/api/user/login',json.dumps(user_info),content_type="application/json")   
-        comp_info={
-            'contestid':self.contestId_personal,
-            "target":0,
-            "advanced":2
-        }
-        response = self.c.post('/api/admin/setadvanced',json.dumps(comp_info),content_type="application/json")
-        comp_info={
-            "contestid":self.contestId_personal,
-            "target": -1            
-        }
-        response = self.c.post('/api/admin/advanced',json.dumps(comp_info),content_type="application/json")
-        response_content = response.content.decode()
-        response_content = json.loads(response_content)
-        self.assertEqual(response_content['msg'],'')
-        self.assertEqual(len(response_content['participants']),2)
-        self.assertEqual(response_content['participants'][0]['username'],'admin2')
-        self.assertEqual(response_content['participants'][0]['advanced'],0)
-        self.assertEqual(response_content['participants'][1]['username'],'admin3')
-        self.assertEqual(response_content['participants'][1]['advanced'],1)
-
-    def test_admin_advanced_notadmin(self):
-        comp_info={
-            "contestid":self.contestId_personal,
-            "target": -1            
-        }
-        response = self.c.post('/api/admin/advanced',json.dumps(comp_info),content_type="application/json")
-        response_content = response.content.decode()
-        response_content = json.loads(response_content)
-        self.assertEqual(response_content['msg'],'非管理员不能获取选手名单')
-
-    def test_admin_advanced_compNotexist(self):
-        comp_info={
-            "contestid":self.contestId_group+1          
-        }
-        response = self.c.post('/api/admin/advanced',json.dumps(comp_info),content_type="application/json")
-        response_content = response.content.decode()
-        response_content = json.loads(response_content)
-        self.assertEqual(response_content['msg'],'比赛不存在')
