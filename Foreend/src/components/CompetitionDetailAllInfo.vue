@@ -62,7 +62,7 @@
     import axios from 'axios'
     axios.defaults.xsrfHeaderName = "X-CSRFToken";
     axios.defaults.headers.common = {
-        'X-CSRFToken':document.querySelector('#csrf-token input').value,
+      'X-CSRFToken':document.querySelector('#csrf-token input').value,
         'X-Requested-With': 'XMLHttpRequest'
     };
     export default {
@@ -104,30 +104,6 @@
             },
             clicksign:function () {
                 location.href="/enroll?contestid="+this.contestid;
-            },
-            assignproject:function () {
-                let self = this;
-                axios.post('/api/admin/alloc',{
-                    contestid:self.contestid
-                }).then(function (response) {
-                    if(response.data.msg!==''){
-                        self.$message({
-                            message:response.data.msg,
-                            type:'error'
-                        })
-                    }
-                    else {
-                        self.$message({
-                            message:'评委分配成功！',
-                            type:'success'
-                        })
-                    }
-                }).catch(function (error) {
-                    self.$message({
-                        message:'评委分配失败！',
-                        type:'error'
-                    })
-                })
             },
             gethovertitle:function () {
                 let status = this.getActivestage();

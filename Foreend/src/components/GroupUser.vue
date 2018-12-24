@@ -31,7 +31,7 @@
 
     axios.defaults.xsrfHeaderName = "X-CSRFToken";
     axios.defaults.headers.common = {
-        'X-CSRFToken':document.querySelector('#csrf-token input').value,
+      'X-CSRFToken':document.querySelector('#csrf-token input').value,
         'X-Requested-With': 'XMLHttpRequest'
     };
 
