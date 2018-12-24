@@ -9,10 +9,10 @@
                         </el-col>
                         <el-col :span="20">
                             <el-row :gutter="24">
-                                <el-col :span="4" class="title">
+                                <el-col :span="6" class="title">
                                     <b>{{ info.basicinfo.name }}</b>
                                 </el-col>
-                                <el-col :span="6" :offset="14">
+                                <el-col :span="6" :offset="12">
                                     <p style="font-size: 12px">已报名<span style="color: #3a8ee6">{{ enrollnum }}</span>人</p>
                                 </el-col>
                             </el-row>
@@ -62,7 +62,7 @@
     //import axios from 'axios'
     axios.defaults.xsrfHeaderName = "X-CSRFToken";
     axios.defaults.headers.common = {
-        'X-CSRFToken':document.querySelector('#csrf-token input').value,
+      'X-CSRFToken':document.querySelector('#csrf-token input').value,
         'X-Requested-With': 'XMLHttpRequest'
     };
     export default {
@@ -104,30 +104,6 @@
             },
             clicksign:function () {
                 location.href="/enroll?contestid="+this.contestid;
-            },
-            assignproject:function () {
-                let self = this;
-                axios.post('/api/admin/alloc',{
-                    contestid:self.contestid
-                }).then(function (response) {
-                    if(response.data.msg!==''){
-                        self.$message({
-                            message:response.data.msg,
-                            type:'error'
-                        })
-                    }
-                    else {
-                        self.$message({
-                            message:'评委分配成功！',
-                            type:'success'
-                        })
-                    }
-                }).catch(function (error) {
-                    self.$message({
-                        message:'评委分配失败！',
-                        type:'error'
-                    })
-                })
             },
             gethovertitle:function () {
                 let status = this.getActivestage();
@@ -195,5 +171,11 @@
     .brief{
         border-left: 2px #4da9fe solid;
         background-color: #f9fafa;
+    }
+    img {
+        width: auto;
+        height: auto;
+        max-width: 100%;
+        max-height: 100%;
     }
 </style>

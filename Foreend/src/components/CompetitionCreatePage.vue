@@ -9,7 +9,7 @@
             <p></p>
         <el-row :gutter=20 class="commit_style">
             <el-col :span=12 :offset=6>
-                <el-button type="primary" @click="summitForm">提交</el-button>
+                <el-button type="primary" @click="summitForm" class="submitbtn">提交</el-button>
             </el-col>
         </el-row>
     </div>
@@ -21,7 +21,7 @@
 
     axios.defaults.xsrfHeaderName = "X-CSRFToken";
     axios.defaults.headers.common = {
-        'X-CSRFToken':document.querySelector('#csrf-token input').value,
+      'X-CSRFToken':document.querySelector('#csrf-token input').value,
         'X-Requested-With': 'XMLHttpRequest'
     };
     
@@ -78,10 +78,9 @@
         },
         methods:{
             summitForm:function () {
-                var self = this;
+                let self = this;
                 let res=[];
-                var flag=true;
-                console.log(self.allinfo)
+                let flag=true;
                 res.push(this.$refs.basic.validate());
                 res.push(this.$refs.signup.validate());
                 res.push(this.$refs.stage.validate());

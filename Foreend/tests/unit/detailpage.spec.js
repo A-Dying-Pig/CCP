@@ -180,10 +180,7 @@ describe('detail页面App.vue的根据type，指定正确的showlist.选手', ()
                 },{
                     value:'discussion',
                     label:'讨论区'
-                },{
-                    value:'submitwork',
-                    label:'提交作品'
-                },];
+                }];
                 request.respondWith({
                     status: 200,
                     response: resdata
@@ -250,12 +247,6 @@ describe('detail页面App.vue的根据type，指定正确的showlist.选手', ()
                 },{
                     value:'discussion',
                     label:'讨论区'
-                },{
-                    value:'gradework',
-                    label:'评委评分'
-                },{
-                    value:'judgefinish',
-                    label:'查看过往评分'
                 }];
                 request.respondWith({
                     status: 200,
@@ -331,9 +322,6 @@ describe('detail页面App.vue的根据type，指定正确的showlist.选手', ()
                 },{
                     value: 'judgelist',
                     label: '评委信息'
-                },{
-                    value: 'advancedparticipants',
-                    label: '设置晋级选手名单'
                 }];
                 request.respondWith({
                     status: 200,
