@@ -2,6 +2,8 @@
 from .models import *
 import time
 import os
+import traceback
+import json
 
 MAX_HOSTS = 4  # 最大主办方人数
 MAX_PHASE = 5
@@ -9,15 +11,42 @@ MAX_EXTRA = 4
 MAX_MEMBER = 5
 MAX_CONTEST_ONE_PAGE = 10
 MAX_PARTICIPANT_ONE_PAGE = 10
+MAX_POST_ONE_PAGE = 8
+MAX_REPLY_ONE_PAGE = 8
+
+
+RESOURCE_BASE_DIR = 'D:\\我\\tsinghua\\大三上\\软件工程（3）\\软工\\CCP'
+
+with open('zone.json', 'r', encoding='utf8') as f:
+    zone = json.load(f)
+zone_id = {}
+cid = 0
+for province in zone['province']:
+    zone_id[province] = cid
+    cid = cid + 1
+cid = 0
+for region in zone['region']:
+    zone_id[region] = cid
+    cid = cid + 1
+zone_id[''] = -1
+zone_id[None] = -1
 
 class ContestUtil:
     NON_REGION = 0
-    BIG_REGION = 1
-    PROVINCE_REGION = 2
+    BIG_REGION = 2
+    PROVINCE_REGION = 1
+    @classmethod
+    def phaseNum(cls, contest_id):
+        contest = Contest.objects.get(id=contest_id)
+        for i in range(0, MAX_PHASE):
+            if getattr(contest, 'phase_name'+str(i+1)) is None:
+                return i
+        return MAX_PHASE
+
     @classmethod
     def getStage(cls, contest):
         result = []
-        for i in range(0,5):
+        for i in range(0, 5):
             if getattr(contest, 'phase_name'+str(i+1)) is not None:
                 tmp_dict = {}
                 tmp_dict['name'] = getattr(contest, 'phase_name'+str(i+1))
@@ -26,7 +55,8 @@ class ContestUtil:
                 tmp_dict['stageTimeBegin'] = (time.mktime(getattr(contest, 'phase_start_time' + str(i+1)).timetuple()) + 8 * 60 * 60) * 1000
                 tmp_dict['handTimeEnd'] = (time.mktime(getattr(contest, 'phase_hand_end_time'+str(i+1)).timetuple()) + 8 * 60 * 60) * 1000
                 tmp_dict['evaluationTimeEnd'] = (time.mktime(getattr(contest, 'phase_evaluate_end_time' + str(i+1)).timetuple()) + 8 * 60 * 60) * 1000
-                tmp_dict['mode'] = getattr(contest, 'phase_mode'+str(i+1))
+                # tmp_dict['mode'] = getattr(contest, 'phase_mode' + str(i+1))
+                tmp_dict['zone'] = getattr(contest, 'phase_region_mode' + str(i+1))
                 result.append(tmp_dict)
             else:
                 break
@@ -96,6 +126,19 @@ class ContestUtil:
         return result
 
     @classmethod
+    def getGroupTitle(cls, contest):
+        result = []
+        if contest.extra_group_title1 is not None:
+            result.append(contest.extra_group_title1)
+            if contest.extra_group_title2 is not None:
+                result.append(contest.extra_group_title2)
+                if contest.extra_group_title3 is not None:
+                    result.append(contest.extra_group_title3)
+                    if contest.extra_group_title4 is not None:
+                        result.append(contest.extra_group_title4)
+        return result
+
+    @classmethod
     def setTitle(cls, contest, index, title):
         pass
 
@@ -109,7 +152,7 @@ class ContestUtil:
                 if contest.extra_group_title3 is not None:
                     result.append(contest.extra_group_title3)
                     if contest.extra_group_title4 is not None:
-                        result.append(contest.extra_gourp_title4)
+                        result.append(contest.extra_group_title4)
         return result
 
     @classmethod
@@ -118,7 +161,6 @@ class ContestUtil:
 
     @classmethod
     def getCurrentPhase(cls, contestid):
-        # todo
         # return current phase and status
         # phase 0 is the enroll stage
         # phase 1 is the first stage, 0 is submission, 1 is judging
@@ -160,14 +202,18 @@ class ContestUtil:
         try:
             cur_phase = cls.getCurrentPhase(contestid)
             contest = Contest.objects.get(id=contestid)
-            mode = getattr(contest, 'phase_mode'+str(cur_phase['phase']))
+            phase = cur_phase['phase']
+            if phase == 0:
+                phase = 1
+            mode = getattr(contest, 'phase_region_mode'+str(phase))
             if mode is None:
                 return -1
             else:
                 return mode
         except Exception as e:
-            print(e)
+            traceback.print_exc()
             return -1
+
 
 class ContestPlayerUtil:
     @classmethod
@@ -182,7 +228,7 @@ class ContestGroupUtil:
     @classmethod
     def getMember(cls, leader_id, contest_id):
         result = []
-        group = ContestGroup.objects.filter(leader_id=leader_id, contest_id=contest_id)
+        group = ContestGroup.objects.get(leader_id=leader_id, contest_id=contest_id)
         member = CCPUser.objects.get(id=leader_id)
         result.append({
             'userId': leader_id,
@@ -201,6 +247,11 @@ class ContestGroupUtil:
                 'email': member.email
             })
         return result
+
+    @classmethod
+    def addMember(cls, cg_obj, member):
+        # add a member to group(member is id)
+        pass
 
     @classmethod
     def setMember(cls, cg_obj, index, member):
@@ -230,13 +281,17 @@ class ContestGradeUtil:
                     break
                 total_grade = total_grade + obj.grade
                 phase_judges = phase_judges + 1
-            phase_grade = total_grade / phase_judges
-            result.append(phase_grade)
+            if phase_judges == 0:
+                result.append(0)
+            else:
+                phase_grade = total_grade / phase_judges
+                result.append(phase_grade)
             index = index + 1
         return result
 
 
 class GeneralUtil:
+    IMG_TYPE = ['.jpg', '.JPG', '.png', '.PNG', '.jpeg']
     @classmethod
     def getChildren(cls, basedir):  # api/judge/getone接口遍历得到文件夹结构的递归函数
         targets = os.listdir(basedir)
@@ -254,6 +309,48 @@ class GeneralUtil:
                 result.append({
                     'title': file_name,
                     'isLeaf': True,
-                    'data': {'src': full_path}
+                    'data': {'src': full_path[len(RESOURCE_BASE_DIR):]}
                 })
         return result
+
+    @classmethod
+    def del_dir(cls, path):
+        if os.path.isdir(path):
+            for file in os.listdir(path):
+                full_path = path + file
+                if os.path.isfile(full_path):
+                    os.remove(full_path)
+                elif os.path.isdir(full_path):
+                    cls.del_dir(full_path + '/')
+                    os.rmdir(full_path)
+
+    @classmethod
+    def find_first_img(cls, path, mode=''):
+        path = RESOURCE_BASE_DIR + path
+        for file in os.listdir(path):
+            full_path = path + file
+            if os.path.isfile(full_path):
+                if file[str(file).rfind('.'):] in cls.IMG_TYPE:  # 是支持的图片格式
+                    return full_path[len(RESOURCE_BASE_DIR):]
+        if mode == 'contest':
+            return cls.find_first_img('/resources/default/contest/')
+        elif mode == 'user':
+            return cls.find_first_img('/resources/default/user/')
+        raise Exception('mode Error:' + mode)
+
+    @classmethod
+    def get_zone_id(cls, contest_id, phase, leader_id):
+        contest = Contest.objects.get(id=contest_id)
+        if contest.grouped == 1:
+            # 组队赛
+            cg = ContestGroup.objects.get(contest_id=contest_id, leader_id=leader_id)
+            zone_name = getattr(cg, 'phase_region' + str(phase))
+        else:
+            # 个人赛
+            cp = ContestPlayer.objects.get(contest_id=contest_id, player_id=leader_id)
+            zone_name = getattr(cp, 'phase_region' + str(phase))
+        return cls.get_zone_id_by_name(zone_name)
+
+    @classmethod
+    def get_zone_id_by_name(cls, zone_name):
+        return zone_id[zone_name]

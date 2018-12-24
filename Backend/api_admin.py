@@ -1,9 +1,11 @@
 from .models import *
 from django.http import HttpResponse,JsonResponse
 from django.contrib.auth.decorators import login_required
+from django.db.models import Avg
 import json
 from .utils import *
 from datetime import datetime
+import random
 import pytz
 import django.utils.timezone as tz
 
@@ -31,10 +33,13 @@ def participants(request):
 
     result['mode'] = 1 - contest.grouped
     result['current_page_num'] = page_num
-    if result['mode'] == 1: # 个人赛
-        participants= ContestPlayer.objects.filter(contest_id=contest_id)
+    cur_phase = ContestUtil.getCurrentPhase(contest_id)['phase']
+    if cur_phase == 0:
+        cur_phase = 1
+    if result['mode'] == 1:  # 个人赛
+        participants= ContestGrade.objects.filter(contest_id=contest_id, phase=cur_phase)
         participant_number= participants.count()
-        if participant_number < 1: # 没数据
+        if participant_number < 1:  # 没数据
             result['total_page_num'] = 0
             result['array'] = []
             return JsonResponse(result)
@@ -45,15 +50,15 @@ def participants(request):
         index = MAX_PARTICIPANT_ONE_PAGE * (page_num - 1)
         while index < min(MAX_PARTICIPANT_ONE_PAGE * page_num, participant_number):
             single_team = {}
-            single_team['userId'] = participants[index].player_id
-            player = CCPUser.objects.get(id=participants[index].player_id)
+            single_team['userId'] = participants[index].leader_id
+            player = CCPUser.objects.get(id=participants[index].leader_id)
             single_team['username'] = player.username
             single_team['email'] = player.email
             single_team['points'] = ContestGradeUtil.getGrade(leader_id=single_team['userId'], contest_id=contest_id)
             result['array'].append(single_team)
             index = index + 1
     else:  # 组队赛
-        participants = ContestGroup.objects.filter(contest_id=contest_id)
+        participants = ContestGrade.objects.filter(contest_id=contest_id, phase=cur_phase)
         participant_number = participants.count()
         if participant_number < 1:  # 没数据
             result['total_page_num'] = 0
@@ -66,11 +71,11 @@ def participants(request):
         index = MAX_PARTICIPANT_ONE_PAGE * (page_num - 1)
         while index < min(MAX_PARTICIPANT_ONE_PAGE * page_num, participant_number):
             single_team = {}
-            single_team['captainId'] = participants[index].player_id
-            player = CCPUser.objects.get(id=participants[index].player_id)
+            single_team['captainId'] = participants[index].leader_id
+            player = CCPUser.objects.get(id=participants[index].leader_id)
             single_team['captainName'] = player.username
-            single_team['captainPoints'] = ContestGradeUtil.getGrade(leader_id=single_team['userId'], contest_id=contest_id)
-            single_team['group'] = ContestGroupUtil.getMember(leader_id=single_team['userId'], contest_id=contest_id)
+            single_team['captainPoints'] = ContestGradeUtil.getGrade(leader_id=participants[index].leader_id, contest_id=contest_id)
+            single_team['group'] = ContestGroupUtil.getMember(leader_id=participants[index].leader_id, contest_id=contest_id)
             result['array'].append(single_team)
             index = index + 1
     return JsonResponse(result)
@@ -123,6 +128,7 @@ def modify(request):
     sponsors = basicinfo['sponsors']
     comtype = basicinfo['comtype']
     details = basicinfo['details']
+    brief_introduction = basicinfo['briefintroduction']
 
     signupinfo = data['signupinfo']
     time = signupinfo['time']
@@ -173,10 +179,11 @@ def modify(request):
     while index < len(stageinfo):
         setattr(contest, 'phase_name' + str(index + 1), stageinfo[index]['name'])
         setattr(contest, 'phase_information' + str(index + 1), stageinfo[index]['details'])
-        setattr(contest, 'phase_mode' + str(index + 1), stageinfo[index]['mode'])
+        # setattr(contest, 'phase_mode' + str(index + 1), stageinfo[index]['mode'])
         setattr(contest, 'phase_start_time' + str(index + 1), datetime.strptime(stageinfo[index]['stageTimeBegin'], "%Y-%m-%dT%H:%M:%S.000Z").replace(tzinfo=pytz.utc))
         setattr(contest, 'phase_hand_end_time' + str(index + 1), datetime.strptime(stageinfo[index]['handTimeEnd'],"%Y-%m-%dT%H:%M:%S.000Z").replace(tzinfo=pytz.utc))
         setattr(contest, 'phase_evaluate_end_time' + str(index + 1), datetime.strptime(stageinfo[index]['evaluationTimeEnd'],"%Y-%m-%dT%H:%M:%S.000Z").replace(tzinfo=pytz.utc))
+        setattr(contest, 'phase_region_mode' + str(index + 1), stageinfo[index]['zone'])
         index = index + 1
     contest.save()
     return JsonResponse({'msg': ''})
@@ -195,6 +202,8 @@ def setjudge(request):
         zone = zone['province'][zone_id]
     elif regionmode == 2: #region
         zone = zone['region'][zone_id]
+    else:
+        zone = ''
 
     try:
         contest = Contest.objects.get(id=contest_id)
@@ -231,8 +240,7 @@ def setjudge(request):
 
 
 def upload(request):
-    data = json.loads(request.body.decode('utf-8'))
-    contest_id = int(data['contestid'])
+    contest_id = int(request.POST['contestid'])
     try:
         contest = Contest.objects.get(id=contest_id)
     except:
@@ -248,8 +256,10 @@ def upload(request):
     if File is None:
         return JsonResponse({'msg': 'File not found.'})
     else:
+        target_dir = '/resources/contests/' + str(contest_id) + '/contestFiles/'
+        GeneralUtil.del_dir(RESOURCE_BASE_DIR + target_dir)
         # 打开特定的文件进行二进制的写操作;
-        with open("/resources/contests/" + str(contest_id) + '/contestFile/' + File.name, 'wb+') as f:
+        with open(RESOURCE_BASE_DIR + target_dir + File.name, 'wb+') as f:
             # 分块写入文件;
             for chunk in File.chunks():
                 f.write(chunk)
@@ -269,16 +279,25 @@ def broadcast(request):
     notification.title = title
     notification.save()
     msg_id = Notification.objects.last().id
-    
-    # todo next turn
+
     if target_id == -1:
-        players = ContestPlayer.objects.filter(contest_id=contestid)
+        players = []
+        plist = ContestPlayer.objects.filter(contest_id=contestid)
+        for p in plist:
+            players.append(p.player_id)
+        plist = ContestGroup.objects.filter(contest_id=contestid)
+        for p in plist:
+            members = getMember(p.leader_id, contestid)
+            for m in members:
+                players.append(m['userId'])
     else:
         d = ContestUtil.getCurrentRegionMode(contestid)
+        if d == 0:
+            d = 1
         with open('zone.json', 'r', encoding='utf8') as f:
             zone = json.load(f)
         if d == 0: #all
-            pass
+            zone = ''
         elif d == 1: #province
             zone = zone['province'][target_id]
         elif d == 2: #region
@@ -286,8 +305,7 @@ def broadcast(request):
         modelcriteria = {'contest_id': contestid, 'phase_region'+str(d): zone}
         players = ContestPlayer.objects.filter(**modelcriteria)
 
-    for player in players:
-        pid = player.player_id
+    for pid in players:
         notificationuser = NotificationUser()
         notificationuser.notification_id = msg_id
         notificationuser.user_id = pid
@@ -343,11 +361,15 @@ def judgelist(request):
     for region in zone['region']:
         zone_id[region] = cid
         cid = cid + 1
+    zone_id[''] = -1
+    zone_id[None] = -1
     for judge in judges:
         dic = {}
         dic['username'] = CCPUser.objects.filter(id=judge.judge_id)[0].username
         print(dic['username'])
         print(phase)
+        if phase == 0:
+            phase = 1
         print(getattr(judge, 'phase_region'+str(phase)))
         dic['id'] = zone_id[getattr(judge, 'phase_region'+str(phase))]
         res['judges'].append(dic)
@@ -370,6 +392,7 @@ def judgeprogress(request):
         res['judges'].append(dic)
     return JsonResponse(res)
 
+
 def advanced(request):
     # todo privileges
     data = json.loads(request.body.decode('utf-8'))
@@ -377,17 +400,61 @@ def advanced(request):
     target = int(data['target'])
     res = {}
     res['msg'] = ''
-    participants = []
+    res['already'] = 0
+    res['participants'] = []
     phase = ContestUtil.getCurrentPhase(contestid)['phase']
-    result = ContestGrade.objects.filter(contest_id=contestid).values('leader_id').annotate(average_rating=Avg('grade'))
-    for row in result:
+    try:
+        res['already'] = Submitted.objects.get(contest_id=contestid, phase=phase+1, zone_id=target).advanced
+    except:
+        res['already'] = -1
+    cg = ContestGrade.objects.filter(contest_id=contestid).annotate(average_rating=Avg('grade')).order_by('-average_rating')
+    result = ContestGrade.objects.filter(contest_id=contestid).values('leader_id').annotate(average_rating=Avg('grade')).order_by('-average_rating')
+    #todo htx 提高效率 现在效率太低了
+    index = 0
+    len_res = len(result)
+    while index < len_res:
+        if target != -1 and GeneralUtil.get_zone_id(cg[index].contest_id, phase, cg[index].leader_id) != target:
+            continue
+        row = result[index]
         dic = {}
-        dic['username'] = CCPUser.objects.filter(id=row.leader_id)[0].username
-        dic['university'] = CCPUser.objects.filter(id=row.leader_id)[0].university
-        dic['grade'] = row.average_rating
-        # default is 0
-        dic['advanced'] = 0
+        user = CCPUser.objects.filter(id=row['leader_id'])[0]
+        dic['username'] = user.username
+        dic['university'] = user.university
+        dic['grade'] = row['average_rating']
+        try:
+            oldgrade = OldGrade.objects.get(leader_id=user.id, contest_id=contestid, phase=phase)
+            dic['oldgrade'] = oldgrade.oldgrade
+            dic['reason'] = oldgrade.reason
+        except:
+            dic['oldgrade'] = -1
+            dic['reason'] = ''
         res['participants'].append(dic)
+        index = index + 1
+    return JsonResponse(res)
+
+def setnewgrade(request):
+    data = json.loads(request.body.decode('utf-8'))
+    contestid = int(data['contestid'])
+    username = data['username']
+    userid = CCPUser.objects.filter(username=username)[0].id
+    grade = int(data['grade'])
+    reason = data['reason']
+    res = {}
+    res['msg'] = ''
+    phase = ContestUtil.getCurrentPhase(contestid)['phase']
+    grades = ContestGrade.objects.filter(contest_id=contestid, leader_id=userid, phase=phase)
+    l = len(grades)
+    sum = 0
+    for g in grades:
+        sum = sum + g.grade
+    avg = sum / l
+    oldgrade = OldGrade()
+    oldgrade.leader_id = userid
+    oldgrade.contest_id = contestid
+    oldgrade.phase = phase
+    oldgrade.oldgrade = avg
+    oldgrade.reason = reason
+    oldgrade.save()
     return JsonResponse(res)
 
 def setadvanced(request):
@@ -395,16 +462,140 @@ def setadvanced(request):
     data = json.loads(request.body.decode('utf-8'))
     contestid = int(data['contestid'])
     target = int(data['target'])
-    participants = data['participants']
+    advanced = int(data['advanced'])
     # need to be checked carefully
     phase = ContestUtil.getCurrentPhase(contestid)['phase']
-    for p in participants:
+    if Submitted.objects.filter(contest_id=contestid, phase=phase+1, zone_id=target).count() > 0:
+        return JsonResponse({'msg': '不能重复提交晋级名单'})
+    result = ContestGrade.objects.filter(contest_id=contestid).values('leader_id').annotate(average_rating=Avg('grade')).order_by('-average_rating')[:advanced]
+    for p in result:
         contestgrade = ContestGrade()
-        leader_id = CCPUser.objects.filter(username=p)[0].id
+        leader_id = p['leader_id']
         contestgrade.leader_id = leader_id
         contestgrade.contest_id = contestid
-        contestgrade.phase = phase
+        contestgrade.phase = phase + 1
         contestgrade.save()
+    submit = Submitted()
+    submit.contest_id = contestid
+    submit.phase = phase + 1
+    submit.zone_id = target
+    submit.advanced = advanced
+    submit.save()
     res = {}
     res['msg'] = ''
-    return res
+    return JsonResponse(res)
+
+def getSubmitNum(request):
+    try:
+        if not request.user.is_authenticated:
+            return JsonResponse({'msg': '请先登录'})
+        data = json.loads(request.body.decode('utf-8'))
+        contest_id = data['contestid']
+        result = {'msg': ''}
+        try:
+            contest = Contest.objects.get(id=contest_id)
+        except:
+            return JsonResponse({'msg': '比赛不存在'})
+        if contest.admin_id != request.user.id:
+            return JsonResponse({'msg': '当前用户不是本比赛管理员'})
+        phase = ContestUtil.getCurrentPhase(contest_id)['phase']
+        result['submitnum'] = ContestGrade.objects.filter(contest_id=contest_id, phase=phase, work_name__isnull=False).count()
+        result['allnum'] = ContestGrade.objects.filter(contest_id=contest_id, phase=phase).count()
+        return JsonResponse(result)
+    except:
+        traceback.print_exc()
+        return JsonResponse({'msg': '未知错误'})
+
+def allot_work(contest_id, phase, timesperpiece):
+    contest = Contest.objects.get(id=contest_id)
+    mode = getattr(contest, 'phase_region_mode' + str(phase))
+    if mode == ContestUtil.NON_REGION:
+        array = ContestGrade.objects.filter(contest_id=contest_id, phase=phase)
+        leader = []
+        for row in array:
+            leader.append({'id': row.leader_id, 'work': row.work_name})
+        random.shuffle(leader)
+        ContestGrade.objects.filter(contest_id=contest_id, phase=phase).delete()
+        judge_id = []
+        array = ContestJudge.objects.filter(contest_id=contest_id)
+        for row in array:
+            judge_id.append(row.judge_id)
+        
+        num = len(judge_id)
+        i = 0
+        for j in range(len(leader)):
+            for k in range(timesperpiece):
+                contestgrade = ContestGrade()
+                contestgrade.leader_id = leader[j]['id']
+                contestgrade.work_name = leader[j]['work']
+                contestgrade.contest_id = contest_id
+                contestgrade.phase = phase
+                contestgrade.judge_id = judge_id[i]
+                i = (i + 1) % num
+                contestgrade.save()
+    else:
+        with open('zone.json', 'r', encoding='utf8') as f:
+            d = json.load(f)
+        if mode == ContestUtil.BIG_REGION:
+            zonelist = d['region']
+        else:
+            zonelist = d['province']
+        array = ContestGrade.objects.filter(contest_id=contest_id, phase=phase)
+        leader = []
+        for row in array:
+            leader.append({'id': row.leader_id, 'work': row.work_name})
+        random.shuffle(leader)
+        ContestGrade.objects.filter(contest_id=contest_id, phase=phase).delete()
+        judge_id = []
+        array = ContestJudge.objects.filter(contest_id=contest_id)
+        for row in array:
+            judge_id.append(row.judge_id)
+        
+        for zone in zonelist:
+            playeridzone = []
+            for l in leader:
+                try:
+                    contestplayer = ContestPlayer.objects.get(player_id=l['id'], contest_id=contest_id)
+                    region = getattr(contestplayer, 'phase_region' + str(phase))
+                    if zone == region:
+                        playeridzone.append(l)
+                except:
+                    contestgroup = ContestGroup.objects.get(leader_id=l['id'], contest_id=contest_id)
+                    region = getattr(contestgroup, 'phase_region' + str(phase))
+                    if zone == region:
+                        playeridzone.append(l)
+            judgeidzone = []
+            for i in judge_id:
+                contestjudge = ContestJudge.objects.get(judge_id=i, contest_id=contest_id)
+                region = getattr(contestjudge, 'phase_region' + str(phase))
+                if zone == region:
+                    judgeidzone.append(i)
+
+            num = len(judgeidzone)
+            i = 0
+            for j in range(len(playeridzone)):
+                for k in range(timesperpiece):
+                    contestgrade = ContestGrade()
+                    contestgrade.leader_id = playeridzone[j]['id']
+                    contestgrade.work_name = playeridzone[j]['work']
+                    contestgrade.contest_id = contest_id
+                    contestgrade.phase = phase
+                    contestgrade.judge_id = judgeidzone[i]
+                    i = (i + 1) % num
+                    contestgrade.save()
+
+def allot(request):
+    
+    data = json.loads(request.body.decode('utf-8'))
+    contest_id = data['contestid']
+    judgenum = data['judgenum']
+    phase = ContestUtil.getCurrentPhase(contest_id)['phase']
+    contest = Contest.objects.filter(id=contest_id)[0]
+    if getattr(contest, 'phase_judge_start' + str(phase)):
+        return JsonResponse({'msg': 'already allotted.'})
+    allot_work(contest_id, phase, judgenum)
+    setattr(contest, 'phase_judge_start' + str(phase), True)
+    contest.save()
+    return JsonResponse({'msg': ''})
+
+

@@ -13,15 +13,15 @@ class CCPUser(AbstractUser):
 
 # 比赛信息总表
 class Contest(models.Model):
-    title = models.CharField(max_length=32)  # 比赛名称
-    category = models.CharField(max_length=32)  # 比赛类别
-    grouped = models.BooleanField(default=False)  # 是否需要组队参赛
+    title = models.CharField(max_length=32, unique=True)  # 比赛名称
+    category = models.CharField(max_length=32, db_index=True)  # 比赛类别
+    grouped = models.BooleanField(default=False, db_index=True)  # 是否需要组队参赛
     group_min_number = models.IntegerField(blank=True, null=True)  # 组队最小人数
     group_max_number = models.IntegerField(blank=True, null=True)  # 组队最大人数
     # start_time = models.DateTimeField()  # 比赛开始时间
     # end_time = models.DateTimeField()  # 比赛结束时间
-    enroll_start = models.DateTimeField()  # 报名开始时间
-    enroll_end = models.DateTimeField()  # 报名结束时间
+    enroll_start = models.DateTimeField(db_index=True)  # 报名开始时间
+    enroll_end = models.DateTimeField(db_index=True)  # 报名结束时间
     information = models.TextField()  # 比赛详情
     brief_introduction = models.CharField(max_length=128)  # 比赛简介
     # phase = models.CharField(max_length=512, blank=True)  # 比赛阶段
@@ -51,17 +51,22 @@ class Contest(models.Model):
     phase_information3 = models.CharField(max_length=128, blank=True, null=True)
     phase_information4 = models.CharField(max_length=128, blank=True, null=True)
     phase_information5 = models.CharField(max_length=128, blank=True, null=True)
-    phase_mode1 = models.CharField(max_length=16, blank=True, null=True)  # 各阶段评测方式
-    phase_mode2 = models.CharField(max_length=16, blank=True, null=True)
-    phase_mode3 = models.CharField(max_length=16, blank=True, null=True)
-    phase_mode4 = models.CharField(max_length=16, blank=True, null=True)
-    phase_mode5 = models.CharField(max_length=16, blank=True, null=True)
+    # phase_mode1 = models.CharField(max_length=16, blank=True, null=True)  # 各阶段评测方式
+    # phase_mode2 = models.CharField(max_length=16, blank=True, null=True)
+    # phase_mode3 = models.CharField(max_length=16, blank=True, null=True)
+    # phase_mode4 = models.CharField(max_length=16, blank=True, null=True)
+    # phase_mode5 = models.CharField(max_length=16, blank=True, null=True)
     phase_region_mode1 = models.IntegerField(default=0)  # 各阶段划分赛区的方式
     phase_region_mode2 = models.IntegerField(default=0)
     phase_region_mode3 = models.IntegerField(default=0)
     phase_region_mode4 = models.IntegerField(default=0)
     phase_region_mode5 = models.IntegerField(default=0)
-    admin_id = models.IntegerField()  # 比赛管理员User表里的id
+    phase_judge_start1 = models.BooleanField(default=False)  # 是否开始评测
+    phase_judge_start2 = models.BooleanField(default=False)
+    phase_judge_start3 = models.BooleanField(default=False)
+    phase_judge_start4 = models.BooleanField(default=False)
+    phase_judge_start5 = models.BooleanField(default=False)
+    admin_id = models.IntegerField(db_index=True)  # 比赛管理员User表里的id
     host1 = models.CharField(max_length=32)  # 主办方
     host2 = models.CharField(max_length=32, blank=True, null=True)
     host3 = models.CharField(max_length=32, blank=True, null=True)
@@ -84,6 +89,7 @@ class Contest(models.Model):
 class ContestPlayer(models.Model):
     player_id = models.IntegerField(db_index=True)  # 选手id
     contest_id = models.IntegerField(db_index=True)  # 比赛id
+    phone_number = models.CharField(max_length=16, null=True)  # 联系电话
     phase_region1 = models.CharField(max_length=32, blank=True, null=True)  # 选手在每个阶段的赛区
     phase_region2 = models.CharField(max_length=32, blank=True, null=True)
     phase_region3 = models.CharField(max_length=32, blank=True, null=True)
@@ -107,6 +113,12 @@ class ContestGroup(models.Model):
     member4_id = models.IntegerField(db_index=True, null=True)
     contest_id = models.IntegerField(db_index=True)  # 比赛id
     group_name = models.CharField(max_length=32)  # 组名
+    phone_number = models.CharField(max_length=16, null=True)  # 联系电话
+    phase_region1 = models.CharField(max_length=32, blank=True, null=True)  # 选手在每个阶段的赛区
+    phase_region2 = models.CharField(max_length=32, blank=True, null=True)
+    phase_region3 = models.CharField(max_length=32, blank=True, null=True)
+    phase_region4 = models.CharField(max_length=32, blank=True, null=True)
+    phase_region5 = models.CharField(max_length=32, blank=True, null=True)
     extra_information1 = models.CharField(max_length=64, blank=True, null=True)  # 每个比赛特需的组队数据
     extra_information2 = models.CharField(max_length=64, blank=True, null=True)
     extra_information3 = models.CharField(max_length=64, blank=True, null=True)
@@ -136,8 +148,18 @@ class ContestGrade(models.Model):
     phase = models.IntegerField(blank=True, null=True)  # 比赛阶段
     judge_id = models.IntegerField(default=-1, db_index=True)  # 评委id
     grade = models.IntegerField(default=-1)  # 选手(小组)由当前评委打出的该阶段比赛的成绩
+    work_name = models.CharField(max_length=32, null=True, db_index=True)  # 作品名
     class Meta:
         db_table = "ContestGrade"
+
+class OldGrade(models.Model):
+    leader_id = models.IntegerField(db_index=True)
+    contest_id = models.IntegerField(db_index=True)
+    phase = models.IntegerField(blank=True, null=True)
+    oldgrade = models.IntegerField(default=-1)
+    reason = models.CharField(max_length=512, blank=True, null=True)
+    class Meta:
+        db_table = "OldGrade"
 
 # 消息列表
 class Notification(models.Model):
@@ -172,13 +194,14 @@ class HotContest(models.Model):
 
 # 讨论区主题帖
 class Post(models.Model):
+    contest_id = models.IntegerField(db_index=True)  # 比赛id
     title = models.CharField(max_length=128)  # 标题
-    author_id = models.IntegerField(db_index=True)
+    author_id = models.IntegerField(db_index=True)  # 发帖人id
     author = models.CharField(max_length=128)  # 发帖人用户名
     content = models.CharField(max_length=1024)  # 发帖内容
     time = models.DateTimeField()  # 发帖时间
     replies = models.IntegerField(default=0)  # 回帖数量
-    last_reply_time = models.DateTimeField()  # 最后回复时间
+    last_reply_time = models.DateTimeField(null=True)  # 最后回复时间
     views = models.IntegerField(default=0)  # 浏览量
     class Meta:
         db_table = "Post"
@@ -187,7 +210,17 @@ class Post(models.Model):
 class Reply(models.Model):
     post_id = models.IntegerField(db_index=True)  # 主题帖id
     author_id = models.IntegerField(db_index=True)  # 回帖人id
+    author = models.CharField(max_length=128)  # 回帖人用户名
     content = models.CharField(max_length=1024)  # 回帖内容
     time = models.DateTimeField()  # 回帖时间
     class Meta:
         db_table = "Reply"
+
+# 晋级名单是否已提交
+class Submitted(models.Model):
+    contest_id = models.IntegerField(db_index=True)
+    phase = models.IntegerField(db_index=True)
+    zone_id = models.IntegerField(db_index=True)
+    advanced = models.IntegerField(db_index=True)
+    class Meta:
+        db_table = "Submitted"

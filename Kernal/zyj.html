@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/vue/1.0.12/vue.js"></script>
+<script src="./CPP_vue_component.js"></script>
+<link rel="stylesheet" href="https://cdn.staticfile.org/twitter-bootstrap/3.3.7/css/bootstrap.min.css">  
+<script src="https://cdn.staticfile.org/jquery/2.1.1/jquery.min.js"></script>
+<script src="https://cdn.staticfile.org/twitter-bootstrap/3.3.7/js/bootstrap.min.js"></script>
+
+
+</head>
+<body>
+
+<div class="container" id="competition">
+<table class="table table-striped">
+    <thead>
+    <tr>
+        <th>序号</th>
+        <th>比赛名称</th>
+        <th>举办方</th>
+        <th>比赛简介</th>
+        <th>详情</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr v-for="comp in competitions">
+        <td>{{comp.number}}</td>
+        <td>{{comp.name}}</td>
+        <td>{{comp.organizer}}</td>
+        <td>{{comp.information}}</td>
+        <td>{{comp.detail}}</td>
+    </tr>
+    </tbody>
+</table>
+</div>
+
+<script>
+	new Vue({
+	  el: '#competition',
+	  data: {
+	    competitions: [
+	      {number: 1, name: 'My journey with Vue',organizer:"tengxvn",information:"10086",detail:"no"},
+	      {number: 2, name: 'My journey with Vue2',organizer:"tengxvn",information:"10086",detail:"no"}
+	    ]
+	  }
+	})
+</script>
+</body>
+</html>

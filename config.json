@@ -4,5 +4,7 @@
         "EMAIL_HOST_USER": "formymailtest@163.com",
         "EMAIL_HOST_PASSWORD": "c7c9d552672b",
         "EMAIL_PORT": 25
-    }
+    },
+	"key": "i3Qum7OVSUkETHA%JeIXY6#N8^rHyAt5",
+	"domain": "http://127.0.0.1:8000"
 }

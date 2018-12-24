@@ -6,6 +6,13 @@ from django.contrib.auth.hashers import make_password
 from django.contrib import auth
 import json
 import os
+from .utils import *
+import shutil
+import traceback
+import datetime
+from zipfile import ZipFile, BadZipFile
+from django.db.models import Q
+import tarfile
 
 def register(request):
     data = json.loads(request.body.decode('utf-8'))
@@ -20,7 +27,10 @@ def register(request):
     elif email_unique:
         return JsonResponse({'msg': '邮箱地址已经被注册！'})
     else:
-        CCPUser.objects.create(username=username, password=password, email=email)
+        new_user = CCPUser.objects.create(username=username, password=password, email=email)
+        os.mkdir(RESOURCE_BASE_DIR + '/resources/users/' + str(new_user.id))
+        os.mkdir(RESOURCE_BASE_DIR + '/resources/users/' + str(new_user.id) + '/tmp')
+        os.mkdir(RESOURCE_BASE_DIR + '/resources/users/' + str(new_user.id) + '/img')
         return JsonResponse({'msg': ''})
 
 def login(request):
@@ -28,7 +38,6 @@ def login(request):
         data = json.loads(request.body.decode('utf-8'))
         username = data['username']
         password = data['password']
-        # print(username, password)
         user = auth.authenticate(username=username, password=password)
         if user:
             auth.login(request, user)
@@ -36,18 +45,29 @@ def login(request):
         else:
             return JsonResponse({'msg': '用户名或密码错误'})
     except:
+        traceback.print_exc()
         return JsonResponse({'msg': '未知错误！'})
 
 def check(request):
-    username = request.POST.get('username')
-    contest_id = request.POST('competition_id')
-    #todo: do some check
-    return JsonResponse({'ok': 1, 'msg': ''})
+    try:
+        data = json.loads(request.body.decode('utf-8'))
+        username = data['username']
+        contest_id = data['contestid']
+        user = CCPUser.objects.get(username=username)
+        contest = Contest.objects.get(id=contest_id)
+        #todo
+        return JsonResponse({'msg': ''})
+    except:
+        traceback.print_exc()
+        return JsonResponse({'msg': '未知错误'})
 
 def profile(request):
     try:
+        if not request.user.is_authenticated:
+            return JsonResponse({'msg': '请先登录'})
         id = request.user.id
-        img_url = '/resources/user_images/' + str(id) + '.jpg'
+        img_url = '/resources/users/' + str(id) + '/img/'
+        img_url = GeneralUtil.find_first_img(img_url, 'user')
         competition = {}
         participated = ContestPlayer.objects.filter(player_id=id)
         competition['participated_competition'] = []
@@ -56,12 +76,46 @@ def profile(request):
                 'title': Contest.objects.get(id=contest.contest_id).title,
                 'url': '/detail?contestid=' + str(contest.contest_id),
             })
+        participated = ContestGroup.objects.filter(Q(leader_id=request.user.id) | Q(member1_id=request.user.id) |
+                                Q(member2_id=request.user.id) | Q(member3_id=request.user.id) | Q(member4_id=request.user.id))
+        for contest in participated:
+            competition['participated_competition'].append({
+                'title': Contest.objects.get(id=contest.contest_id).title,
+                'url': '/detail?contestid=' + str(contest.contest_id),
+            })
         created = Contest.objects.filter(admin_id=id)
         competition['created_competition'] = []
+        with open('zone.json', 'r', encoding='utf8') as f:
+            zone = json.load(f)
+        cid = 0
+        provincelist = []
+        regionlist = []
+        for province in zone['province']:
+            dic = {}
+            dic['id'] = cid
+            dic['value'] = province
+            provincelist.append(dic)
+            cid = cid + 1
+        cid = 0
+        for region in zone['region']:
+            dic = {}
+            dic['id'] = cid
+            dic['value'] = region
+            regionlist.append(dic)
+            cid = cid + 1
         for contest in created:
+            regionmode = ContestUtil.getCurrentRegionMode(contest.id)
+            if regionmode == 0:
+                reslist = []
+            elif regionmode == 1:
+                reslist = provincelist
+            elif regionmode == 2:
+                reslist = regionlist
             competition['created_competition'].append({
+                'id': contest.id,
                 'title': Contest.objects.get(id=contest.id).title,
                 'url': '/detail?contestid=' + str(contest.id),
+                'list': reslist
             })
 
         rated = ContestJudge.objects.filter(judge_id=id)
@@ -84,47 +138,108 @@ def profile(request):
         data['person'] = person
         return JsonResponse(data)
     except:
+        traceback.print_exc()
         return JsonResponse({'msg': '未知错误！'})
 
-def modify(request):
+def uploadImg(request):
     try:
-        id = request.user.id
-    except:
-        return JsonResponse({'msg': '用户权限认证失败！'})
-    username = request.user.username
+        if not request.user.is_authenticated:
+            return JsonResponse({'msg': '请先登录'})
+        File = request.FILES.get("file", None)
+        if File is None:
+            return JsonResponse({'msg': 'File not found.'})
+        else:
+            # 先删掉原来的文件夹内的头像，再新建一个
+            cur_dir = RESOURCE_BASE_DIR + '/resources/users/' + str(request.user.id) + '/img/'
+            for file in os.listdir(cur_dir):
+                full_path = cur_dir + file
+                if os.path.isfile(full_path):
+                    os.remove(full_path)
+            # 打开特定的文件进行二进制的写操作;
+            with open(cur_dir + File.name, 'wb+') as f:
+                # 分块写入文件;
+                for chunk in File.chunks():
+                    f.write(chunk)
+            return JsonResponse({'msg': '', 'url': cur_dir[len(RESOURCE_BASE_DIR):] + File.name})
+    except Exception as e:
+        traceback.print_exc()
+        return JsonResponse({'msg': '未知错误'})
+
+def modify(request):
+    if not request.user.is_authenticated:
+        return JsonResponse({'msg': '请先登录'})
     data = json.loads(request.body.decode('utf-8'))
     university = data['university']
     province = data['region']['province']
     city = data['region']['city']
-    CCPUser.objects.filter(id=id).update(university=university, province=province, city=city)
+    CCPUser.objects.filter(id=request.user.id).update(university=university, province=province, city=city)
     return JsonResponse({'msg': ''})
 
 
 def upload(request):
-    data = json.loads(request.body.decode('utf-8'))
-    contest_id = data['contestid']
+    contest_id = int(request.POST['contestid'])
+    name = request.POST['name']
     try:
         contest = Contest.objects.get(id=contest_id)
     except:
         return JsonResponse({'msg': 'Contest does not exist.'})
-
-    try:
-        ContestPlayer.objects.get(contest_id=contest_id, player_id=request.user.id)
-    except:
-        return JsonResponse({'msg': 'Current user did not attend this contest'})
+    cur_phase = ContestUtil.getCurrentPhase(contest_id)['phase']
+    if cur_phase == 0:
+        return JsonResponse({'msg': '当前比赛仍在报名阶段，不能提交作品'})
+    if not(getattr(contest, 'phase_start_time' + str(cur_phase)) < datetime.datetime.now(datetime.timezone.utc) < getattr(contest, 'phase_hand_end_time' + str(cur_phase))):
+        return JsonResponse({'msg': '比赛当前阶段的提交已经截止'})
+    if contest.grouped == 0:
+        try:
+            ContestPlayer.objects.get(contest_id=contest_id, player_id=request.user.id)
+        except:
+            return JsonResponse({'msg': 'Current user did not attend this contest'})
+    else:
+        try:
+            ContestGroup.objects.get(contest_id=contest_id, leader_id=request.user.id)
+        except:
+            return JsonResponse({'msg': 'Current user is not a leader of one group in this contest'})
+    cg = ContestGrade.objects.filter(leader_id=request.user.id, contest_id=contest_id, phase=cur_phase)
+    if cg.count() == 0:  # 不存在，则创建新的
+        cg = ContestGrade()
+        cg.contest_id = contest_id
+    else:
+        cg = cg[0]
+    cg.leader_id = request.user.id
+    cg.work_name = name
+    cg.phase = cur_phase
+    cg.save()
 
     File = request.FILES.get("file", None)
     if File is None:
         return JsonResponse({'msg': 'File not found.'})
+    dot_pos = File.name.rfind('.')
+    if dot_pos == -1 or File.name[dot_pos:] not in ['.tar', '.zip']:
+        return JsonResponse({'msg': '只支持上传tar或zip格式的压缩文件'})
     else:
-        # 打开特定的文件进行二进制的写操作;
+        # 先删除旧文件夹下所有内容，再打开特定的文件进行二进制的写操作;
         try:
-            with open("/resources/contests/" + str(contest_id) + '/playerFiles/' + request.user.id + '/' + File.name, 'wb') as f:
+            cur_dir = RESOURCE_BASE_DIR + "/resources/contests/" + str(contest_id) + '/playerFiles/' + str(request.user.id) + '/compress/'
+            dirs = os.listdir(cur_dir)
+            for dir in dirs:
+                if os.path.isfile(cur_dir + dir):  # 删掉原来的压缩文件
+                    os.remove(cur_dir + dir)
+            with open(cur_dir + File.name, 'wb') as f:
                 # 分块写入文件;
                 for chunk in File.chunks():
                     f.write(chunk)
+            # 解压缩
+            extract_dir = RESOURCE_BASE_DIR + "/resources/contests/" + str(contest_id) + '/playerFiles/' + str(request.user.id) + '/decompress/'
+            GeneralUtil.del_dir(extract_dir)
+#            if File.name[dot_pos:] == '.tar':
+                #todo htx
+
+            try:
+                with ZipFile(cur_dir + File.name) as zfile:
+                    zfile.extractall(path=extract_dir)
+            except BadZipFile as e:
+                traceback.print_exc()
+                return JsonResponse({'msg': '文件解压缩出错！'})
             return JsonResponse({'msg': ''})
         except Exception as e:
-            print(e)
+            traceback.print_exc()
             return JsonResponse({'msg': '未知错误'})
-

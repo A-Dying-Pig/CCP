@@ -3,6 +3,9 @@ from django.test import Client
 from .models import *
 import json
 from django.http import HttpRequest
+import os, sys
+from .utils import *
+import shutil
 #import .api_user
 
 # Create your tests here.
@@ -31,19 +34,28 @@ class api_message_Test(TestCase):
             }
         }
         response = self.c.post('/api/user/modify',json.dumps(modify_info),content_type="application/json")
+        with open("C:\\Users\\Administrator\\Desktop\\1.jpg", 'rb') as f:
+            response=self.c.post('/api/competition/uploadimg',{'file': f})
+        response_content = response.content.decode()
+        response_content = json.loads(response_content)
+        url=response_content['url']
         comp_info = {
             "basicinfo": {
-                "name" : "快乐肥宅大赛",
+                "name" : "快乐肥宅大赛-个人",
+                "img" : url,
                 "holders" : ["快乐肥宅","快乐肥宅1","快乐肥宅2","快乐肥宅3"],
                 "sponsors" : [],
-                "comtype" : "趣味比赛",
+                "comtype" : "web开发",
+                "judgebegin" : False,
+                "briefintroduction":"hhhh",
                 "details" : "hhhhhhhh"
                 },
             "signupinfo": {
-                "time" : ["2018-12-30T12:10:00.000Z","2019-12-30T12:10:00.000Z"],
+                "time" : ["2018-12-10T12:10:00.000Z","2019-12-30T12:10:00.000Z"],
                 "mode" : 1,
+                "teamnum":[1,10],
                 "person" : ["1","2","3","4"],
-                "group" : [],
+                "group" : ["1","2","3","4"],
             },
             "stageinfo":
                 [{"name" : "1",
@@ -51,36 +63,36 @@ class api_message_Test(TestCase):
                 "stageTimeBegin": "2018-12-20T12:10:00.000Z",
                 "handTimeEnd" : "2018-12-30T12:10:00.000Z",
                 "evaluationTimeEnd" : "2018-12-30T12:10:00.000Z",
-                "zone":0,     
+                "zone":0,
                 "mode" : 0},
                 {"name" : "2",
                 "details" : "details",
                 "stageTimeBegin": "2018-12-20T12:10:00.000Z",
                 "handTimeEnd" : "2018-12-30T12:10:00.000Z",
                 "evaluationTimeEnd" : "2018-12-30T12:10:00.000Z",
-                "zone":0,     
+                "zone":0,
                 "mode" : 0},
                 {"name" : "3",
                 "details" : "details",
                 "stageTimeBegin": "2018-12-20T12:10:00.000Z",
                 "handTimeEnd" : "2018-12-30T12:10:00.000Z",
                 "evaluationTimeEnd" : "2018-12-30T12:10:00.000Z",
-                "zone":0,     
+                "zone":0,
                 "mode" : 0},
                 {"name" : "4",
                 "details" : "details",
                 "stageTimeBegin": "2018-12-20T12:10:00.000Z",
                 "handTimeEnd" : "2018-12-30T12:10:00.000Z",
                 "evaluationTimeEnd" : "2018-12-30T12:10:00.000Z",
-                "zone":0,     
+                "zone":0,
                 "mode" : 0},
                 {"name" : "5",
                 "details" : "details",
                 "stageTimeBegin": "2018-12-20T12:10:00.000Z",
                 "handTimeEnd" : "2018-12-30T12:10:00.000Z",
                 "evaluationTimeEnd" : "2018-12-30T12:10:00.000Z",
-                "zone":0,     
-                "mode" : 0}]
+                "zone":0,
+                "mode":0}]
         }
         response = self.c.post('/api/competition/create',json.dumps(comp_info),content_type="application/json")
         contest = Contest.objects.filter()
@@ -100,10 +112,7 @@ class api_message_Test(TestCase):
         response = self.c.post('/api/user/login',json.dumps(user_info),content_type="application/json")
         comp_info = {
             "contestid": self.contestId_personal,
-            "region":{
-                "province" : "北京",
-                "city" : "北京"                
-                },
+            "phone_number": 18001136323,
             "university" : "清华大学",
             "groupuser" : [],
             "custom_field" : ["1"],
@@ -136,6 +145,14 @@ class api_message_Test(TestCase):
         }
         response = self.c.post('/api/admin/broadcast',json.dumps(comp_info),content_type="application/json") 
         
+    def tearDown(self):
+        dirs = os.listdir(RESOURCE_BASE_DIR + '/resources/contests')
+        for file in dirs:
+           shutil.rmtree(RESOURCE_BASE_DIR + '/resources/contests/'+file)
+        dirs = os.listdir(RESOURCE_BASE_DIR + '/resources/users')
+        for file in dirs:
+           shutil.rmtree(RESOURCE_BASE_DIR + '/resources/users/'+file)
+
     def test_message_getnew(self): 
         user_info={
             "username": "admin2", 
@@ -152,7 +169,8 @@ class api_message_Test(TestCase):
         response = self.c.post('/api/message/getnew') 
         response_content = response.content.decode()
         response_content = json.loads(response_content)
-        self.assertEqual(response_content['msg'], '未知错误！')
+        self.assertEqual(response_content['msg'], '')
+        self.assertEqual(response_content['num'],0)
 
     def test_message_getall(self):
         user_info={
@@ -251,7 +269,7 @@ class api_message_Test(TestCase):
         response = self.c.post('/api/message/detail',json.dumps(message_info),content_type="application/json") 
         response_content = response.content.decode()
         response_content = json.loads(response_content)
-        self.assertEqual(response_content['msg'], '未知错误！')
+        self.assertEqual(response_content['msg'], '此消息不属于该用户')
 
     def test_message_change(self):
         user_info={
@@ -265,11 +283,21 @@ class api_message_Test(TestCase):
         response = self.c.post('/api/message/getall',json.dumps(message_info),content_type="application/json") 
         response_content = response.content.decode()
         response_content = json.loads(response_content)
+        print(response_content)
         self.messageid = response_content['array'][0]['messageId']
         message_info={
             "messageId":self.messageid
         }
         response = self.c.post('/api/message/detail',json.dumps(message_info),content_type="application/json") 
+        
+        message_info={
+            "pageNum":1
+        }
+        response = self.c.post('/api/message/getall',json.dumps(message_info),content_type="application/json") 
+        response_content = response.content.decode()
+        response_content = json.loads(response_content)
+        print(response_content)
+
         #未读消息数变为1
         response = self.c.post('/api/message/getnew') 
         response_content = response.content.decode()

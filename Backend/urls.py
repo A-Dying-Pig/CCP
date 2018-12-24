@@ -5,6 +5,7 @@ from Backend import api_superadmin as superadmin
 from Backend import api_admin as admin
 from Backend import api_judge as judge
 from Backend import api_message as message
+from Backend import api_info as info
 
 urlpatterns = [
     path('user/register', user.register),
@@ -12,6 +13,8 @@ urlpatterns = [
     path('user/check', user.check),
     path('user/profile', user.profile),
     path('user/modify', user.modify),
+    path('user/uploadimg', user.uploadImg),
+    path('contestant/submit', user.upload),
     path('competition/create', competition.create),
     path('competition/neededinfo', competition.neededinfo),
     path('competition/enroll', competition.enroll),
@@ -22,6 +25,11 @@ urlpatterns = [
     path('competition/filelist', competition.fileList),
     path('competition/enrollnum', competition.enrollNum),
     path('competition/uploadimg', competition.uploadImg),
+    path('competition/adddiscussion', competition.addDiscussion),
+    path('competition/discussion', competition.discussion),
+    path('competition/discussionreply', competition.discussionReply),
+    path('competition/discussionlist', competition.discussionList),
+    path('competition/worksname', competition.worksname),
     path('super/contests', superadmin.contests),
     path('super/detail', superadmin.detail),
     path('super/submit', superadmin.submit),
@@ -38,10 +46,14 @@ urlpatterns = [
     path('admin/advanced', admin.advanced),
     path('admin/setadvanced', admin.setadvanced),
     path('admin/judgelist', admin.judgelist),
+    path('admin/getsubmitnum', admin.getSubmitNum),
+    path('admin/setnewgrade', admin.setnewgrade),
+    path('admin/allot', admin.allot),
     path('judge/getone', judge.getone),
     path('judge/submit', judge.submit),
     path('judge/finished', judge.finished),
     path('message/getnew', message.getnew),
     path('message/getall', message.getall),
     path('message/detail', message.detail),
+    path('info/about', info.about),
 ]

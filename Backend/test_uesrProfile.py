@@ -3,6 +3,9 @@ from django.test import Client
 from .models import *
 import json
 from django.http import HttpRequest
+import os, sys
+from .utils import *
+import shutil
 #import .api_user
 
 # Create your tests here.
@@ -32,56 +35,65 @@ class api_user_competiton_Test(TestCase):
         }
         response = self.c.post('/api/user/modify',json.dumps(modify_info),content_type="application/json")
         #admin创建的比赛
+        with open("C:\\Users\\Administrator\\Desktop\\1.jpg", 'rb') as f:
+            response=self.c.post('/api/competition/uploadimg',{'file': f})
+        response_content = response.content.decode()
+        response_content = json.loads(response_content)
+        url=response_content['url']
         comp_info = {
             "basicinfo": {
-                "name" : "快乐肥宅大赛",
+                "name" : "快乐肥宅大赛1",
+                "img" : url,
                 "holders" : ["快乐肥宅","快乐肥宅1","快乐肥宅2","快乐肥宅3"],
                 "sponsors" : [],
-                "comtype" : "趣味比赛",
+                "comtype" : "web",
+                "judgebegin" : False,
+                "briefintroduction":"hhhh",
                 "details" : "hhhhhhhh"
                 },
             "signupinfo": {
-                "time" : ["2018-12-30T12:10:00.000Z","2019-12-30T12:10:00.000Z"],
+                "time" : ["2018-12-10T12:10:00.000Z","2018-12-30T12:10:00.000Z"],
                 "mode" : 1,
+                "teamnum":[1,10],
                 "person" : ["1","2","3","4"],
-                "group" : [],
-            },
+                "group" : ["1","2","3","4"],
+                },
             "stageinfo":
                 [{"name" : "1",
                 "details" : "details",
                 "stageTimeBegin": "2018-12-20T12:10:00.000Z",
                 "handTimeEnd" : "2018-12-30T12:10:00.000Z",
                 "evaluationTimeEnd" : "2018-12-30T12:10:00.000Z",
-                "zone":0,     
+                "zone":0,
                 "mode" : 0},
                 {"name" : "2",
                 "details" : "details",
-                "stageTimeBegin": "2018-12-20T12:10:00.000Z",
+                "stageTimeBegin": "2018-12-30T12:10:00.000Z",
                 "handTimeEnd" : "2018-12-30T12:10:00.000Z",
                 "evaluationTimeEnd" : "2018-12-30T12:10:00.000Z",
-                "zone":0,     
+                "zone":0,
                 "mode" : 0},
                 {"name" : "3",
                 "details" : "details",
-                "stageTimeBegin": "2018-12-20T12:10:00.000Z",
+                "stageTimeBegin": "2018-12-30T12:10:00.000Z",
                 "handTimeEnd" : "2018-12-30T12:10:00.000Z",
                 "evaluationTimeEnd" : "2018-12-30T12:10:00.000Z",
-                "zone":0,     
+                "zone":0,
                 "mode" : 0},
                 {"name" : "4",
                 "details" : "details",
-                "stageTimeBegin": "2018-12-20T12:10:00.000Z",
+                "stageTimeBegin": "2018-12-30T12:10:00.000Z",
                 "handTimeEnd" : "2018-12-30T12:10:00.000Z",
                 "evaluationTimeEnd" : "2018-12-30T12:10:00.000Z",
-                "zone":0,     
+                "zone":0,
                 "mode" : 0},
                 {"name" : "5",
                 "details" : "details",
-                "stageTimeBegin": "2018-12-20T12:10:00.000Z",
+                "stageTimeBegin": "2018-12-30T12:10:00.000Z",
                 "handTimeEnd" : "2018-12-30T12:10:00.000Z",
                 "evaluationTimeEnd" : "2018-12-30T12:10:00.000Z",
-                "zone":0,     
-                "mode" : 0}]
+                "zone":0,
+                "mode":0}]
         }
         response = self.c.post('/api/competition/create',json.dumps(comp_info),content_type="application/json")
         contest = Contest.objects.filter()
@@ -98,56 +110,65 @@ class api_user_competiton_Test(TestCase):
             "password": "ccp"            
         }
         response = self.c.post('/api/user/login',json.dumps(user_info),content_type="application/json")
+        with open("C:\\Users\\Administrator\\Desktop\\1.jpg", 'rb') as f:
+            response=self.c.post('/api/competition/uploadimg',{'file': f})
+        response_content = response.content.decode()
+        response_content = json.loads(response_content)
+        url=response_content['url']
         comp_info = {
             "basicinfo": {
                 "name" : "快乐肥宅大赛2",
+                "img" : url,
                 "holders" : ["快乐肥宅","快乐肥宅1","快乐肥宅2","快乐肥宅3"],
                 "sponsors" : [],
-                "comtype" : "趣味比赛",
+                "comtype" : "web",
+                "judgebegin" : False,
+                "briefintroduction":"hhhh",
                 "details" : "hhhhhhhh"
                 },
             "signupinfo": {
-                "time" : ["2018-12-30T12:10:00.000Z","2019-12-30T12:10:00.000Z"],
+                "time" : ["2018-12-10T12:10:00.000Z","2018-12-30T12:10:00.000Z"],
                 "mode" : 1,
+                "teamnum":[1,10],
                 "person" : ["1","2","3","4"],
-                "group" : [],
-            },
+                "group" : ["1","2","3","4"],
+                },
             "stageinfo":
                 [{"name" : "1",
                 "details" : "details",
                 "stageTimeBegin": "2018-12-20T12:10:00.000Z",
                 "handTimeEnd" : "2018-12-30T12:10:00.000Z",
                 "evaluationTimeEnd" : "2018-12-30T12:10:00.000Z",
-                "zone":0,     
+                "zone":0,
                 "mode" : 0},
                 {"name" : "2",
                 "details" : "details",
-                "stageTimeBegin": "2018-12-20T12:10:00.000Z",
+                "stageTimeBegin": "2018-12-30T12:10:00.000Z",
                 "handTimeEnd" : "2018-12-30T12:10:00.000Z",
                 "evaluationTimeEnd" : "2018-12-30T12:10:00.000Z",
-                "zone":0,     
+                "zone":0,
                 "mode" : 0},
                 {"name" : "3",
                 "details" : "details",
-                "stageTimeBegin": "2018-12-20T12:10:00.000Z",
+                "stageTimeBegin": "2018-12-30T12:10:00.000Z",
                 "handTimeEnd" : "2018-12-30T12:10:00.000Z",
                 "evaluationTimeEnd" : "2018-12-30T12:10:00.000Z",
-                "zone":0,     
+                "zone":0,
                 "mode" : 0},
                 {"name" : "4",
                 "details" : "details",
-                "stageTimeBegin": "2018-12-20T12:10:00.000Z",
+                "stageTimeBegin": "2018-12-30T12:10:00.000Z",
                 "handTimeEnd" : "2018-12-30T12:10:00.000Z",
                 "evaluationTimeEnd" : "2018-12-30T12:10:00.000Z",
-                "zone":0,     
+                "zone":0,
                 "mode" : 0},
                 {"name" : "5",
                 "details" : "details",
-                "stageTimeBegin": "2018-12-20T12:10:00.000Z",
+                "stageTimeBegin": "2018-12-30T12:10:00.000Z",
                 "handTimeEnd" : "2018-12-30T12:10:00.000Z",
                 "evaluationTimeEnd" : "2018-12-30T12:10:00.000Z",
-                "zone":0,     
-                "mode" : 0}]
+                "zone":0,
+                "mode":0}]
         }
         response = self.c.post('/api/competition/create',json.dumps(comp_info),content_type="application/json")
         contest = Contest.objects.filter()
@@ -160,10 +181,7 @@ class api_user_competiton_Test(TestCase):
         response = self.c.post('/api/user/login',json.dumps(user_info),content_type="application/json")
         comp_info = {
             "contestid": self.contestId_participant,
-            "region":{
-                "province" : "北京",
-                "city" : "北京"                
-                },
+            "phone_number":18001136323,
             "university" : "清华大学",
             "groupuser" : [],
             "custom_field" : ["1"],
@@ -171,6 +189,14 @@ class api_user_competiton_Test(TestCase):
             }            
         response = self.c.post('/api/competition/enroll',json.dumps(comp_info),content_type="application/json")
 
+    def tearDown(self):
+        dirs = os.listdir(RESOURCE_BASE_DIR + '/resources/contests')
+        for file in dirs:
+           shutil.rmtree(RESOURCE_BASE_DIR + '/resources/contests/'+file)
+        dirs = os.listdir(RESOURCE_BASE_DIR + '/resources/users')
+        for file in dirs:
+           shutil.rmtree(RESOURCE_BASE_DIR + '/resources/users/'+file)
+           
     def test_user_profile(self): 
         response = self.c.post('/api/user/profile') 
         response_content = response.content.decode()
@@ -179,7 +205,7 @@ class api_user_competiton_Test(TestCase):
         self.assertEqual(len(response_content['competition']['participated_competition']),1)  
         self.assertEqual(response_content['competition']['participated_competition'][0]['title'],"快乐肥宅大赛2")
         self.assertEqual(len(response_content['competition']['created_competition']),1)  
-        self.assertEqual(response_content['competition']['created_competition'][0]['title'],"快乐肥宅大赛")
+        self.assertEqual(response_content['competition']['created_competition'][0]['title'],"快乐肥宅大赛1")
         self.assertEqual(response_content['person']['university'],'清华大学')
 
     
