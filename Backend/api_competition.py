@@ -535,6 +535,8 @@ def addDiscussion(request):
             return JsonResponse({'msg': '请先登录'})
         data = json.loads(request.body.decode('utf-8'))
         contest_id = int(data['contestid'])
+        if not Contest.objects.filter(id=contest_id):
+            return JsonResponse({'msg': '比赛不存在'})
         title = data['title']
         content = data['content']
         if len(title) == 0:

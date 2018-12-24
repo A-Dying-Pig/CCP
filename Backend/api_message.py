@@ -56,6 +56,11 @@ def detail(request):
         mId = data['messageId']
         try:
             ntf = Notification.objects.get(id=mId)
+            nu = NotificationUser.objects.get(notification_id=mId)
+            if nu.user_id != request.user.id:
+                return JsonResponse({'msg': '此消息不属于该用户'})
+            nu.read = True
+            nu.save()
             return JsonResponse({
                 'title': ntf.title,
                 'content': ntf.context,
@@ -66,5 +71,3 @@ def detail(request):
     except:
         traceback.print_exc()
         return JsonResponse({'msg': '未知错误！'})
-
-

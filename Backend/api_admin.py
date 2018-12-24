@@ -294,13 +294,27 @@ def broadcast(request):
         title = data['title']
         content = data['content']
         target_id = data['target']['id']
-        target_type = data['target']['type']
+        target_type = int(data['target']['type'])
+        phase = ContestUtil.getCurrentPhase(contestid)['phase']
         notification = Notification()
         notification.context = content
         notification.title = title
         notification.save()
         msg_id = Notification.objects.last().id
-
+        if target_type != 0:
+            # 先看一下当前阶段主办方是否提交了晋级名单
+            if not Submitted.objects.filter(contest_id=contestid, phase=phase+1, zone_id=target_id):
+                # 还未提交
+                return JsonResponse({'msg': '当前阶段还没有设置晋级和淘汰选手'})
+            else:
+                if target_type == 1:
+                    # 当前阶段晋级到下一阶段的选手
+                    # todo htx
+                    pass
+                else:
+                    # 当前阶段被淘汰的选手
+                    #todo htx
+                    pass
         if target_id == -1:
             players = []
             plist = ContestPlayer.objects.filter(contest_id=contestid)
@@ -520,14 +534,26 @@ def setadvanced(request):
         phase = ContestUtil.getCurrentPhase(contestid)['phase']
         if Submitted.objects.filter(contest_id=contestid, phase=phase+1, zone_id=target).count() > 0:
             return JsonResponse({'msg': '不能重复提交晋级名单'})
-        result = ContestGrade.objects.filter(contest_id=contestid).values('leader_id').annotate(average_rating=Avg('grade')).order_by('-average_rating')[:advanced]
-        for p in result:
+        cg = ContestGrade.objects.filter(contest_id=contestid).annotate(average_rating=Avg('grade')).order_by('-average_rating')
+        result = ContestGrade.objects.filter(contest_id=contestid, phase=phase).values('leader_id').annotate(average_rating=Avg('grade')).order_by('-average_rating')
+        # todo htx 提高效率 现在效率太低了
+        index = 0
+        advanced_count = 0
+        len_res = len(result)
+        while index < len_res:
+            p = result[index]
+            if target != -1 and GeneralUtil.get_zone_id(cg[index].contest_id, phase, cg[index].leader_id) != target:
+                continue
             contestgrade = ContestGrade()
             leader_id = p['leader_id']
             contestgrade.leader_id = leader_id
             contestgrade.contest_id = contestid
             contestgrade.phase = phase + 1
             contestgrade.save()
+            index = index + 1
+            advanced_count = advanced_count + 1
+            if advanced_count >= advanced:
+                break
         submit = Submitted()
         submit.contest_id = contestid
         submit.phase = phase + 1
