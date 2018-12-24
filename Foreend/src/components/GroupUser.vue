@@ -27,7 +27,7 @@
 
 
 <script>
-    import axios from 'axios'
+    //import axios from 'axios'
 
     axios.defaults.xsrfHeaderName = "X-CSRFToken";
     axios.defaults.headers.common = {
