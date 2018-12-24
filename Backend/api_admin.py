@@ -38,8 +38,8 @@ def participants(request):
         if cur_phase == 0:
             cur_phase = 1
         if result['mode'] == 1:  # 个人赛
-            participants= ContestGrade.objects.filter(contest_id=contest_id, phase=cur_phase)
-            participant_number= participants.count()
+            participants = ContestGrade.objects.filter(contest_id=contest_id, phase=cur_phase)
+            participant_number = participants.count()
             if participant_number < 1:  # 没数据
                 result['total_page_num'] = 0
                 result['array'] = []
@@ -73,8 +73,7 @@ def participants(request):
             while index < min(MAX_PARTICIPANT_ONE_PAGE * page_num, participant_number):
                 single_team = {}
                 single_team['captainId'] = participants[index].leader_id
-                player = CCPUser.objects.get(id=participants[index].leader_id)
-                single_team['captainName'] = player.username
+                single_team['captainName'] = ContestGroup.objects.get(contest_id=contest_id, leader_id=participants[index].leader_id).group_name
                 single_team['captainPoints'] = ContestGradeUtil.getGrade(leader_id=participants[index].leader_id, contest_id=contest_id)
                 single_team['group'] = ContestGroupUtil.getMember(leader_id=participants[index].leader_id, contest_id=contest_id)
                 result['array'].append(single_team)
@@ -322,7 +321,10 @@ def broadcast(request):
             elif d == 2: #region
                 zone = zone['region'][target_id]
             modelcriteria = {'contest_id': contestid, 'phase_region'+str(d): zone}
-            players = ContestPlayer.objects.filter(**modelcriteria)
+            if Contest.objects.get(id=contestid).grouped == 0:
+                players = ContestPlayer.objects.filter(**modelcriteria)
+            else:
+                players = ContestGroup.objects.filter(**modelcriteria)
 
         for pid in players:
             notificationuser = NotificationUser()
