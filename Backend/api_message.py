@@ -29,7 +29,7 @@ def getall(request):
             page = 1
         count = NotificationUser.objects.filter(user_id=request.user.id).count()
         total_page_num = (count - 1) // amount + 1
-        ntf = NotificationUser.objects.all()[(page-1)*amount: page*amount]
+        ntf = NotificationUser.objects.filter(user_id=request.user.id)[(page-1)*amount: page*amount]
         array = []
         for n in ntf:
             d = {}

@@ -336,7 +336,7 @@ def broadcast(request):
         for pid in players:
             notificationuser = NotificationUser()
             notificationuser.notification_id = msg_id
-            notificationuser.user_id = pid.player_id
+            notificationuser.user_id = pid
             notificationuser.read = False
             notificationuser.save()
 
