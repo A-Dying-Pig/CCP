@@ -298,6 +298,7 @@ def broadcast(request):
         notification.title = title
         notification.save()
         msg_id = Notification.objects.last().id
+        grouped = Contest.objects.get(id=contestid).grouped
         if target_id == -1:
             players = []
             plist = ContestPlayer.objects.filter(contest_id=contestid)
@@ -309,6 +310,7 @@ def broadcast(request):
                 for m in members:
                     players.append(m['userId'])
         else:
+            players = []
             d = ContestUtil.getCurrentRegionMode(contestid)
             if d == 0:
                 d = 1
@@ -321,15 +323,20 @@ def broadcast(request):
             elif d == 2: #region
                 zone = zone['region'][target_id]
             modelcriteria = {'contest_id': contestid, 'phase_region'+str(d): zone}
-            if Contest.objects.get(id=contestid).grouped == 0:
-                players = ContestPlayer.objects.filter(**modelcriteria)
+            if grouped == 0:
+                plist = ContestPlayer.objects.filter(**modelcriteria)
+                for p in plist:
+                    players.append(p.player_id)
             else:
-                players = ContestGroup.objects.filter(**modelcriteria)
-
+                plist = ContestGroup.objects.filter(**modelcriteria)
+                for p in plist:
+                    members = ContestGroupUtil.getMember(p.leader_id, contestid)
+                    for m in members:
+                        players.append(m['userId'])
         for pid in players:
             notificationuser = NotificationUser()
             notificationuser.notification_id = msg_id
-            notificationuser.user_id = pid
+            notificationuser.user_id = pid.player_id
             notificationuser.read = False
             notificationuser.save()
 
