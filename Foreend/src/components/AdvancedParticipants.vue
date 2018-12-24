@@ -166,7 +166,7 @@
 
 
 <script>
-    import axios from 'axios'
+    //import axios from 'axios'
     axios.defaults.xsrfHeaderName = "X-CSRFToken";
     axios.defaults.headers.common = {
       'X-CSRFToken':document.querySelector('#csrf-token input').value,
@@ -244,6 +244,7 @@
                 this.participants_number = 0;
                 this.current_participants_number = 0;
                 this.current_page = 0;
+                this.advanced_number = 0;
                 this.total_page = 0;
 
                 let vm = this;

@@ -73,6 +73,11 @@ module.exports = {
             },
         },
         output,
+        externals: {
+            'vue': 'Vue',
+            'axios': 'axios',
+            'element-ui': 'ElementUI'
+        },
     },
     chainWebpack: config => {
         config.module
@@ -80,4 +85,5 @@ module.exports = {
             .use('file-loader')
             .loader('vue-svg-loader')
     },
+    productionSourceMap:false
 }

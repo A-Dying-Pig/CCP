@@ -126,7 +126,7 @@
     import NavigationBar from '../../components/NavigationBar'
     import SuperCheckContestItem from '../../components/SuperCheckContestItem'
     import IndexInfo from '../../components/IndexInfo'
-    import axios from 'axios'
+    //import axios from 'axios'
 
     axios.defaults.xsrfHeaderName = "X-CSRFToken";
     axios.defaults.headers.common = {

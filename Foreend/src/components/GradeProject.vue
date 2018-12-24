@@ -61,7 +61,7 @@
 </template>
 
 <script>
-    import axios from 'axios'
+    //import axios from 'axios'
     import slVueTree from 'sl-vue-tree'
     import PDF from './PDF.vue'
     axios.defaults.xsrfHeaderName = "X-CSRFToken";

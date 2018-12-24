@@ -201,18 +201,13 @@
 </template>
 
 <script>
-import Vue from 'vue'
-import 'element-ui/lib/theme-chalk/index.css'
-import ElementUI from 'element-ui'
-import axios from 'axios'
+//import axios from 'axios'
 
 axios.defaults.xsrfHeaderName = "X-CSRFToken";
 axios.defaults.headers.common = {
   'X-CSRFToken':document.querySelector('#csrf-token input').value,
     'X-Requested-With': 'XMLHttpRequest'
 };
-Vue.use(ElementUI);
-
 import CompetitonStage from './CompetitonStage.vue'
 export default {
     components:{

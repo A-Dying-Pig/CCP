@@ -18,7 +18,7 @@
     import NavigationBar from "../../components/NavigationBar.vue";
     import CompetitionDetailAllInfo from '../../components/CompetitionDetailAllInfo.vue';
     import CompetitionDetailContents from '../../components/CompetitionDetailContents.vue';
-    import axios from 'axios'
+    //import axios from 'axios'
     axios.defaults.xsrfHeaderName = "X-CSRFToken";
     axios.defaults.headers.common = {
       'X-CSRFToken':document.querySelector('#csrf-token input').value,

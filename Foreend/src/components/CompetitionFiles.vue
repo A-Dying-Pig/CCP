@@ -15,7 +15,7 @@
 </template>
 
 <script>
-    import axios from 'axios'
+    //import axios from 'axios'
     import UploadFile from './UploadFile.vue'
     axios.defaults.xsrfHeaderName = "X-CSRFToken";
     axios.defaults.headers.common = {

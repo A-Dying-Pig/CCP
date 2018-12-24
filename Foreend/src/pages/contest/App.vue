@@ -47,7 +47,7 @@
 <script>
     import NavigationBar from "../../components/NavigationBar";
     import ContestListItem from "../../components/ContestListItem"
-    import axios from 'axios'
+    //import axios from 'axios'
 
     axios.defaults.xsrfHeaderName = "X-CSRFToken";
     axios.defaults.headers.common = {

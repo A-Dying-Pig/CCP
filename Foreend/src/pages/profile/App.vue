@@ -90,8 +90,8 @@
 
                 <div class="send-message-select">
                   <el-radio v-model="send_message_type" label=0>全部选手</el-radio>
-                  <el-radio v-model="send_message_type" label=1>当前阶段赛晋级选手</el-radio>
-                  <el-radio v-model="send_message_type" label=-1>当前阶段赛淘汰选手</el-radio>
+                  <!-- <el-radio v-model="send_message_type" label=1>当前阶段赛晋级选手</el-radio> -->
+                  <!-- <el-radio v-model="send_message_type" label=-1>当前阶段赛淘汰选手</el-radio> -->
                 </div>
 
                 <div class="send-message-input">
@@ -233,7 +233,7 @@
     import PersonPhoto from '../../components/PersonPhoto'
     import RegionPicker from '../../components/RegionPicker'
     import UniversityPicker from '../../components/UniversityPicker'
-    import axios from 'axios'
+    //import axios from 'axios'
 
     axios.defaults.xsrfHeaderName = "X-CSRFToken";
     axios.defaults.headers.common = {
@@ -286,8 +286,8 @@
                     ],
                 },
                 message_detail:{
-                    title:'CCP网站滑水大赛报名成功',
-                    content:'带上你的泳衣在炎日的冬季一起滑水吧!',
+                    title:'',
+                    content:'',
                 },
                 message_detail_index:0,
                 message_switch:0, //0 for message list,1 for message detail
@@ -420,7 +420,7 @@
                 temp.content = this.send_message_content;
                 temp.target = {};
                 temp.target.id = this.send_message_target[this.send_message_target.length - 1];
-                temp.target.type = Number(this.send_message_type);
+                //temp.target.type = Number(this.send_message_type);
                 console.log(temp);
                 let vm = this;
                 axios.post('/api/admin/broadcast',temp)
@@ -476,6 +476,13 @@
   .send-message-select{
     margin-top: 20px;
     margin-bottom: 10px;
+  }
+  .message-detail-content{
+    word-break: break-all;
+  }
+  .message-detail-title{
+      word-break: break-all;
+
   }
 
 </style>

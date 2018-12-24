@@ -43,7 +43,7 @@
     import IndexSlider from '../../components/IndexSlider'
     import CompetitionProfile from '../../components/CompetitionProfile'
     import CCPFooter from '../../components/CCPFooter'
-    import axios from 'axios'
+    //import axios from 'axios'
 
     axios.defaults.xsrfHeaderName = "X-CSRFToken";
     axios.defaults.headers.common = {
