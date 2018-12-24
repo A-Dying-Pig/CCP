@@ -81,8 +81,6 @@
                 let self = this;
                 let res=[];
                 let flag=true;
-                console.log(1111111111111111111111)
-                console.log(self.allinfo)
                 res.push(this.$refs.basic.validate());
                 res.push(this.$refs.signup.validate());
                 res.push(this.$refs.stage.validate());

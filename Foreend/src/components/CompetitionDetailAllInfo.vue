@@ -9,10 +9,10 @@
                         </el-col>
                         <el-col :span="20">
                             <el-row :gutter="24">
-                                <el-col :span="4" class="title">
+                                <el-col :span="6" class="title">
                                     <b>{{ info.basicinfo.name }}</b>
                                 </el-col>
-                                <el-col :span="6" :offset="14">
+                                <el-col :span="6" :offset="12">
                                     <p style="font-size: 12px">已报名<span style="color: #3a8ee6">{{ enrollnum }}</span>人</p>
                                 </el-col>
                             </el-row>
@@ -171,5 +171,11 @@
     .brief{
         border-left: 2px #4da9fe solid;
         background-color: #f9fafa;
+    }
+    img {
+        width: auto;
+        height: auto;
+        max-width: 100%;
+        max-height: 100%;
     }
 </style>

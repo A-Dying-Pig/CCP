@@ -61,11 +61,11 @@ describe('比赛创建', () => {
                 }
             });
             let subbutton = wrapper.find('.submitbtn');
-            console.log(subbutton.trigger('clllick'));
+            console.log(subbutton.trigger());
 
             moxios.wait(function () {
                 let request = moxios.requests.mostRecent();
-                expect(request.config.data).toEqual(JSON.stringify(info))
+                expect(request.config.data).toEqual(JSON.stringify(info));
                 request.respondWith({
                     status: 200,
                     response: {
