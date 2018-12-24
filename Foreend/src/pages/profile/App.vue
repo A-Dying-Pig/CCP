@@ -88,12 +88,6 @@
                   </el-cascader>
                 </div>
 
-                <div class="send-message-select">
-                  <el-radio v-model="send_message_type" label=0>全部选手</el-radio>
-                  <!-- <el-radio v-model="send_message_type" label=1>当前阶段赛晋级选手</el-radio> -->
-                  <!-- <el-radio v-model="send_message_type" label=-1>当前阶段赛淘汰选手</el-radio> -->
-                </div>
-
                 <div class="send-message-input">
                   <div class="send-message-input-title">消息标题
                     <el-input
@@ -300,7 +294,6 @@
                 ],
                 send_message_title:'',
                 send_message_content:'',
-                send_message_type:-1,
             }
         },
         components: {
@@ -409,7 +402,6 @@
                 this.send_message_content = '';
                 this.send_message_title = '';
                 this.send_message_target = [];
-                this.send_message_type = -1;
                 this.send_message_contest = -1;
                 this.send_message_switch = 0;
             },
@@ -420,7 +412,6 @@
                 temp.content = this.send_message_content;
                 temp.target = {};
                 temp.target.id = this.send_message_target[this.send_message_target.length - 1];
-                //temp.target.type = Number(this.send_message_type);
                 console.log(temp);
                 let vm = this;
                 axios.post('/api/admin/broadcast',temp)

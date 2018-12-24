@@ -253,7 +253,7 @@
                         else{
                             //失败
                             vm.$message({
-                                message: response.data,
+                                message: response.data.msg,
                                 type: 'error'
                             });
                         }

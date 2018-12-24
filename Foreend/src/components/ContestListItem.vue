@@ -12,7 +12,7 @@
             <div class="super-button">
                 <el-button style="padding: 10px 5px" @click="$emit('new-contest-detail',contestid)">查看详情</el-button>
                 <div class="super-button-text">
-                    已报名<span class="super-button-number">{{enroll_number}}</span>人
+                    已报名<span class="super-button-number">{{enroll_number}}</span>队
                 </div>
             </div>
         </el-card>
@@ -64,11 +64,9 @@
         width: 50%;
     }
     .info-item{
-        overflow: hidden;
-        text-overflow:ellipsis;
-        white-space: nowrap;
         margin-top: 5px;
         margin-bottom: 5px;
+        word-break: break-all;
     }
     .title{
         font-weight: bold;
