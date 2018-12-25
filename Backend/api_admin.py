@@ -582,8 +582,10 @@ def getSubmitNum(request):
         if contest.admin_id != request.user.id:
             return JsonResponse({'msg': '当前用户不是本比赛管理员'})
         phase = ContestUtil.getCurrentPhase(contest_id)['phase']
-        result['submitnum'] = ContestGrade.objects.filter(contest_id=contest_id, phase=phase, work_name__isnull=False).count()
-        result['allnum'] = ContestGrade.objects.filter(contest_id=contest_id, phase=phase).count()
+        sub_values = ContestGrade.objects.filter(contest_id=contest_id, phase=phase, work_name__isnull=False).values("leader_id").annotate(count=Count("leader_id"))
+        all_sub_values = ContestGrade.objects.filter(contest_id=contest_id, phase=phase).values("leader_id").annotate(count=Count("leader_id"))
+        result['submitnum'] = sub_values.count()
+        result['allnum'] = all_sub_values.count()
         return JsonResponse(result)
     except:
         traceback.print_exc()
