@@ -10,7 +10,7 @@
                 <el-table :data="tableinfo" border style="width: 100%;">
                     <el-table-column prop="name" label="名称" fixed></el-table-column>
                     <el-table-column v-if="mode === 1" prop="email" label="邮箱"></el-table-column>
-                    <el-table-column v-for="(item,index) in tableinfo[0].stage" :formatter="stageForm" :label="'阶段'+index+'分数'" :key="item.key"></el-table-column>
+                    <el-table-column v-for="(item,index) in tableinfo[0].stage" :formatter="stageForm" :label="'阶段'+(index+1)+'分数'" :key="item.key"></el-table-column>
                     <template v-if="mode === 0">
                         <template v-for="(item,index) in tableinfo[0].person">
                             <el-table-column :formatter="nameForm" :label="'成员'+index+'名称'"  :key="item.key"></el-table-column>
@@ -56,8 +56,12 @@
         },
         methods:{
             stageForm:function (row, col) {
+                if(this.mode < 0 ) return;
                 let stagelist = row.stage;
                 let idx = this.tableheader.indexOf(col.label)-1;
+				if(this.mode===1) idx = idx - 1;
+                console.log(col.label,idx);
+                console.log(this.tableheader)
                 if((idx<0)||(idx>this.tableheader.length)) return;
                 return stagelist[idx];
             },
@@ -93,6 +97,7 @@
                             one['name']=item.username;
                             one['email']=item.email;
                             one['stage']=[];
+							console.log(item);
                             i=1;
                             for(let point of item.points){
                                 one['stage'].push(point);
@@ -162,7 +167,8 @@
                     self.tableheader.push('名称');
                     self.tableheader.push('邮箱');
                     for(let idx in self.tableinfo[0].stage){
-                        self.tableheader.push('阶段'+idx+'分数');
+                        let tidx = parseInt(idx) + 1;
+                        self.tableheader.push('阶段'+tidx+'分数');
                     }
                 }
                 else if(self.mode===0){
@@ -188,7 +194,8 @@
                     }
                     self.tableheader.push('名称');
                     for(let idx in self.tableinfo[0].stage){
-                        self.tableheader.push('阶段'+idx+'分数');
+                        let tidx = parseInt(idx) + 1;
+                        self.tableheader.push('阶段'+tidx+'分数');
                     }
                     for(let idx in self.tableinfo[0].person){
                         self.tableheader.push('成员'+idx+'名称');

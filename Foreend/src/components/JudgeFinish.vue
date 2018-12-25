@@ -43,10 +43,11 @@
         },
         created:function () {
             this.grades = [];
+			let self = this;
             axios.post('/api/judge/finished',{
                 contestid:this.contestid
             }).then(function (response) {
-                this.grades = response.data.grades;
+                self.grades = response.data.grades;
             })
         }
     }

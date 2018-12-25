@@ -68,7 +68,7 @@
             },
             total_page_num:{
                 Type:Number,
-                default:10
+                default:0
             },
             disdatap:{
                 Type:Array,
@@ -104,6 +104,7 @@
                         return
                     }
                     //self.onedis = response.data;
+					//self.total_page_num = response.data.total_page_num;
                     self.$emit('new-onedis',response.data);
                 }).catch(function (error) {
                     console.log(error)
@@ -115,6 +116,7 @@
             },
             towrite:function(){
                 this.isshowList.show = 2;
+				console.log('111',this.total_page_num);
             },
             handleCurrentChange:function (pagenum) {
                 //console.log(pagenum);
@@ -151,7 +153,6 @@
                     contestid:self.contestid
                 }).then(function (response) {
                     self.current_page_num = 1;
-                    self.total_page_num = 10;
                     self.disdata = [];
                     if(response.data.msg !== ''){
                         self.$message({
@@ -161,7 +162,8 @@
                         return
                     }
                     self.current_page_num = response.data.current_page_num;
-                    self.total_page_num = response.data.total_page_num;
+                    //self.total_page_num = response.data.total_page_num;
+					self.$emit('totalchange',response.data.total_page_num);
                     self.disdata = response.data.array;
                     for(let onedata of self.disdata){
                         onedata.fmissuetime = self.timeformat(onedata.issuetime);

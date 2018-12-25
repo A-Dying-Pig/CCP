@@ -1,6 +1,6 @@
 <template>
     <div>
-        <DiscussionList v-show="showtype.show === 0" :contestid="contestid" :showtype="showtype" :current_page_num="current_page_num" :total_page_num="total_page_num" :disdatap="disdata" :width="width" :onedis="onedis"
+        <DiscussionList  v-on:totalchange="total_page_num = $event" v-show="showtype.show === 0" :contestid="contestid" :showtype="showtype" :current_page_num="current_page_num" :total_page_num="total_page_num" :disdatap="disdata" :width="width" :onedis="onedis"
         @new-onedis="update_onedis"></DiscussionList>
         <DiscussionOnepage v-show="showtype.show === 1" :showtype="showtype" :contestid="contestid" :onedis="onedis"></DiscussionOnepage>
         <DiscussionWrite v-show="showtype.show === 2" :showtype="showtype" :contestid="contestid"></DiscussionWrite>
@@ -31,7 +31,7 @@
                     discussionid:0,
                 },
                 current_page_num:1,
-                total_page_num:10,
+                total_page_num:0,
                 disdata:[],
                 onedis:{
                         current_page_num:1,
@@ -54,7 +54,7 @@
         methods:{
             update_onedis:function (data) {
                 this.onedis = data;
-            }
+            },
 
         }
     }
