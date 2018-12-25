@@ -53,8 +53,8 @@ def participants(request):
             index = MAX_PARTICIPANT_ONE_PAGE * (page_num - 1)
             while index < min(MAX_PARTICIPANT_ONE_PAGE * page_num, participant_number):
                 single_team = {}
-                single_team['userId'] = parti_values[index].leader_id
-                player = CCPUser.objects.get(id=parti_values[index].leader_id)
+                single_team['userId'] = parti_values[index]['leader_id']
+                player = CCPUser.objects.get(id=parti_values[index]['leader_id'])
                 single_team['username'] = player.username
                 single_team['email'] = player.email
                 single_team['points'] = ContestGradeUtil.getGrade(leader_id=single_team['userId'], contest_id=contest_id)
@@ -75,10 +75,10 @@ def participants(request):
             index = MAX_PARTICIPANT_ONE_PAGE * (page_num - 1)
             while index < min(MAX_PARTICIPANT_ONE_PAGE * page_num, participant_number):
                 single_team = {}
-                single_team['captainId'] = parti_values[index].leader_id
-                single_team['captainName'] = ContestGroup.objects.get(contest_id=contest_id, leader_id=parti_values[index].leader_id).group_name
-                single_team['captainPoints'] = ContestGradeUtil.getGrade(leader_id=parti_values[index].leader_id, contest_id=contest_id)
-                single_team['group'] = ContestGroupUtil.getMember(leader_id=parti_values[index].leader_id, contest_id=contest_id)
+                single_team['captainId'] = parti_values[index]['leader_id']
+                single_team['captainName'] = ContestGroup.objects.get(contest_id=contest_id, leader_id=parti_values[index]['leader_id']).group_name
+                single_team['captainPoints'] = ContestGradeUtil.getGrade(leader_id=parti_values[index]['leader_id'], contest_id=contest_id)
+                single_team['group'] = ContestGroupUtil.getMember(leader_id=parti_values[index]['leader_id'], contest_id=contest_id)
                 result['array'].append(single_team)
                 index = index + 1
         return JsonResponse(result)
