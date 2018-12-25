@@ -189,6 +189,8 @@
                     }
                 }
 
+
+
                 //group info
                 if(this.enroll_table.comp_type === 0) {
                     if (this.group_info.group_name.length === 0) {
@@ -208,7 +210,7 @@
                 }
                 //person info
                 else{
-                    console.log('check person info');
+                    //console.log('check person info');
                 }
 
                 //extra info
@@ -227,9 +229,11 @@
                 //enroll_info.comp_type = this.enroll_table.comp_type;
                 if(this.enroll_table.comp_type === 0){
                     enroll_info.groupuser = this.group_info.group_member;
+                    enroll_info.groupname = this.group_info.group_name;
                 }
                 else{
                     enroll_info.groupuser = [];
+                    enroll_info.groupname = '';
                 }
                 //extra_info
                 enroll_info.custom_field = this.enroll_table.extra;
@@ -253,7 +257,7 @@
                         else{
                             //失败
                             vm.$message({
-                                message: response.data,
+                                message: response.data.msg,
                                 type: 'error'
                             });
                         }

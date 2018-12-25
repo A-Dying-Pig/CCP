@@ -88,12 +88,6 @@
                   </el-cascader>
                 </div>
 
-                <div class="send-message-select">
-                  <el-radio v-model="send_message_type" label=0>全部选手</el-radio>
-                  <!-- <el-radio v-model="send_message_type" label=1>当前阶段赛晋级选手</el-radio> -->
-                  <!-- <el-radio v-model="send_message_type" label=-1>当前阶段赛淘汰选手</el-radio> -->
-                </div>
-
                 <div class="send-message-input">
                   <div class="send-message-input-title">消息标题
                     <el-input
@@ -172,15 +166,9 @@
           <div v-if="message_switch === 0" class="message-list">
             <el-table :data="message_list.array" style="width: 100%">
           <el-table-column
-                  prop="messageId"
-                  label="序号"
-                  min-width="1"
-          >
-          </el-table-column>
-          <el-table-column
                   prop="context"
                   label="简介"
-                  min-width="6"
+                  min-width="8"
           >
           </el-table-column>
 
@@ -281,8 +269,6 @@
                     current_page_num:1,
                     total_page_num:1,
                     array:[
-                        {messageId:1,context:'报名成功',read:0},
-                        {messageId:2,context:'感谢您成为CCP网站用户',read:1}
                     ],
                 },
                 message_detail:{
@@ -296,11 +282,9 @@
                 send_message_target:[],
                 send_message_menu:[
                     {value:0,label:'所有选手'},
-                    {value:-1,label:'赛区',children: [{value:1,label:'上海'}]}
                 ],
                 send_message_title:'',
                 send_message_content:'',
-                send_message_type:-1,
             }
         },
         components: {
@@ -387,7 +371,6 @@
                 this.message_switch = 0;
             },
             SendMessageClicked:function (contest_id,index) {
-                console.log(contest_id);
                 this.send_message_contest = contest_id;
                 let len = this.competition.created_competition[index].list.length;
                 if (len !== 0){
@@ -409,7 +392,6 @@
                 this.send_message_content = '';
                 this.send_message_title = '';
                 this.send_message_target = [];
-                this.send_message_type = -1;
                 this.send_message_contest = -1;
                 this.send_message_switch = 0;
             },
@@ -420,7 +402,6 @@
                 temp.content = this.send_message_content;
                 temp.target = {};
                 temp.target.id = this.send_message_target[this.send_message_target.length - 1];
-                //temp.target.type = Number(this.send_message_type);
                 console.log(temp);
                 let vm = this;
                 axios.post('/api/admin/broadcast',temp)
@@ -478,10 +459,14 @@
     margin-bottom: 10px;
   }
   .message-detail-content{
+    margin-left: 30px;
+    margin-top: 20px;
     word-break: break-all;
   }
   .message-detail-title{
-      word-break: break-all;
+    word-break: break-all;
+    margin-left: 30px;
+    margin-top: 10px;
 
   }
 

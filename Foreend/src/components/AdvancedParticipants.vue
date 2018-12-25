@@ -272,30 +272,6 @@
                     })
                     .catch(error=>{
                         console.log(error);
-                        vm.participants = [
-                            {username:'1',grade:120,university:'ss',oldgrade:-1,reason:''},
-                            {username:'2',grade:12,university:'dss',oldgrade:-1,reason:''},
-                            {username:'3',grade:1122,university:'dss',oldgrade:-1,reason:''},
-                            {username:'4',grade:-1,university:'dss',oldgrade:-1,reason:''},
-                            {username:'5',grade:123,university:'dss',oldgrade:12,reason:'走后门打算打算的撒打算打算打算打算打算打算打算打算打算'},
-                            {username:'6',grade:32,university:'dss',oldgrade:-1,reason:''},
-                            {username:'7',grade:2,university:'dss',oldgrade:-1,reason:''},
-                            {username:'8',grade:37,university:'dss',oldgrade:-1,reason:''},
-                            {username:'9',grade:23213,university:'dss',oldgrade:-1,reason:''},
-                            {username:'10',grade:3,university:'dss',oldgrade:-1,reason:''},
-                            {username:'11',grade:43,university:'dss',oldgrade:-1,reason:''},
-                            {username:'12',grade:17,university:'dss',oldgrade:-1,reason:''},
-                        ];
-                        vm.already = -1;
-                        vm.participants_number = vm.participants.length;
-                        vm.SortParticipants();
-                        //default
-                        vm.current_participants = [].concat(vm.participants);
-                        vm.current_participants_number = vm.participants_number;
-                        vm.total_page = Math.ceil(vm.current_participants_number / vm.participants_per_page);
-                        if (vm.current_participants_number === 0 )
-                            vm.total_page = 1;
-                        vm.CurrentPageChange(1);
                     });
 
             },
