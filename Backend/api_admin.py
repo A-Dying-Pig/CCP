@@ -240,6 +240,8 @@ def setjudge(request):
             ContestGroup.objects.filter(Q(contest_id=contest_id) &
                 (Q(leader_id=request.user.id) | Q(member1_id=request.user.id) | Q(member2_id=request.user.id) | Q(member3_id=request.user.id) | Q(member4_id=request.user.id))):
             return JsonResponse({'msg': '比赛选手不能成为评委'})
+        if judge_id == request.user.id:
+            return JsonResponse({'msg': '比赛管理员不能成为评委'})
         if type == 0:
             contest_judge = ContestJudge()
             contest_judge.judge_id = judge_id
