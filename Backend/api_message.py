@@ -29,7 +29,7 @@ def getall(request):
             page = 1
         count = NotificationUser.objects.filter(user_id=request.user.id).count()
         total_page_num = (count - 1) // amount + 1
-        ntf = NotificationUser.objects.all()[(page-1)*amount: page*amount]
+        ntf = NotificationUser.objects.filter(user_id=request.user.id)[(page-1)*amount: page*amount]
         array = []
         for n in ntf:
             d = {}
@@ -56,8 +56,9 @@ def detail(request):
         mId = data['messageId']
         try:
             ntf = Notification.objects.get(id=mId)
-            nu = NotificationUser.objects.get(notification_id=mId)
-            if nu.user_id != request.user.id:
+            try:
+                nu = NotificationUser.objects.get(notification_id=mId, user_id=request.user.id)
+            except:
                 return JsonResponse({'msg': '此消息不属于该用户'})
             nu.read = True
             nu.save()
@@ -67,6 +68,7 @@ def detail(request):
                 'msg': ''
             })
         except:
+            traceback.print_exc()
             return JsonResponse({'msg': '您查找的消息不存在！'})
     except:
         traceback.print_exc()

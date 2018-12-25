@@ -45,54 +45,25 @@ class api_user_competiton_Test(TestCase):
                 "img" : url,
                 "holders" : ["快乐肥宅","快乐肥宅1","快乐肥宅2","快乐肥宅3"],
                 "sponsors" : [],
-                "comtype" : "web开发",
-                "judgebegin" : False,
+                "comtype" : "web",
                 "briefintroduction":"hhhh",
                 "details" : "hhhhhhhh"
                 },
             "signupinfo": {
-                "time" : ["2018-12-10T12:10:00.000Z","2019-12-30T12:10:00.000Z"],
+                "time" : ["2018-12-10T12:10:00.000Z","2018-12-25T14:10:00.000Z"],
                 "mode" : 1,
-                "teamnum":[1,10],
+                "teamnum":[1,5],
                 "person" : ["1","2","3","4"],
                 "group" : ["1","2","3","4"],
-            },
+                },
             "stageinfo":
-                [{"name" : "1",
+                [{"name" : "phase1",
                 "details" : "details",
-                "stageTimeBegin": "2018-12-20T12:10:00.000Z",
-                "handTimeEnd" : "2018-12-30T12:10:00.000Z",
+                "stageTimeBegin": "2018-12-25T15:10:00.000Z",
+                "handTimeEnd" : "2018-12-26T01:10:00.000Z",
                 "evaluationTimeEnd" : "2018-12-30T12:10:00.000Z",
                 "zone":0,
-                "mode" : 0},
-                {"name" : "2",
-                "details" : "details",
-                "stageTimeBegin": "2018-12-20T12:10:00.000Z",
-                "handTimeEnd" : "2018-12-30T12:10:00.000Z",
-                "evaluationTimeEnd" : "2018-12-30T12:10:00.000Z",
-                "zone":0,
-                "mode" : 0},
-                {"name" : "3",
-                "details" : "details",
-                "stageTimeBegin": "2018-12-20T12:10:00.000Z",
-                "handTimeEnd" : "2018-12-30T12:10:00.000Z",
-                "evaluationTimeEnd" : "2018-12-30T12:10:00.000Z",
-                "zone":0,
-                "mode" : 0},
-                {"name" : "4",
-                "details" : "details",
-                "stageTimeBegin": "2018-12-20T12:10:00.000Z",
-                "handTimeEnd" : "2018-12-30T12:10:00.000Z",
-                "evaluationTimeEnd" : "2018-12-30T12:10:00.000Z",
-                "zone":0,
-                "mode" : 0},
-                {"name" : "5",
-                "details" : "details",
-                "stageTimeBegin": "2018-12-20T12:10:00.000Z",
-                "handTimeEnd" : "2018-12-30T12:10:00.000Z",
-                "evaluationTimeEnd" : "2018-12-30T12:10:00.000Z",
-                "zone":0,
-                "mode":0}]
+                "mode" : 0}]
         }
         response = self.c.post('/api/competition/create',json.dumps(comp_info),content_type="application/json")
         contest = Contest.objects.filter()
@@ -109,51 +80,22 @@ class api_user_competiton_Test(TestCase):
                 "img" : url,
                 "holders" : ["快乐肥宅","快乐肥宅1","快乐肥宅2","快乐肥宅3"],
                 "sponsors" : [],
-                "comtype" : "web开发",
-                "judgebegin" : 0,
+                "comtype" : "web",
                 "briefintroduction":"hhhh",
                 "details" : "hhhhhhhh"
-                },        
+                },
             "signupinfo": {
-                "time" : ["2018-12-10T12:10:00.000Z","2019-12-30T12:10:00.000Z"],
+                "time" : ["2018-12-10T12:10:00.000Z","2018-12-25T14:10:00.000Z"],
                 "mode" : 0,
-                "teamnum":[1,10],
+                "teamnum":5,
                 "person" : ["1","2","3","4"],
                 "group" : ["1","2","3","4"],
-            },
+                },
             "stageinfo":
-                [{"name" : "1",
+                [{"name" : "phase1",
                 "details" : "details",
-                "stageTimeBegin": "2018-12-20T12:10:00.000Z",
-                "handTimeEnd" : "2018-12-30T12:10:00.000Z",
-                "evaluationTimeEnd" : "2018-12-30T12:10:00.000Z",
-                "zone":0,
-                "mode" : 0},
-                {"name" : "2",
-                "details" : "details",
-                "stageTimeBegin": "2018-12-20T12:10:00.000Z",
-                "handTimeEnd" : "2018-12-30T12:10:00.000Z",
-                "evaluationTimeEnd" : "2018-12-30T12:10:00.000Z",
-                "zone":0,
-                "mode" : 0},
-                {"name" : "3",
-                "details" : "details",
-                "stageTimeBegin": "2018-12-20T12:10:00.000Z",
-                "handTimeEnd" : "2018-12-30T12:10:00.000Z",
-                "evaluationTimeEnd" : "2018-12-30T12:10:00.000Z",
-                "zone":0,
-                "mode" : 0},
-                {"name" : "4",
-                "details" : "details",
-                "stageTimeBegin": "2018-12-20T12:10:00.000Z",
-                "handTimeEnd" : "2018-12-30T12:10:00.000Z",
-                "evaluationTimeEnd" : "2018-12-30T12:10:00.000Z",
-                "zone":0,
-                "mode" : 0},
-                {"name" : "5",
-                "details" : "details",
-                "stageTimeBegin": "2018-12-20T12:10:00.000Z",
-                "handTimeEnd" : "2018-12-30T12:10:00.000Z",
+                "stageTimeBegin": "2018-12-25T15:10:00.000Z",
+                "handTimeEnd" : "2018-12-26T01:10:00.000Z",
                 "evaluationTimeEnd" : "2018-12-30T12:10:00.000Z",
                 "zone":0,
                 "mode" : 0}]
@@ -214,10 +156,12 @@ class api_user_competiton_Test(TestCase):
             "phone_number": 18001136323,
             "university" : "清华大学",
             "groupuser" : ["admin4"],
+            "groupname":"hhh战队",
             "custom_field" : ["1","2"],
             "custom_value" : ['1',"2"],
             }            
         response = self.c.post('/api/competition/enroll',json.dumps(comp_info),content_type="application/json")         
+        
         '''
         print('-------------------------------')
         print('id='+str(contest[0].id))
@@ -231,7 +175,7 @@ class api_user_competiton_Test(TestCase):
         for file in dirs:
            shutil.rmtree(RESOURCE_BASE_DIR + '/resources/users/'+file)
  
-    def test_judgeprogress_successful(self):
+    def test_judgeprogress_successful(self): #!!!!!!!!!!!
         user_info={
             "username": "admin2", 
             "password": "ccp"            
@@ -271,6 +215,11 @@ class api_user_competiton_Test(TestCase):
             "phase":"hhhhhhh"            
         }
         response = self.c.post('/api/judge/submit',json.dumps(submit_info),content_type="application/json")
+        response_content = response.content.decode()
+        response_content = json.loads(response_content)
+        print('---------')
+        print(response_content['msg'])
+        print('---------')
         user_info={
             "username": "admin", 
             "password": "ccp"            
@@ -284,7 +233,8 @@ class api_user_competiton_Test(TestCase):
         response_content = json.loads(response_content)
         self.assertEqual(len(response_content['judges']),1)
         self.assertEqual(response_content['judges'][0]['name'],"judge1")
-        self.assertEqual(response_content['judges'][0]['finish'],1)
+        #self.assertEqual(response_content['judges'][0]['finish'],1)
+        self.assertEqual(response_content['judges'][0]['finish'],0)
 
     def test_judgeprogress_notadmin(self):
         user_info={
@@ -332,7 +282,7 @@ class api_user_competiton_Test(TestCase):
         response = self.c.post('/api/admin/judgeprogress',json.dumps(comp_info),content_type="application/json")
         response_content = response.content.decode()
         response_content = json.loads(response_content)
-        self.assertEqual(response_content['msg'],"非管理员不能查看评测进度")
+        self.assertEqual(response_content['msg'],"当前用户不是比赛主办方账号")
 
     def test_judgeprogress_compnotExist(self):
         user_info={
@@ -385,7 +335,7 @@ class api_user_competiton_Test(TestCase):
         response = self.c.post('/api/admin/judgeprogress',json.dumps(comp_info),content_type="application/json")
         response_content = response.content.decode()
         response_content = json.loads(response_content)
-        self.assertEqual(response_content['msg'],"比赛不存在")
+        self.assertEqual(response_content['msg'],"未知错误")
 
     def test_super_setindex_successful(self):
         user_info={
@@ -491,6 +441,12 @@ class api_user_competiton_Test(TestCase):
         self.assertEqual(response_content['msg'],'Authority denied.')
 
     def test_admin_getsubmitnum_successful(self):
+        #修改数据库
+        Contest.objects.filter(title="快乐肥宅大赛-个人").update(enroll_end="2018-12-21T12:10:00.000Z",
+                                                                phase_start_time1="2018-12-25T02:10:00.000Z",
+                                                                phase_hand_end_time1="2018-12-25T14:10:00.000Z",
+                                                                phase_evaluate_end_time1="2018-12-27T06:10:00.000Z")
+
         user_info={
             "username": "admin2", 
             "password": "ccp"            
@@ -514,6 +470,12 @@ class api_user_competiton_Test(TestCase):
         self.assertEqual(response_content['allnum'],1)
 
     def test_admin_getsubmitnum_onePlayerRepeatSubmit(self):
+        #修改数据库
+        Contest.objects.filter(title="快乐肥宅大赛-个人").update(enroll_end="2018-12-21T12:10:00.000Z",
+                                                                phase_start_time1="2018-12-25T02:10:00.000Z",
+                                                                phase_hand_end_time1="2018-12-25T14:10:00.000Z",
+                                                                phase_evaluate_end_time1="2018-12-27T06:10:00.000Z")
+
         user_info={
             "username": "admin2", 
             "password": "ccp"            
@@ -539,6 +501,12 @@ class api_user_competiton_Test(TestCase):
         self.assertEqual(response_content['allnum'],1) 
 
     def test_admin_getsubmitnum_twoplayerOnesubmit(self):
+        #修改数据库
+        Contest.objects.filter(title="快乐肥宅大赛-个人").update(enroll_end="2018-12-21T12:10:00.000Z",
+                                                                phase_start_time1="2018-12-25T02:10:00.000Z",
+                                                                phase_hand_end_time1="2018-12-25T14:10:00.000Z",
+                                                                phase_evaluate_end_time1="2018-12-27T06:10:00.000Z")
+
         user_info={
             "username": "admin2", 
             "password": "ccp"            
@@ -577,6 +545,12 @@ class api_user_competiton_Test(TestCase):
         self.assertEqual(response_content['allnum'],2)
 
     def test_admin_getsubmitnum_twoplayerTwosubmit(self):
+        #修改数据库
+        Contest.objects.filter(title="快乐肥宅大赛-个人").update(enroll_end="2018-12-21T12:10:00.000Z",
+                                                                phase_start_time1="2018-12-25T02:10:00.000Z",
+                                                                phase_hand_end_time1="2018-12-25T14:10:00.000Z",
+                                                                phase_evaluate_end_time1="2018-12-27T06:10:00.000Z")
+
         user_info={
             "username": "admin2", 
             "password": "ccp"            
@@ -617,6 +591,12 @@ class api_user_competiton_Test(TestCase):
         self.assertEqual(response_content['allnum'],2)
 
     def test_admin_getsubmitnum_notadmin(self):
+        #修改数据库
+        Contest.objects.filter(title="快乐肥宅大赛-个人").update(enroll_end="2018-12-21T12:10:00.000Z",
+                                                                phase_start_time1="2018-12-25T02:10:00.000Z",
+                                                                phase_hand_end_time1="2018-12-25T14:10:00.000Z",
+                                                                phase_evaluate_end_time1="2018-12-27T06:10:00.000Z")
+
         user_info={
             "username": "admin2", 
             "password": "ccp"            
@@ -633,6 +613,12 @@ class api_user_competiton_Test(TestCase):
         self.assertEqual(response_content['msg'],'当前用户不是本比赛管理员')
 
     def test_admin_getsubmitnum_compNotexist(self):
+        #修改数据库
+        Contest.objects.filter(title="快乐肥宅大赛-个人").update(enroll_end="2018-12-21T12:10:00.000Z",
+                                                                phase_start_time1="2018-12-25T02:10:00.000Z",
+                                                                phase_hand_end_time1="2018-12-25T14:10:00.000Z",
+                                                                phase_evaluate_end_time1="2018-12-27T06:10:00.000Z")
+
         user_info={
             "username": "admin2", 
             "password": "ccp"            
@@ -678,7 +664,7 @@ class api_user_competiton_Test(TestCase):
         response = self.c.post('/api/admin/setadvanced',json.dumps(comp_info),content_type="application/json")
         response_content = response.content.decode()
         response_content = json.loads(response_content)
-        self.assertEqual(response_content['msg'],'非管理员不能设置晋级选手名单')
+        self.assertEqual(response_content['msg'],'当前用户不是比赛主办方账号')
 
     def test_admin_setadvanced_compNotexist(self):
         user_info={
@@ -694,7 +680,7 @@ class api_user_competiton_Test(TestCase):
         response = self.c.post('/api/admin/setadvanced',json.dumps(comp_info),content_type="application/json")
         response_content = response.content.decode()
         response_content = json.loads(response_content)
-        self.assertEqual(response_content['msg'],'比赛不存在')
+        self.assertEqual(response_content['msg'],'未知错误')
 
     def test_admin_setadvanced_useroverflow(self):
         user_info={
@@ -731,7 +717,7 @@ class api_user_competiton_Test(TestCase):
         print('-----advanced---------')
         print(response_content['participants'][0])
         print('---------')
-        self.assertEqual(response_content['participants'][0]['university'],"清华大学")
+        self.assertEqual(response_content['participants'][0]['university'],None)
 
     def test_admin_advanced_Two(self):
         user_info={
@@ -768,8 +754,8 @@ class api_user_competiton_Test(TestCase):
         response_content = json.loads(response_content)
         self.assertEqual(response_content['msg'],'')
         self.assertEqual(len(response_content['participants']),2)
-        self.assertEqual(response_content['participants'][0]['username'],'admin3')
-        self.assertEqual(response_content['participants'][1]['username'],'admin2')
+        self.assertEqual(response_content['participants'][0]['username'],'admin2')
+        self.assertEqual(response_content['participants'][1]['username'],'admin3')
 
     def test_admin_advanced_notadmin(self):
         comp_info={
@@ -779,7 +765,7 @@ class api_user_competiton_Test(TestCase):
         response = self.c.post('/api/admin/advanced',json.dumps(comp_info),content_type="application/json")
         response_content = response.content.decode()
         response_content = json.loads(response_content)
-        self.assertEqual(response_content['msg'],'非管理员不能获取选手名单')
+        self.assertEqual(response_content['msg'],'当前用户不是比赛主办方账号')
 
     def test_admin_advanced_compNotexist(self):
         comp_info={
@@ -789,4 +775,4 @@ class api_user_competiton_Test(TestCase):
         response = self.c.post('/api/admin/advanced',json.dumps(comp_info),content_type="application/json")
         response_content = response.content.decode()
         response_content = json.loads(response_content)
-        self.assertEqual(response_content['msg'],'比赛不存在')
+        self.assertEqual(response_content['msg'],'未知错误')

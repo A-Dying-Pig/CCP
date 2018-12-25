@@ -1,0 +1,689 @@
+
+
+
+<!DOCTYPE html>
+<html>
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+    <title>Coverage report</title>
+    <link rel="stylesheet" href="style.css" type="text/css">
+    
+    <script type="text/javascript" src="jquery.min.js"></script>
+    <script type="text/javascript" src="jquery.ba-throttle-debounce.min.js"></script>
+    <script type="text/javascript" src="jquery.tablesorter.min.js"></script>
+    <script type="text/javascript" src="jquery.hotkeys.js"></script>
+    <script type="text/javascript" src="coverage_html.js"></script>
+    <script type="text/javascript">
+        jQuery(document).ready(coverage.index_ready);
+    </script>
+</head>
+<body class="indexfile">
+
+<div id="header">
+    <div class="content">
+        <h1>Coverage report:
+            <span class="pc_cov">53%</span>
+        </h1>
+
+        <img id="keyboard_icon" src="keybd_closed.png" alt="Show keyboard shortcuts" />
+
+        <form id="filter_container">
+            <input id="filter" type="text" value="" placeholder="filter..." />
+        </form>
+    </div>
+</div>
+
+<div class="help_panel">
+    <img id="panel_icon" src="keybd_open.png" alt="Hide keyboard shortcuts" />
+    <p class="legend">Hot-keys on this page</p>
+    <div>
+    <p class="keyhelp">
+        <span class="key">n</span>
+        <span class="key">s</span>
+        <span class="key">m</span>
+        <span class="key">x</span>
+        
+        <span class="key">c</span> &nbsp; change column sorting
+    </p>
+    </div>
+</div>
+
+<div id="index">
+    <table class="index">
+        <thead>
+            
+            <tr class="tablehead" title="Click to sort">
+                <th class="name left headerSortDown shortkey_n">Module</th>
+                <th class="shortkey_s">statements</th>
+                <th class="shortkey_m">missing</th>
+                <th class="shortkey_x">excluded</th>
+                
+                <th class="right shortkey_c">coverage</th>
+            </tr>
+        </thead>
+        
+        <tfoot>
+            <tr class="total">
+                <td class="name left">Total</td>
+                <td>9577</td>
+                <td>4457</td>
+                <td>0</td>
+                
+                <td class="right" data-ratio="5120 9577">53%</td>
+            </tr>
+        </tfoot>
+        <tbody>
+            
+            <tr class="file">
+                <td class="name left"><a href="_Users_Administrator_AppData_Roaming_Python_Python36_site-packages_dateutil___init___py.html">C:\Users\Administrator\AppData\Roaming\Python\Python36\site-packages\dateutil\__init__.py</a></td>
+                <td>5</td>
+                <td>2</td>
+                <td>0</td>
+                
+                <td class="right" data-ratio="3 5">60%</td>
+            </tr>
+            
+            <tr class="file">
+                <td class="name left"><a href="_Users_Administrator_AppData_Roaming_Python_Python36_site-packages_dateutil__version_py.html">C:\Users\Administrator\AppData\Roaming\Python\Python36\site-packages\dateutil\_version.py</a></td>
+                <td>1</td>
+                <td>0</td>
+                <td>0</td>
+                
+                <td class="right" data-ratio="1 1">100%</td>
+            </tr>
+            
+            <tr class="file">
+                <td class="name left"><a href="_Users_Administrator_AppData_Roaming_Python_Python36_site-packages_dateutil_tz___init___py.html">C:\Users\Administrator\AppData\Roaming\Python\Python36\site-packages\dateutil\tz\__init__.py</a></td>
+                <td>5</td>
+                <td>0</td>
+                <td>0</td>
+                
+                <td class="right" data-ratio="5 5">100%</td>
+            </tr>
+            
+            <tr class="file">
+                <td class="name left"><a href="_Users_Administrator_AppData_Roaming_Python_Python36_site-packages_dateutil_tz__common_py.html">C:\Users\Administrator\AppData\Roaming\Python\Python36\site-packages\dateutil\tz\_common.py</a></td>
+                <td>153</td>
+                <td>120</td>
+                <td>0</td>
+                
+                <td class="right" data-ratio="33 153">22%</td>
+            </tr>
+            
+            <tr class="file">
+                <td class="name left"><a href="_Users_Administrator_AppData_Roaming_Python_Python36_site-packages_dateutil_tz__factories_py.html">C:\Users\Administrator\AppData\Roaming\Python\Python36\site-packages\dateutil\tz\_factories.py</a></td>
+                <td>32</td>
+                <td>13</td>
+                <td>0</td>
+                
+                <td class="right" data-ratio="19 32">59%</td>
+            </tr>
+            
+            <tr class="file">
+                <td class="name left"><a href="_Users_Administrator_AppData_Roaming_Python_Python36_site-packages_dateutil_tz_tz_py.html">C:\Users\Administrator\AppData\Roaming\Python\Python36\site-packages\dateutil\tz\tz.py</a></td>
+                <td>760</td>
+                <td>617</td>
+                <td>0</td>
+                
+                <td class="right" data-ratio="143 760">19%</td>
+            </tr>
+            
+            <tr class="file">
+                <td class="name left"><a href="_Users_Administrator_AppData_Roaming_Python_Python36_site-packages_dateutil_tz_win_py.html">C:\Users\Administrator\AppData\Roaming\Python\Python36\site-packages\dateutil\tz\win.py</a></td>
+                <td>150</td>
+                <td>105</td>
+                <td>0</td>
+                
+                <td class="right" data-ratio="45 150">30%</td>
+            </tr>
+            
+            <tr class="file">
+                <td class="name left"><a href="_Users_Administrator_AppData_Roaming_Python_Python36_site-packages_pytz___init___py.html">C:\Users\Administrator\AppData\Roaming\Python\Python36\site-packages\pytz\__init__.py</a></td>
+                <td>189</td>
+                <td>85</td>
+                <td>0</td>
+                
+                <td class="right" data-ratio="104 189">55%</td>
+            </tr>
+            
+            <tr class="file">
+                <td class="name left"><a href="_Users_Administrator_AppData_Roaming_Python_Python36_site-packages_pytz_exceptions_py.html">C:\Users\Administrator\AppData\Roaming\Python\Python36\site-packages\pytz\exceptions.py</a></td>
+                <td>6</td>
+                <td>0</td>
+                <td>0</td>
+                
+                <td class="right" data-ratio="6 6">100%</td>
+            </tr>
+            
+            <tr class="file">
+                <td class="name left"><a href="_Users_Administrator_AppData_Roaming_Python_Python36_site-packages_pytz_lazy_py.html">C:\Users\Administrator\AppData\Roaming\Python\Python36\site-packages\pytz\lazy.py</a></td>
+                <td>100</td>
+                <td>42</td>
+                <td>0</td>
+                
+                <td class="right" data-ratio="58 100">58%</td>
+            </tr>
+            
+            <tr class="file">
+                <td class="name left"><a href="_Users_Administrator_AppData_Roaming_Python_Python36_site-packages_pytz_tzfile_py.html">C:\Users\Administrator\AppData\Roaming\Python\Python36\site-packages\pytz\tzfile.py</a></td>
+                <td>77</td>
+                <td>17</td>
+                <td>0</td>
+                
+                <td class="right" data-ratio="60 77">78%</td>
+            </tr>
+            
+            <tr class="file">
+                <td class="name left"><a href="_Users_Administrator_AppData_Roaming_Python_Python36_site-packages_pytz_tzinfo_py.html">C:\Users\Administrator\AppData\Roaming\Python\Python36\site-packages\pytz\tzinfo.py</a></td>
+                <td>178</td>
+                <td>96</td>
+                <td>0</td>
+                
+                <td class="right" data-ratio="82 178">46%</td>
+            </tr>
+            
+            <tr class="file">
+                <td class="name left"><a href="_Users_Administrator_AppData_Roaming_Python_Python36_site-packages_yaml___init___py.html">C:\Users\Administrator\AppData\Roaming\Python\Python36\site-packages\yaml\__init__.py</a></td>
+                <td>133</td>
+                <td>88</td>
+                <td>0</td>
+                
+                <td class="right" data-ratio="45 133">34%</td>
+            </tr>
+            
+            <tr class="file">
+                <td class="name left"><a href="_Users_Administrator_AppData_Roaming_Python_Python36_site-packages_yaml_composer_py.html">C:\Users\Administrator\AppData\Roaming\Python\Python36\site-packages\yaml\composer.py</a></td>
+                <td>92</td>
+                <td>76</td>
+                <td>0</td>
+                
+                <td class="right" data-ratio="16 92">17%</td>
+            </tr>
+            
+            <tr class="file">
+                <td class="name left"><a href="_Users_Administrator_AppData_Roaming_Python_Python36_site-packages_yaml_constructor_py.html">C:\Users\Administrator\AppData\Roaming\Python\Python36\site-packages\yaml\constructor.py</a></td>
+                <td>444</td>
+                <td>347</td>
+                <td>0</td>
+                
+                <td class="right" data-ratio="97 444">22%</td>
+            </tr>
+            
+            <tr class="file">
+                <td class="name left"><a href="_Users_Administrator_AppData_Roaming_Python_Python36_site-packages_yaml_cyaml_py.html">C:\Users\Administrator\AppData\Roaming\Python\Python36\site-packages\yaml\cyaml.py</a></td>
+                <td>36</td>
+                <td>34</td>
+                <td>0</td>
+                
+                <td class="right" data-ratio="2 36">6%</td>
+            </tr>
+            
+            <tr class="file">
+                <td class="name left"><a href="_Users_Administrator_AppData_Roaming_Python_Python36_site-packages_yaml_dumper_py.html">C:\Users\Administrator\AppData\Roaming\Python\Python36\site-packages\yaml\dumper.py</a></td>
+                <td>23</td>
+                <td>12</td>
+                <td>0</td>
+                
+                <td class="right" data-ratio="11 23">48%</td>
+            </tr>
+            
+            <tr class="file">
+                <td class="name left"><a href="_Users_Administrator_AppData_Roaming_Python_Python36_site-packages_yaml_emitter_py.html">C:\Users\Administrator\AppData\Roaming\Python\Python36\site-packages\yaml\emitter.py</a></td>
+                <td>838</td>
+                <td>769</td>
+                <td>0</td>
+                
+                <td class="right" data-ratio="69 838">8%</td>
+            </tr>
+            
+            <tr class="file">
+                <td class="name left"><a href="_Users_Administrator_AppData_Roaming_Python_Python36_site-packages_yaml_error_py.html">C:\Users\Administrator\AppData\Roaming\Python\Python36\site-packages\yaml\error.py</a></td>
+                <td>58</td>
+                <td>48</td>
+                <td>0</td>
+                
+                <td class="right" data-ratio="10 58">17%</td>
+            </tr>
+            
+            <tr class="file">
+                <td class="name left"><a href="_Users_Administrator_AppData_Roaming_Python_Python36_site-packages_yaml_events_py.html">C:\Users\Administrator\AppData\Roaming\Python\Python36\site-packages\yaml\events.py</a></td>
+                <td>61</td>
+                <td>32</td>
+                <td>0</td>
+                
+                <td class="right" data-ratio="29 61">48%</td>
+            </tr>
+            
+            <tr class="file">
+                <td class="name left"><a href="_Users_Administrator_AppData_Roaming_Python_Python36_site-packages_yaml_loader_py.html">C:\Users\Administrator\AppData\Roaming\Python\Python36\site-packages\yaml\loader.py</a></td>
+                <td>31</td>
+                <td>18</td>
+                <td>0</td>
+                
+                <td class="right" data-ratio="13 31">42%</td>
+            </tr>
+            
+            <tr class="file">
+                <td class="name left"><a href="_Users_Administrator_AppData_Roaming_Python_Python36_site-packages_yaml_nodes_py.html">C:\Users\Administrator\AppData\Roaming\Python\Python36\site-packages\yaml\nodes.py</a></td>
+                <td>29</td>
+                <td>17</td>
+                <td>0</td>
+                
+                <td class="right" data-ratio="12 29">41%</td>
+            </tr>
+            
+            <tr class="file">
+                <td class="name left"><a href="_Users_Administrator_AppData_Roaming_Python_Python36_site-packages_yaml_parser_py.html">C:\Users\Administrator\AppData\Roaming\Python\Python36\site-packages\yaml\parser.py</a></td>
+                <td>352</td>
+                <td>312</td>
+                <td>0</td>
+                
+                <td class="right" data-ratio="40 352">11%</td>
+            </tr>
+            
+            <tr class="file">
+                <td class="name left"><a href="_Users_Administrator_AppData_Roaming_Python_Python36_site-packages_yaml_reader_py.html">C:\Users\Administrator\AppData\Roaming\Python\Python36\site-packages\yaml\reader.py</a></td>
+                <td>122</td>
+                <td>105</td>
+                <td>0</td>
+                
+                <td class="right" data-ratio="17 122">14%</td>
+            </tr>
+            
+            <tr class="file">
+                <td class="name left"><a href="_Users_Administrator_AppData_Roaming_Python_Python36_site-packages_yaml_representer_py.html">C:\Users\Administrator\AppData\Roaming\Python\Python36\site-packages\yaml\representer.py</a></td>
+                <td>244</td>
+                <td>174</td>
+                <td>0</td>
+                
+                <td class="right" data-ratio="70 244">29%</td>
+            </tr>
+            
+            <tr class="file">
+                <td class="name left"><a href="_Users_Administrator_AppData_Roaming_Python_Python36_site-packages_yaml_resolver_py.html">C:\Users\Administrator\AppData\Roaming\Python\Python36\site-packages\yaml\resolver.py</a></td>
+                <td>134</td>
+                <td>97</td>
+                <td>0</td>
+                
+                <td class="right" data-ratio="37 134">28%</td>
+            </tr>
+            
+            <tr class="file">
+                <td class="name left"><a href="_Users_Administrator_AppData_Roaming_Python_Python36_site-packages_yaml_scanner_py.html">C:\Users\Administrator\AppData\Roaming\Python\Python36\site-packages\yaml\scanner.py</a></td>
+                <td>759</td>
+                <td>678</td>
+                <td>0</td>
+                
+                <td class="right" data-ratio="81 759">11%</td>
+            </tr>
+            
+            <tr class="file">
+                <td class="name left"><a href="_Users_Administrator_AppData_Roaming_Python_Python36_site-packages_yaml_serializer_py.html">C:\Users\Administrator\AppData\Roaming\Python\Python36\site-packages\yaml\serializer.py</a></td>
+                <td>85</td>
+                <td>70</td>
+                <td>0</td>
+                
+                <td class="right" data-ratio="15 85">18%</td>
+            </tr>
+            
+            <tr class="file">
+                <td class="name left"><a href="_Users_Administrator_AppData_Roaming_Python_Python36_site-packages_yaml_tokens_py.html">C:\Users\Administrator\AppData\Roaming\Python\Python36\site-packages\yaml\tokens.py</a></td>
+                <td>76</td>
+                <td>27</td>
+                <td>0</td>
+                
+                <td class="right" data-ratio="49 76">64%</td>
+            </tr>
+            
+            <tr class="file">
+                <td class="name left"><a href="Backend___init___py.html">Backend\__init__.py</a></td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                
+                <td class="right" data-ratio="0 0">100%</td>
+            </tr>
+            
+            <tr class="file">
+                <td class="name left"><a href="Backend_admin_py.html">Backend\admin.py</a></td>
+                <td>4</td>
+                <td>0</td>
+                <td>0</td>
+                
+                <td class="right" data-ratio="4 4">100%</td>
+            </tr>
+            
+            <tr class="file">
+                <td class="name left"><a href="Backend_api_admin_py.html">Backend\api_admin.py</a></td>
+                <td>525</td>
+                <td>130</td>
+                <td>0</td>
+                
+                <td class="right" data-ratio="395 525">75%</td>
+            </tr>
+            
+            <tr class="file">
+                <td class="name left"><a href="Backend_api_competition_py.html">Backend\api_competition.py</a></td>
+                <td>524</td>
+                <td>93</td>
+                <td>0</td>
+                
+                <td class="right" data-ratio="431 524">82%</td>
+            </tr>
+            
+            <tr class="file">
+                <td class="name left"><a href="Backend_api_info_py.html">Backend\api_info.py</a></td>
+                <td>5</td>
+                <td>0</td>
+                <td>0</td>
+                
+                <td class="right" data-ratio="5 5">100%</td>
+            </tr>
+            
+            <tr class="file">
+                <td class="name left"><a href="Backend_api_judge_py.html">Backend\api_judge.py</a></td>
+                <td>59</td>
+                <td>14</td>
+                <td>0</td>
+                
+                <td class="right" data-ratio="45 59">76%</td>
+            </tr>
+            
+            <tr class="file">
+                <td class="name left"><a href="Backend_api_mail_py.html">Backend\api_mail.py</a></td>
+                <td>16</td>
+                <td>0</td>
+                <td>0</td>
+                
+                <td class="right" data-ratio="16 16">100%</td>
+            </tr>
+            
+            <tr class="file">
+                <td class="name left"><a href="Backend_api_message_py.html">Backend\api_message.py</a></td>
+                <td>57</td>
+                <td>14</td>
+                <td>0</td>
+                
+                <td class="right" data-ratio="43 57">75%</td>
+            </tr>
+            
+            <tr class="file">
+                <td class="name left"><a href="Backend_api_superadmin_py.html">Backend\api_superadmin.py</a></td>
+                <td>148</td>
+                <td>19</td>
+                <td>0</td>
+                
+                <td class="right" data-ratio="129 148">87%</td>
+            </tr>
+            
+            <tr class="file">
+                <td class="name left"><a href="Backend_api_user_py.html">Backend\api_user.py</a></td>
+                <td>203</td>
+                <td>40</td>
+                <td>0</td>
+                
+                <td class="right" data-ratio="163 203">80%</td>
+            </tr>
+            
+            <tr class="file">
+                <td class="name left"><a href="Backend_migrations_0001_initial_py.html">Backend\migrations\0001_initial.py</a></td>
+                <td>8</td>
+                <td>0</td>
+                <td>0</td>
+                
+                <td class="right" data-ratio="8 8">100%</td>
+            </tr>
+            
+            <tr class="file">
+                <td class="name left"><a href="Backend_migrations___init___py.html">Backend\migrations\__init__.py</a></td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                
+                <td class="right" data-ratio="0 0">100%</td>
+            </tr>
+            
+            <tr class="file">
+                <td class="name left"><a href="Backend_models_py.html">Backend\models.py</a></td>
+                <td>184</td>
+                <td>0</td>
+                <td>0</td>
+                
+                <td class="right" data-ratio="184 184">100%</td>
+            </tr>
+            
+            <tr class="file">
+                <td class="name left"><a href="Backend_test_admin_py.html">Backend\test_admin.py</a></td>
+                <td>522</td>
+                <td>12</td>
+                <td>0</td>
+                
+                <td class="right" data-ratio="510 522">98%</td>
+            </tr>
+            
+            <tr class="file">
+                <td class="name left"><a href="Backend_test_admin2_py.html">Backend\test_admin2.py</a></td>
+                <td>352</td>
+                <td>14</td>
+                <td>0</td>
+                
+                <td class="right" data-ratio="338 352">96%</td>
+            </tr>
+            
+            <tr class="file">
+                <td class="name left"><a href="Backend_test_competition_py.html">Backend\test_competition.py</a></td>
+                <td>369</td>
+                <td>8</td>
+                <td>0</td>
+                
+                <td class="right" data-ratio="361 369">98%</td>
+            </tr>
+            
+            <tr class="file">
+                <td class="name left"><a href="Backend_test_competition2_py.html">Backend\test_competition2.py</a></td>
+                <td>286</td>
+                <td>9</td>
+                <td>0</td>
+                
+                <td class="right" data-ratio="277 286">97%</td>
+            </tr>
+            
+            <tr class="file">
+                <td class="name left"><a href="Backend_test_judge_py.html">Backend\test_judge.py</a></td>
+                <td>286</td>
+                <td>8</td>
+                <td>0</td>
+                
+                <td class="right" data-ratio="278 286">97%</td>
+            </tr>
+            
+            <tr class="file">
+                <td class="name left"><a href="Backend_test_message_py.html">Backend\test_message.py</a></td>
+                <td>148</td>
+                <td>0</td>
+                <td>0</td>
+                
+                <td class="right" data-ratio="148 148">100%</td>
+            </tr>
+            
+            <tr class="file">
+                <td class="name left"><a href="Backend_test_uesrProfile_py.html">Backend\test_uesrProfile.py</a></td>
+                <td>61</td>
+                <td>0</td>
+                <td>0</td>
+                
+                <td class="right" data-ratio="61 61">100%</td>
+            </tr>
+            
+            <tr class="file">
+                <td class="name left"><a href="Backend_tests_py.html">Backend\tests.py</a></td>
+                <td>290</td>
+                <td>0</td>
+                <td>0</td>
+                
+                <td class="right" data-ratio="290 290">100%</td>
+            </tr>
+            
+            <tr class="file">
+                <td class="name left"><a href="Backend_urls_py.html">Backend\urls.py</a></td>
+                <td>9</td>
+                <td>0</td>
+                <td>0</td>
+                
+                <td class="right" data-ratio="9 9">100%</td>
+            </tr>
+            
+            <tr class="file">
+                <td class="name left"><a href="Backend_utils_py.html">Backend\utils.py</a></td>
+                <td>253</td>
+                <td>62</td>
+                <td>0</td>
+                
+                <td class="right" data-ratio="191 253">75%</td>
+            </tr>
+            
+            <tr class="file">
+                <td class="name left"><a href="Files___init___py.html">Files\__init__.py</a></td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                
+                <td class="right" data-ratio="0 0">100%</td>
+            </tr>
+            
+            <tr class="file">
+                <td class="name left"><a href="Files_admin_py.html">Files\admin.py</a></td>
+                <td>1</td>
+                <td>0</td>
+                <td>0</td>
+                
+                <td class="right" data-ratio="1 1">100%</td>
+            </tr>
+            
+            <tr class="file">
+                <td class="name left"><a href="Files_models_py.html">Files\models.py</a></td>
+                <td>1</td>
+                <td>0</td>
+                <td>0</td>
+                
+                <td class="right" data-ratio="1 1">100%</td>
+            </tr>
+            
+            <tr class="file">
+                <td class="name left"><a href="Files_tests_py.html">Files\tests.py</a></td>
+                <td>1</td>
+                <td>0</td>
+                <td>0</td>
+                
+                <td class="right" data-ratio="1 1">100%</td>
+            </tr>
+            
+            <tr class="file">
+                <td class="name left"><a href="Files_views_py.html">Files\views.py</a></td>
+                <td>13</td>
+                <td>8</td>
+                <td>0</td>
+                
+                <td class="right" data-ratio="5 13">38%</td>
+            </tr>
+            
+            <tr class="file">
+                <td class="name left"><a href="Foreend___init___py.html">Foreend\__init__.py</a></td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                
+                <td class="right" data-ratio="0 0">100%</td>
+            </tr>
+            
+            <tr class="file">
+                <td class="name left"><a href="Foreend_admin_py.html">Foreend\admin.py</a></td>
+                <td>1</td>
+                <td>0</td>
+                <td>0</td>
+                
+                <td class="right" data-ratio="1 1">100%</td>
+            </tr>
+            
+            <tr class="file">
+                <td class="name left"><a href="Foreend_models_py.html">Foreend\models.py</a></td>
+                <td>1</td>
+                <td>0</td>
+                <td>0</td>
+                
+                <td class="right" data-ratio="1 1">100%</td>
+            </tr>
+            
+            <tr class="file">
+                <td class="name left"><a href="Foreend_tests_py.html">Foreend\tests.py</a></td>
+                <td>1</td>
+                <td>0</td>
+                <td>0</td>
+                
+                <td class="right" data-ratio="1 1">100%</td>
+            </tr>
+            
+            <tr class="file">
+                <td class="name left"><a href="Foreend_views_py.html">Foreend\views.py</a></td>
+                <td>43</td>
+                <td>25</td>
+                <td>0</td>
+                
+                <td class="right" data-ratio="18 43">42%</td>
+            </tr>
+            
+            <tr class="file">
+                <td class="name left"><a href="Kernal___init___py.html">Kernal\__init__.py</a></td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                
+                <td class="right" data-ratio="0 0">100%</td>
+            </tr>
+            
+            <tr class="file">
+                <td class="name left"><a href="Kernal_settings_py.html">Kernal\settings.py</a></td>
+                <td>22</td>
+                <td>0</td>
+                <td>0</td>
+                
+                <td class="right" data-ratio="22 22">100%</td>
+            </tr>
+            
+            <tr class="file">
+                <td class="name left"><a href="Kernal_urls_py.html">Kernal\urls.py</a></td>
+                <td>5</td>
+                <td>0</td>
+                <td>0</td>
+                
+                <td class="right" data-ratio="5 5">100%</td>
+            </tr>
+            
+            <tr class="file">
+                <td class="name left"><a href="manage_py.html">manage.py</a></td>
+                <td>6</td>
+                <td>0</td>
+                <td>0</td>
+                
+                <td class="right" data-ratio="6 6">100%</td>
+            </tr>
+            
+        </tbody>
+    </table>
+
+    <p id="no_rows">
+        No items found using the specified filter.
+    </p>
+</div>
+
+<div id="footer">
+    <div class="content">
+        <p>
+            <a class="nav" href="https://coverage.readthedocs.io">coverage.py v4.5.2</a>,
+            created at 2018-12-24 21:42
+        </p>
+    </div>
+</div>
+
+</body>
+</html>

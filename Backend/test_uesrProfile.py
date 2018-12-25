@@ -54,7 +54,7 @@ class api_user_competiton_Test(TestCase):
             "signupinfo": {
                 "time" : ["2018-12-10T12:10:00.000Z","2018-12-30T12:10:00.000Z"],
                 "mode" : 1,
-                "teamnum":[1,10],
+                "teamnum":5,
                 "person" : ["1","2","3","4"],
                 "group" : ["1","2","3","4"],
                 },
@@ -129,7 +129,7 @@ class api_user_competiton_Test(TestCase):
             "signupinfo": {
                 "time" : ["2018-12-10T12:10:00.000Z","2018-12-30T12:10:00.000Z"],
                 "mode" : 1,
-                "teamnum":[1,10],
+                "teamnum":5,
                 "person" : ["1","2","3","4"],
                 "group" : ["1","2","3","4"],
                 },

@@ -1,0 +1,541 @@
+
+
+
+<!DOCTYPE html>
+<html>
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+    
+    
+    <meta http-equiv="X-UA-Compatible" content="IE=emulateIE7" />
+    <title>Coverage for Backend\models.py: 100%</title>
+    <link rel="stylesheet" href="style.css" type="text/css">
+    
+    <script type="text/javascript" src="jquery.min.js"></script>
+    <script type="text/javascript" src="jquery.hotkeys.js"></script>
+    <script type="text/javascript" src="jquery.isonscreen.js"></script>
+    <script type="text/javascript" src="coverage_html.js"></script>
+    <script type="text/javascript">
+        jQuery(document).ready(coverage.pyfile_ready);
+    </script>
+</head>
+<body class="pyfile">
+
+<div id="header">
+    <div class="content">
+        <h1>Coverage for <b>Backend\models.py</b> :
+            <span class="pc_cov">100%</span>
+        </h1>
+
+        <img id="keyboard_icon" src="keybd_closed.png" alt="Show keyboard shortcuts" />
+
+        <h2 class="stats">
+            184 statements &nbsp;
+            <span class="run hide_run shortkey_r button_toggle_run">184 run</span>
+            <span class="mis shortkey_m button_toggle_mis">0 missing</span>
+            <span class="exc shortkey_x button_toggle_exc">0 excluded</span>
+
+            
+        </h2>
+    </div>
+</div>
+
+<div class="help_panel">
+    <img id="panel_icon" src="keybd_open.png" alt="Hide keyboard shortcuts" />
+    <p class="legend">Hot-keys on this page</p>
+    <div>
+    <p class="keyhelp">
+        <span class="key">r</span>
+        <span class="key">m</span>
+        <span class="key">x</span>
+        <span class="key">p</span> &nbsp; toggle line displays
+    </p>
+    <p class="keyhelp">
+        <span class="key">j</span>
+        <span class="key">k</span> &nbsp; next/prev highlighted chunk
+    </p>
+    <p class="keyhelp">
+        <span class="key">0</span> &nbsp; (zero) top of page
+    </p>
+    <p class="keyhelp">
+        <span class="key">1</span> &nbsp; (one) first highlighted chunk
+    </p>
+    </div>
+</div>
+
+<div id="source">
+    <table>
+        <tr>
+            <td class="linenos">
+<p id="n1" class="stm run hide_run"><a href="#n1">1</a></p>
+<p id="n2" class="stm run hide_run"><a href="#n2">2</a></p>
+<p id="n3" class="pln"><a href="#n3">3</a></p>
+<p id="n4" class="pln"><a href="#n4">4</a></p>
+<p id="n5" class="stm run hide_run"><a href="#n5">5</a></p>
+<p id="n6" class="stm run hide_run"><a href="#n6">6</a></p>
+<p id="n7" class="stm run hide_run"><a href="#n7">7</a></p>
+<p id="n8" class="stm run hide_run"><a href="#n8">8</a></p>
+<p id="n9" class="stm run hide_run"><a href="#n9">9</a></p>
+<p id="n10" class="stm run hide_run"><a href="#n10">10</a></p>
+<p id="n11" class="stm run hide_run"><a href="#n11">11</a></p>
+<p id="n12" class="stm run hide_run"><a href="#n12">12</a></p>
+<p id="n13" class="pln"><a href="#n13">13</a></p>
+<p id="n14" class="pln"><a href="#n14">14</a></p>
+<p id="n15" class="stm run hide_run"><a href="#n15">15</a></p>
+<p id="n16" class="stm run hide_run"><a href="#n16">16</a></p>
+<p id="n17" class="stm run hide_run"><a href="#n17">17</a></p>
+<p id="n18" class="stm run hide_run"><a href="#n18">18</a></p>
+<p id="n19" class="stm run hide_run"><a href="#n19">19</a></p>
+<p id="n20" class="stm run hide_run"><a href="#n20">20</a></p>
+<p id="n21" class="pln"><a href="#n21">21</a></p>
+<p id="n22" class="pln"><a href="#n22">22</a></p>
+<p id="n23" class="stm run hide_run"><a href="#n23">23</a></p>
+<p id="n24" class="stm run hide_run"><a href="#n24">24</a></p>
+<p id="n25" class="stm run hide_run"><a href="#n25">25</a></p>
+<p id="n26" class="stm run hide_run"><a href="#n26">26</a></p>
+<p id="n27" class="pln"><a href="#n27">27</a></p>
+<p id="n28" class="pln"><a href="#n28">28</a></p>
+<p id="n29" class="stm run hide_run"><a href="#n29">29</a></p>
+<p id="n30" class="stm run hide_run"><a href="#n30">30</a></p>
+<p id="n31" class="stm run hide_run"><a href="#n31">31</a></p>
+<p id="n32" class="stm run hide_run"><a href="#n32">32</a></p>
+<p id="n33" class="stm run hide_run"><a href="#n33">33</a></p>
+<p id="n34" class="stm run hide_run"><a href="#n34">34</a></p>
+<p id="n35" class="stm run hide_run"><a href="#n35">35</a></p>
+<p id="n36" class="stm run hide_run"><a href="#n36">36</a></p>
+<p id="n37" class="stm run hide_run"><a href="#n37">37</a></p>
+<p id="n38" class="stm run hide_run"><a href="#n38">38</a></p>
+<p id="n39" class="stm run hide_run"><a href="#n39">39</a></p>
+<p id="n40" class="stm run hide_run"><a href="#n40">40</a></p>
+<p id="n41" class="stm run hide_run"><a href="#n41">41</a></p>
+<p id="n42" class="stm run hide_run"><a href="#n42">42</a></p>
+<p id="n43" class="stm run hide_run"><a href="#n43">43</a></p>
+<p id="n44" class="stm run hide_run"><a href="#n44">44</a></p>
+<p id="n45" class="stm run hide_run"><a href="#n45">45</a></p>
+<p id="n46" class="stm run hide_run"><a href="#n46">46</a></p>
+<p id="n47" class="stm run hide_run"><a href="#n47">47</a></p>
+<p id="n48" class="stm run hide_run"><a href="#n48">48</a></p>
+<p id="n49" class="stm run hide_run"><a href="#n49">49</a></p>
+<p id="n50" class="stm run hide_run"><a href="#n50">50</a></p>
+<p id="n51" class="stm run hide_run"><a href="#n51">51</a></p>
+<p id="n52" class="stm run hide_run"><a href="#n52">52</a></p>
+<p id="n53" class="stm run hide_run"><a href="#n53">53</a></p>
+<p id="n54" class="pln"><a href="#n54">54</a></p>
+<p id="n55" class="pln"><a href="#n55">55</a></p>
+<p id="n56" class="pln"><a href="#n56">56</a></p>
+<p id="n57" class="pln"><a href="#n57">57</a></p>
+<p id="n58" class="pln"><a href="#n58">58</a></p>
+<p id="n59" class="stm run hide_run"><a href="#n59">59</a></p>
+<p id="n60" class="stm run hide_run"><a href="#n60">60</a></p>
+<p id="n61" class="stm run hide_run"><a href="#n61">61</a></p>
+<p id="n62" class="stm run hide_run"><a href="#n62">62</a></p>
+<p id="n63" class="stm run hide_run"><a href="#n63">63</a></p>
+<p id="n64" class="stm run hide_run"><a href="#n64">64</a></p>
+<p id="n65" class="stm run hide_run"><a href="#n65">65</a></p>
+<p id="n66" class="stm run hide_run"><a href="#n66">66</a></p>
+<p id="n67" class="stm run hide_run"><a href="#n67">67</a></p>
+<p id="n68" class="stm run hide_run"><a href="#n68">68</a></p>
+<p id="n69" class="stm run hide_run"><a href="#n69">69</a></p>
+<p id="n70" class="stm run hide_run"><a href="#n70">70</a></p>
+<p id="n71" class="stm run hide_run"><a href="#n71">71</a></p>
+<p id="n72" class="stm run hide_run"><a href="#n72">72</a></p>
+<p id="n73" class="stm run hide_run"><a href="#n73">73</a></p>
+<p id="n74" class="stm run hide_run"><a href="#n74">74</a></p>
+<p id="n75" class="stm run hide_run"><a href="#n75">75</a></p>
+<p id="n76" class="stm run hide_run"><a href="#n76">76</a></p>
+<p id="n77" class="stm run hide_run"><a href="#n77">77</a></p>
+<p id="n78" class="stm run hide_run"><a href="#n78">78</a></p>
+<p id="n79" class="stm run hide_run"><a href="#n79">79</a></p>
+<p id="n80" class="stm run hide_run"><a href="#n80">80</a></p>
+<p id="n81" class="stm run hide_run"><a href="#n81">81</a></p>
+<p id="n82" class="stm run hide_run"><a href="#n82">82</a></p>
+<p id="n83" class="stm run hide_run"><a href="#n83">83</a></p>
+<p id="n84" class="stm run hide_run"><a href="#n84">84</a></p>
+<p id="n85" class="stm run hide_run"><a href="#n85">85</a></p>
+<p id="n86" class="pln"><a href="#n86">86</a></p>
+<p id="n87" class="pln"><a href="#n87">87</a></p>
+<p id="n88" class="pln"><a href="#n88">88</a></p>
+<p id="n89" class="stm run hide_run"><a href="#n89">89</a></p>
+<p id="n90" class="stm run hide_run"><a href="#n90">90</a></p>
+<p id="n91" class="stm run hide_run"><a href="#n91">91</a></p>
+<p id="n92" class="stm run hide_run"><a href="#n92">92</a></p>
+<p id="n93" class="stm run hide_run"><a href="#n93">93</a></p>
+<p id="n94" class="stm run hide_run"><a href="#n94">94</a></p>
+<p id="n95" class="stm run hide_run"><a href="#n95">95</a></p>
+<p id="n96" class="stm run hide_run"><a href="#n96">96</a></p>
+<p id="n97" class="stm run hide_run"><a href="#n97">97</a></p>
+<p id="n98" class="stm run hide_run"><a href="#n98">98</a></p>
+<p id="n99" class="stm run hide_run"><a href="#n99">99</a></p>
+<p id="n100" class="stm run hide_run"><a href="#n100">100</a></p>
+<p id="n101" class="stm run hide_run"><a href="#n101">101</a></p>
+<p id="n102" class="stm run hide_run"><a href="#n102">102</a></p>
+<p id="n103" class="stm run hide_run"><a href="#n103">103</a></p>
+<p id="n104" class="pln"><a href="#n104">104</a></p>
+<p id="n105" class="pln"><a href="#n105">105</a></p>
+<p id="n106" class="pln"><a href="#n106">106</a></p>
+<p id="n107" class="pln"><a href="#n107">107</a></p>
+<p id="n108" class="stm run hide_run"><a href="#n108">108</a></p>
+<p id="n109" class="stm run hide_run"><a href="#n109">109</a></p>
+<p id="n110" class="stm run hide_run"><a href="#n110">110</a></p>
+<p id="n111" class="stm run hide_run"><a href="#n111">111</a></p>
+<p id="n112" class="stm run hide_run"><a href="#n112">112</a></p>
+<p id="n113" class="stm run hide_run"><a href="#n113">113</a></p>
+<p id="n114" class="stm run hide_run"><a href="#n114">114</a></p>
+<p id="n115" class="stm run hide_run"><a href="#n115">115</a></p>
+<p id="n116" class="stm run hide_run"><a href="#n116">116</a></p>
+<p id="n117" class="stm run hide_run"><a href="#n117">117</a></p>
+<p id="n118" class="stm run hide_run"><a href="#n118">118</a></p>
+<p id="n119" class="stm run hide_run"><a href="#n119">119</a></p>
+<p id="n120" class="stm run hide_run"><a href="#n120">120</a></p>
+<p id="n121" class="stm run hide_run"><a href="#n121">121</a></p>
+<p id="n122" class="stm run hide_run"><a href="#n122">122</a></p>
+<p id="n123" class="stm run hide_run"><a href="#n123">123</a></p>
+<p id="n124" class="stm run hide_run"><a href="#n124">124</a></p>
+<p id="n125" class="stm run hide_run"><a href="#n125">125</a></p>
+<p id="n126" class="stm run hide_run"><a href="#n126">126</a></p>
+<p id="n127" class="stm run hide_run"><a href="#n127">127</a></p>
+<p id="n128" class="pln"><a href="#n128">128</a></p>
+<p id="n129" class="pln"><a href="#n129">129</a></p>
+<p id="n130" class="pln"><a href="#n130">130</a></p>
+<p id="n131" class="pln"><a href="#n131">131</a></p>
+<p id="n132" class="stm run hide_run"><a href="#n132">132</a></p>
+<p id="n133" class="stm run hide_run"><a href="#n133">133</a></p>
+<p id="n134" class="stm run hide_run"><a href="#n134">134</a></p>
+<p id="n135" class="stm run hide_run"><a href="#n135">135</a></p>
+<p id="n136" class="stm run hide_run"><a href="#n136">136</a></p>
+<p id="n137" class="stm run hide_run"><a href="#n137">137</a></p>
+<p id="n138" class="stm run hide_run"><a href="#n138">138</a></p>
+<p id="n139" class="stm run hide_run"><a href="#n139">139</a></p>
+<p id="n140" class="stm run hide_run"><a href="#n140">140</a></p>
+<p id="n141" class="stm run hide_run"><a href="#n141">141</a></p>
+<p id="n142" class="pln"><a href="#n142">142</a></p>
+<p id="n143" class="pln"><a href="#n143">143</a></p>
+<p id="n144" class="pln"><a href="#n144">144</a></p>
+<p id="n145" class="stm run hide_run"><a href="#n145">145</a></p>
+<p id="n146" class="stm run hide_run"><a href="#n146">146</a></p>
+<p id="n147" class="stm run hide_run"><a href="#n147">147</a></p>
+<p id="n148" class="stm run hide_run"><a href="#n148">148</a></p>
+<p id="n149" class="stm run hide_run"><a href="#n149">149</a></p>
+<p id="n150" class="stm run hide_run"><a href="#n150">150</a></p>
+<p id="n151" class="stm run hide_run"><a href="#n151">151</a></p>
+<p id="n152" class="stm run hide_run"><a href="#n152">152</a></p>
+<p id="n153" class="stm run hide_run"><a href="#n153">153</a></p>
+<p id="n154" class="pln"><a href="#n154">154</a></p>
+<p id="n155" class="stm run hide_run"><a href="#n155">155</a></p>
+<p id="n156" class="stm run hide_run"><a href="#n156">156</a></p>
+<p id="n157" class="stm run hide_run"><a href="#n157">157</a></p>
+<p id="n158" class="stm run hide_run"><a href="#n158">158</a></p>
+<p id="n159" class="stm run hide_run"><a href="#n159">159</a></p>
+<p id="n160" class="stm run hide_run"><a href="#n160">160</a></p>
+<p id="n161" class="stm run hide_run"><a href="#n161">161</a></p>
+<p id="n162" class="stm run hide_run"><a href="#n162">162</a></p>
+<p id="n163" class="pln"><a href="#n163">163</a></p>
+<p id="n164" class="pln"><a href="#n164">164</a></p>
+<p id="n165" class="stm run hide_run"><a href="#n165">165</a></p>
+<p id="n166" class="stm run hide_run"><a href="#n166">166</a></p>
+<p id="n167" class="stm run hide_run"><a href="#n167">167</a></p>
+<p id="n168" class="stm run hide_run"><a href="#n168">168</a></p>
+<p id="n169" class="stm run hide_run"><a href="#n169">169</a></p>
+<p id="n170" class="stm run hide_run"><a href="#n170">170</a></p>
+<p id="n171" class="pln"><a href="#n171">171</a></p>
+<p id="n172" class="pln"><a href="#n172">172</a></p>
+<p id="n173" class="stm run hide_run"><a href="#n173">173</a></p>
+<p id="n174" class="stm run hide_run"><a href="#n174">174</a></p>
+<p id="n175" class="stm run hide_run"><a href="#n175">175</a></p>
+<p id="n176" class="stm run hide_run"><a href="#n176">176</a></p>
+<p id="n177" class="stm run hide_run"><a href="#n177">177</a></p>
+<p id="n178" class="stm run hide_run"><a href="#n178">178</a></p>
+<p id="n179" class="pln"><a href="#n179">179</a></p>
+<p id="n180" class="pln"><a href="#n180">180</a></p>
+<p id="n181" class="stm run hide_run"><a href="#n181">181</a></p>
+<p id="n182" class="stm run hide_run"><a href="#n182">182</a></p>
+<p id="n183" class="stm run hide_run"><a href="#n183">183</a></p>
+<p id="n184" class="stm run hide_run"><a href="#n184">184</a></p>
+<p id="n185" class="stm run hide_run"><a href="#n185">185</a></p>
+<p id="n186" class="pln"><a href="#n186">186</a></p>
+<p id="n187" class="pln"><a href="#n187">187</a></p>
+<p id="n188" class="stm run hide_run"><a href="#n188">188</a></p>
+<p id="n189" class="stm run hide_run"><a href="#n189">189</a></p>
+<p id="n190" class="stm run hide_run"><a href="#n190">190</a></p>
+<p id="n191" class="stm run hide_run"><a href="#n191">191</a></p>
+<p id="n192" class="stm run hide_run"><a href="#n192">192</a></p>
+<p id="n193" class="stm run hide_run"><a href="#n193">193</a></p>
+<p id="n194" class="pln"><a href="#n194">194</a></p>
+<p id="n195" class="pln"><a href="#n195">195</a></p>
+<p id="n196" class="stm run hide_run"><a href="#n196">196</a></p>
+<p id="n197" class="stm run hide_run"><a href="#n197">197</a></p>
+<p id="n198" class="stm run hide_run"><a href="#n198">198</a></p>
+<p id="n199" class="stm run hide_run"><a href="#n199">199</a></p>
+<p id="n200" class="stm run hide_run"><a href="#n200">200</a></p>
+<p id="n201" class="stm run hide_run"><a href="#n201">201</a></p>
+<p id="n202" class="stm run hide_run"><a href="#n202">202</a></p>
+<p id="n203" class="stm run hide_run"><a href="#n203">203</a></p>
+<p id="n204" class="stm run hide_run"><a href="#n204">204</a></p>
+<p id="n205" class="stm run hide_run"><a href="#n205">205</a></p>
+<p id="n206" class="stm run hide_run"><a href="#n206">206</a></p>
+<p id="n207" class="stm run hide_run"><a href="#n207">207</a></p>
+<p id="n208" class="pln"><a href="#n208">208</a></p>
+<p id="n209" class="pln"><a href="#n209">209</a></p>
+<p id="n210" class="stm run hide_run"><a href="#n210">210</a></p>
+<p id="n211" class="stm run hide_run"><a href="#n211">211</a></p>
+<p id="n212" class="stm run hide_run"><a href="#n212">212</a></p>
+<p id="n213" class="stm run hide_run"><a href="#n213">213</a></p>
+<p id="n214" class="stm run hide_run"><a href="#n214">214</a></p>
+<p id="n215" class="stm run hide_run"><a href="#n215">215</a></p>
+<p id="n216" class="stm run hide_run"><a href="#n216">216</a></p>
+<p id="n217" class="stm run hide_run"><a href="#n217">217</a></p>
+<p id="n218" class="pln"><a href="#n218">218</a></p>
+<p id="n219" class="pln"><a href="#n219">219</a></p>
+<p id="n220" class="stm run hide_run"><a href="#n220">220</a></p>
+<p id="n221" class="stm run hide_run"><a href="#n221">221</a></p>
+<p id="n222" class="stm run hide_run"><a href="#n222">222</a></p>
+<p id="n223" class="stm run hide_run"><a href="#n223">223</a></p>
+<p id="n224" class="stm run hide_run"><a href="#n224">224</a></p>
+<p id="n225" class="stm run hide_run"><a href="#n225">225</a></p>
+<p id="n226" class="stm run hide_run"><a href="#n226">226</a></p>
+
+            </td>
+            <td class="text">
+<p id="t1" class="stm run hide_run"><span class="key">from</span> <span class="nam">django</span><span class="op">.</span><span class="nam">db</span> <span class="key">import</span> <span class="nam">models</span><span class="strut">&nbsp;</span></p>
+<p id="t2" class="stm run hide_run"><span class="key">from</span> <span class="nam">django</span><span class="op">.</span><span class="nam">contrib</span><span class="op">.</span><span class="nam">auth</span><span class="op">.</span><span class="nam">models</span> <span class="key">import</span> <span class="nam">AbstractUser</span><span class="strut">&nbsp;</span></p>
+<p id="t3" class="pln"><span class="strut">&nbsp;</span></p>
+<p id="t4" class="pln"><span class="com"># &#29992;&#25143;&#20449;&#24687;&#24635;&#34920;</span><span class="strut">&nbsp;</span></p>
+<p id="t5" class="stm run hide_run"><span class="key">class</span> <span class="nam">CCPUser</span><span class="op">(</span><span class="nam">AbstractUser</span><span class="op">)</span><span class="op">:</span><span class="strut">&nbsp;</span></p>
+<p id="t6" class="stm run hide_run">    <span class="nam">birthday</span> <span class="op">=</span> <span class="nam">models</span><span class="op">.</span><span class="nam">DateTimeField</span><span class="op">(</span><span class="nam">blank</span><span class="op">=</span><span class="key">True</span><span class="op">,</span> <span class="nam">null</span><span class="op">=</span><span class="key">True</span><span class="op">)</span>  <span class="com"># &#29983;&#26085;</span><span class="strut">&nbsp;</span></p>
+<p id="t7" class="stm run hide_run">    <span class="nam">introduction</span> <span class="op">=</span> <span class="nam">models</span><span class="op">.</span><span class="nam">CharField</span><span class="op">(</span><span class="nam">max_length</span><span class="op">=</span><span class="num">64</span><span class="op">,</span> <span class="nam">blank</span><span class="op">=</span><span class="key">True</span><span class="op">,</span> <span class="nam">null</span><span class="op">=</span><span class="key">True</span><span class="op">)</span>  <span class="com"># &#20010;&#20154;&#31616;&#20171;</span><span class="strut">&nbsp;</span></p>
+<p id="t8" class="stm run hide_run">    <span class="nam">university</span> <span class="op">=</span> <span class="nam">models</span><span class="op">.</span><span class="nam">CharField</span><span class="op">(</span><span class="nam">max_length</span><span class="op">=</span><span class="num">64</span><span class="op">,</span> <span class="nam">null</span><span class="op">=</span><span class="key">True</span><span class="op">)</span><span class="strut">&nbsp;</span></p>
+<p id="t9" class="stm run hide_run">    <span class="nam">province</span> <span class="op">=</span> <span class="nam">models</span><span class="op">.</span><span class="nam">CharField</span><span class="op">(</span><span class="nam">max_length</span><span class="op">=</span><span class="num">32</span><span class="op">,</span> <span class="nam">null</span><span class="op">=</span><span class="key">True</span><span class="op">)</span><span class="strut">&nbsp;</span></p>
+<p id="t10" class="stm run hide_run">    <span class="nam">city</span> <span class="op">=</span> <span class="nam">models</span><span class="op">.</span><span class="nam">CharField</span><span class="op">(</span><span class="nam">max_length</span><span class="op">=</span><span class="num">32</span><span class="op">,</span> <span class="nam">null</span><span class="op">=</span><span class="key">True</span><span class="op">)</span><span class="strut">&nbsp;</span></p>
+<p id="t11" class="stm run hide_run">    <span class="key">class</span> <span class="nam">Meta</span><span class="op">:</span><span class="strut">&nbsp;</span></p>
+<p id="t12" class="stm run hide_run">        <span class="nam">db_table</span> <span class="op">=</span> <span class="str">"CCPUser"</span><span class="strut">&nbsp;</span></p>
+<p id="t13" class="pln"><span class="strut">&nbsp;</span></p>
+<p id="t14" class="pln"><span class="com"># &#27604;&#36187;&#20449;&#24687;&#24635;&#34920;</span><span class="strut">&nbsp;</span></p>
+<p id="t15" class="stm run hide_run"><span class="key">class</span> <span class="nam">Contest</span><span class="op">(</span><span class="nam">models</span><span class="op">.</span><span class="nam">Model</span><span class="op">)</span><span class="op">:</span><span class="strut">&nbsp;</span></p>
+<p id="t16" class="stm run hide_run">    <span class="nam">title</span> <span class="op">=</span> <span class="nam">models</span><span class="op">.</span><span class="nam">CharField</span><span class="op">(</span><span class="nam">max_length</span><span class="op">=</span><span class="num">32</span><span class="op">,</span> <span class="nam">unique</span><span class="op">=</span><span class="key">True</span><span class="op">)</span>  <span class="com"># &#27604;&#36187;&#21517;&#31216;</span><span class="strut">&nbsp;</span></p>
+<p id="t17" class="stm run hide_run">    <span class="nam">category</span> <span class="op">=</span> <span class="nam">models</span><span class="op">.</span><span class="nam">CharField</span><span class="op">(</span><span class="nam">max_length</span><span class="op">=</span><span class="num">32</span><span class="op">,</span> <span class="nam">db_index</span><span class="op">=</span><span class="key">True</span><span class="op">)</span>  <span class="com"># &#27604;&#36187;&#31867;&#21035;</span><span class="strut">&nbsp;</span></p>
+<p id="t18" class="stm run hide_run">    <span class="nam">grouped</span> <span class="op">=</span> <span class="nam">models</span><span class="op">.</span><span class="nam">BooleanField</span><span class="op">(</span><span class="nam">default</span><span class="op">=</span><span class="key">False</span><span class="op">,</span> <span class="nam">db_index</span><span class="op">=</span><span class="key">True</span><span class="op">)</span>  <span class="com"># &#26159;&#21542;&#38656;&#35201;&#32452;&#38431;&#21442;&#36187;</span><span class="strut">&nbsp;</span></p>
+<p id="t19" class="stm run hide_run">    <span class="nam">group_min_number</span> <span class="op">=</span> <span class="nam">models</span><span class="op">.</span><span class="nam">IntegerField</span><span class="op">(</span><span class="nam">blank</span><span class="op">=</span><span class="key">True</span><span class="op">,</span> <span class="nam">null</span><span class="op">=</span><span class="key">True</span><span class="op">)</span>  <span class="com"># &#32452;&#38431;&#26368;&#23567;&#20154;&#25968;</span><span class="strut">&nbsp;</span></p>
+<p id="t20" class="stm run hide_run">    <span class="nam">group_max_number</span> <span class="op">=</span> <span class="nam">models</span><span class="op">.</span><span class="nam">IntegerField</span><span class="op">(</span><span class="nam">blank</span><span class="op">=</span><span class="key">True</span><span class="op">,</span> <span class="nam">null</span><span class="op">=</span><span class="key">True</span><span class="op">)</span>  <span class="com"># &#32452;&#38431;&#26368;&#22823;&#20154;&#25968;</span><span class="strut">&nbsp;</span></p>
+<p id="t21" class="pln">    <span class="com"># start_time = models.DateTimeField()  # &#27604;&#36187;&#24320;&#22987;&#26102;&#38388;</span><span class="strut">&nbsp;</span></p>
+<p id="t22" class="pln">    <span class="com"># end_time = models.DateTimeField()  # &#27604;&#36187;&#32467;&#26463;&#26102;&#38388;</span><span class="strut">&nbsp;</span></p>
+<p id="t23" class="stm run hide_run">    <span class="nam">enroll_start</span> <span class="op">=</span> <span class="nam">models</span><span class="op">.</span><span class="nam">DateTimeField</span><span class="op">(</span><span class="nam">db_index</span><span class="op">=</span><span class="key">True</span><span class="op">)</span>  <span class="com"># &#25253;&#21517;&#24320;&#22987;&#26102;&#38388;</span><span class="strut">&nbsp;</span></p>
+<p id="t24" class="stm run hide_run">    <span class="nam">enroll_end</span> <span class="op">=</span> <span class="nam">models</span><span class="op">.</span><span class="nam">DateTimeField</span><span class="op">(</span><span class="nam">db_index</span><span class="op">=</span><span class="key">True</span><span class="op">)</span>  <span class="com"># &#25253;&#21517;&#32467;&#26463;&#26102;&#38388;</span><span class="strut">&nbsp;</span></p>
+<p id="t25" class="stm run hide_run">    <span class="nam">information</span> <span class="op">=</span> <span class="nam">models</span><span class="op">.</span><span class="nam">TextField</span><span class="op">(</span><span class="op">)</span>  <span class="com"># &#27604;&#36187;&#35814;&#24773;</span><span class="strut">&nbsp;</span></p>
+<p id="t26" class="stm run hide_run">    <span class="nam">brief_introduction</span> <span class="op">=</span> <span class="nam">models</span><span class="op">.</span><span class="nam">CharField</span><span class="op">(</span><span class="nam">max_length</span><span class="op">=</span><span class="num">128</span><span class="op">)</span>  <span class="com"># &#27604;&#36187;&#31616;&#20171;</span><span class="strut">&nbsp;</span></p>
+<p id="t27" class="pln">    <span class="com"># phase = models.CharField(max_length=512, blank=True)  # &#27604;&#36187;&#38454;&#27573;</span><span class="strut">&nbsp;</span></p>
+<p id="t28" class="pln">    <span class="com"># phase_start_time = models.CharField(max_length=512, blank=True, null=True)  # &#21508;&#38454;&#27573;&#24320;&#22987;&#26102;&#38388;</span><span class="strut">&nbsp;</span></p>
+<p id="t29" class="stm run hide_run">    <span class="nam">phase_name1</span> <span class="op">=</span> <span class="nam">models</span><span class="op">.</span><span class="nam">CharField</span><span class="op">(</span><span class="nam">max_length</span><span class="op">=</span><span class="num">32</span><span class="op">,</span> <span class="nam">blank</span><span class="op">=</span><span class="key">True</span><span class="op">,</span> <span class="nam">null</span><span class="op">=</span><span class="key">True</span><span class="op">)</span>  <span class="com"># &#21508;&#38454;&#27573;&#21517;&#31216;</span><span class="strut">&nbsp;</span></p>
+<p id="t30" class="stm run hide_run">    <span class="nam">phase_name2</span> <span class="op">=</span> <span class="nam">models</span><span class="op">.</span><span class="nam">CharField</span><span class="op">(</span><span class="nam">max_length</span><span class="op">=</span><span class="num">32</span><span class="op">,</span> <span class="nam">blank</span><span class="op">=</span><span class="key">True</span><span class="op">,</span> <span class="nam">null</span><span class="op">=</span><span class="key">True</span><span class="op">)</span><span class="strut">&nbsp;</span></p>
+<p id="t31" class="stm run hide_run">    <span class="nam">phase_name3</span> <span class="op">=</span> <span class="nam">models</span><span class="op">.</span><span class="nam">CharField</span><span class="op">(</span><span class="nam">max_length</span><span class="op">=</span><span class="num">32</span><span class="op">,</span> <span class="nam">blank</span><span class="op">=</span><span class="key">True</span><span class="op">,</span> <span class="nam">null</span><span class="op">=</span><span class="key">True</span><span class="op">)</span><span class="strut">&nbsp;</span></p>
+<p id="t32" class="stm run hide_run">    <span class="nam">phase_name4</span> <span class="op">=</span> <span class="nam">models</span><span class="op">.</span><span class="nam">CharField</span><span class="op">(</span><span class="nam">max_length</span><span class="op">=</span><span class="num">32</span><span class="op">,</span> <span class="nam">blank</span><span class="op">=</span><span class="key">True</span><span class="op">,</span> <span class="nam">null</span><span class="op">=</span><span class="key">True</span><span class="op">)</span><span class="strut">&nbsp;</span></p>
+<p id="t33" class="stm run hide_run">    <span class="nam">phase_name5</span> <span class="op">=</span> <span class="nam">models</span><span class="op">.</span><span class="nam">CharField</span><span class="op">(</span><span class="nam">max_length</span><span class="op">=</span><span class="num">32</span><span class="op">,</span> <span class="nam">blank</span><span class="op">=</span><span class="key">True</span><span class="op">,</span> <span class="nam">null</span><span class="op">=</span><span class="key">True</span><span class="op">)</span><span class="strut">&nbsp;</span></p>
+<p id="t34" class="stm run hide_run">    <span class="nam">phase_start_time1</span> <span class="op">=</span> <span class="nam">models</span><span class="op">.</span><span class="nam">DateTimeField</span><span class="op">(</span><span class="nam">blank</span><span class="op">=</span><span class="key">True</span><span class="op">,</span> <span class="nam">null</span><span class="op">=</span><span class="key">True</span><span class="op">)</span>  <span class="com"># &#27599;&#20010;&#38454;&#27573;&#30340;&#24320;&#22987;&#26102;&#38388;</span><span class="strut">&nbsp;</span></p>
+<p id="t35" class="stm run hide_run">    <span class="nam">phase_start_time2</span> <span class="op">=</span> <span class="nam">models</span><span class="op">.</span><span class="nam">DateTimeField</span><span class="op">(</span><span class="nam">blank</span><span class="op">=</span><span class="key">True</span><span class="op">,</span> <span class="nam">null</span><span class="op">=</span><span class="key">True</span><span class="op">)</span><span class="strut">&nbsp;</span></p>
+<p id="t36" class="stm run hide_run">    <span class="nam">phase_start_time3</span> <span class="op">=</span> <span class="nam">models</span><span class="op">.</span><span class="nam">DateTimeField</span><span class="op">(</span><span class="nam">blank</span><span class="op">=</span><span class="key">True</span><span class="op">,</span> <span class="nam">null</span><span class="op">=</span><span class="key">True</span><span class="op">)</span><span class="strut">&nbsp;</span></p>
+<p id="t37" class="stm run hide_run">    <span class="nam">phase_start_time4</span> <span class="op">=</span> <span class="nam">models</span><span class="op">.</span><span class="nam">DateTimeField</span><span class="op">(</span><span class="nam">blank</span><span class="op">=</span><span class="key">True</span><span class="op">,</span> <span class="nam">null</span><span class="op">=</span><span class="key">True</span><span class="op">)</span><span class="strut">&nbsp;</span></p>
+<p id="t38" class="stm run hide_run">    <span class="nam">phase_start_time5</span> <span class="op">=</span> <span class="nam">models</span><span class="op">.</span><span class="nam">DateTimeField</span><span class="op">(</span><span class="nam">blank</span><span class="op">=</span><span class="key">True</span><span class="op">,</span> <span class="nam">null</span><span class="op">=</span><span class="key">True</span><span class="op">)</span><span class="strut">&nbsp;</span></p>
+<p id="t39" class="stm run hide_run">    <span class="nam">phase_hand_end_time1</span> <span class="op">=</span> <span class="nam">models</span><span class="op">.</span><span class="nam">DateTimeField</span><span class="op">(</span><span class="nam">blank</span><span class="op">=</span><span class="key">True</span><span class="op">,</span> <span class="nam">null</span><span class="op">=</span><span class="key">True</span><span class="op">)</span>  <span class="com"># &#27599;&#20010;&#38454;&#27573;&#36873;&#25163;&#19978;&#20132;&#20316;&#21697;&#25130;&#27490;&#26102;&#38388;</span><span class="strut">&nbsp;</span></p>
+<p id="t40" class="stm run hide_run">    <span class="nam">phase_hand_end_time2</span> <span class="op">=</span> <span class="nam">models</span><span class="op">.</span><span class="nam">DateTimeField</span><span class="op">(</span><span class="nam">blank</span><span class="op">=</span><span class="key">True</span><span class="op">,</span> <span class="nam">null</span><span class="op">=</span><span class="key">True</span><span class="op">)</span><span class="strut">&nbsp;</span></p>
+<p id="t41" class="stm run hide_run">    <span class="nam">phase_hand_end_time3</span> <span class="op">=</span> <span class="nam">models</span><span class="op">.</span><span class="nam">DateTimeField</span><span class="op">(</span><span class="nam">blank</span><span class="op">=</span><span class="key">True</span><span class="op">,</span> <span class="nam">null</span><span class="op">=</span><span class="key">True</span><span class="op">)</span><span class="strut">&nbsp;</span></p>
+<p id="t42" class="stm run hide_run">    <span class="nam">phase_hand_end_time4</span> <span class="op">=</span> <span class="nam">models</span><span class="op">.</span><span class="nam">DateTimeField</span><span class="op">(</span><span class="nam">blank</span><span class="op">=</span><span class="key">True</span><span class="op">,</span> <span class="nam">null</span><span class="op">=</span><span class="key">True</span><span class="op">)</span><span class="strut">&nbsp;</span></p>
+<p id="t43" class="stm run hide_run">    <span class="nam">phase_hand_end_time5</span> <span class="op">=</span> <span class="nam">models</span><span class="op">.</span><span class="nam">DateTimeField</span><span class="op">(</span><span class="nam">blank</span><span class="op">=</span><span class="key">True</span><span class="op">,</span> <span class="nam">null</span><span class="op">=</span><span class="key">True</span><span class="op">)</span><span class="strut">&nbsp;</span></p>
+<p id="t44" class="stm run hide_run">    <span class="nam">phase_evaluate_end_time1</span> <span class="op">=</span> <span class="nam">models</span><span class="op">.</span><span class="nam">DateTimeField</span><span class="op">(</span><span class="nam">blank</span><span class="op">=</span><span class="key">True</span><span class="op">,</span> <span class="nam">null</span><span class="op">=</span><span class="key">True</span><span class="op">)</span>  <span class="com"># &#27599;&#20010;&#38454;&#27573;&#35780;&#27979;&#25130;&#27490;&#26102;&#38388;</span><span class="strut">&nbsp;</span></p>
+<p id="t45" class="stm run hide_run">    <span class="nam">phase_evaluate_end_time2</span> <span class="op">=</span> <span class="nam">models</span><span class="op">.</span><span class="nam">DateTimeField</span><span class="op">(</span><span class="nam">blank</span><span class="op">=</span><span class="key">True</span><span class="op">,</span> <span class="nam">null</span><span class="op">=</span><span class="key">True</span><span class="op">)</span><span class="strut">&nbsp;</span></p>
+<p id="t46" class="stm run hide_run">    <span class="nam">phase_evaluate_end_time3</span> <span class="op">=</span> <span class="nam">models</span><span class="op">.</span><span class="nam">DateTimeField</span><span class="op">(</span><span class="nam">blank</span><span class="op">=</span><span class="key">True</span><span class="op">,</span> <span class="nam">null</span><span class="op">=</span><span class="key">True</span><span class="op">)</span><span class="strut">&nbsp;</span></p>
+<p id="t47" class="stm run hide_run">    <span class="nam">phase_evaluate_end_time4</span> <span class="op">=</span> <span class="nam">models</span><span class="op">.</span><span class="nam">DateTimeField</span><span class="op">(</span><span class="nam">blank</span><span class="op">=</span><span class="key">True</span><span class="op">,</span> <span class="nam">null</span><span class="op">=</span><span class="key">True</span><span class="op">)</span><span class="strut">&nbsp;</span></p>
+<p id="t48" class="stm run hide_run">    <span class="nam">phase_evaluate_end_time5</span> <span class="op">=</span> <span class="nam">models</span><span class="op">.</span><span class="nam">DateTimeField</span><span class="op">(</span><span class="nam">blank</span><span class="op">=</span><span class="key">True</span><span class="op">,</span> <span class="nam">null</span><span class="op">=</span><span class="key">True</span><span class="op">)</span><span class="strut">&nbsp;</span></p>
+<p id="t49" class="stm run hide_run">    <span class="nam">phase_information1</span> <span class="op">=</span> <span class="nam">models</span><span class="op">.</span><span class="nam">CharField</span><span class="op">(</span><span class="nam">max_length</span><span class="op">=</span><span class="num">128</span><span class="op">,</span> <span class="nam">blank</span><span class="op">=</span><span class="key">True</span><span class="op">,</span> <span class="nam">null</span><span class="op">=</span><span class="key">True</span><span class="op">)</span>  <span class="com"># &#27599;&#20010;&#27604;&#36187;&#38454;&#27573;&#30340;&#35814;&#24773;</span><span class="strut">&nbsp;</span></p>
+<p id="t50" class="stm run hide_run">    <span class="nam">phase_information2</span> <span class="op">=</span> <span class="nam">models</span><span class="op">.</span><span class="nam">CharField</span><span class="op">(</span><span class="nam">max_length</span><span class="op">=</span><span class="num">128</span><span class="op">,</span> <span class="nam">blank</span><span class="op">=</span><span class="key">True</span><span class="op">,</span> <span class="nam">null</span><span class="op">=</span><span class="key">True</span><span class="op">)</span><span class="strut">&nbsp;</span></p>
+<p id="t51" class="stm run hide_run">    <span class="nam">phase_information3</span> <span class="op">=</span> <span class="nam">models</span><span class="op">.</span><span class="nam">CharField</span><span class="op">(</span><span class="nam">max_length</span><span class="op">=</span><span class="num">128</span><span class="op">,</span> <span class="nam">blank</span><span class="op">=</span><span class="key">True</span><span class="op">,</span> <span class="nam">null</span><span class="op">=</span><span class="key">True</span><span class="op">)</span><span class="strut">&nbsp;</span></p>
+<p id="t52" class="stm run hide_run">    <span class="nam">phase_information4</span> <span class="op">=</span> <span class="nam">models</span><span class="op">.</span><span class="nam">CharField</span><span class="op">(</span><span class="nam">max_length</span><span class="op">=</span><span class="num">128</span><span class="op">,</span> <span class="nam">blank</span><span class="op">=</span><span class="key">True</span><span class="op">,</span> <span class="nam">null</span><span class="op">=</span><span class="key">True</span><span class="op">)</span><span class="strut">&nbsp;</span></p>
+<p id="t53" class="stm run hide_run">    <span class="nam">phase_information5</span> <span class="op">=</span> <span class="nam">models</span><span class="op">.</span><span class="nam">CharField</span><span class="op">(</span><span class="nam">max_length</span><span class="op">=</span><span class="num">128</span><span class="op">,</span> <span class="nam">blank</span><span class="op">=</span><span class="key">True</span><span class="op">,</span> <span class="nam">null</span><span class="op">=</span><span class="key">True</span><span class="op">)</span><span class="strut">&nbsp;</span></p>
+<p id="t54" class="pln">    <span class="com"># phase_mode1 = models.CharField(max_length=16, blank=True, null=True)  # &#21508;&#38454;&#27573;&#35780;&#27979;&#26041;&#24335;</span><span class="strut">&nbsp;</span></p>
+<p id="t55" class="pln">    <span class="com"># phase_mode2 = models.CharField(max_length=16, blank=True, null=True)</span><span class="strut">&nbsp;</span></p>
+<p id="t56" class="pln">    <span class="com"># phase_mode3 = models.CharField(max_length=16, blank=True, null=True)</span><span class="strut">&nbsp;</span></p>
+<p id="t57" class="pln">    <span class="com"># phase_mode4 = models.CharField(max_length=16, blank=True, null=True)</span><span class="strut">&nbsp;</span></p>
+<p id="t58" class="pln">    <span class="com"># phase_mode5 = models.CharField(max_length=16, blank=True, null=True)</span><span class="strut">&nbsp;</span></p>
+<p id="t59" class="stm run hide_run">    <span class="nam">phase_region_mode1</span> <span class="op">=</span> <span class="nam">models</span><span class="op">.</span><span class="nam">IntegerField</span><span class="op">(</span><span class="nam">default</span><span class="op">=</span><span class="num">0</span><span class="op">)</span>  <span class="com"># &#21508;&#38454;&#27573;&#21010;&#20998;&#36187;&#21306;&#30340;&#26041;&#24335;</span><span class="strut">&nbsp;</span></p>
+<p id="t60" class="stm run hide_run">    <span class="nam">phase_region_mode2</span> <span class="op">=</span> <span class="nam">models</span><span class="op">.</span><span class="nam">IntegerField</span><span class="op">(</span><span class="nam">default</span><span class="op">=</span><span class="num">0</span><span class="op">)</span><span class="strut">&nbsp;</span></p>
+<p id="t61" class="stm run hide_run">    <span class="nam">phase_region_mode3</span> <span class="op">=</span> <span class="nam">models</span><span class="op">.</span><span class="nam">IntegerField</span><span class="op">(</span><span class="nam">default</span><span class="op">=</span><span class="num">0</span><span class="op">)</span><span class="strut">&nbsp;</span></p>
+<p id="t62" class="stm run hide_run">    <span class="nam">phase_region_mode4</span> <span class="op">=</span> <span class="nam">models</span><span class="op">.</span><span class="nam">IntegerField</span><span class="op">(</span><span class="nam">default</span><span class="op">=</span><span class="num">0</span><span class="op">)</span><span class="strut">&nbsp;</span></p>
+<p id="t63" class="stm run hide_run">    <span class="nam">phase_region_mode5</span> <span class="op">=</span> <span class="nam">models</span><span class="op">.</span><span class="nam">IntegerField</span><span class="op">(</span><span class="nam">default</span><span class="op">=</span><span class="num">0</span><span class="op">)</span><span class="strut">&nbsp;</span></p>
+<p id="t64" class="stm run hide_run">    <span class="nam">phase_judge_start1</span> <span class="op">=</span> <span class="nam">models</span><span class="op">.</span><span class="nam">BooleanField</span><span class="op">(</span><span class="nam">default</span><span class="op">=</span><span class="key">False</span><span class="op">)</span>  <span class="com"># &#26159;&#21542;&#24320;&#22987;&#35780;&#27979;</span><span class="strut">&nbsp;</span></p>
+<p id="t65" class="stm run hide_run">    <span class="nam">phase_judge_start2</span> <span class="op">=</span> <span class="nam">models</span><span class="op">.</span><span class="nam">BooleanField</span><span class="op">(</span><span class="nam">default</span><span class="op">=</span><span class="key">False</span><span class="op">)</span><span class="strut">&nbsp;</span></p>
+<p id="t66" class="stm run hide_run">    <span class="nam">phase_judge_start3</span> <span class="op">=</span> <span class="nam">models</span><span class="op">.</span><span class="nam">BooleanField</span><span class="op">(</span><span class="nam">default</span><span class="op">=</span><span class="key">False</span><span class="op">)</span><span class="strut">&nbsp;</span></p>
+<p id="t67" class="stm run hide_run">    <span class="nam">phase_judge_start4</span> <span class="op">=</span> <span class="nam">models</span><span class="op">.</span><span class="nam">BooleanField</span><span class="op">(</span><span class="nam">default</span><span class="op">=</span><span class="key">False</span><span class="op">)</span><span class="strut">&nbsp;</span></p>
+<p id="t68" class="stm run hide_run">    <span class="nam">phase_judge_start5</span> <span class="op">=</span> <span class="nam">models</span><span class="op">.</span><span class="nam">BooleanField</span><span class="op">(</span><span class="nam">default</span><span class="op">=</span><span class="key">False</span><span class="op">)</span><span class="strut">&nbsp;</span></p>
+<p id="t69" class="stm run hide_run">    <span class="nam">admin_id</span> <span class="op">=</span> <span class="nam">models</span><span class="op">.</span><span class="nam">IntegerField</span><span class="op">(</span><span class="nam">db_index</span><span class="op">=</span><span class="key">True</span><span class="op">)</span>  <span class="com"># &#27604;&#36187;&#31649;&#29702;&#21592;User&#34920;&#37324;&#30340;id</span><span class="strut">&nbsp;</span></p>
+<p id="t70" class="stm run hide_run">    <span class="nam">host1</span> <span class="op">=</span> <span class="nam">models</span><span class="op">.</span><span class="nam">CharField</span><span class="op">(</span><span class="nam">max_length</span><span class="op">=</span><span class="num">32</span><span class="op">)</span>  <span class="com"># &#20027;&#21150;&#26041;</span><span class="strut">&nbsp;</span></p>
+<p id="t71" class="stm run hide_run">    <span class="nam">host2</span> <span class="op">=</span> <span class="nam">models</span><span class="op">.</span><span class="nam">CharField</span><span class="op">(</span><span class="nam">max_length</span><span class="op">=</span><span class="num">32</span><span class="op">,</span> <span class="nam">blank</span><span class="op">=</span><span class="key">True</span><span class="op">,</span> <span class="nam">null</span><span class="op">=</span><span class="key">True</span><span class="op">)</span><span class="strut">&nbsp;</span></p>
+<p id="t72" class="stm run hide_run">    <span class="nam">host3</span> <span class="op">=</span> <span class="nam">models</span><span class="op">.</span><span class="nam">CharField</span><span class="op">(</span><span class="nam">max_length</span><span class="op">=</span><span class="num">32</span><span class="op">,</span> <span class="nam">blank</span><span class="op">=</span><span class="key">True</span><span class="op">,</span> <span class="nam">null</span><span class="op">=</span><span class="key">True</span><span class="op">)</span><span class="strut">&nbsp;</span></p>
+<p id="t73" class="stm run hide_run">    <span class="nam">host4</span> <span class="op">=</span> <span class="nam">models</span><span class="op">.</span><span class="nam">CharField</span><span class="op">(</span><span class="nam">max_length</span><span class="op">=</span><span class="num">32</span><span class="op">,</span> <span class="nam">blank</span><span class="op">=</span><span class="key">True</span><span class="op">,</span> <span class="nam">null</span><span class="op">=</span><span class="key">True</span><span class="op">)</span><span class="strut">&nbsp;</span></p>
+<p id="t74" class="stm run hide_run">    <span class="nam">organizers</span> <span class="op">=</span> <span class="nam">models</span><span class="op">.</span><span class="nam">CharField</span><span class="op">(</span><span class="nam">max_length</span><span class="op">=</span><span class="num">255</span><span class="op">)</span>  <span class="com"># &#25215;&#21150;&#26041;</span><span class="strut">&nbsp;</span></p>
+<p id="t75" class="stm run hide_run">    <span class="nam">extra_title1</span> <span class="op">=</span> <span class="nam">models</span><span class="op">.</span><span class="nam">CharField</span><span class="op">(</span><span class="nam">max_length</span><span class="op">=</span><span class="num">32</span><span class="op">,</span> <span class="nam">blank</span><span class="op">=</span><span class="key">True</span><span class="op">,</span> <span class="nam">null</span><span class="op">=</span><span class="key">True</span><span class="op">)</span>  <span class="com"># &#27599;&#20010;&#27604;&#36187;&#29305;&#38656;&#30340;&#36873;&#25163;&#25968;&#25454;&#30340;&#26631;&#39064;</span><span class="strut">&nbsp;</span></p>
+<p id="t76" class="stm run hide_run">    <span class="nam">extra_title2</span> <span class="op">=</span> <span class="nam">models</span><span class="op">.</span><span class="nam">CharField</span><span class="op">(</span><span class="nam">max_length</span><span class="op">=</span><span class="num">32</span><span class="op">,</span> <span class="nam">blank</span><span class="op">=</span><span class="key">True</span><span class="op">,</span> <span class="nam">null</span><span class="op">=</span><span class="key">True</span><span class="op">)</span><span class="strut">&nbsp;</span></p>
+<p id="t77" class="stm run hide_run">    <span class="nam">extra_title3</span> <span class="op">=</span> <span class="nam">models</span><span class="op">.</span><span class="nam">CharField</span><span class="op">(</span><span class="nam">max_length</span><span class="op">=</span><span class="num">32</span><span class="op">,</span> <span class="nam">blank</span><span class="op">=</span><span class="key">True</span><span class="op">,</span> <span class="nam">null</span><span class="op">=</span><span class="key">True</span><span class="op">)</span><span class="strut">&nbsp;</span></p>
+<p id="t78" class="stm run hide_run">    <span class="nam">extra_title4</span> <span class="op">=</span> <span class="nam">models</span><span class="op">.</span><span class="nam">CharField</span><span class="op">(</span><span class="nam">max_length</span><span class="op">=</span><span class="num">32</span><span class="op">,</span> <span class="nam">blank</span><span class="op">=</span><span class="key">True</span><span class="op">,</span> <span class="nam">null</span><span class="op">=</span><span class="key">True</span><span class="op">)</span><span class="strut">&nbsp;</span></p>
+<p id="t79" class="stm run hide_run">    <span class="nam">extra_group_title1</span> <span class="op">=</span> <span class="nam">models</span><span class="op">.</span><span class="nam">CharField</span><span class="op">(</span><span class="nam">max_length</span><span class="op">=</span><span class="num">32</span><span class="op">,</span> <span class="nam">blank</span><span class="op">=</span><span class="key">True</span><span class="op">,</span> <span class="nam">null</span><span class="op">=</span><span class="key">True</span><span class="op">)</span>  <span class="com"># &#39069;&#22806;&#32452;&#38431;&#20449;&#24687;</span><span class="strut">&nbsp;</span></p>
+<p id="t80" class="stm run hide_run">    <span class="nam">extra_group_title2</span> <span class="op">=</span> <span class="nam">models</span><span class="op">.</span><span class="nam">CharField</span><span class="op">(</span><span class="nam">max_length</span><span class="op">=</span><span class="num">32</span><span class="op">,</span> <span class="nam">blank</span><span class="op">=</span><span class="key">True</span><span class="op">,</span> <span class="nam">null</span><span class="op">=</span><span class="key">True</span><span class="op">)</span><span class="strut">&nbsp;</span></p>
+<p id="t81" class="stm run hide_run">    <span class="nam">extra_group_title3</span> <span class="op">=</span> <span class="nam">models</span><span class="op">.</span><span class="nam">CharField</span><span class="op">(</span><span class="nam">max_length</span><span class="op">=</span><span class="num">32</span><span class="op">,</span> <span class="nam">blank</span><span class="op">=</span><span class="key">True</span><span class="op">,</span> <span class="nam">null</span><span class="op">=</span><span class="key">True</span><span class="op">)</span><span class="strut">&nbsp;</span></p>
+<p id="t82" class="stm run hide_run">    <span class="nam">extra_group_title4</span> <span class="op">=</span> <span class="nam">models</span><span class="op">.</span><span class="nam">CharField</span><span class="op">(</span><span class="nam">max_length</span><span class="op">=</span><span class="num">32</span><span class="op">,</span> <span class="nam">blank</span><span class="op">=</span><span class="key">True</span><span class="op">,</span> <span class="nam">null</span><span class="op">=</span><span class="key">True</span><span class="op">)</span><span class="strut">&nbsp;</span></p>
+<p id="t83" class="stm run hide_run">    <span class="nam">checked</span> <span class="op">=</span> <span class="nam">models</span><span class="op">.</span><span class="nam">IntegerField</span><span class="op">(</span><span class="nam">default</span><span class="op">=</span><span class="op">-</span><span class="num">1</span><span class="op">)</span>  <span class="com"># &#26159;&#21542;&#24050;&#32463;&#23457;&#26680;&#36807;&#65292;-1&#34920;&#31034;&#31649;&#29702;&#21592;&#26410;&#23457;&#26680;&#65292;0&#34920;&#31034;&#23457;&#26680;&#26410;&#36890;&#36807;&#65292;1&#34920;&#31034;&#23457;&#26680;&#36890;&#36807;</span><span class="strut">&nbsp;</span></p>
+<p id="t84" class="stm run hide_run">    <span class="key">class</span> <span class="nam">Meta</span><span class="op">:</span><span class="strut">&nbsp;</span></p>
+<p id="t85" class="stm run hide_run">        <span class="nam">db_table</span> <span class="op">=</span> <span class="str">"Contest"</span><span class="strut">&nbsp;</span></p>
+<p id="t86" class="pln"><span class="strut">&nbsp;</span></p>
+<p id="t87" class="pln"><span class="com"># &#35760;&#24405;&#36873;&#25163;&#21644;&#27604;&#36187;&#30340;&#23545;&#24212;&#20851;&#31995;</span><span class="strut">&nbsp;</span></p>
+<p id="t88" class="pln"><span class="com"># &#36873;&#25163;&#25253;&#21517;&#26102;&#22635;</span><span class="strut">&nbsp;</span></p>
+<p id="t89" class="stm run hide_run"><span class="key">class</span> <span class="nam">ContestPlayer</span><span class="op">(</span><span class="nam">models</span><span class="op">.</span><span class="nam">Model</span><span class="op">)</span><span class="op">:</span><span class="strut">&nbsp;</span></p>
+<p id="t90" class="stm run hide_run">    <span class="nam">player_id</span> <span class="op">=</span> <span class="nam">models</span><span class="op">.</span><span class="nam">IntegerField</span><span class="op">(</span><span class="nam">db_index</span><span class="op">=</span><span class="key">True</span><span class="op">)</span>  <span class="com"># &#36873;&#25163;id</span><span class="strut">&nbsp;</span></p>
+<p id="t91" class="stm run hide_run">    <span class="nam">contest_id</span> <span class="op">=</span> <span class="nam">models</span><span class="op">.</span><span class="nam">IntegerField</span><span class="op">(</span><span class="nam">db_index</span><span class="op">=</span><span class="key">True</span><span class="op">)</span>  <span class="com"># &#27604;&#36187;id</span><span class="strut">&nbsp;</span></p>
+<p id="t92" class="stm run hide_run">    <span class="nam">phone_number</span> <span class="op">=</span> <span class="nam">models</span><span class="op">.</span><span class="nam">CharField</span><span class="op">(</span><span class="nam">max_length</span><span class="op">=</span><span class="num">16</span><span class="op">,</span> <span class="nam">null</span><span class="op">=</span><span class="key">True</span><span class="op">)</span>  <span class="com"># &#32852;&#31995;&#30005;&#35805;</span><span class="strut">&nbsp;</span></p>
+<p id="t93" class="stm run hide_run">    <span class="nam">phase_region1</span> <span class="op">=</span> <span class="nam">models</span><span class="op">.</span><span class="nam">CharField</span><span class="op">(</span><span class="nam">max_length</span><span class="op">=</span><span class="num">32</span><span class="op">,</span> <span class="nam">blank</span><span class="op">=</span><span class="key">True</span><span class="op">,</span> <span class="nam">null</span><span class="op">=</span><span class="key">True</span><span class="op">)</span>  <span class="com"># &#36873;&#25163;&#22312;&#27599;&#20010;&#38454;&#27573;&#30340;&#36187;&#21306;</span><span class="strut">&nbsp;</span></p>
+<p id="t94" class="stm run hide_run">    <span class="nam">phase_region2</span> <span class="op">=</span> <span class="nam">models</span><span class="op">.</span><span class="nam">CharField</span><span class="op">(</span><span class="nam">max_length</span><span class="op">=</span><span class="num">32</span><span class="op">,</span> <span class="nam">blank</span><span class="op">=</span><span class="key">True</span><span class="op">,</span> <span class="nam">null</span><span class="op">=</span><span class="key">True</span><span class="op">)</span><span class="strut">&nbsp;</span></p>
+<p id="t95" class="stm run hide_run">    <span class="nam">phase_region3</span> <span class="op">=</span> <span class="nam">models</span><span class="op">.</span><span class="nam">CharField</span><span class="op">(</span><span class="nam">max_length</span><span class="op">=</span><span class="num">32</span><span class="op">,</span> <span class="nam">blank</span><span class="op">=</span><span class="key">True</span><span class="op">,</span> <span class="nam">null</span><span class="op">=</span><span class="key">True</span><span class="op">)</span><span class="strut">&nbsp;</span></p>
+<p id="t96" class="stm run hide_run">    <span class="nam">phase_region4</span> <span class="op">=</span> <span class="nam">models</span><span class="op">.</span><span class="nam">CharField</span><span class="op">(</span><span class="nam">max_length</span><span class="op">=</span><span class="num">32</span><span class="op">,</span> <span class="nam">blank</span><span class="op">=</span><span class="key">True</span><span class="op">,</span> <span class="nam">null</span><span class="op">=</span><span class="key">True</span><span class="op">)</span><span class="strut">&nbsp;</span></p>
+<p id="t97" class="stm run hide_run">    <span class="nam">phase_region5</span> <span class="op">=</span> <span class="nam">models</span><span class="op">.</span><span class="nam">CharField</span><span class="op">(</span><span class="nam">max_length</span><span class="op">=</span><span class="num">32</span><span class="op">,</span> <span class="nam">blank</span><span class="op">=</span><span class="key">True</span><span class="op">,</span> <span class="nam">null</span><span class="op">=</span><span class="key">True</span><span class="op">)</span><span class="strut">&nbsp;</span></p>
+<p id="t98" class="stm run hide_run">    <span class="nam">extra_information1</span> <span class="op">=</span> <span class="nam">models</span><span class="op">.</span><span class="nam">CharField</span><span class="op">(</span><span class="nam">max_length</span><span class="op">=</span><span class="num">64</span><span class="op">,</span> <span class="nam">blank</span><span class="op">=</span><span class="key">True</span><span class="op">,</span> <span class="nam">null</span><span class="op">=</span><span class="key">True</span><span class="op">)</span>  <span class="com"># &#27599;&#20010;&#27604;&#36187;&#29305;&#38656;&#30340;&#36873;&#25163;&#25968;&#25454;</span><span class="strut">&nbsp;</span></p>
+<p id="t99" class="stm run hide_run">    <span class="nam">extra_information2</span> <span class="op">=</span> <span class="nam">models</span><span class="op">.</span><span class="nam">CharField</span><span class="op">(</span><span class="nam">max_length</span><span class="op">=</span><span class="num">64</span><span class="op">,</span> <span class="nam">blank</span><span class="op">=</span><span class="key">True</span><span class="op">,</span> <span class="nam">null</span><span class="op">=</span><span class="key">True</span><span class="op">)</span><span class="strut">&nbsp;</span></p>
+<p id="t100" class="stm run hide_run">    <span class="nam">extra_information3</span> <span class="op">=</span> <span class="nam">models</span><span class="op">.</span><span class="nam">CharField</span><span class="op">(</span><span class="nam">max_length</span><span class="op">=</span><span class="num">64</span><span class="op">,</span> <span class="nam">blank</span><span class="op">=</span><span class="key">True</span><span class="op">,</span> <span class="nam">null</span><span class="op">=</span><span class="key">True</span><span class="op">)</span><span class="strut">&nbsp;</span></p>
+<p id="t101" class="stm run hide_run">    <span class="nam">extra_information4</span> <span class="op">=</span> <span class="nam">models</span><span class="op">.</span><span class="nam">CharField</span><span class="op">(</span><span class="nam">max_length</span><span class="op">=</span><span class="num">64</span><span class="op">,</span> <span class="nam">blank</span><span class="op">=</span><span class="key">True</span><span class="op">,</span> <span class="nam">null</span><span class="op">=</span><span class="key">True</span><span class="op">)</span><span class="strut">&nbsp;</span></p>
+<p id="t102" class="stm run hide_run">    <span class="key">class</span> <span class="nam">Meta</span><span class="op">:</span><span class="strut">&nbsp;</span></p>
+<p id="t103" class="stm run hide_run">        <span class="nam">db_table</span> <span class="op">=</span> <span class="str">"ContestPlayer"</span><span class="strut">&nbsp;</span></p>
+<p id="t104" class="pln"><span class="strut">&nbsp;</span></p>
+<p id="t105" class="pln"><span class="com"># &#35760;&#24405;&#27604;&#36187;&#21644;&#23567;&#32452;&#30340;&#23545;&#24212;&#20851;&#31995;&#65292;&#30446;&#21069;&#23567;&#32452;&#25104;&#21592;&#19978;&#38480;&#20026;5&#21517;&#65292;&#35774;&#32452;&#38271;1&#21517;</span><span class="strut">&nbsp;</span></p>
+<p id="t106" class="pln"><span class="com"># &#36873;&#25163;&#25104;&#32452;&#25253;&#21517;&#26102;&#22635;</span><span class="strut">&nbsp;</span></p>
+<p id="t107" class="pln"><span class="com"># &#29616;&#22312;&#20351;&#29992;Group&#26469;&#25511;&#21046;&#65311;</span><span class="strut">&nbsp;</span></p>
+<p id="t108" class="stm run hide_run"><span class="key">class</span> <span class="nam">ContestGroup</span><span class="op">(</span><span class="nam">models</span><span class="op">.</span><span class="nam">Model</span><span class="op">)</span><span class="op">:</span><span class="strut">&nbsp;</span></p>
+<p id="t109" class="stm run hide_run">    <span class="nam">leader_id</span> <span class="op">=</span> <span class="nam">models</span><span class="op">.</span><span class="nam">IntegerField</span><span class="op">(</span><span class="nam">db_index</span><span class="op">=</span><span class="key">True</span><span class="op">)</span>  <span class="com"># &#32452;&#38271;id</span><span class="strut">&nbsp;</span></p>
+<p id="t110" class="stm run hide_run">    <span class="nam">member1_id</span> <span class="op">=</span> <span class="nam">models</span><span class="op">.</span><span class="nam">IntegerField</span><span class="op">(</span><span class="nam">db_index</span><span class="op">=</span><span class="key">True</span><span class="op">,</span> <span class="nam">null</span><span class="op">=</span><span class="key">True</span><span class="op">)</span><span class="strut">&nbsp;</span></p>
+<p id="t111" class="stm run hide_run">    <span class="nam">member2_id</span> <span class="op">=</span> <span class="nam">models</span><span class="op">.</span><span class="nam">IntegerField</span><span class="op">(</span><span class="nam">db_index</span><span class="op">=</span><span class="key">True</span><span class="op">,</span> <span class="nam">null</span><span class="op">=</span><span class="key">True</span><span class="op">)</span><span class="strut">&nbsp;</span></p>
+<p id="t112" class="stm run hide_run">    <span class="nam">member3_id</span> <span class="op">=</span> <span class="nam">models</span><span class="op">.</span><span class="nam">IntegerField</span><span class="op">(</span><span class="nam">db_index</span><span class="op">=</span><span class="key">True</span><span class="op">,</span> <span class="nam">null</span><span class="op">=</span><span class="key">True</span><span class="op">)</span><span class="strut">&nbsp;</span></p>
+<p id="t113" class="stm run hide_run">    <span class="nam">member4_id</span> <span class="op">=</span> <span class="nam">models</span><span class="op">.</span><span class="nam">IntegerField</span><span class="op">(</span><span class="nam">db_index</span><span class="op">=</span><span class="key">True</span><span class="op">,</span> <span class="nam">null</span><span class="op">=</span><span class="key">True</span><span class="op">)</span><span class="strut">&nbsp;</span></p>
+<p id="t114" class="stm run hide_run">    <span class="nam">contest_id</span> <span class="op">=</span> <span class="nam">models</span><span class="op">.</span><span class="nam">IntegerField</span><span class="op">(</span><span class="nam">db_index</span><span class="op">=</span><span class="key">True</span><span class="op">)</span>  <span class="com"># &#27604;&#36187;id</span><span class="strut">&nbsp;</span></p>
+<p id="t115" class="stm run hide_run">    <span class="nam">group_name</span> <span class="op">=</span> <span class="nam">models</span><span class="op">.</span><span class="nam">CharField</span><span class="op">(</span><span class="nam">max_length</span><span class="op">=</span><span class="num">32</span><span class="op">)</span>  <span class="com"># &#32452;&#21517;</span><span class="strut">&nbsp;</span></p>
+<p id="t116" class="stm run hide_run">    <span class="nam">phone_number</span> <span class="op">=</span> <span class="nam">models</span><span class="op">.</span><span class="nam">CharField</span><span class="op">(</span><span class="nam">max_length</span><span class="op">=</span><span class="num">16</span><span class="op">,</span> <span class="nam">null</span><span class="op">=</span><span class="key">True</span><span class="op">)</span>  <span class="com"># &#32852;&#31995;&#30005;&#35805;</span><span class="strut">&nbsp;</span></p>
+<p id="t117" class="stm run hide_run">    <span class="nam">phase_region1</span> <span class="op">=</span> <span class="nam">models</span><span class="op">.</span><span class="nam">CharField</span><span class="op">(</span><span class="nam">max_length</span><span class="op">=</span><span class="num">32</span><span class="op">,</span> <span class="nam">blank</span><span class="op">=</span><span class="key">True</span><span class="op">,</span> <span class="nam">null</span><span class="op">=</span><span class="key">True</span><span class="op">)</span>  <span class="com"># &#36873;&#25163;&#22312;&#27599;&#20010;&#38454;&#27573;&#30340;&#36187;&#21306;</span><span class="strut">&nbsp;</span></p>
+<p id="t118" class="stm run hide_run">    <span class="nam">phase_region2</span> <span class="op">=</span> <span class="nam">models</span><span class="op">.</span><span class="nam">CharField</span><span class="op">(</span><span class="nam">max_length</span><span class="op">=</span><span class="num">32</span><span class="op">,</span> <span class="nam">blank</span><span class="op">=</span><span class="key">True</span><span class="op">,</span> <span class="nam">null</span><span class="op">=</span><span class="key">True</span><span class="op">)</span><span class="strut">&nbsp;</span></p>
+<p id="t119" class="stm run hide_run">    <span class="nam">phase_region3</span> <span class="op">=</span> <span class="nam">models</span><span class="op">.</span><span class="nam">CharField</span><span class="op">(</span><span class="nam">max_length</span><span class="op">=</span><span class="num">32</span><span class="op">,</span> <span class="nam">blank</span><span class="op">=</span><span class="key">True</span><span class="op">,</span> <span class="nam">null</span><span class="op">=</span><span class="key">True</span><span class="op">)</span><span class="strut">&nbsp;</span></p>
+<p id="t120" class="stm run hide_run">    <span class="nam">phase_region4</span> <span class="op">=</span> <span class="nam">models</span><span class="op">.</span><span class="nam">CharField</span><span class="op">(</span><span class="nam">max_length</span><span class="op">=</span><span class="num">32</span><span class="op">,</span> <span class="nam">blank</span><span class="op">=</span><span class="key">True</span><span class="op">,</span> <span class="nam">null</span><span class="op">=</span><span class="key">True</span><span class="op">)</span><span class="strut">&nbsp;</span></p>
+<p id="t121" class="stm run hide_run">    <span class="nam">phase_region5</span> <span class="op">=</span> <span class="nam">models</span><span class="op">.</span><span class="nam">CharField</span><span class="op">(</span><span class="nam">max_length</span><span class="op">=</span><span class="num">32</span><span class="op">,</span> <span class="nam">blank</span><span class="op">=</span><span class="key">True</span><span class="op">,</span> <span class="nam">null</span><span class="op">=</span><span class="key">True</span><span class="op">)</span><span class="strut">&nbsp;</span></p>
+<p id="t122" class="stm run hide_run">    <span class="nam">extra_information1</span> <span class="op">=</span> <span class="nam">models</span><span class="op">.</span><span class="nam">CharField</span><span class="op">(</span><span class="nam">max_length</span><span class="op">=</span><span class="num">64</span><span class="op">,</span> <span class="nam">blank</span><span class="op">=</span><span class="key">True</span><span class="op">,</span> <span class="nam">null</span><span class="op">=</span><span class="key">True</span><span class="op">)</span>  <span class="com"># &#27599;&#20010;&#27604;&#36187;&#29305;&#38656;&#30340;&#32452;&#38431;&#25968;&#25454;</span><span class="strut">&nbsp;</span></p>
+<p id="t123" class="stm run hide_run">    <span class="nam">extra_information2</span> <span class="op">=</span> <span class="nam">models</span><span class="op">.</span><span class="nam">CharField</span><span class="op">(</span><span class="nam">max_length</span><span class="op">=</span><span class="num">64</span><span class="op">,</span> <span class="nam">blank</span><span class="op">=</span><span class="key">True</span><span class="op">,</span> <span class="nam">null</span><span class="op">=</span><span class="key">True</span><span class="op">)</span><span class="strut">&nbsp;</span></p>
+<p id="t124" class="stm run hide_run">    <span class="nam">extra_information3</span> <span class="op">=</span> <span class="nam">models</span><span class="op">.</span><span class="nam">CharField</span><span class="op">(</span><span class="nam">max_length</span><span class="op">=</span><span class="num">64</span><span class="op">,</span> <span class="nam">blank</span><span class="op">=</span><span class="key">True</span><span class="op">,</span> <span class="nam">null</span><span class="op">=</span><span class="key">True</span><span class="op">)</span><span class="strut">&nbsp;</span></p>
+<p id="t125" class="stm run hide_run">    <span class="nam">extra_information4</span> <span class="op">=</span> <span class="nam">models</span><span class="op">.</span><span class="nam">CharField</span><span class="op">(</span><span class="nam">max_length</span><span class="op">=</span><span class="num">64</span><span class="op">,</span> <span class="nam">blank</span><span class="op">=</span><span class="key">True</span><span class="op">,</span> <span class="nam">null</span><span class="op">=</span><span class="key">True</span><span class="op">)</span><span class="strut">&nbsp;</span></p>
+<p id="t126" class="stm run hide_run">    <span class="key">class</span> <span class="nam">Meta</span><span class="op">:</span><span class="strut">&nbsp;</span></p>
+<p id="t127" class="stm run hide_run">        <span class="nam">db_table</span> <span class="op">=</span> <span class="str">"ContestGroup"</span><span class="strut">&nbsp;</span></p>
+<p id="t128" class="pln"><span class="strut">&nbsp;</span></p>
+<p id="t129" class="pln"><span class="com"># &#35760;&#24405;&#27604;&#36187;&#21644;&#35780;&#22996;&#30340;&#23545;&#24212;&#20851;&#31995;</span><span class="strut">&nbsp;</span></p>
+<p id="t130" class="pln"><span class="com"># &#36825;&#24352;&#34920;&#22312;&#20027;&#21150;&#26041;&#20998;&#28155;&#21152;&#35780;&#22996;&#30340;&#26102;&#20505;&#29992;&#21040;</span><span class="strut">&nbsp;</span></p>
+<p id="t131" class="pln"><span class="com"># &#29616;&#22312;&#21487;&#33021;&#20351;&#29992;Group&#26469;&#25511;&#21046;&#65292;&#27599;&#20010;&#27604;&#36187;&#26377;&#19968;&#20010;&#35780;&#22996;&#32452;&#65311;</span><span class="strut">&nbsp;</span></p>
+<p id="t132" class="stm run hide_run"><span class="key">class</span> <span class="nam">ContestJudge</span><span class="op">(</span><span class="nam">models</span><span class="op">.</span><span class="nam">Model</span><span class="op">)</span><span class="op">:</span><span class="strut">&nbsp;</span></p>
+<p id="t133" class="stm run hide_run">    <span class="nam">judge_id</span> <span class="op">=</span> <span class="nam">models</span><span class="op">.</span><span class="nam">IntegerField</span><span class="op">(</span><span class="nam">db_index</span><span class="op">=</span><span class="key">True</span><span class="op">)</span>  <span class="com"># &#35780;&#22996;id</span><span class="strut">&nbsp;</span></p>
+<p id="t134" class="stm run hide_run">    <span class="nam">contest_id</span> <span class="op">=</span> <span class="nam">models</span><span class="op">.</span><span class="nam">IntegerField</span><span class="op">(</span><span class="nam">db_index</span><span class="op">=</span><span class="key">True</span><span class="op">)</span>  <span class="com"># &#27604;&#36187;id</span><span class="strut">&nbsp;</span></p>
+<p id="t135" class="stm run hide_run">    <span class="nam">phase_region1</span> <span class="op">=</span> <span class="nam">models</span><span class="op">.</span><span class="nam">CharField</span><span class="op">(</span><span class="nam">max_length</span><span class="op">=</span><span class="num">32</span><span class="op">,</span> <span class="nam">blank</span><span class="op">=</span><span class="key">True</span><span class="op">,</span> <span class="nam">null</span><span class="op">=</span><span class="key">True</span><span class="op">)</span><span class="strut">&nbsp;</span></p>
+<p id="t136" class="stm run hide_run">    <span class="nam">phase_region2</span> <span class="op">=</span> <span class="nam">models</span><span class="op">.</span><span class="nam">CharField</span><span class="op">(</span><span class="nam">max_length</span><span class="op">=</span><span class="num">32</span><span class="op">,</span> <span class="nam">blank</span><span class="op">=</span><span class="key">True</span><span class="op">,</span> <span class="nam">null</span><span class="op">=</span><span class="key">True</span><span class="op">)</span><span class="strut">&nbsp;</span></p>
+<p id="t137" class="stm run hide_run">    <span class="nam">phase_region3</span> <span class="op">=</span> <span class="nam">models</span><span class="op">.</span><span class="nam">CharField</span><span class="op">(</span><span class="nam">max_length</span><span class="op">=</span><span class="num">32</span><span class="op">,</span> <span class="nam">blank</span><span class="op">=</span><span class="key">True</span><span class="op">,</span> <span class="nam">null</span><span class="op">=</span><span class="key">True</span><span class="op">)</span><span class="strut">&nbsp;</span></p>
+<p id="t138" class="stm run hide_run">    <span class="nam">phase_region4</span> <span class="op">=</span> <span class="nam">models</span><span class="op">.</span><span class="nam">CharField</span><span class="op">(</span><span class="nam">max_length</span><span class="op">=</span><span class="num">32</span><span class="op">,</span> <span class="nam">blank</span><span class="op">=</span><span class="key">True</span><span class="op">,</span> <span class="nam">null</span><span class="op">=</span><span class="key">True</span><span class="op">)</span><span class="strut">&nbsp;</span></p>
+<p id="t139" class="stm run hide_run">    <span class="nam">phase_region5</span> <span class="op">=</span> <span class="nam">models</span><span class="op">.</span><span class="nam">CharField</span><span class="op">(</span><span class="nam">max_length</span><span class="op">=</span><span class="num">32</span><span class="op">,</span> <span class="nam">blank</span><span class="op">=</span><span class="key">True</span><span class="op">,</span> <span class="nam">null</span><span class="op">=</span><span class="key">True</span><span class="op">)</span><span class="strut">&nbsp;</span></p>
+<p id="t140" class="stm run hide_run">    <span class="key">class</span> <span class="nam">Meta</span><span class="op">:</span><span class="strut">&nbsp;</span></p>
+<p id="t141" class="stm run hide_run">        <span class="nam">db_table</span> <span class="op">=</span> <span class="str">"ContestJudge"</span><span class="strut">&nbsp;</span></p>
+<p id="t142" class="pln"><span class="strut">&nbsp;</span></p>
+<p id="t143" class="pln"><span class="com"># &#35760;&#24405;&#23567;&#32452;&#21644;&#27604;&#36187;&#35780;&#22996;&#12289;&#35780;&#20998;&#30340;&#23545;&#24212;&#20851;&#31995;</span><span class="strut">&nbsp;</span></p>
+<p id="t144" class="pln"><span class="com"># &#36825;&#24352;&#34920;&#22312;&#25552;&#20132;&#20316;&#21697;&#30340;&#26102;&#20505;&#22635;&#32452;&#38271;&#65288;&#36873;&#25163;&#65289;id&#21644;&#27604;&#36187;id&#21644;&#27604;&#36187;&#38454;&#27573;&#19977;&#20010;&#23383;&#27573;&#65292;&#35780;&#22996;&#20998;&#37197;&#31639;&#27861;&#20013;&#22635;&#35780;&#22996;id&#23383;&#27573;&#65292;&#35780;&#22996;&#35780;&#20998;&#36807;&#31243;&#20013;&#22635;&#25104;&#32489;&#23383;&#27573;</span><span class="strut">&nbsp;</span></p>
+<p id="t145" class="stm run hide_run"><span class="key">class</span> <span class="nam">ContestGrade</span><span class="op">(</span><span class="nam">models</span><span class="op">.</span><span class="nam">Model</span><span class="op">)</span><span class="op">:</span><span class="strut">&nbsp;</span></p>
+<p id="t146" class="stm run hide_run">    <span class="nam">leader_id</span> <span class="op">=</span> <span class="nam">models</span><span class="op">.</span><span class="nam">IntegerField</span><span class="op">(</span><span class="nam">db_index</span><span class="op">=</span><span class="key">True</span><span class="op">)</span>  <span class="com"># &#32452;&#38271;id</span><span class="strut">&nbsp;</span></p>
+<p id="t147" class="stm run hide_run">    <span class="nam">contest_id</span> <span class="op">=</span> <span class="nam">models</span><span class="op">.</span><span class="nam">IntegerField</span><span class="op">(</span><span class="nam">db_index</span><span class="op">=</span><span class="key">True</span><span class="op">)</span>  <span class="com"># &#27604;&#36187;id</span><span class="strut">&nbsp;</span></p>
+<p id="t148" class="stm run hide_run">    <span class="nam">phase</span> <span class="op">=</span> <span class="nam">models</span><span class="op">.</span><span class="nam">IntegerField</span><span class="op">(</span><span class="nam">blank</span><span class="op">=</span><span class="key">True</span><span class="op">,</span> <span class="nam">null</span><span class="op">=</span><span class="key">True</span><span class="op">)</span>  <span class="com"># &#27604;&#36187;&#38454;&#27573;</span><span class="strut">&nbsp;</span></p>
+<p id="t149" class="stm run hide_run">    <span class="nam">judge_id</span> <span class="op">=</span> <span class="nam">models</span><span class="op">.</span><span class="nam">IntegerField</span><span class="op">(</span><span class="nam">default</span><span class="op">=</span><span class="op">-</span><span class="num">1</span><span class="op">,</span> <span class="nam">db_index</span><span class="op">=</span><span class="key">True</span><span class="op">)</span>  <span class="com"># &#35780;&#22996;id</span><span class="strut">&nbsp;</span></p>
+<p id="t150" class="stm run hide_run">    <span class="nam">grade</span> <span class="op">=</span> <span class="nam">models</span><span class="op">.</span><span class="nam">IntegerField</span><span class="op">(</span><span class="nam">default</span><span class="op">=</span><span class="op">-</span><span class="num">1</span><span class="op">)</span>  <span class="com"># &#36873;&#25163;(&#23567;&#32452;)&#30001;&#24403;&#21069;&#35780;&#22996;&#25171;&#20986;&#30340;&#35813;&#38454;&#27573;&#27604;&#36187;&#30340;&#25104;&#32489;</span><span class="strut">&nbsp;</span></p>
+<p id="t151" class="stm run hide_run">    <span class="nam">work_name</span> <span class="op">=</span> <span class="nam">models</span><span class="op">.</span><span class="nam">CharField</span><span class="op">(</span><span class="nam">max_length</span><span class="op">=</span><span class="num">32</span><span class="op">,</span> <span class="nam">null</span><span class="op">=</span><span class="key">True</span><span class="op">,</span> <span class="nam">db_index</span><span class="op">=</span><span class="key">True</span><span class="op">)</span>  <span class="com"># &#20316;&#21697;&#21517;</span><span class="strut">&nbsp;</span></p>
+<p id="t152" class="stm run hide_run">    <span class="key">class</span> <span class="nam">Meta</span><span class="op">:</span><span class="strut">&nbsp;</span></p>
+<p id="t153" class="stm run hide_run">        <span class="nam">db_table</span> <span class="op">=</span> <span class="str">"ContestGrade"</span><span class="strut">&nbsp;</span></p>
+<p id="t154" class="pln"><span class="strut">&nbsp;</span></p>
+<p id="t155" class="stm run hide_run"><span class="key">class</span> <span class="nam">OldGrade</span><span class="op">(</span><span class="nam">models</span><span class="op">.</span><span class="nam">Model</span><span class="op">)</span><span class="op">:</span><span class="strut">&nbsp;</span></p>
+<p id="t156" class="stm run hide_run">    <span class="nam">leader_id</span> <span class="op">=</span> <span class="nam">models</span><span class="op">.</span><span class="nam">IntegerField</span><span class="op">(</span><span class="nam">db_index</span><span class="op">=</span><span class="key">True</span><span class="op">)</span><span class="strut">&nbsp;</span></p>
+<p id="t157" class="stm run hide_run">    <span class="nam">contest_id</span> <span class="op">=</span> <span class="nam">models</span><span class="op">.</span><span class="nam">IntegerField</span><span class="op">(</span><span class="nam">db_index</span><span class="op">=</span><span class="key">True</span><span class="op">)</span><span class="strut">&nbsp;</span></p>
+<p id="t158" class="stm run hide_run">    <span class="nam">phase</span> <span class="op">=</span> <span class="nam">models</span><span class="op">.</span><span class="nam">IntegerField</span><span class="op">(</span><span class="nam">blank</span><span class="op">=</span><span class="key">True</span><span class="op">,</span> <span class="nam">null</span><span class="op">=</span><span class="key">True</span><span class="op">)</span><span class="strut">&nbsp;</span></p>
+<p id="t159" class="stm run hide_run">    <span class="nam">oldgrade</span> <span class="op">=</span> <span class="nam">models</span><span class="op">.</span><span class="nam">IntegerField</span><span class="op">(</span><span class="nam">default</span><span class="op">=</span><span class="op">-</span><span class="num">1</span><span class="op">)</span><span class="strut">&nbsp;</span></p>
+<p id="t160" class="stm run hide_run">    <span class="nam">reason</span> <span class="op">=</span> <span class="nam">models</span><span class="op">.</span><span class="nam">CharField</span><span class="op">(</span><span class="nam">max_length</span><span class="op">=</span><span class="num">512</span><span class="op">,</span> <span class="nam">blank</span><span class="op">=</span><span class="key">True</span><span class="op">,</span> <span class="nam">null</span><span class="op">=</span><span class="key">True</span><span class="op">)</span><span class="strut">&nbsp;</span></p>
+<p id="t161" class="stm run hide_run">    <span class="key">class</span> <span class="nam">Meta</span><span class="op">:</span><span class="strut">&nbsp;</span></p>
+<p id="t162" class="stm run hide_run">        <span class="nam">db_table</span> <span class="op">=</span> <span class="str">"OldGrade"</span><span class="strut">&nbsp;</span></p>
+<p id="t163" class="pln"><span class="strut">&nbsp;</span></p>
+<p id="t164" class="pln"><span class="com"># &#28040;&#24687;&#21015;&#34920;</span><span class="strut">&nbsp;</span></p>
+<p id="t165" class="stm run hide_run"><span class="key">class</span> <span class="nam">Notification</span><span class="op">(</span><span class="nam">models</span><span class="op">.</span><span class="nam">Model</span><span class="op">)</span><span class="op">:</span><span class="strut">&nbsp;</span></p>
+<p id="t166" class="stm run hide_run">    <span class="nam">context</span> <span class="op">=</span> <span class="nam">models</span><span class="op">.</span><span class="nam">CharField</span><span class="op">(</span><span class="nam">max_length</span><span class="op">=</span><span class="num">2048</span><span class="op">)</span>  <span class="com"># &#28040;&#24687;&#20307;</span><span class="strut">&nbsp;</span></p>
+<p id="t167" class="stm run hide_run">    <span class="nam">title</span> <span class="op">=</span> <span class="nam">models</span><span class="op">.</span><span class="nam">CharField</span><span class="op">(</span><span class="nam">max_length</span><span class="op">=</span><span class="num">64</span><span class="op">)</span>  <span class="com"># &#28040;&#24687;&#26631;&#39064;</span><span class="strut">&nbsp;</span></p>
+<p id="t168" class="stm run hide_run">    <span class="nam">time</span> <span class="op">=</span> <span class="nam">models</span><span class="op">.</span><span class="nam">DateTimeField</span><span class="op">(</span><span class="nam">null</span><span class="op">=</span><span class="key">True</span><span class="op">)</span>  <span class="com"># &#28040;&#24687;&#21457;&#36865;&#26102;&#38388;</span><span class="strut">&nbsp;</span></p>
+<p id="t169" class="stm run hide_run">    <span class="key">class</span> <span class="nam">Meta</span><span class="op">:</span><span class="strut">&nbsp;</span></p>
+<p id="t170" class="stm run hide_run">        <span class="nam">db_table</span> <span class="op">=</span> <span class="str">"Notification"</span><span class="strut">&nbsp;</span></p>
+<p id="t171" class="pln"><span class="strut">&nbsp;</span></p>
+<p id="t172" class="pln"><span class="com"># &#35760;&#24405;&#28040;&#24687;&#21644;&#25509;&#21463;&#28040;&#24687;&#30340;&#29992;&#25143;&#30340;&#23545;&#24212;&#20851;&#31995;</span><span class="strut">&nbsp;</span></p>
+<p id="t173" class="stm run hide_run"><span class="key">class</span> <span class="nam">NotificationUser</span><span class="op">(</span><span class="nam">models</span><span class="op">.</span><span class="nam">Model</span><span class="op">)</span><span class="op">:</span><span class="strut">&nbsp;</span></p>
+<p id="t174" class="stm run hide_run">    <span class="nam">notification_id</span> <span class="op">=</span> <span class="nam">models</span><span class="op">.</span><span class="nam">IntegerField</span><span class="op">(</span><span class="nam">db_index</span><span class="op">=</span><span class="key">True</span><span class="op">)</span>  <span class="com"># &#28040;&#24687;id</span><span class="strut">&nbsp;</span></p>
+<p id="t175" class="stm run hide_run">    <span class="nam">user_id</span> <span class="op">=</span> <span class="nam">models</span><span class="op">.</span><span class="nam">IntegerField</span><span class="op">(</span><span class="nam">db_index</span><span class="op">=</span><span class="key">True</span><span class="op">)</span>  <span class="com"># &#25509;&#21463;&#28040;&#24687;&#30340;&#29992;&#25143;id</span><span class="strut">&nbsp;</span></p>
+<p id="t176" class="stm run hide_run">    <span class="nam">read</span> <span class="op">=</span> <span class="nam">models</span><span class="op">.</span><span class="nam">BooleanField</span><span class="op">(</span><span class="nam">default</span><span class="op">=</span><span class="key">False</span><span class="op">)</span>  <span class="com"># &#28040;&#24687;&#24050;&#35835;/&#26410;&#35835;</span><span class="strut">&nbsp;</span></p>
+<p id="t177" class="stm run hide_run">    <span class="key">class</span> <span class="nam">Meta</span><span class="op">:</span><span class="strut">&nbsp;</span></p>
+<p id="t178" class="stm run hide_run">        <span class="nam">db_table</span> <span class="op">=</span> <span class="str">"NotificationUser"</span><span class="strut">&nbsp;</span></p>
+<p id="t179" class="pln"><span class="strut">&nbsp;</span></p>
+<p id="t180" class="pln"><span class="com"># &#36718;&#25773;&#22270;</span><span class="strut">&nbsp;</span></p>
+<p id="t181" class="stm run hide_run"><span class="key">class</span> <span class="nam">Slider</span><span class="op">(</span><span class="nam">models</span><span class="op">.</span><span class="nam">Model</span><span class="op">)</span><span class="op">:</span><span class="strut">&nbsp;</span></p>
+<p id="t182" class="stm run hide_run">    <span class="nam">contest_id</span> <span class="op">=</span> <span class="nam">models</span><span class="op">.</span><span class="nam">IntegerField</span><span class="op">(</span><span class="op">)</span>  <span class="com"># &#27604;&#36187;id</span><span class="strut">&nbsp;</span></p>
+<p id="t183" class="stm run hide_run">    <span class="nam">title</span> <span class="op">=</span> <span class="nam">models</span><span class="op">.</span><span class="nam">CharField</span><span class="op">(</span><span class="nam">max_length</span><span class="op">=</span><span class="num">32</span><span class="op">)</span>  <span class="com"># &#27604;&#36187;&#21517;&#31216;</span><span class="strut">&nbsp;</span></p>
+<p id="t184" class="stm run hide_run">    <span class="key">class</span> <span class="nam">Meta</span><span class="op">:</span><span class="strut">&nbsp;</span></p>
+<p id="t185" class="stm run hide_run">        <span class="nam">db_table</span> <span class="op">=</span> <span class="str">"Slider"</span><span class="strut">&nbsp;</span></p>
+<p id="t186" class="pln"><span class="strut">&nbsp;</span></p>
+<p id="t187" class="pln"><span class="com"># &#28909;&#38376;&#27604;&#36187;</span><span class="strut">&nbsp;</span></p>
+<p id="t188" class="stm run hide_run"><span class="key">class</span> <span class="nam">HotContest</span><span class="op">(</span><span class="nam">models</span><span class="op">.</span><span class="nam">Model</span><span class="op">)</span><span class="op">:</span><span class="strut">&nbsp;</span></p>
+<p id="t189" class="stm run hide_run">    <span class="nam">contest_id</span> <span class="op">=</span> <span class="nam">models</span><span class="op">.</span><span class="nam">IntegerField</span><span class="op">(</span><span class="op">)</span>  <span class="com"># &#27604;&#36187;id</span><span class="strut">&nbsp;</span></p>
+<p id="t190" class="stm run hide_run">    <span class="nam">title</span> <span class="op">=</span> <span class="nam">models</span><span class="op">.</span><span class="nam">CharField</span><span class="op">(</span><span class="nam">max_length</span><span class="op">=</span><span class="num">32</span><span class="op">)</span>  <span class="com"># &#27604;&#36187;&#21517;&#31216;</span><span class="strut">&nbsp;</span></p>
+<p id="t191" class="stm run hide_run">    <span class="nam">brief_introduction</span> <span class="op">=</span> <span class="nam">models</span><span class="op">.</span><span class="nam">CharField</span><span class="op">(</span><span class="nam">max_length</span><span class="op">=</span><span class="num">128</span><span class="op">)</span>  <span class="com"># &#27604;&#36187;&#31616;&#20171;</span><span class="strut">&nbsp;</span></p>
+<p id="t192" class="stm run hide_run">    <span class="key">class</span> <span class="nam">Meta</span><span class="op">:</span><span class="strut">&nbsp;</span></p>
+<p id="t193" class="stm run hide_run">        <span class="nam">db_table</span> <span class="op">=</span> <span class="str">"HotContest"</span><span class="strut">&nbsp;</span></p>
+<p id="t194" class="pln"><span class="strut">&nbsp;</span></p>
+<p id="t195" class="pln"><span class="com"># &#35752;&#35770;&#21306;&#20027;&#39064;&#24086;</span><span class="strut">&nbsp;</span></p>
+<p id="t196" class="stm run hide_run"><span class="key">class</span> <span class="nam">Post</span><span class="op">(</span><span class="nam">models</span><span class="op">.</span><span class="nam">Model</span><span class="op">)</span><span class="op">:</span><span class="strut">&nbsp;</span></p>
+<p id="t197" class="stm run hide_run">    <span class="nam">contest_id</span> <span class="op">=</span> <span class="nam">models</span><span class="op">.</span><span class="nam">IntegerField</span><span class="op">(</span><span class="nam">db_index</span><span class="op">=</span><span class="key">True</span><span class="op">)</span>  <span class="com"># &#27604;&#36187;id</span><span class="strut">&nbsp;</span></p>
+<p id="t198" class="stm run hide_run">    <span class="nam">title</span> <span class="op">=</span> <span class="nam">models</span><span class="op">.</span><span class="nam">CharField</span><span class="op">(</span><span class="nam">max_length</span><span class="op">=</span><span class="num">128</span><span class="op">)</span>  <span class="com"># &#26631;&#39064;</span><span class="strut">&nbsp;</span></p>
+<p id="t199" class="stm run hide_run">    <span class="nam">author_id</span> <span class="op">=</span> <span class="nam">models</span><span class="op">.</span><span class="nam">IntegerField</span><span class="op">(</span><span class="nam">db_index</span><span class="op">=</span><span class="key">True</span><span class="op">)</span>  <span class="com"># &#21457;&#24086;&#20154;id</span><span class="strut">&nbsp;</span></p>
+<p id="t200" class="stm run hide_run">    <span class="nam">author</span> <span class="op">=</span> <span class="nam">models</span><span class="op">.</span><span class="nam">CharField</span><span class="op">(</span><span class="nam">max_length</span><span class="op">=</span><span class="num">128</span><span class="op">)</span>  <span class="com"># &#21457;&#24086;&#20154;&#29992;&#25143;&#21517;</span><span class="strut">&nbsp;</span></p>
+<p id="t201" class="stm run hide_run">    <span class="nam">content</span> <span class="op">=</span> <span class="nam">models</span><span class="op">.</span><span class="nam">CharField</span><span class="op">(</span><span class="nam">max_length</span><span class="op">=</span><span class="num">1024</span><span class="op">)</span>  <span class="com"># &#21457;&#24086;&#20869;&#23481;</span><span class="strut">&nbsp;</span></p>
+<p id="t202" class="stm run hide_run">    <span class="nam">time</span> <span class="op">=</span> <span class="nam">models</span><span class="op">.</span><span class="nam">DateTimeField</span><span class="op">(</span><span class="op">)</span>  <span class="com"># &#21457;&#24086;&#26102;&#38388;</span><span class="strut">&nbsp;</span></p>
+<p id="t203" class="stm run hide_run">    <span class="nam">replies</span> <span class="op">=</span> <span class="nam">models</span><span class="op">.</span><span class="nam">IntegerField</span><span class="op">(</span><span class="nam">default</span><span class="op">=</span><span class="num">0</span><span class="op">)</span>  <span class="com"># &#22238;&#24086;&#25968;&#37327;</span><span class="strut">&nbsp;</span></p>
+<p id="t204" class="stm run hide_run">    <span class="nam">last_reply_time</span> <span class="op">=</span> <span class="nam">models</span><span class="op">.</span><span class="nam">DateTimeField</span><span class="op">(</span><span class="nam">null</span><span class="op">=</span><span class="key">True</span><span class="op">)</span>  <span class="com"># &#26368;&#21518;&#22238;&#22797;&#26102;&#38388;</span><span class="strut">&nbsp;</span></p>
+<p id="t205" class="stm run hide_run">    <span class="nam">views</span> <span class="op">=</span> <span class="nam">models</span><span class="op">.</span><span class="nam">IntegerField</span><span class="op">(</span><span class="nam">default</span><span class="op">=</span><span class="num">0</span><span class="op">)</span>  <span class="com"># &#27983;&#35272;&#37327;</span><span class="strut">&nbsp;</span></p>
+<p id="t206" class="stm run hide_run">    <span class="key">class</span> <span class="nam">Meta</span><span class="op">:</span><span class="strut">&nbsp;</span></p>
+<p id="t207" class="stm run hide_run">        <span class="nam">db_table</span> <span class="op">=</span> <span class="str">"Post"</span><span class="strut">&nbsp;</span></p>
+<p id="t208" class="pln"><span class="strut">&nbsp;</span></p>
+<p id="t209" class="pln"><span class="com"># &#35752;&#35770;&#21306;&#22238;&#24086;</span><span class="strut">&nbsp;</span></p>
+<p id="t210" class="stm run hide_run"><span class="key">class</span> <span class="nam">Reply</span><span class="op">(</span><span class="nam">models</span><span class="op">.</span><span class="nam">Model</span><span class="op">)</span><span class="op">:</span><span class="strut">&nbsp;</span></p>
+<p id="t211" class="stm run hide_run">    <span class="nam">post_id</span> <span class="op">=</span> <span class="nam">models</span><span class="op">.</span><span class="nam">IntegerField</span><span class="op">(</span><span class="nam">db_index</span><span class="op">=</span><span class="key">True</span><span class="op">)</span>  <span class="com"># &#20027;&#39064;&#24086;id</span><span class="strut">&nbsp;</span></p>
+<p id="t212" class="stm run hide_run">    <span class="nam">author_id</span> <span class="op">=</span> <span class="nam">models</span><span class="op">.</span><span class="nam">IntegerField</span><span class="op">(</span><span class="nam">db_index</span><span class="op">=</span><span class="key">True</span><span class="op">)</span>  <span class="com"># &#22238;&#24086;&#20154;id</span><span class="strut">&nbsp;</span></p>
+<p id="t213" class="stm run hide_run">    <span class="nam">author</span> <span class="op">=</span> <span class="nam">models</span><span class="op">.</span><span class="nam">CharField</span><span class="op">(</span><span class="nam">max_length</span><span class="op">=</span><span class="num">128</span><span class="op">)</span>  <span class="com"># &#22238;&#24086;&#20154;&#29992;&#25143;&#21517;</span><span class="strut">&nbsp;</span></p>
+<p id="t214" class="stm run hide_run">    <span class="nam">content</span> <span class="op">=</span> <span class="nam">models</span><span class="op">.</span><span class="nam">CharField</span><span class="op">(</span><span class="nam">max_length</span><span class="op">=</span><span class="num">1024</span><span class="op">)</span>  <span class="com"># &#22238;&#24086;&#20869;&#23481;</span><span class="strut">&nbsp;</span></p>
+<p id="t215" class="stm run hide_run">    <span class="nam">time</span> <span class="op">=</span> <span class="nam">models</span><span class="op">.</span><span class="nam">DateTimeField</span><span class="op">(</span><span class="op">)</span>  <span class="com"># &#22238;&#24086;&#26102;&#38388;</span><span class="strut">&nbsp;</span></p>
+<p id="t216" class="stm run hide_run">    <span class="key">class</span> <span class="nam">Meta</span><span class="op">:</span><span class="strut">&nbsp;</span></p>
+<p id="t217" class="stm run hide_run">        <span class="nam">db_table</span> <span class="op">=</span> <span class="str">"Reply"</span><span class="strut">&nbsp;</span></p>
+<p id="t218" class="pln"><span class="strut">&nbsp;</span></p>
+<p id="t219" class="pln"><span class="com"># &#26187;&#32423;&#21517;&#21333;&#26159;&#21542;&#24050;&#25552;&#20132;</span><span class="strut">&nbsp;</span></p>
+<p id="t220" class="stm run hide_run"><span class="key">class</span> <span class="nam">Submitted</span><span class="op">(</span><span class="nam">models</span><span class="op">.</span><span class="nam">Model</span><span class="op">)</span><span class="op">:</span><span class="strut">&nbsp;</span></p>
+<p id="t221" class="stm run hide_run">    <span class="nam">contest_id</span> <span class="op">=</span> <span class="nam">models</span><span class="op">.</span><span class="nam">IntegerField</span><span class="op">(</span><span class="nam">db_index</span><span class="op">=</span><span class="key">True</span><span class="op">)</span><span class="strut">&nbsp;</span></p>
+<p id="t222" class="stm run hide_run">    <span class="nam">phase</span> <span class="op">=</span> <span class="nam">models</span><span class="op">.</span><span class="nam">IntegerField</span><span class="op">(</span><span class="nam">db_index</span><span class="op">=</span><span class="key">True</span><span class="op">)</span><span class="strut">&nbsp;</span></p>
+<p id="t223" class="stm run hide_run">    <span class="nam">zone_id</span> <span class="op">=</span> <span class="nam">models</span><span class="op">.</span><span class="nam">IntegerField</span><span class="op">(</span><span class="nam">db_index</span><span class="op">=</span><span class="key">True</span><span class="op">)</span><span class="strut">&nbsp;</span></p>
+<p id="t224" class="stm run hide_run">    <span class="nam">advanced</span> <span class="op">=</span> <span class="nam">models</span><span class="op">.</span><span class="nam">IntegerField</span><span class="op">(</span><span class="nam">db_index</span><span class="op">=</span><span class="key">True</span><span class="op">)</span><span class="strut">&nbsp;</span></p>
+<p id="t225" class="stm run hide_run">    <span class="key">class</span> <span class="nam">Meta</span><span class="op">:</span><span class="strut">&nbsp;</span></p>
+<p id="t226" class="stm run hide_run">        <span class="nam">db_table</span> <span class="op">=</span> <span class="str">"Submitted"</span><span class="strut">&nbsp;</span></p>
+
+            </td>
+        </tr>
+    </table>
+</div>
+
+<div id="footer">
+    <div class="content">
+        <p>
+            <a class="nav" href="index.html">&#xab; index</a> &nbsp; &nbsp; <a class="nav" href="https://coverage.readthedocs.io">coverage.py v4.5.2</a>,
+            created at 2018-12-24 21:42
+        </p>
+    </div>
+</div>
+
+</body>
+</html>
