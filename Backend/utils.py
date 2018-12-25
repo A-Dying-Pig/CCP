@@ -15,7 +15,7 @@ MAX_POST_ONE_PAGE = 8
 MAX_REPLY_ONE_PAGE = 8
 
 
-RESOURCE_BASE_DIR = 'D:/CCP'
+RESOURCE_BASE_DIR = '/home/dingzheng/CCP'
 
 with open('zone.json', 'r', encoding='utf8') as f:
     zone = json.load(f)

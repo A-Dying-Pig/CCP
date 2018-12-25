@@ -42,7 +42,7 @@ def contests(request):
         return JsonResponse(response)
     except:
         traceback.print_exc()
-        return JsonResponse({'msg': ''})
+        return JsonResponse({'msg': 'error!'})
 
 def detail(request):
     try:
