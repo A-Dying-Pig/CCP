@@ -8,6 +8,7 @@ from datetime import datetime
 import random
 import pytz
 import django.utils.timezone as tz
+from django.db.models import Q, Count
 
 utctz=pytz.timezone('UTC')
 chinatz=pytz.timezone('Asia/Shanghai')
@@ -39,7 +40,8 @@ def participants(request):
             cur_phase = 1
         if result['mode'] == 1:  # 个人赛
             participants = ContestGrade.objects.filter(contest_id=contest_id, phase=cur_phase)
-            participant_number = participants.count()
+            parti_values = participants.values("leader_id").annotate(count=Count("leader_id"))
+            participant_number = parti_values.count()
             if participant_number < 1:  # 没数据
                 result['total_page_num'] = 0
                 result['array'] = []
@@ -51,8 +53,8 @@ def participants(request):
             index = MAX_PARTICIPANT_ONE_PAGE * (page_num - 1)
             while index < min(MAX_PARTICIPANT_ONE_PAGE * page_num, participant_number):
                 single_team = {}
-                single_team['userId'] = participants[index].leader_id
-                player = CCPUser.objects.get(id=participants[index].leader_id)
+                single_team['userId'] = parti_values[index].leader_id
+                player = CCPUser.objects.get(id=parti_values[index].leader_id)
                 single_team['username'] = player.username
                 single_team['email'] = player.email
                 single_team['points'] = ContestGradeUtil.getGrade(leader_id=single_team['userId'], contest_id=contest_id)
@@ -60,7 +62,8 @@ def participants(request):
                 index = index + 1
         else:  # 组队赛
             participants = ContestGrade.objects.filter(contest_id=contest_id, phase=cur_phase)
-            participant_number = participants.count()
+            parti_values = participants.values("leader_id").annotate(count=Count("leader_id"))
+            participant_number = parti_values.count()
             if participant_number < 1:  # 没数据
                 result['total_page_num'] = 0
                 result['array'] = []
@@ -72,10 +75,10 @@ def participants(request):
             index = MAX_PARTICIPANT_ONE_PAGE * (page_num - 1)
             while index < min(MAX_PARTICIPANT_ONE_PAGE * page_num, participant_number):
                 single_team = {}
-                single_team['captainId'] = participants[index].leader_id
-                single_team['captainName'] = ContestGroup.objects.get(contest_id=contest_id, leader_id=participants[index].leader_id).group_name
-                single_team['captainPoints'] = ContestGradeUtil.getGrade(leader_id=participants[index].leader_id, contest_id=contest_id)
-                single_team['group'] = ContestGroupUtil.getMember(leader_id=participants[index].leader_id, contest_id=contest_id)
+                single_team['captainId'] = parti_values[index].leader_id
+                single_team['captainName'] = ContestGroup.objects.get(contest_id=contest_id, leader_id=parti_values[index].leader_id).group_name
+                single_team['captainPoints'] = ContestGradeUtil.getGrade(leader_id=parti_values[index].leader_id, contest_id=contest_id)
+                single_team['group'] = ContestGroupUtil.getMember(leader_id=parti_values[index].leader_id, contest_id=contest_id)
                 result['array'].append(single_team)
                 index = index + 1
         return JsonResponse(result)
@@ -171,6 +174,7 @@ def modify(request):
             contest.organizers = contest.organizers + '\n' + sponsors[index]
             index = index + 1
         contest.category = comtype
+        contest.brief_introduction = brief_introduction
         contest.information = details
         contest.enroll_start = datetime.strptime(time[0],"%Y-%m-%dT%H:%M:%S.000Z").replace(tzinfo=pytz.utc)
         contest.enroll_end = datetime.strptime(time[1],"%Y-%m-%dT%H:%M:%S.000Z").replace(tzinfo=pytz.utc)
@@ -232,6 +236,10 @@ def setjudge(request):
             judge_id = CCPUser.objects.get(username=username).id
         except:
             return JsonResponse({'msg': 'Judge dos not exist'})
+        if ContestPlayer.objects.filter(contest_id=contest_id, player_id=request.user.id) or \
+            ContestGroup.objects.filter(Q(contest_id=contest_id) &
+                (Q(leader_id=request.user.id) | Q(member1_id=request.user.id) | Q(member2_id=request.user.id) | Q(member3_id=request.user.id) | Q(member4_id=request.user.id))):
+            return JsonResponse({'msg': '比赛选手不能成为评委'})
         if type == 0:
             contest_judge = ContestJudge()
             contest_judge.judge_id = judge_id
@@ -246,7 +254,7 @@ def setjudge(request):
             setattr(contest_judge, 'phase_region'+str(phase), zone)
             contest_judge.save()
         elif type == 2:
-            ContestJudge.objects.filter(judge_id=judge_id).delete()
+            ContestJudge.objects.filter(contest_id=contest_id, judge_id=judge_id).delete()
 
         return JsonResponse({'msg': ''})
     except:
