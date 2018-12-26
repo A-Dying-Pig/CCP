@@ -231,8 +231,8 @@ def upload(request):
             return JsonResponse({'msg': 'File not found.'})
         dot_pos = File.name.rfind('.')
         dot2_pos = File.name[:dot_pos].rfind('.')
-        #print(dot_pos)
-        #print(dot2_pos)
+        print(dot_pos)
+        print(dot2_pos)
         if (dot_pos == -1 or File.name[dot_pos:] not in ['.tar', '.zip']) and not (dot2_pos != -1 and File.name[dot2_pos:] in ['.tar.gz', '.tar.bz2', '.tar.xz']):
             return JsonResponse({'msg': '只支持上传tar或zip格式的压缩文件'})
         else:

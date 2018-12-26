@@ -24,9 +24,9 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 SECRET_KEY = 'cgw1582^zs06&k3^iaf+%k0rg15nw*x2jv22=m)3=*bznx+gvx'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = False
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['*']
 
 
 # Application definition
@@ -81,7 +81,7 @@ WSGI_APPLICATION = 'Kernal.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.mysql',
-        'NAME': 'ccp_tmp',
+        'NAME': 'ccp',
         'USER': 'ccp_remote',
         'PASSWORD': 'cCpremOte',
         'HOST': '123.206.47.47',
@@ -133,7 +133,7 @@ STATICFILES_DIRS = [
 
 AUTH_USER_MODEL = "Backend.CCPUser"
 
-'''
+
 with open('config.json', 'r') as f:
     mail = json.load(f)['mail']
 
@@ -143,8 +143,8 @@ EMAIL_HOST_USER = mail['EMAIL_HOST_USER']
 EMAIL_HOST_PASSWORD = mail['EMAIL_HOST_PASSWORD']
 EMAIL_PORT = mail['EMAIL_PORT']
 EMAIL_USE_TLS = True
-'''
+
 
 CRONJOBS = [
-    ('*/1 * * * *', 'Backend.cron.testCron')
+    ('*/1 * * * *', 'Backend.cron.allotCron')
 ]

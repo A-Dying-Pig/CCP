@@ -178,7 +178,7 @@ class api_user_competiton_Test(TransactionTestCase):
         response = self.c.post('/api/competition/adddiscussion',json.dumps(comp_info),content_type="application/json")
         response_content = response.content.decode()
         response_content = json.loads(response_content)
-        self.assertEqual(response_content['msg'], '未知错误')
+        self.assertEqual(response_content['msg'], '比赛不存在')
 
     def test_competition_adddiscussion_emptytitle(self):
         comp_info={

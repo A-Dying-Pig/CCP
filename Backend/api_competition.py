@@ -114,6 +114,7 @@ def enroll(request):
                 contest_group = ContestGroup()
                 contest_group.contest_id = contestid
                 contest_group.leader_id = request.user.id
+                contest_group.group_name = data['groupname']
                 glen = len(groupuser)
                 if glen < 0 or glen > 4:
                     return JsonResponse({'msg': '队员人数超出限制'})

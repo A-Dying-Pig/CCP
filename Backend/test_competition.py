@@ -183,12 +183,12 @@ class api_user_competiton_Test(TestCase):
         self.contestId_group = contest[0].id  
 
     def tearDown(self):
-        dirs = os.listdir(RESOURCES_BASE_DIR + '/resources/contests')
+        dirs = os.listdir(RESOURCE_BASE_DIR + '/resources/contests')
         for file in dirs:
-           shutil.rmtree(RESOURCES_BASE_DIR + '/resources/contests/'+file)
-        dirs = os.listdir(RESOURCES_BASE_DIR + '/resources/users')
+           shutil.rmtree(RESOURCE_BASE_DIR + '/resources/contests/'+file)
+        dirs = os.listdir(RESOURCE_BASE_DIR + '/resources/users')
         for file in dirs:
-           shutil.rmtree(RESOURCES_BASE_DIR + '/resources/users/'+file)
+           shutil.rmtree(RESOURCE_BASE_DIR + '/resources/users/'+file)
 
     def test_enroll_personal(self):
         user_info={
@@ -221,6 +221,7 @@ class api_user_competiton_Test(TestCase):
             "username":"admin2",
             "university" : "清华大学",
             "groupuser" : ["admin3"],
+            "groupname":"hhh战队",
             "custom_field" : ["1","2"],
             "custom_value" : ['1',"2"],
             }            
@@ -244,6 +245,7 @@ class api_user_competiton_Test(TestCase):
                 },
             "university" : "清华大学",
             "groupuser" : [],
+            "groupname":"hhh战队",
             "custom_field" : ["1","2"],
             "custom_value" : ['1',"2"],
             }            
@@ -290,13 +292,14 @@ class api_user_competiton_Test(TestCase):
                 },
             "university" : "清华大学",
             "groupuser" : ["admin4"],
+            "groupname":"hhh战队",
             "custom_field" : ["1","2"],
             "custom_value" : ['1',"2"],
             }            
         response = self.c.post('/api/competition/enroll',json.dumps(comp_info),content_type="application/json")
         response_content = response.content.decode()
         response_content = json.loads(response_content)
-        self.assertEqual(response_content['msg'], '参赛队员不存在') 
+        self.assertEqual(response_content['msg'], '未知错误') 
 
     def test_enroll_admin(self):       
         comp_info = {
