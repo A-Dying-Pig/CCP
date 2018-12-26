@@ -51,17 +51,17 @@
 
 <style>
     .ccp-footer{
-        margin-top: 60px;
+        margin-top: 120px;
     }
     .ccp-footer-col{
-        background: #383838;
+        background: #5E5E5E	;
         padding-top: 5px;
         padding-bottom: 30px;
 
     }
 
     .bottom-banner{
-        background: #202020;
+        background: #383838;
         color: #737373;
         padding-top:8px;
         padding-bottom: 8px;

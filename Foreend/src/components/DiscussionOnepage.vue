@@ -127,6 +127,7 @@
                         });
                         return;
                     }
+                    self.onedis.splice(0);
                     self.onedis = response.data;
                 }).catch(function (error) {
                     self.$message({

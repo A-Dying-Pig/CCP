@@ -79,6 +79,12 @@
 
       </el-main>
     </el-container>
+
+    <el-container>
+      <el-footer>
+        <CCPFooter></CCPFooter>
+      </el-footer>
+    </el-container>
   </div>
 </template>
 
@@ -86,6 +92,7 @@
     import NavigationBar from '../../components/NavigationBar'
     import GroupUser from '../../components/GroupUser'
     import UniversityPicker from '../../components/UniversityPicker'
+    import CCPFooter from '../../components/CCPFooter'
     //import axios from 'axios'
 
     axios.defaults.xsrfHeaderName = "X-CSRFToken";
@@ -142,6 +149,7 @@
             NavigationBar,
             GroupUser,
             UniversityPicker,
+            CCPFooter
         },
         mounted:function () {
             let vm = this;

@@ -10,7 +10,7 @@
                     :show-file-list="false"
                     :before-upload="BeforeUpload"
                     :http-request="SubmitUpload">
-                <el-button size="small" type="primary">点击上传头像</el-button>
+                <el-button size="small" type="primary" plain>点击上传头像</el-button>
             </el-upload>
         </div>
     </div>

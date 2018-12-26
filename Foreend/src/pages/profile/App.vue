@@ -67,7 +67,7 @@
                 >
                   <template slot-scope="scope">
                     <a :href="competition.created_competition[scope.$index].url" class="person-table-btn el-button">查看详情</a>
-                    <el-button type="info" @click="SendMessageClicked(competition.created_competition[scope.$index].id,scope.$index)">发送消息</el-button>
+                    <el-button type="primary" @click="SendMessageClicked(competition.created_competition[scope.$index].id,scope.$index)" plain>发送消息</el-button>
                   </template>
                 </el-table-column>
               </el-table>
@@ -138,8 +138,8 @@
           <el-card >
             <div slot="header" class="clearfix">
               <span>现存信息</span>
-              <el-button v-if="info_saved===true" style="float: right;padding: 5px 2px" type="primary" @click="ChangeInfo">修改</el-button>
-              <el-button v-else style="float: right;padding: 5px 2px" type="success" @click="SaveInfo">保存</el-button>
+              <el-button v-if="info_saved===true" style="float: right;padding: 5px 2px" type="danger" @click="ChangeInfo" plain>修改</el-button>
+              <el-button v-else style="float: right;padding: 5px 2px" type="primary" @click="SaveInfo" plain>保存</el-button>
             </div>
 
             <div class="text item">
@@ -177,8 +177,8 @@
                     min-width="2"
             >
               <template slot-scope="scope">
-                <el-button v-if="message_list.array[scope.$index].read === 0" style="padding: 5px 2px" type='danger' @click="MessageClick(scope.$index)">未读</el-button>
-                <el-button v-else-if="message_list.array[scope.$index].read === 1" style="padding: 5px 2px" type="success" @click="MessageClick(scope.$index)">已读</el-button>
+                <el-button v-if="message_list.array[scope.$index].read === 0" style="padding: 5px 2px" type='danger' @click="MessageClick(scope.$index)" plain>未读</el-button>
+                <el-button v-else-if="message_list.array[scope.$index].read === 1" style="padding: 5px 2px" type="primary" @click="MessageClick(scope.$index)" plain>已读</el-button>
               </template>
             </el-table-column>
 
@@ -209,9 +209,13 @@
           </div>
 
         </div>
-
       </el-main>
+    </el-container>
 
+    <el-container>
+      <el-footer>
+        <CCPFooter></CCPFooter>
+      </el-footer>
     </el-container>
   </div>
 </template>
@@ -221,6 +225,7 @@
     import PersonPhoto from '../../components/PersonPhoto'
     import RegionPicker from '../../components/RegionPicker'
     import UniversityPicker from '../../components/UniversityPicker'
+    import CCPFooter from '../../components/CCPFooter'
     //import axios from 'axios'
 
     axios.defaults.xsrfHeaderName = "X-CSRFToken";
@@ -291,7 +296,8 @@
             NavigationBar,
             PersonPhoto,
             RegionPicker,
-            UniversityPicker
+            UniversityPicker,
+            CCPFooter
         },
         mounted:function () {
             axios.post('/api/user/profile')

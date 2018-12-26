@@ -11,6 +11,12 @@
             </CompetitionDetailContents>
         </el-main>
     </el-container>
+
+    <el-container>
+        <el-footer>
+            <CCPFooter></CCPFooter>
+        </el-footer>
+    </el-container>
     </div>
 </template>
 <script>
@@ -18,6 +24,7 @@
     import NavigationBar from "../../components/NavigationBar.vue";
     import CompetitionDetailAllInfo from '../../components/CompetitionDetailAllInfo.vue';
     import CompetitionDetailContents from '../../components/CompetitionDetailContents.vue';
+    import CCPFooter from "../../components/CCPFooter"
     //import axios from 'axios'
     axios.defaults.xsrfHeaderName = "X-CSRFToken";
     axios.defaults.headers.common = {
@@ -26,7 +33,7 @@
     };
 
     export default {
-        components: {NavigationBar,CompetitionDetailAllInfo,CompetitionDetailContents},
+        components: {NavigationBar,CompetitionDetailAllInfo,CompetitionDetailContents,CCPFooter},
         props:{'contestid': {
                     type:Number,
                     default:-1

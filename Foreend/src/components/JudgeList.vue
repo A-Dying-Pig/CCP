@@ -85,7 +85,7 @@
                             >
                             </el-option>
                         </el-select>
-                        <el-button style="padding: 10px 4px" type="success" @click="ChangeZoneSubmit(scope.$index)" plain>确认</el-button>
+                        <el-button style="padding: 10px 4px" type="primary" @click="ChangeZoneSubmit(scope.$index)" plain>确认</el-button>
 
                     </template>
                 </el-table-column>

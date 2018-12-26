@@ -118,6 +118,12 @@
           </el-tabs>
       </el-main>
 
+      <el-container>
+        <el-footer>
+          <CCPFooter></CCPFooter>
+        </el-footer>
+      </el-container>
+
     </el-container>
   </div>
 </template>
@@ -126,6 +132,7 @@
     import NavigationBar from '../../components/NavigationBar'
     import SuperCheckContestItem from '../../components/SuperCheckContestItem'
     import IndexInfo from '../../components/IndexInfo'
+    import CCPFooter from '../../components/CCPFooter'
     //import axios from 'axios'
 
     axios.defaults.xsrfHeaderName = "X-CSRFToken";
@@ -160,7 +167,8 @@
         components: {
             IndexInfo,
             NavigationBar,
-            SuperCheckContestItem
+            SuperCheckContestItem,
+            CCPFooter
         },
         mounted:function () {
             axios.post('/api/super/contests',{pageNum:1})

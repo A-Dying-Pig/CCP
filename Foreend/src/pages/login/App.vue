@@ -33,16 +33,16 @@
 
         <el-row :gutter="0">
           <div class="login-btn">
-              <el-button type="success" @click="submitForm('input_msg')"><span class="form-btn">登录</span></el-button>
+              <el-button type="primary" @click="submitForm('input_msg')"><span class="form-btn">登录</span></el-button>
           </div>
         </el-row>
       </el-form>
       </div>
 
-        <el-row :gutter="20">
+        <el-row :gutter="0">
           <el-col :span="24" class="banner2">您的账户适用于CCP的所有服务</el-col>
         </el-row>
-        <el-row :gutter="20">
+        <el-row :gutter="0">
           <div class="login-icon">
             <img src="../../assets/img/login_service_intro.png" class="login_service_intro">
           </div>
@@ -55,11 +55,18 @@
         </el-row>
     </el-main>
     </el-container>
+
+    <el-container>
+      <el-footer>
+        <CCPFooter></CCPFooter>
+      </el-footer>
+    </el-container>
   </div>
 </template>
 
 <script>
     import NavigationBar from '../../components/NavigationBar'
+    import CCPFooter from '../../components/CCPFooter'
     //import axios from 'axios'
 
     axios.defaults.xsrfHeaderName = "X-CSRFToken";
@@ -106,7 +113,8 @@
             };
         },
         components: {
-            NavigationBar
+            NavigationBar,
+            CCPFooter
         },
         methods:{
             submitForm(formName) {
