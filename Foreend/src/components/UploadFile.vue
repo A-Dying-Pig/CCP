@@ -148,8 +148,8 @@
                     return false;
                 }
                 if(self.accept === 'zip'){
-                    if((!file.name.endsWith('zip'))&&(!file.name.endsWith('rar'))){
-                        this.$message.error(`只支持rar或者zip格式文件的上传!`);
+                    if((!file.name.endsWith('zip'))&&(!file.name.endsWith('tar'))&&(!file.name.endsWith('tar.gz'))&&(!file.name.endsWith('tar.bz2'))&&(!file.name.endsWith('tar.xz'))){
+                        this.$message.error(`只支持.zip, .tar, .tar.gz, .tar.bz2或者.tar.xz格式文件的上传!`);
                         this.is_wrong = true;
                         return false;
                     }
