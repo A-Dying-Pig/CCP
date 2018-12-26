@@ -101,7 +101,7 @@ class api_judge_Test(TestCase):
         #修改数据库
         Contest.objects.filter(title="快乐肥宅大赛-个人").update(enroll_end="2018-12-21T12:10:00.000Z",
                                                                 phase_start_time1="2018-12-25T02:10:00.000Z",
-                                                                phase_hand_end_time1="2018-12-25T12:10:00.000Z",
+                                                                phase_hand_end_time1="2018-12-26T15:10:00.000Z",
                                                                 phase_evaluate_end_time1="2018-12-27T06:10:00.000Z")
 
     def tearDown(self):
@@ -136,9 +136,9 @@ class api_judge_Test(TestCase):
 
     def test_contestant_submit_inenrolltime(self):
         #修改数据库
-        Contest.objects.filter(title="快乐肥宅大赛-个人").update(enroll_end="2018-12-25T12:10:00.000Z",
-                                                                phase_start_time1="2018-12-26T02:10:00.000Z",
-                                                                phase_hand_end_time1="2018-12-26T03:10:00.000Z",
+        Contest.objects.filter(title="快乐肥宅大赛-个人").update(enroll_end="2018-12-26T20:10:00.000Z",
+                                                                phase_start_time1="2018-12-26T21:10:00.000Z",
+                                                                phase_hand_end_time1="2018-12-26T22:10:00.000Z",
                                                                 phase_evaluate_end_time1="2018-12-27T06:10:00.000Z")
         user_info={
             "username": "admin2", 
@@ -211,3 +211,64 @@ class api_judge_Test(TestCase):
         response_content = json.loads(response_content)
         self.assertEqual(response_content['msg'], 'File not found.') 
     '''
+
+    def test_user_check(self):
+        user_info={
+            "username": "admin2", 
+            "password": "ccp"            
+        }
+        response = self.c.post('/api/user/login',json.dumps(user_info),content_type="application/json")
+        user_info={
+            "contestid": self.contestId_personal,
+            "username": "admin2"
+        }
+        response = self.c.post('/api/user/check',json.dumps(user_info),content_type="application/json")
+        response_content = response.content.decode()
+        response_content = json.loads(response_content)
+        self.assertEqual(response_content['msg'], '不能重复报名')
+
+    def test_user_checknotmatch(self):
+        user_info={
+            "username": "admin2", 
+            "password": "ccp"            
+        }
+        response = self.c.post('/api/user/login',json.dumps(user_info),content_type="application/json")
+        user_info={
+            "contestid": self.contestId_personal+10,
+            "username": "admin2"
+        }
+        response = self.c.post('/api/user/check',json.dumps(user_info),content_type="application/json")
+        response_content = response.content.decode()
+        response_content = json.loads(response_content)
+        self.assertNotEqual(response_content['msg'], '')      
+
+    def test_user_check_logout(self):
+        user_info={
+            "username": "admin2", 
+            "password": "ccp"            
+        }
+        response = self.c.post('/api/user/login',json.dumps(user_info),content_type="application/json")
+        response = self.c.post('/logout')
+        user_info={
+            "contestid": self.contestId_personal,
+            "username": "admin2"
+        }
+        response = self.c.post('/api/user/check',json.dumps(user_info),content_type="application/json")
+        response_content = response.content.decode()
+        response_content = json.loads(response_content)
+        self.assertEqual(response_content['msg'], '不能重复报名')          
+    
+    def test_user_check_admin(self):
+        user_info={
+            "username": "admin", 
+            "password": "ccp"            
+        }
+        response = self.c.post('/api/user/login',json.dumps(user_info),content_type="application/json")
+        user_info={
+            "contestid": self.contestId_personal,
+            "username": "admin"
+        }
+        response = self.c.post('/api/user/check',json.dumps(user_info),content_type="application/json")
+        response_content = response.content.decode()
+        response_content = json.loads(response_content)
+        self.assertEqual(response_content['msg'], '比赛管理员不能报名')  
