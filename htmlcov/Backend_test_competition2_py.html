@@ -777,7 +777,7 @@
 <p id="t63" class="pln">            <span class="str">"signupinfo"</span><span class="op">:</span> <span class="op">{</span><span class="strut">&nbsp;</span></p>
 <p id="t64" class="pln">                <span class="str">"time"</span> <span class="op">:</span> <span class="op">[</span><span class="str">"2018-12-10T12:10:00.000Z"</span><span class="op">,</span><span class="str">"2018-12-30T12:10:00.000Z"</span><span class="op">]</span><span class="op">,</span><span class="strut">&nbsp;</span></p>
 <p id="t65" class="pln">                <span class="str">"mode"</span> <span class="op">:</span> <span class="num">1</span><span class="op">,</span><span class="strut">&nbsp;</span></p>
-<p id="t66" class="pln">                <span class="str">"teamnum"</span><span class="op">:</span><span class="op">[</span><span class="num">1</span><span class="op">,</span><span class="num">10</span><span class="op">]</span><span class="op">,</span><span class="strut">&nbsp;</span></p>
+<p id="t66" class="pln">                <span class="str">"teamnum"</span><span class="op">:</span><span class="num">5</span><span class="op">,</span><span class="strut">&nbsp;</span></p>
 <p id="t67" class="pln">                <span class="str">"person"</span> <span class="op">:</span> <span class="op">[</span><span class="str">"1"</span><span class="op">,</span><span class="str">"2"</span><span class="op">,</span><span class="str">"3"</span><span class="op">,</span><span class="str">"4"</span><span class="op">]</span><span class="op">,</span><span class="strut">&nbsp;</span></p>
 <p id="t68" class="pln">                <span class="str">"group"</span> <span class="op">:</span> <span class="op">[</span><span class="str">"1"</span><span class="op">,</span><span class="str">"2"</span><span class="op">,</span><span class="str">"3"</span><span class="op">,</span><span class="str">"4"</span><span class="op">]</span><span class="op">,</span><span class="strut">&nbsp;</span></p>
 <p id="t69" class="pln">                <span class="op">}</span><span class="op">,</span><span class="strut">&nbsp;</span></p>
@@ -892,7 +892,7 @@
 <p id="t178" class="stm run hide_run">        <span class="nam">response</span> <span class="op">=</span> <span class="nam">self</span><span class="op">.</span><span class="nam">c</span><span class="op">.</span><span class="nam">post</span><span class="op">(</span><span class="str">'/api/competition/adddiscussion'</span><span class="op">,</span><span class="nam">json</span><span class="op">.</span><span class="nam">dumps</span><span class="op">(</span><span class="nam">comp_info</span><span class="op">)</span><span class="op">,</span><span class="nam">content_type</span><span class="op">=</span><span class="str">"application/json"</span><span class="op">)</span><span class="strut">&nbsp;</span></p>
 <p id="t179" class="stm run hide_run">        <span class="nam">response_content</span> <span class="op">=</span> <span class="nam">response</span><span class="op">.</span><span class="nam">content</span><span class="op">.</span><span class="nam">decode</span><span class="op">(</span><span class="op">)</span><span class="strut">&nbsp;</span></p>
 <p id="t180" class="stm run hide_run">        <span class="nam">response_content</span> <span class="op">=</span> <span class="nam">json</span><span class="op">.</span><span class="nam">loads</span><span class="op">(</span><span class="nam">response_content</span><span class="op">)</span><span class="strut">&nbsp;</span></p>
-<p id="t181" class="stm run hide_run">        <span class="nam">self</span><span class="op">.</span><span class="nam">assertEqual</span><span class="op">(</span><span class="nam">response_content</span><span class="op">[</span><span class="str">'msg'</span><span class="op">]</span><span class="op">,</span> <span class="str">'&#26410;&#30693;&#38169;&#35823;'</span><span class="op">)</span><span class="strut">&nbsp;</span></p>
+<p id="t181" class="stm run hide_run">        <span class="nam">self</span><span class="op">.</span><span class="nam">assertEqual</span><span class="op">(</span><span class="nam">response_content</span><span class="op">[</span><span class="str">'msg'</span><span class="op">]</span><span class="op">,</span> <span class="str">'&#27604;&#36187;&#19981;&#23384;&#22312;'</span><span class="op">)</span><span class="strut">&nbsp;</span></p>
 <p id="t182" class="pln"><span class="strut">&nbsp;</span></p>
 <p id="t183" class="stm run hide_run">    <span class="key">def</span> <span class="nam">test_competition_adddiscussion_emptytitle</span><span class="op">(</span><span class="nam">self</span><span class="op">)</span><span class="op">:</span><span class="strut">&nbsp;</span></p>
 <p id="t184" class="stm run hide_run">        <span class="nam">comp_info</span><span class="op">=</span><span class="op">{</span><span class="strut">&nbsp;</span></p>
@@ -1364,7 +1364,7 @@
     <div class="content">
         <p>
             <a class="nav" href="index.html">&#xab; index</a> &nbsp; &nbsp; <a class="nav" href="https://coverage.readthedocs.io">coverage.py v4.5.2</a>,
-            created at 2018-12-24 21:42
+            created at 2018-12-27 00:20
         </p>
     </div>
 </div>

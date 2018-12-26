@@ -8,7 +8,7 @@
     
     
     <meta http-equiv="X-UA-Compatible" content="IE=emulateIE7" />
-    <title>Coverage for Backend\api_message.py: 75%</title>
+    <title>Coverage for Backend\api_message.py: 76%</title>
     <link rel="stylesheet" href="style.css" type="text/css">
     
     <script type="text/javascript" src="jquery.min.js"></script>
@@ -24,14 +24,14 @@
 <div id="header">
     <div class="content">
         <h1>Coverage for <b>Backend\api_message.py</b> :
-            <span class="pc_cov">75%</span>
+            <span class="pc_cov">76%</span>
         </h1>
 
         <img id="keyboard_icon" src="keybd_closed.png" alt="Show keyboard shortcuts" />
 
         <h2 class="stats">
-            57 statements &nbsp;
-            <span class="run hide_run shortkey_r button_toggle_run">43 run</span>
+            59 statements &nbsp;
+            <span class="run hide_run shortkey_r button_toggle_run">45 run</span>
             <span class="mis shortkey_m button_toggle_mis">14 missing</span>
             <span class="exc shortkey_x button_toggle_exc">0 excluded</span>
 
@@ -131,15 +131,17 @@
 <p id="n62" class="stm run hide_run"><a href="#n62">62</a></p>
 <p id="n63" class="stm run hide_run"><a href="#n63">63</a></p>
 <p id="n64" class="stm run hide_run"><a href="#n64">64</a></p>
-<p id="n65" class="pln"><a href="#n65">65</a></p>
+<p id="n65" class="stm run hide_run"><a href="#n65">65</a></p>
 <p id="n66" class="pln"><a href="#n66">66</a></p>
 <p id="n67" class="pln"><a href="#n67">67</a></p>
 <p id="n68" class="pln"><a href="#n68">68</a></p>
-<p id="n69" class="stm run hide_run"><a href="#n69">69</a></p>
+<p id="n69" class="pln"><a href="#n69">69</a></p>
 <p id="n70" class="stm run hide_run"><a href="#n70">70</a></p>
-<p id="n71" class="stm mis"><a href="#n71">71</a></p>
-<p id="n72" class="stm mis"><a href="#n72">72</a></p>
+<p id="n71" class="stm run hide_run"><a href="#n71">71</a></p>
+<p id="n72" class="stm run hide_run"><a href="#n72">72</a></p>
 <p id="n73" class="stm mis"><a href="#n73">73</a></p>
+<p id="n74" class="stm mis"><a href="#n74">74</a></p>
+<p id="n75" class="stm mis"><a href="#n75">75</a></p>
 
             </td>
             <td class="text">
@@ -174,7 +176,7 @@
 <p id="t29" class="stm mis">            <span class="nam">page</span> <span class="op">=</span> <span class="num">1</span><span class="strut">&nbsp;</span></p>
 <p id="t30" class="stm run hide_run">        <span class="nam">count</span> <span class="op">=</span> <span class="nam">NotificationUser</span><span class="op">.</span><span class="nam">objects</span><span class="op">.</span><span class="nam">filter</span><span class="op">(</span><span class="nam">user_id</span><span class="op">=</span><span class="nam">request</span><span class="op">.</span><span class="nam">user</span><span class="op">.</span><span class="nam">id</span><span class="op">)</span><span class="op">.</span><span class="nam">count</span><span class="op">(</span><span class="op">)</span><span class="strut">&nbsp;</span></p>
 <p id="t31" class="stm run hide_run">        <span class="nam">total_page_num</span> <span class="op">=</span> <span class="op">(</span><span class="nam">count</span> <span class="op">-</span> <span class="num">1</span><span class="op">)</span> <span class="op">//</span> <span class="nam">amount</span> <span class="op">+</span> <span class="num">1</span><span class="strut">&nbsp;</span></p>
-<p id="t32" class="stm run hide_run">        <span class="nam">ntf</span> <span class="op">=</span> <span class="nam">NotificationUser</span><span class="op">.</span><span class="nam">objects</span><span class="op">.</span><span class="nam">all</span><span class="op">(</span><span class="op">)</span><span class="op">[</span><span class="op">(</span><span class="nam">page</span><span class="op">-</span><span class="num">1</span><span class="op">)</span><span class="op">*</span><span class="nam">amount</span><span class="op">:</span> <span class="nam">page</span><span class="op">*</span><span class="nam">amount</span><span class="op">]</span><span class="strut">&nbsp;</span></p>
+<p id="t32" class="stm run hide_run">        <span class="nam">ntf</span> <span class="op">=</span> <span class="nam">NotificationUser</span><span class="op">.</span><span class="nam">objects</span><span class="op">.</span><span class="nam">filter</span><span class="op">(</span><span class="nam">user_id</span><span class="op">=</span><span class="nam">request</span><span class="op">.</span><span class="nam">user</span><span class="op">.</span><span class="nam">id</span><span class="op">)</span><span class="op">[</span><span class="op">(</span><span class="nam">page</span><span class="op">-</span><span class="num">1</span><span class="op">)</span><span class="op">*</span><span class="nam">amount</span><span class="op">:</span> <span class="nam">page</span><span class="op">*</span><span class="nam">amount</span><span class="op">]</span><span class="strut">&nbsp;</span></p>
 <p id="t33" class="stm run hide_run">        <span class="nam">array</span> <span class="op">=</span> <span class="op">[</span><span class="op">]</span><span class="strut">&nbsp;</span></p>
 <p id="t34" class="stm run hide_run">        <span class="key">for</span> <span class="nam">n</span> <span class="key">in</span> <span class="nam">ntf</span><span class="op">:</span><span class="strut">&nbsp;</span></p>
 <p id="t35" class="stm run hide_run">            <span class="nam">d</span> <span class="op">=</span> <span class="op">{</span><span class="op">}</span><span class="strut">&nbsp;</span></p>
@@ -201,21 +203,23 @@
 <p id="t56" class="stm run hide_run">        <span class="nam">mId</span> <span class="op">=</span> <span class="nam">data</span><span class="op">[</span><span class="str">'messageId'</span><span class="op">]</span><span class="strut">&nbsp;</span></p>
 <p id="t57" class="stm run hide_run">        <span class="key">try</span><span class="op">:</span><span class="strut">&nbsp;</span></p>
 <p id="t58" class="stm run hide_run">            <span class="nam">ntf</span> <span class="op">=</span> <span class="nam">Notification</span><span class="op">.</span><span class="nam">objects</span><span class="op">.</span><span class="nam">get</span><span class="op">(</span><span class="nam">id</span><span class="op">=</span><span class="nam">mId</span><span class="op">)</span><span class="strut">&nbsp;</span></p>
-<p id="t59" class="stm run hide_run">            <span class="nam">nu</span> <span class="op">=</span> <span class="nam">NotificationUser</span><span class="op">.</span><span class="nam">objects</span><span class="op">.</span><span class="nam">get</span><span class="op">(</span><span class="nam">notification_id</span><span class="op">=</span><span class="nam">mId</span><span class="op">)</span><span class="strut">&nbsp;</span></p>
-<p id="t60" class="stm run hide_run">            <span class="key">if</span> <span class="nam">nu</span><span class="op">.</span><span class="nam">user_id</span> <span class="op">!=</span> <span class="nam">request</span><span class="op">.</span><span class="nam">user</span><span class="op">.</span><span class="nam">id</span><span class="op">:</span><span class="strut">&nbsp;</span></p>
-<p id="t61" class="stm run hide_run">                <span class="key">return</span> <span class="nam">JsonResponse</span><span class="op">(</span><span class="op">{</span><span class="str">'msg'</span><span class="op">:</span> <span class="str">'&#27492;&#28040;&#24687;&#19981;&#23646;&#20110;&#35813;&#29992;&#25143;'</span><span class="op">}</span><span class="op">)</span><span class="strut">&nbsp;</span></p>
-<p id="t62" class="stm run hide_run">            <span class="nam">nu</span><span class="op">.</span><span class="nam">read</span> <span class="op">=</span> <span class="key">True</span><span class="strut">&nbsp;</span></p>
-<p id="t63" class="stm run hide_run">            <span class="nam">nu</span><span class="op">.</span><span class="nam">save</span><span class="op">(</span><span class="op">)</span><span class="strut">&nbsp;</span></p>
-<p id="t64" class="stm run hide_run">            <span class="key">return</span> <span class="nam">JsonResponse</span><span class="op">(</span><span class="op">{</span><span class="strut">&nbsp;</span></p>
-<p id="t65" class="pln">                <span class="str">'title'</span><span class="op">:</span> <span class="nam">ntf</span><span class="op">.</span><span class="nam">title</span><span class="op">,</span><span class="strut">&nbsp;</span></p>
-<p id="t66" class="pln">                <span class="str">'content'</span><span class="op">:</span> <span class="nam">ntf</span><span class="op">.</span><span class="nam">context</span><span class="op">,</span><span class="strut">&nbsp;</span></p>
-<p id="t67" class="pln">                <span class="str">'msg'</span><span class="op">:</span> <span class="str">''</span><span class="strut">&nbsp;</span></p>
-<p id="t68" class="pln">            <span class="op">}</span><span class="op">)</span><span class="strut">&nbsp;</span></p>
-<p id="t69" class="stm run hide_run">        <span class="key">except</span><span class="op">:</span><span class="strut">&nbsp;</span></p>
-<p id="t70" class="stm run hide_run">            <span class="key">return</span> <span class="nam">JsonResponse</span><span class="op">(</span><span class="op">{</span><span class="str">'msg'</span><span class="op">:</span> <span class="str">'&#24744;&#26597;&#25214;&#30340;&#28040;&#24687;&#19981;&#23384;&#22312;&#65281;'</span><span class="op">}</span><span class="op">)</span><span class="strut">&nbsp;</span></p>
-<p id="t71" class="stm mis">    <span class="key">except</span><span class="op">:</span><span class="strut">&nbsp;</span></p>
-<p id="t72" class="stm mis">        <span class="nam">traceback</span><span class="op">.</span><span class="nam">print_exc</span><span class="op">(</span><span class="op">)</span><span class="strut">&nbsp;</span></p>
-<p id="t73" class="stm mis">        <span class="key">return</span> <span class="nam">JsonResponse</span><span class="op">(</span><span class="op">{</span><span class="str">'msg'</span><span class="op">:</span> <span class="str">'&#26410;&#30693;&#38169;&#35823;&#65281;'</span><span class="op">}</span><span class="op">)</span><span class="strut">&nbsp;</span></p>
+<p id="t59" class="stm run hide_run">            <span class="key">try</span><span class="op">:</span><span class="strut">&nbsp;</span></p>
+<p id="t60" class="stm run hide_run">                <span class="nam">nu</span> <span class="op">=</span> <span class="nam">NotificationUser</span><span class="op">.</span><span class="nam">objects</span><span class="op">.</span><span class="nam">get</span><span class="op">(</span><span class="nam">notification_id</span><span class="op">=</span><span class="nam">mId</span><span class="op">,</span> <span class="nam">user_id</span><span class="op">=</span><span class="nam">request</span><span class="op">.</span><span class="nam">user</span><span class="op">.</span><span class="nam">id</span><span class="op">)</span><span class="strut">&nbsp;</span></p>
+<p id="t61" class="stm run hide_run">            <span class="key">except</span><span class="op">:</span><span class="strut">&nbsp;</span></p>
+<p id="t62" class="stm run hide_run">                <span class="key">return</span> <span class="nam">JsonResponse</span><span class="op">(</span><span class="op">{</span><span class="str">'msg'</span><span class="op">:</span> <span class="str">'&#27492;&#28040;&#24687;&#19981;&#23646;&#20110;&#35813;&#29992;&#25143;'</span><span class="op">}</span><span class="op">)</span><span class="strut">&nbsp;</span></p>
+<p id="t63" class="stm run hide_run">            <span class="nam">nu</span><span class="op">.</span><span class="nam">read</span> <span class="op">=</span> <span class="key">True</span><span class="strut">&nbsp;</span></p>
+<p id="t64" class="stm run hide_run">            <span class="nam">nu</span><span class="op">.</span><span class="nam">save</span><span class="op">(</span><span class="op">)</span><span class="strut">&nbsp;</span></p>
+<p id="t65" class="stm run hide_run">            <span class="key">return</span> <span class="nam">JsonResponse</span><span class="op">(</span><span class="op">{</span><span class="strut">&nbsp;</span></p>
+<p id="t66" class="pln">                <span class="str">'title'</span><span class="op">:</span> <span class="nam">ntf</span><span class="op">.</span><span class="nam">title</span><span class="op">,</span><span class="strut">&nbsp;</span></p>
+<p id="t67" class="pln">                <span class="str">'content'</span><span class="op">:</span> <span class="nam">ntf</span><span class="op">.</span><span class="nam">context</span><span class="op">,</span><span class="strut">&nbsp;</span></p>
+<p id="t68" class="pln">                <span class="str">'msg'</span><span class="op">:</span> <span class="str">''</span><span class="strut">&nbsp;</span></p>
+<p id="t69" class="pln">            <span class="op">}</span><span class="op">)</span><span class="strut">&nbsp;</span></p>
+<p id="t70" class="stm run hide_run">        <span class="key">except</span><span class="op">:</span><span class="strut">&nbsp;</span></p>
+<p id="t71" class="stm run hide_run">            <span class="nam">traceback</span><span class="op">.</span><span class="nam">print_exc</span><span class="op">(</span><span class="op">)</span><span class="strut">&nbsp;</span></p>
+<p id="t72" class="stm run hide_run">            <span class="key">return</span> <span class="nam">JsonResponse</span><span class="op">(</span><span class="op">{</span><span class="str">'msg'</span><span class="op">:</span> <span class="str">'&#24744;&#26597;&#25214;&#30340;&#28040;&#24687;&#19981;&#23384;&#22312;&#65281;'</span><span class="op">}</span><span class="op">)</span><span class="strut">&nbsp;</span></p>
+<p id="t73" class="stm mis">    <span class="key">except</span><span class="op">:</span><span class="strut">&nbsp;</span></p>
+<p id="t74" class="stm mis">        <span class="nam">traceback</span><span class="op">.</span><span class="nam">print_exc</span><span class="op">(</span><span class="op">)</span><span class="strut">&nbsp;</span></p>
+<p id="t75" class="stm mis">        <span class="key">return</span> <span class="nam">JsonResponse</span><span class="op">(</span><span class="op">{</span><span class="str">'msg'</span><span class="op">:</span> <span class="str">'&#26410;&#30693;&#38169;&#35823;&#65281;'</span><span class="op">}</span><span class="op">)</span><span class="strut">&nbsp;</span></p>
 
             </td>
         </tr>
@@ -226,7 +230,7 @@
     <div class="content">
         <p>
             <a class="nav" href="index.html">&#xab; index</a> &nbsp; &nbsp; <a class="nav" href="https://coverage.readthedocs.io">coverage.py v4.5.2</a>,
-            created at 2018-12-24 21:42
+            created at 2018-12-27 00:20
         </p>
     </div>
 </div>

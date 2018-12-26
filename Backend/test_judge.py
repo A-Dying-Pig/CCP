@@ -463,4 +463,169 @@ class api_judge_Test(TestCase):
         response_content = response.content.decode()
         response_content = json.loads(response_content)
         self.assertEqual(response_content['msg'],'当前用户不是该比赛评委')
+
+    def test_admin_getnewscore_successful(self): #!!!!!!!!!!
+        # todo htx 主办方分配评委（同样要保证时间在phase_hand_end_time和phase_evaluate_end_time之间）
+        user_info={
+            "username": "admin", 
+            "password": "ccp"            
+        }
+        response = self.c.post('/api/user/login',json.dumps(user_info),content_type="application/json")
+        comp_info={
+            "contestid": self.contestId_personal, 
+            "judgenum": 1            
+        }
+        response = self.c.post('/api/admin/allot',json.dumps(comp_info),content_type="application/json")
+        
+        # todo htx 登录评委账号评分，并提交分数
+        user_info={
+            "username": "judge1", 
+            "password": "ccp"            
+        }
+        response = self.c.post('/api/user/login',json.dumps(user_info),content_type="application/json")
+        contestplayer = ContestPlayer.objects.filter()
+        self.ContestPlayer_id = contestplayer[0].player_id 
+        response_content = response.content.decode()
+        response_content = json.loads(response_content)
+        
+
+        submit_info={
+            "contestid":self.contestId_personal,
+            "userId":self.ContestPlayer_id,
+            "grade":95,
+            "phase":"hhhhhhh"            
+        }
+        response = self.c.post('/api/judge/submit',json.dumps(submit_info),content_type="application/json")
+        
+        #修改数据库
+        Contest.objects.filter(title="快乐肥宅大赛-个人").update(enroll_end="2018-12-21T12:10:00.000Z",
+                                                                phase_start_time1="2018-12-25T02:10:00.000Z",
+                                                                phase_hand_end_time1="2018-12-25T14:10:00.000Z",
+                                                                phase_evaluate_end_time1="2018-12-25T15:10:00.000Z")
+        
+        user_info={
+            "username": "admin", 
+            "password": "ccp"            
+        }
+        response = self.c.post('/api/user/login',json.dumps(user_info),content_type="application/json")
+        submit_info={
+            "contestid":self.contestId_personal,
+            "username":"admin2",
+            "grade":90,
+            "reason":"hhhhhhh"            
+        }
+        response = self.c.post('/api/admin/setnewgrade',json.dumps(submit_info),content_type="application/json")
+        # to
+        response_content = response.content.decode()
+        response_content = json.loads(response_content)
+        #self.assertEqual(response_content['msg'], '')
+        self.assertEqual(response_content['msg'], '')
        
+    def test_admin_getnewscore_notadmin(self): #!!!!!!!!!!
+        # todo htx 主办方分配评委（同样要保证时间在phase_hand_end_time和phase_evaluate_end_time之间）
+        user_info={
+            "username": "admin", 
+            "password": "ccp"            
+        }
+        response = self.c.post('/api/user/login',json.dumps(user_info),content_type="application/json")
+        comp_info={
+            "contestid": self.contestId_personal, 
+            "judgenum": 1            
+        }
+        response = self.c.post('/api/admin/allot',json.dumps(comp_info),content_type="application/json")
+        
+        # todo htx 登录评委账号评分，并提交分数
+        user_info={
+            "username": "judge1", 
+            "password": "ccp"            
+        }
+        response = self.c.post('/api/user/login',json.dumps(user_info),content_type="application/json")
+        contestplayer = ContestPlayer.objects.filter()
+        self.ContestPlayer_id = contestplayer[0].player_id 
+        response_content = response.content.decode()
+        response_content = json.loads(response_content)
+        
+
+        submit_info={
+            "contestid":self.contestId_personal,
+            "userId":self.ContestPlayer_id,
+            "grade":95,
+            "phase":"hhhhhhh"            
+        }
+        response = self.c.post('/api/judge/submit',json.dumps(submit_info),content_type="application/json")
+        
+        #修改数据库
+        Contest.objects.filter(title="快乐肥宅大赛-个人").update(enroll_end="2018-12-21T12:10:00.000Z",
+                                                                phase_start_time1="2018-12-25T02:10:00.000Z",
+                                                                phase_hand_end_time1="2018-12-25T14:10:00.000Z",
+                                                                phase_evaluate_end_time1="2018-12-25T15:10:00.000Z")
+        
+        submit_info={
+            "contestid":self.contestId_personal,
+            "username":"admin2",
+            "grade":90,
+            "reason":"hhhhhhh"            
+        }
+        response = self.c.post('/api/admin/setnewgrade',json.dumps(submit_info),content_type="application/json")
+        # to
+        response_content = response.content.decode()
+        response_content = json.loads(response_content)
+        #self.assertEqual(response_content['msg'], '')
+        self.assertEqual(response_content['msg'], '当前用户不是比赛主办方账号')
+
+    def test_admin_getnewscore_compNotexist(self): #!!!!!!!!!!
+        # todo htx 主办方分配评委（同样要保证时间在phase_hand_end_time和phase_evaluate_end_time之间）
+        user_info={
+            "username": "admin", 
+            "password": "ccp"            
+        }
+        response = self.c.post('/api/user/login',json.dumps(user_info),content_type="application/json")
+        comp_info={
+            "contestid": self.contestId_personal, 
+            "judgenum": 1            
+        }
+        response = self.c.post('/api/admin/allot',json.dumps(comp_info),content_type="application/json")
+        
+        # todo htx 登录评委账号评分，并提交分数
+        user_info={
+            "username": "judge1", 
+            "password": "ccp"            
+        }
+        response = self.c.post('/api/user/login',json.dumps(user_info),content_type="application/json")
+        contestplayer = ContestPlayer.objects.filter()
+        self.ContestPlayer_id = contestplayer[0].player_id 
+        response_content = response.content.decode()
+        response_content = json.loads(response_content)
+        
+
+        submit_info={
+            "contestid":self.contestId_personal,
+            "userId":self.ContestPlayer_id,
+            "grade":95,
+            "phase":"hhhhhhh"            
+        }
+        response = self.c.post('/api/judge/submit',json.dumps(submit_info),content_type="application/json")
+        
+        #修改数据库
+        Contest.objects.filter(title="快乐肥宅大赛-个人").update(enroll_end="2018-12-21T12:10:00.000Z",
+                                                                phase_start_time1="2018-12-25T02:10:00.000Z",
+                                                                phase_hand_end_time1="2018-12-25T14:10:00.000Z",
+                                                                phase_evaluate_end_time1="2018-12-25T15:10:00.000Z")
+        
+        user_info={
+            "username": "admin", 
+            "password": "ccp"            
+        }
+        response = self.c.post('/api/user/login',json.dumps(user_info),content_type="application/json")
+        submit_info={
+            "contestid":self.contestId_personal+10,
+            "username":"admin2",
+            "grade":90,
+            "reason":"hhhhhhh"            
+        }
+        response = self.c.post('/api/admin/setnewgrade',json.dumps(submit_info),content_type="application/json")
+        # to
+        response_content = response.content.decode()
+        response_content = json.loads(response_content)
+        #self.assertEqual(response_content['msg'], '')
+        self.assertEqual(response_content['msg'], '未知错误')
