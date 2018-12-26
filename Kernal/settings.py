@@ -81,7 +81,7 @@ WSGI_APPLICATION = 'Kernal.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.mysql',
-        'NAME': 'ccp_tmp',
+        'NAME': 'ccp',
         'USER': 'ccp_remote',
         'PASSWORD': 'cCpremOte',
         'HOST': '123.206.47.47',

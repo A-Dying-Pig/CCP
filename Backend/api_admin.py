@@ -236,9 +236,9 @@ def setjudge(request):
             judge_id = CCPUser.objects.get(username=username).id
         except:
             return JsonResponse({'msg': 'Judge dos not exist'})
-        if ContestPlayer.objects.filter(contest_id=contest_id, player_id=request.user.id) or \
+        if ContestPlayer.objects.filter(contest_id=contest_id, player_id=judge_id) or \
             ContestGroup.objects.filter(Q(contest_id=contest_id) &
-                (Q(leader_id=request.user.id) | Q(member1_id=request.user.id) | Q(member2_id=request.user.id) | Q(member3_id=request.user.id) | Q(member4_id=request.user.id))):
+                (Q(leader_id=judge_id) | Q(member1_id=judge_id) | Q(member2_id=judge_id) | Q(member3_id=judge_id) | Q(member4_id=judge_id))):
             return JsonResponse({'msg': '比赛选手不能成为评委'})
         if judge_id == request.user.id:
             return JsonResponse({'msg': '比赛管理员不能成为评委'})
