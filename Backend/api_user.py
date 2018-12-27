@@ -219,8 +219,7 @@ def upload(request):
                 return JsonResponse({'msg': 'Current user is not a leader of one group in this contest'})
         cg = ContestGrade.objects.filter(leader_id=request.user.id, contest_id=contest_id, phase=cur_phase)
         if cg.count() == 0:  # 不存在，则创建新的
-            cg = ContestGrade()
-            cg.contest_id = contest_id
+            return JsonResponse({'msg': '您未晋级到比赛的当前阶段，不能提交作品'})
         else:
             cg = cg[0]
         cg.leader_id = request.user.id
