@@ -3,8 +3,8 @@
         <el-row>
             <el-col :offset="3" :span="18">
                 <el-card shadow="always">
-                    <el-row :gutter="24">
-                        <el-col :span="6" class="centercoloum">
+                    <el-row :gutter="24" ref="rowref">
+                        <el-col :span="6":style="{height: h+'px'}" class="centercoloum">
                             <img :src="info.basicinfo.img" class="titleimg"/>
                         </el-col>
                         <el-col :span="18">
@@ -69,7 +69,8 @@
             return{
                 activeStage:0,
                 enrollnum:0,
-                showbutton:1
+                showbutton:1,
+                h:0
             }
         },
         methods:{
@@ -157,6 +158,11 @@
                     type:'error'
                 });
             })
+        },
+        mounted() {
+            this.$nextTick(() => {
+                this.h = this.$refs.rowref.$el.offsetHeight;
+            })
         }
     }
 </script>
@@ -182,5 +188,6 @@
         display: flex;
         flex-direction: column;
         justify-content: center;
+		align-items:center;
     }
 </style>
