@@ -204,7 +204,7 @@
               </div>
               <hr>
               <div class="message-detail-content">
-                {{message_detail.content}}
+                <p v-html="message_detail.content"></p>
               </div>
           </div>
 
