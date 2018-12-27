@@ -3,16 +3,14 @@
         <el-row>
             <el-col :offset="3" :span="18">
                 <el-card shadow="always">
-                    <el-row :gutter="24">
-                        <el-col :span="4">
-                            <img :src="info.basicinfo.img" style="width: 150px;"/>
+                    <el-row :gutter="24" ref="rowref">
+                        <el-col :span="6":style="{height: h+'px'}" class="centercoloum">
+                            <img :src="info.basicinfo.img" class="titleimg"/>
                         </el-col>
-                        <el-col :span="20">
+                        <el-col :span="18">
                             <el-row :gutter="24">
-                                <el-col :span="6" class="title">
-                                    <b>{{ info.basicinfo.name }}</b>
-                                </el-col>
-                                <el-col :span="6" :offset="12">
+                                <el-col :span="24" >
+                                    <p class="title" style="text-align: left">{{ info.basicinfo.name }}</p>
                                     <p style="font-size: 12px">已报名<span style="color: #3a8ee6">{{ enrollnum }}</span>人</p>
                                 </el-col>
                             </el-row>
@@ -71,7 +69,8 @@
             return{
                 activeStage:0,
                 enrollnum:0,
-                showbutton:1
+                showbutton:1,
+                h:0
             }
         },
         methods:{
@@ -159,6 +158,11 @@
                     type:'error'
                 });
             })
+        },
+        mounted() {
+            this.$nextTick(() => {
+                this.h = this.$refs.rowref.$el.offsetHeight;
+            })
         }
     }
 </script>
@@ -167,15 +171,23 @@
     .title{
         text-align: left;
         font-size: 50px;
+        width: 50%;
+        font-weight: bold;
     }
     .brief{
         border-left: 2px #4da9fe solid;
         background-color: #f9fafa;
     }
-    img {
+    .titleimg {
         width: auto;
         height: auto;
         max-width: 100%;
         max-height: 100%;
+    }
+    .centercoloum{
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+		align-items:center;
     }
 </style>

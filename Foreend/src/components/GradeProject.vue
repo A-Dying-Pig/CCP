@@ -26,7 +26,7 @@
                         <el-row :gutter="24">
                             <el-col :span="24">
                                 <template v-if="selectnode.type == 1">
-                                    <img :src="selectnode.src"/>
+                                    <img :src="selectnode.src" class="ctlimg"/>
                                 </template>
                                 <template v-else-if="selectnode.type == 2">
                                     <PDF :pdfurl="selectnode.src"></PDF>
@@ -212,6 +212,12 @@
 .sl-vue-tree-node-item.sl-vue-tree-cursor-hover {
     color: black;
 }
+    .ctlimg{
+        width: auto;
+        height: auto;
+        max-width: 100%;
+        max-height: 100%;
+    }
 </style>
 <style src="../../node_modules/sl-vue-tree/dist/sl-vue-tree-dark.css"></style>
 <style src="../assets/fonts/fileico/style.css"></style>
