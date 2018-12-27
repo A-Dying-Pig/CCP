@@ -154,7 +154,7 @@
                                                         v-model="info.teamnum"
                                                         show-stops
                                                         :min="1"
-                                                        :max="10">
+                                                        :max="5">
                                                 </el-slider>
                                     </el-form-item>
                     </el-col>
@@ -259,9 +259,9 @@ export default {
             info:this.finfo,
             basicrules:{
                 name:[{required:true, message:'请输入比赛名称',trigger:'blur'},
-                    {min:5, max:30,message:'长度在5到30个字符',trigger:'blur'}],
+                    {min:5, max:32,message:'长度在5到30个字符',trigger:'blur'}],
                 holders:[{type:'array',validator:holderVali,trigger:'blur'},
-                    {type:'array',max:3,message:'主办方个数不超过3个',trigger:'blur'}],
+                    {type:'array',max:4,message:'主办方个数不超过3个',trigger:'blur'}],
                 sponsor:[{type:'array',validator:holderVali,trigger:'blur'},
                     {type:'array',max:5,message:'承办方个数不超过5个',trigger:'blur'}],
                 comtype:[{required:true, message:'必须指定一种比赛类型',trigger:'change'}],
@@ -314,6 +314,10 @@ export default {
             }
         },
         addStage:function () {
+            if(this.info.length===5){
+                this.$message.error("阶段不超过5个！！");
+                return;
+            }
             this.info.push({
                name:'',
                details:'',
@@ -343,6 +347,9 @@ export default {
                         return false;
                     }
                 }
+            }
+            if(this.info.length===0){
+                return false;
             }
             return true;
         },
