@@ -130,6 +130,7 @@
                     self.onedis.splice(0);
                     self.onedis = response.data;
                 }).catch(function (error) {
+                    console.log(error)
                     self.$message({
                         message:'获取帖子信息错误！',
                         type:'error'

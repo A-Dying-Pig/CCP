@@ -198,7 +198,7 @@
         },
         created:function () {
             let self = this;
-            //self.getInfo();
+            self.getInfo();
         }
     }
 </script>
