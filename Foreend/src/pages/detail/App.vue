@@ -153,6 +153,9 @@
                             }
                             begin = stage.evaluationTimeEnd;
                         }
+                        if(now>begin){
+                            showadvance = true;
+                        }
                         if (showadvance) {
                             self.showlist.push({
                                 value: 'advancedparticipants',
