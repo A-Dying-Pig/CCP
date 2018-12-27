@@ -254,7 +254,12 @@ class ContestGroupUtil:
     @classmethod
     def addMember(cls, cg_obj, member):
         # add a member to group(member is id)
-        pass
+        index = 1
+        while index < MAX_MEMBER - 1:
+            if getattr(cg_obj, 'member' + str(index) + '_id') is None:
+                setattr(cg_obj, 'member' + str(index) + '_id', member)
+                break
+
 
     @classmethod
     def setMember(cls, cg_obj, index, member):

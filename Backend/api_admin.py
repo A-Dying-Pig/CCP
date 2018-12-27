@@ -440,8 +440,8 @@ def judgeprogress(request):
         for judge in judges:
             dic = {}
             dic['name'] = CCPUser.objects.filter(id=judge.judge_id)[0].username
-            dic['sum'] = ContestGrade.objects.filter(contest_id=contestid, judge_id=judge.id, phase=phase).count()
-            dic['finish'] = ContestGrade.objects.filter(contest_id=contestid, judge_id=judge.id, phase=phase).exclude(grade=-1).count()
+            dic['sum'] = ContestGrade.objects.filter(contest_id=contestid, judge_id=judge.judge_id, phase=phase).count()
+            dic['finish'] = ContestGrade.objects.filter(contest_id=contestid, judge_id=judge.judge_id, phase=phase).exclude(grade=-1).count()
             res['judges'].append(dic)
         return JsonResponse(res)
     except:
