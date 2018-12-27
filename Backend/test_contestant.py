@@ -101,8 +101,8 @@ class api_judge_Test(TestCase):
         #修改数据库
         Contest.objects.filter(title="快乐肥宅大赛-个人").update(enroll_end="2018-12-21T12:10:00.000Z",
                                                                 phase_start_time1="2018-12-25T02:10:00.000Z",
-                                                                phase_hand_end_time1="2018-12-26T15:10:00.000Z",
-                                                                phase_evaluate_end_time1="2018-12-27T06:10:00.000Z")
+                                                                phase_hand_end_time1="2018-12-27T15:10:00.000Z",
+                                                                phase_evaluate_end_time1="2018-12-28T06:10:00.000Z")
 
     def tearDown(self):
         dirs = os.listdir(RESOURCE_BASE_DIR + '/resources/contests')
@@ -136,10 +136,10 @@ class api_judge_Test(TestCase):
 
     def test_contestant_submit_inenrolltime(self):
         #修改数据库
-        Contest.objects.filter(title="快乐肥宅大赛-个人").update(enroll_end="2018-12-26T20:10:00.000Z",
-                                                                phase_start_time1="2018-12-26T21:10:00.000Z",
-                                                                phase_hand_end_time1="2018-12-26T22:10:00.000Z",
-                                                                phase_evaluate_end_time1="2018-12-27T06:10:00.000Z")
+        Contest.objects.filter(title="快乐肥宅大赛-个人").update(enroll_end="2018-12-27T20:10:00.000Z",
+                                                                phase_start_time1="2018-12-27T21:10:00.000Z",
+                                                                phase_hand_end_time1="2018-12-27T22:10:00.000Z",
+                                                                phase_evaluate_end_time1="2018-12-28T06:10:00.000Z")
         user_info={
             "username": "admin2", 
             "password": "ccp"            

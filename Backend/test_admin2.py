@@ -50,7 +50,7 @@ class api_user_competiton_Test(TestCase):
                 "details" : "hhhhhhhh"
                 },
             "signupinfo": {
-                "time" : ["2018-12-10T12:10:00.000Z","2018-12-25T14:10:00.000Z"],
+                "time" : ["2018-12-10T12:10:00.000Z","2018-12-27T14:10:00.000Z"],
                 "mode" : 1,
                 "teamnum":5,
                 "person" : ["1","2","3","4"],
@@ -59,8 +59,8 @@ class api_user_competiton_Test(TestCase):
             "stageinfo":
                 [{"name" : "phase1",
                 "details" : "details",
-                "stageTimeBegin": "2018-12-25T15:10:00.000Z",
-                "handTimeEnd" : "2018-12-26T01:10:00.000Z",
+                "stageTimeBegin": "2018-12-27T15:10:00.000Z",
+                "handTimeEnd" : "2018-12-28T01:10:00.000Z",
                 "evaluationTimeEnd" : "2018-12-30T12:10:00.000Z",
                 "zone":0,
                 "mode" : 0}]
@@ -85,7 +85,7 @@ class api_user_competiton_Test(TestCase):
                 "details" : "hhhhhhhh"
                 },
             "signupinfo": {
-                "time" : ["2018-12-10T12:10:00.000Z","2018-12-25T14:10:00.000Z"],
+                "time" : ["2018-12-10T12:10:00.000Z","2018-12-27T14:10:00.000Z"],
                 "mode" : 0,
                 "teamnum":5,
                 "person" : ["1","2","3","4"],
@@ -94,8 +94,8 @@ class api_user_competiton_Test(TestCase):
             "stageinfo":
                 [{"name" : "phase1",
                 "details" : "details",
-                "stageTimeBegin": "2018-12-25T15:10:00.000Z",
-                "handTimeEnd" : "2018-12-26T01:10:00.000Z",
+                "stageTimeBegin": "2018-12-27T15:10:00.000Z",
+                "handTimeEnd" : "2018-12-28T01:10:00.000Z",
                 "evaluationTimeEnd" : "2018-12-30T12:10:00.000Z",
                 "zone":0,
                 "mode" : 0}]
@@ -174,7 +174,6 @@ class api_user_competiton_Test(TestCase):
         for file in dirs:
            shutil.rmtree(RESOURCE_BASE_DIR + '/resources/users/'+file)
  
-    '''
     def test_judgeprogress_successful(self): #!!!!!!!!!!!
         user_info={
             "username": "admin2", 
@@ -444,8 +443,8 @@ class api_user_competiton_Test(TestCase):
         #修改数据库
         Contest.objects.filter(title="快乐肥宅大赛-个人").update(enroll_end="2018-12-21T12:10:00.000Z",
                                                                 phase_start_time1="2018-12-25T02:10:00.000Z",
-                                                                phase_hand_end_time1="2018-12-26T14:10:00.000Z",
-                                                                phase_evaluate_end_time1="2018-12-27T06:10:00.000Z")
+                                                                phase_hand_end_time1="2018-12-27T14:10:00.000Z",
+                                                                phase_evaluate_end_time1="2018-12-29T06:10:00.000Z")
 
         user_info={
             "username": "admin2", 
@@ -473,8 +472,8 @@ class api_user_competiton_Test(TestCase):
         #修改数据库
         Contest.objects.filter(title="快乐肥宅大赛-个人").update(enroll_end="2018-12-21T12:10:00.000Z",
                                                                 phase_start_time1="2018-12-25T02:10:00.000Z",
-                                                                phase_hand_end_time1="2018-12-26T14:10:00.000Z",
-                                                                phase_evaluate_end_time1="2018-12-27T06:10:00.000Z")
+                                                                phase_hand_end_time1="2018-12-27T14:10:00.000Z",
+                                                                phase_evaluate_end_time1="2018-12-29T06:10:00.000Z")
 
         user_info={
             "username": "admin2", 
@@ -504,8 +503,8 @@ class api_user_competiton_Test(TestCase):
         #修改数据库
         Contest.objects.filter(title="快乐肥宅大赛-个人").update(enroll_end="2018-12-21T12:10:00.000Z",
                                                                 phase_start_time1="2018-12-25T02:10:00.000Z",
-                                                                phase_hand_end_time1="2018-12-26T14:10:00.000Z",
-                                                                phase_evaluate_end_time1="2018-12-27T06:10:00.000Z")
+                                                                phase_hand_end_time1="2018-12-27T14:10:00.000Z",
+                                                                phase_evaluate_end_time1="2018-12-29T06:10:00.000Z")
 
         user_info={
             "username": "admin2", 
@@ -545,11 +544,11 @@ class api_user_competiton_Test(TestCase):
         self.assertEqual(response_content['allnum'],2)
 
     def test_admin_getsubmitnum_twoplayerTwosubmit(self):
-        #修改数据库
+       #修改数据库
         Contest.objects.filter(title="快乐肥宅大赛-个人").update(enroll_end="2018-12-21T12:10:00.000Z",
                                                                 phase_start_time1="2018-12-25T02:10:00.000Z",
-                                                                phase_hand_end_time1="2018-12-26T14:10:00.000Z",
-                                                                phase_evaluate_end_time1="2018-12-27T06:10:00.000Z")
+                                                                phase_hand_end_time1="2018-12-27T14:10:00.000Z",
+                                                                phase_evaluate_end_time1="2018-12-29T06:10:00.000Z")
 
         user_info={
             "username": "admin2", 
@@ -594,8 +593,8 @@ class api_user_competiton_Test(TestCase):
         #修改数据库
         Contest.objects.filter(title="快乐肥宅大赛-个人").update(enroll_end="2018-12-21T12:10:00.000Z",
                                                                 phase_start_time1="2018-12-25T02:10:00.000Z",
-                                                                phase_hand_end_time1="2018-12-26T14:10:00.000Z",
-                                                                phase_evaluate_end_time1="2018-12-27T06:10:00.000Z")
+                                                                phase_hand_end_time1="2018-12-27T14:10:00.000Z",
+                                                                phase_evaluate_end_time1="2018-12-29T06:10:00.000Z")
 
         user_info={
             "username": "admin2", 
@@ -616,8 +615,8 @@ class api_user_competiton_Test(TestCase):
         #修改数据库
         Contest.objects.filter(title="快乐肥宅大赛-个人").update(enroll_end="2018-12-21T12:10:00.000Z",
                                                                 phase_start_time1="2018-12-25T02:10:00.000Z",
-                                                                phase_hand_end_time1="2018-12-26T14:10:00.000Z",
-                                                                phase_evaluate_end_time1="2018-12-27T06:10:00.000Z")
+                                                                phase_hand_end_time1="2018-12-27T14:10:00.000Z",
+                                                                phase_evaluate_end_time1="2018-12-29T06:10:00.000Z")
 
         user_info={
             "username": "admin2", 
@@ -638,7 +637,7 @@ class api_user_competiton_Test(TestCase):
         response_content = response.content.decode()
         response_content = json.loads(response_content)
         self.assertEqual(response_content['msg'],'比赛不存在')
-    '''
+    
 
     '''
     def test_admin_setadvanced_successful(self):

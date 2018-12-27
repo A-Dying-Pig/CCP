@@ -50,7 +50,7 @@ class api_judge_Test(TestCase):
                 "details" : "hhhhhhhh"
                 },
             "signupinfo": {
-                "time" : ["2018-12-10T12:10:00.000Z","2018-12-25T14:10:00.000Z"],
+                "time" : ["2018-12-10T12:10:00.000Z","2018-12-27T14:10:00.000Z"],
                 "mode" : 1,
                 "teamnum":5,
                 "person" : ["1","2","3","4"],
@@ -59,8 +59,8 @@ class api_judge_Test(TestCase):
             "stageinfo":
                 [{"name" : "phase1",
                 "details" : "details",
-                "stageTimeBegin": "2018-12-25T15:10:00.000Z",
-                "handTimeEnd" : "2018-12-26T01:10:00.000Z",
+                "stageTimeBegin": "2018-12-27T15:10:00.000Z",
+                "handTimeEnd" : "2018-12-28T01:10:00.000Z",
                 "evaluationTimeEnd" : "2018-12-30T12:10:00.000Z",
                 "zone":0,
                 "mode" : 0}]
@@ -100,9 +100,9 @@ class api_judge_Test(TestCase):
         
         #修改数据库
         Contest.objects.filter(title="快乐肥宅大赛-个人").update(enroll_end="2018-12-21T12:10:00.000Z",
-                                                                phase_start_time1="2018-12-25T02:10:00.000Z",
-                                                                phase_hand_end_time1="2018-12-25T14:10:00.000Z",
-                                                                phase_evaluate_end_time1="2018-12-27T06:10:00.000Z")
+                                                                phase_start_time1="2018-12-27T01:10:00.000Z",
+                                                                phase_hand_end_time1="2018-12-27T14:10:00.000Z",
+                                                                phase_evaluate_end_time1="2018-12-29T06:10:00.000Z")
         # todo htx 用报名的选手提交作品
         user_info={
             "username": "admin2", 
@@ -120,7 +120,7 @@ class api_judge_Test(TestCase):
         #修改数据库
         Contest.objects.filter(title="快乐肥宅大赛-个人").update(phase_start_time1="2018-12-25T02:10:00.000Z",
                                                                 phase_hand_end_time1="2018-12-25T03:10:00.000Z",
-                                                                phase_evaluate_end_time1="2018-12-27T06:10:00.000Z")
+                                                                phase_evaluate_end_time1="2018-12-27T09:10:00.000Z")
         
         # todo htx 主办方设置评委                
         user_info={
@@ -465,7 +465,6 @@ class api_judge_Test(TestCase):
         self.assertEqual(response_content['msg'],'当前用户不是该比赛评委')
 
     def test_admin_getnewscore_successful(self): #!!!!!!!!!!
-        # todo htx 主办方分配评委（同样要保证时间在phase_hand_end_time和phase_evaluate_end_time之间）
         user_info={
             "username": "admin", 
             "password": "ccp"            

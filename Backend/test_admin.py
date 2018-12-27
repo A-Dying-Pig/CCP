@@ -50,7 +50,7 @@ class api_user_competiton_Test(TestCase):
                 "details" : "hhhhhhhh"
                 },
             "signupinfo": {
-                "time" : ["2018-12-10T12:10:00.000Z","2018-12-25T14:10:00.000Z"],
+                "time" : ["2018-12-10T12:10:00.000Z","2018-12-27T14:10:00.000Z"],
                 "mode" : 1,
                 "teamnum":5,
                 "person" : ["1","2","3","4"],
@@ -59,8 +59,8 @@ class api_user_competiton_Test(TestCase):
             "stageinfo":
                 [{"name" : "phase1",
                 "details" : "details",
-                "stageTimeBegin": "2018-12-25T15:10:00.000Z",
-                "handTimeEnd" : "2018-12-26T01:10:00.000Z",
+                "stageTimeBegin": "2018-12-27T15:10:00.000Z",
+                "handTimeEnd" : "2018-12-28T01:10:00.000Z",
                 "evaluationTimeEnd" : "2018-12-30T12:10:00.000Z",
                 "zone":0,
                 "mode" : 0}]
@@ -86,7 +86,7 @@ class api_user_competiton_Test(TestCase):
                 "details" : "hhhhhhhh"
                 },
             "signupinfo": {
-                "time" : ["2018-12-10T12:10:00.000Z","2018-12-25T14:10:00.000Z"],
+                "time" : ["2018-12-10T12:10:00.000Z","2018-12-27T14:10:00.000Z"],
                 "mode" : 0,
                 "teamnum":5,
                 "person" : ["1","2","3","4"],
@@ -95,8 +95,8 @@ class api_user_competiton_Test(TestCase):
             "stageinfo":
                 [{"name" : "phase1",
                 "details" : "details",
-                "stageTimeBegin": "2018-12-25T15:10:00.000Z",
-                "handTimeEnd" : "2018-12-26T01:10:00.000Z",
+                "stageTimeBegin": "2018-12-27T15:10:00.000Z",
+                "handTimeEnd" : "2018-12-28T01:10:00.000Z",
                 "evaluationTimeEnd" : "2018-12-30T12:10:00.000Z",
                 "zone":0,
                 "mode" : 0}]
