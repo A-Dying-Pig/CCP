@@ -197,7 +197,7 @@
   }
   .login-btn{
     text-align: center;
-    margin-bottom: 40px;
+    margin-bottom: 80px;
     margin-top: 20px;
   }
 </style>

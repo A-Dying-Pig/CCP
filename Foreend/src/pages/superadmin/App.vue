@@ -117,13 +117,12 @@
             </el-tab-pane>
           </el-tabs>
       </el-main>
+    </el-container>
 
-      <el-container>
-        <el-footer>
-          <CCPFooter></CCPFooter>
-        </el-footer>
-      </el-container>
-
+    <el-container>
+      <el-footer>
+        <CCPFooter></CCPFooter>
+      </el-footer>
     </el-container>
   </div>
 </template>
