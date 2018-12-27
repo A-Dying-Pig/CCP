@@ -127,9 +127,10 @@
                         });
                         return;
                     }
-                    self.onedis.splice(0);
+                    self.onedis.array.splice(0);
                     self.onedis = response.data;
                 }).catch(function (error) {
+                    console.log('reply error!');
                     self.$message({
                         message:'获取帖子信息错误！',
                         type:'error'
