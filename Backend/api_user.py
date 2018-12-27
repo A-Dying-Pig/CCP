@@ -72,6 +72,8 @@ def check(request):
                 return JsonResponse({'msg': '不能重复报名'})
         if ContestJudge.objects.filter(contest_id=contest_id, judge_id=user.id):
             return JsonResponse({'msg': '评委不能报名'})
+        if contest.admin_id == user.id:
+            return JsonResponse({'msg': '比赛管理员不能报名'})
         return JsonResponse({'msg': ''})
     except:
         traceback.print_exc()
