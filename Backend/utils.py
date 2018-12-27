@@ -4,6 +4,9 @@ import time
 import os
 import traceback
 import json
+import datetime, time
+import pytz
+utctz=pytz.timezone('UTC')
 
 MAX_HOSTS = 4  # 最大主办方人数
 MAX_PHASE = 5
@@ -13,7 +16,6 @@ MAX_CONTEST_ONE_PAGE = 10
 MAX_PARTICIPANT_ONE_PAGE = 10
 MAX_POST_ONE_PAGE = 8
 MAX_REPLY_ONE_PAGE = 8
-
 
 RESOURCE_BASE_DIR = '/home/dingzheng/CCP'
 
@@ -246,6 +248,7 @@ class ContestGroupUtil:
                 'username': member.username,
                 'email': member.email
             })
+            index = index + 1
         return result
 
     @classmethod
