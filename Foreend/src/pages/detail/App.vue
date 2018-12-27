@@ -49,17 +49,17 @@
                 type:0,
                 allinfo:{
                     basicinfo:{
-                        name:'111',
+                        name:'比赛标题',
                         holders:[''],
                         sponsors:[''],
                         comtype:'',
-                        details:"222",
+                        details:"",
                         beginjudgebutton:false,
-                        img:'http://img.zcool.cn/community/01f9ea56e282836ac72531cbe0233b.jpg@2o.jpg',
-                        briefintroduction:'本次智能营销科技大赛由平安金融壹账通联合科赛举办，致力于发掘 AI 时代最有创意和趣味的AI 营销产品方案。大赛围绕将已有的 AI 模型应用到生活中的具体营销场景，让技术真正落地。不论你是 AI 技术人才还是营销产品人才，都可以来一决高下！'
+                        img:'https://gss1.bdstatic.com/9vo3dSag_xI4khGkpoWK1HF6hhy/baike/crop%3D0%2C310%2C514%2C339%3Bc0%3Dbaike80%2C5%2C5%2C80%2C26/sign=e07c6748befd5266b36466549628bb18/bba1cd11728b4710d8a5966fcbcec3fdfd03238e.jpg',
+                        briefintroduction:'比赛信息',
                     },
                     signupinfo:{
-                        time:[1542593167172,1542593267172],
+                        time:[1545874889225,1545974889225],
                         mode:'1',
                         person:[
                             ''
@@ -68,11 +68,11 @@
                         ]
                     },
                     stageinfo:[{
-                        name:'初赛',
+                        name:'',
                         details:'',
-                        stageTimeBegin:1544827739311,
-                        handTimeEnd:1544838739311,
-                        evaluationTimeEnd:1554839739311,
+                        stageTimeBegin:1546074889225,
+                        handTimeEnd:1546174889225,
+                        evaluationTimeEnd:1546274889225,
                         mode:''
                     }]
                 }
@@ -162,6 +162,18 @@
                                 label: '设置晋级选手名单'
                             });
                         }
+                        let showgrade = false;
+                        for(let stage of self.allinfo.stageinfo){
+                            if((now<stage.evaluationTimeEnd)&&(now>stage.handTimeEnd)){
+                                showgrade = true;
+                            }
+                        }
+                        if(showgrade===true){
+                            self.showlist.push({
+                                value: 'judgeprogress',
+                                label: '评委进度查询'
+                            });
+                        }
                         if(self.allinfo.basicinfo.judgebegin === false){
                         let showjudgebegin = false;
                         for (let stage of self.allinfo.stageinfo) {
@@ -186,7 +198,7 @@
         },
         created:function () {
             let self = this;
-            self.getInfo();
+            //self.getInfo();
         }
     }
 </script>
