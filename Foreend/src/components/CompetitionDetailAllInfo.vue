@@ -136,6 +136,10 @@
                     +this.timestamp2datestr(this.info.stageinfo[status-2].handTimeEnd,true)+'\n评测截止时间:'
                     +this.timestamp2datestr(this.info.stageinfo[status-2].evaluationTimeEnd,true)
                 }
+            },
+            changeheight:function () {
+                this.h = this.$refs.rowref.$el.offsetHeight;
+                console.log(this.h);
             }
         },
         created:function () {
@@ -160,8 +164,9 @@
             })
         },
         mounted() {
+            let self = this;
             this.$nextTick(() => {
-                this.h = this.$refs.rowref.$el.offsetHeight;
+                self.changeheight();
             })
         }
     }
@@ -177,6 +182,7 @@
     .brief{
         border-left: 2px #4da9fe solid;
         background-color: #f9fafa;
+        padding-left: 10px;
     }
     .titleimg {
         width: auto;
