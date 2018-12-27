@@ -453,7 +453,8 @@ def advanced(request):
     try:
         data = json.loads(request.body.decode('utf-8'))
         contestid = int(data['contestid'])
-        if Contest.objects.get(id=contestid).admin_id != request.user.id:
+        contest = Contest.objects.get(id=contestid)
+        if contest.admin_id != request.user.id:
             return JsonResponse({'msg': '当前用户不是比赛主办方账号'})
         target = int(data['target'])
         res = {}
@@ -476,7 +477,7 @@ def advanced(request):
             row = result[index]
             dic = {}
             user = CCPUser.objects.filter(id=row['leader_id'])[0]
-            dic['username'] = user.username
+            dic['username'] = user.username if contest.grouped == 0 else ContestGroup.objects.get(contest_id=contestid, leader_id=user.id).group_name
             dic['university'] = user.university
             dic['grade'] = row['average_rating']
             try:
