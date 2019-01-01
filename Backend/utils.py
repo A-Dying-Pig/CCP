@@ -4,6 +4,9 @@ import time
 import os
 import traceback
 import json
+import datetime, time
+import pytz
+utctz=pytz.timezone('UTC')
 
 MAX_HOSTS = 4  # 最大主办方人数
 MAX_PHASE = 5
@@ -14,8 +17,7 @@ MAX_PARTICIPANT_ONE_PAGE = 10
 MAX_POST_ONE_PAGE = 8
 MAX_REPLY_ONE_PAGE = 8
 
-
-RESOURCE_BASE_DIR = 'E:/Workspace/CCP'
+RESOURCE_BASE_DIR = '/home/dingzheng/CCP'
 
 with open('zone.json', 'r', encoding='utf8') as f:
     zone = json.load(f)
@@ -246,12 +248,18 @@ class ContestGroupUtil:
                 'username': member.username,
                 'email': member.email
             })
+            index = index + 1
         return result
 
     @classmethod
     def addMember(cls, cg_obj, member):
         # add a member to group(member is id)
-        pass
+        index = 1
+        while index < MAX_MEMBER - 1:
+            if getattr(cg_obj, 'member' + str(index) + '_id') is None:
+                setattr(cg_obj, 'member' + str(index) + '_id', member)
+                break
+
 
     @classmethod
     def setMember(cls, cg_obj, index, member):

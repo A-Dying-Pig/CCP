@@ -12,26 +12,32 @@ import traceback
 import datetime
 from zipfile import ZipFile, BadZipFile
 from django.db.models import Q
+import rarfile
 import tarfile
+#from unrar import rarfile
 
 def register(request):
-    data = json.loads(request.body.decode('utf-8'))
-    username = data['username']
-    email = data['email']
-    password = data['password']
-    password = make_password(password)
-    name_unique = CCPUser.objects.filter(username=username)
-    email_unique = CCPUser.objects.filter(email=email)
-    if name_unique:
-        return JsonResponse({'msg': '用户名已存在！'})
-    elif email_unique:
-        return JsonResponse({'msg': '邮箱地址已经被注册！'})
-    else:
-        new_user = CCPUser.objects.create(username=username, password=password, email=email)
-        os.mkdir(RESOURCE_BASE_DIR + '/resources/users/' + str(new_user.id))
-        os.mkdir(RESOURCE_BASE_DIR + '/resources/users/' + str(new_user.id) + '/tmp')
-        os.mkdir(RESOURCE_BASE_DIR + '/resources/users/' + str(new_user.id) + '/img')
-        return JsonResponse({'msg': ''})
+    try:
+        data = json.loads(request.body.decode('utf-8'))
+        username = data['username']
+        email = data['email']
+        password = data['password']
+        password = make_password(password)
+        name_unique = CCPUser.objects.filter(username=username)
+        email_unique = CCPUser.objects.filter(email=email)
+        if name_unique:
+            return JsonResponse({'msg': '用户名已存在！'})
+        elif email_unique:
+            return JsonResponse({'msg': '邮箱地址已经被注册！'})
+        else:
+            new_user = CCPUser.objects.create(username=username, password=password, email=email)
+            os.mkdir(RESOURCE_BASE_DIR + '/resources/users/' + str(new_user.id))
+            os.mkdir(RESOURCE_BASE_DIR + '/resources/users/' + str(new_user.id) + '/tmp')
+            os.mkdir(RESOURCE_BASE_DIR + '/resources/users/' + str(new_user.id) + '/img')
+            return JsonResponse({'msg': ''})
+    except:
+        traceback.print_exc()
+        return JsonResponse({'msg': '未知错误'})
 
 def login(request):
     try:
@@ -55,7 +61,19 @@ def check(request):
         contest_id = data['contestid']
         user = CCPUser.objects.get(username=username)
         contest = Contest.objects.get(id=contest_id)
-        #todo
+        if contest.grouped == 1:
+            # 组队赛
+            if ContestGroup.objects.filter(Q(contest_id=contest_id) & (Q(leader_id=user.id) | Q(member1_id=user.id)
+                                    | Q(member2_id=user.id) | Q(member3_id=user.id) | Q(member4_id=user.id))):
+                return JsonResponse({'msg': '不能重复报名'})
+        else:
+            # 个人赛
+            if ContestPlayer.objects.filter(contest_id=contest_id, player_id=user.id):
+                return JsonResponse({'msg': '不能重复报名'})
+        if ContestJudge.objects.filter(contest_id=contest_id, judge_id=user.id):
+            return JsonResponse({'msg': '评委不能报名'})
+        if contest.admin_id == user.id:
+            return JsonResponse({'msg': '比赛管理员不能报名'})
         return JsonResponse({'msg': ''})
     except:
         traceback.print_exc()
@@ -177,69 +195,82 @@ def modify(request):
 
 
 def upload(request):
-    contest_id = int(request.POST['contestid'])
-    name = request.POST['name']
     try:
-        contest = Contest.objects.get(id=contest_id)
-    except:
-        return JsonResponse({'msg': 'Contest does not exist.'})
-    cur_phase = ContestUtil.getCurrentPhase(contest_id)['phase']
-    if cur_phase == 0:
-        return JsonResponse({'msg': '当前比赛仍在报名阶段，不能提交作品'})
-    if not(getattr(contest, 'phase_start_time' + str(cur_phase)) < datetime.datetime.now(datetime.timezone.utc) < getattr(contest, 'phase_hand_end_time' + str(cur_phase))):
-        return JsonResponse({'msg': '比赛当前阶段的提交已经截止'})
-    if contest.grouped == 0:
+        contest_id = int(request.POST['contestid'])
+        name = request.POST['name']
         try:
-            ContestPlayer.objects.get(contest_id=contest_id, player_id=request.user.id)
+            contest = Contest.objects.get(id=contest_id)
         except:
-            return JsonResponse({'msg': 'Current user did not attend this contest'})
-    else:
-        try:
-            ContestGroup.objects.get(contest_id=contest_id, leader_id=request.user.id)
-        except:
-            return JsonResponse({'msg': 'Current user is not a leader of one group in this contest'})
-    cg = ContestGrade.objects.filter(leader_id=request.user.id, contest_id=contest_id, phase=cur_phase)
-    if cg.count() == 0:  # 不存在，则创建新的
-        cg = ContestGrade()
-        cg.contest_id = contest_id
-    else:
-        cg = cg[0]
-    cg.leader_id = request.user.id
-    cg.work_name = name
-    cg.phase = cur_phase
-    cg.save()
-
-    File = request.FILES.get("file", None)
-    if File is None:
-        return JsonResponse({'msg': 'File not found.'})
-    dot_pos = File.name.rfind('.')
-    if dot_pos == -1 or File.name[dot_pos:] not in ['.tar', '.zip']:
-        return JsonResponse({'msg': '只支持上传tar或zip格式的压缩文件'})
-    else:
-        # 先删除旧文件夹下所有内容，再打开特定的文件进行二进制的写操作;
-        try:
-            cur_dir = RESOURCE_BASE_DIR + "/resources/contests/" + str(contest_id) + '/playerFiles/' + str(request.user.id) + '/compress/'
-            dirs = os.listdir(cur_dir)
-            for dir in dirs:
-                if os.path.isfile(cur_dir + dir):  # 删掉原来的压缩文件
-                    os.remove(cur_dir + dir)
-            with open(cur_dir + File.name, 'wb') as f:
-                # 分块写入文件;
-                for chunk in File.chunks():
-                    f.write(chunk)
-            # 解压缩
-            extract_dir = RESOURCE_BASE_DIR + "/resources/contests/" + str(contest_id) + '/playerFiles/' + str(request.user.id) + '/decompress/'
-            GeneralUtil.del_dir(extract_dir)
-#            if File.name[dot_pos:] == '.tar':
-                #todo htx
-
+            return JsonResponse({'msg': 'Contest does not exist.'})
+        cur_phase = ContestUtil.getCurrentPhase(contest_id)['phase']
+        if cur_phase == 0:
+            return JsonResponse({'msg': '当前比赛仍在报名阶段，不能提交作品'})
+        if not(getattr(contest, 'phase_start_time' + str(cur_phase)) < datetime.datetime.now(datetime.timezone.utc) < getattr(contest, 'phase_hand_end_time' + str(cur_phase))):
+            return JsonResponse({'msg': '比赛当前阶段的提交已经截止'})
+        if contest.grouped == 0:
             try:
-                with ZipFile(cur_dir + File.name) as zfile:
-                    zfile.extractall(path=extract_dir)
-            except BadZipFile as e:
+                ContestPlayer.objects.get(contest_id=contest_id, player_id=request.user.id)
+            except:
+                return JsonResponse({'msg': 'Current user did not attend this contest'})
+        else:
+            try:
+                ContestGroup.objects.get(contest_id=contest_id, leader_id=request.user.id)
+            except:
+                return JsonResponse({'msg': 'Current user is not a leader of one group in this contest'})
+        cg = ContestGrade.objects.filter(leader_id=request.user.id, contest_id=contest_id, phase=cur_phase)
+        if cg.count() == 0:  # 不存在，则创建新的
+            return JsonResponse({'msg': '您未晋级到比赛的当前阶段，不能提交作品'})
+        else:
+            cg = cg[0]
+        cg.leader_id = request.user.id
+        cg.work_name = name
+        cg.phase = cur_phase
+        cg.save()
+
+        File = request.FILES.get("file", None)
+        if File is None:
+            return JsonResponse({'msg': 'File not found.'})
+        dot_pos = File.name.rfind('.')
+        dot2_pos = File.name[:dot_pos].rfind('.')
+        print(dot_pos)
+        print(dot2_pos)
+        if (dot_pos == -1 or File.name[dot_pos:] not in ['.tar', '.zip']) and not (dot2_pos != -1 and File.name[dot2_pos:] in ['.tar.gz', '.tar.bz2', '.tar.xz']):
+            return JsonResponse({'msg': '只支持上传tar或zip格式的压缩文件'})
+        else:
+            # 先删除旧文件夹下所有内容，再打开特定的文件进行二进制的写操作;
+            try:
+                cur_dir = RESOURCE_BASE_DIR + "/resources/contests/" + str(contest_id) + '/playerFiles/' + str(request.user.id) + '/compress/'
+                dirs = os.listdir(cur_dir)
+                for dir in dirs:
+                    if os.path.isfile(cur_dir + dir):  # 删掉原来的压缩文件
+                        os.remove(cur_dir + dir)
+                with open(cur_dir + File.name, 'wb') as f:
+                    # 分块写入文件;
+                    for chunk in File.chunks():
+                        f.write(chunk)
+                # 解压缩
+                extract_dir = RESOURCE_BASE_DIR + "/resources/contests/" + str(contest_id) + '/playerFiles/' + str(request.user.id) + '/decompress/'
+                GeneralUtil.del_dir(extract_dir)
+                if File.name[dot_pos:] == '.zip':
+                    # zip
+                    try:
+                        with ZipFile(cur_dir + File.name) as zfile:
+                            zfile.extractall(path=extract_dir)
+                    except BadZipFile as e:
+                        traceback.print_exc()
+                        return JsonResponse({'msg': '文件解压缩出错！'})
+                else:
+                    # tar文件
+                    try:
+                        with tarfile.open(cur_dir + File.name, encoding='gbk') as tfile:
+                            tfile.extractall(path=extract_dir)
+                    except:
+                        traceback.print_exc()
+                        return JsonResponse({'msg': '文件解压缩出错'})
+                return JsonResponse({'msg': ''})
+            except Exception as e:
                 traceback.print_exc()
-                return JsonResponse({'msg': '文件解压缩出错！'})
-            return JsonResponse({'msg': ''})
-        except Exception as e:
-            traceback.print_exc()
-            return JsonResponse({'msg': '未知错误'})
+                return JsonResponse({'msg': '未知错误'})
+    except:
+        traceback.print_exc()
+        return JsonResponse({'msg': '未知错误'})
