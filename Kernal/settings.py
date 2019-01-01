@@ -78,13 +78,16 @@ WSGI_APPLICATION = 'Kernal.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/2.1/ref/settings/#databases
 
+with open('config.json', 'r') as f:
+    db = json.load(f)['db']
+
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.mysql',
-        'NAME': 'ccp_tmp',
-        'USER': 'ccp_remote',
-        'PASSWORD': 'cCpremOte',
-        'HOST': '123.206.47.47',
+        'NAME': db['NAME'],
+        'USER': db['USER'],
+        'PASSWORD': db['PASSWD'],
+        'HOST': db['HOST'],
     }
 }
 
