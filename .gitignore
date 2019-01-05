@@ -1,0 +1,7 @@
+.idea
+Foreend/node_modules/*
+Foreend/src/components/node_modules/*
+Foreend/src/pages/CompetitionCreate/node_modules/*
+Foreend/static/*
+Foreend/templates/*
+Foreend/tests/function/test_files/*
